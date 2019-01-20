@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">AlarmSender</string>
-    <string name="alarm_sender">Alarm Sender</string>
+    <string name="app_name">SunriseClock</string>
+    <string name="sunrise_clock">Sunrise Clock</string>
 </resources>

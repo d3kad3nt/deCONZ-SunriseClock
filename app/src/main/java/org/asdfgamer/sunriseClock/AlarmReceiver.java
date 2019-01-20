@@ -1,4 +1,4 @@
-package org.asdfgamer.alarmsender;
+package org.asdfgamer.sunriseClock;
 
 import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
@@ -13,49 +13,49 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.util.Objects;
+
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, final Intent intent) {
+        if (!Objects.equals(intent.getAction(), ""))
+        {
+            Log.w(context.getString(R.string.app_name),"The recieved Broadcast had the wrong action: " + intent.getAction());
+            return;
+        };
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarm == null || alarm.getNextAlarmClock() == null) {
             return;
         }
         long triggerTime = alarm.getNextAlarmClock().getTriggerTime();
-        Log.i("AlarmSender", "Next alarm rings at :" + triggerTime);
+        Log.i(context.getString(R.string.app_name), "Next alarm rings at :" + triggerTime);
 
         // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(context);
-        String url = getURL(context);
+        Settings settings = new Settings(context);
+        String url = settings.loadString(Settings.ID.url, "");
+        if (url.isEmpty())
+        {
+            Log.w(context.getString(R.string.app_name),"No URL given!");
+            return;
+        }
         // Request a string response from the provided URL.
+        RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.i("AlarmSender", "Published new alarm sucessfully");
+                        Log.i(context.getString(R.string.app_name), "Published new alarm sucessfully");
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.w("AlarmSender", "Problem while publishing alarm");
+                        Log.w(context.getString(R.string.app_name), "Problem while publishing alarm");
                     }
                 });
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
-    }
-
-    private String getURL(Context context) {
-        Settings settings = new Settings(context);
-        String url = settings.loadString("complete", "");
-        if (url.isEmpty()) {
-            String ip = settings.loadString("ip", "127.0.0.1");
-            String topic = settings.loadString("topic", "/");
-            String api = settings.loadString("api", "key");
-            url = "http://" + ip + topic + api;
-            Log.w("AlarmSender", "creating of URLS isn't implemented yet");
-        }
-        return url;
     }
 }
