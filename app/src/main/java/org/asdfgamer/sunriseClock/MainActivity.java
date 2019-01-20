@@ -1,15 +1,20 @@
-package org.asdfgamer.alarmsender;
+package org.asdfgamer.sunriseClock;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import org.asdfgamer.sunriseClock.Settings.ID;
+
+import static org.asdfgamer.sunriseClock.Settings.ID.apiKey;
+import static org.asdfgamer.sunriseClock.Settings.ID.id;
+import static org.asdfgamer.sunriseClock.Settings.ID.url;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,13 +29,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadSettings() {
-        String ip =settings.loadString("ip","");
-        String topic =settings.loadString("topic","");
-        String api =settings.loadString("api","");
-        String complete =settings.loadString("complete","");
+        String ip =settings.loadString(ID.ip,"");
+        String api =settings.loadString(apiKey,"");
+        String restID =settings.loadString(id,"");
+        String complete =settings.loadString(url,"");
         setTextToEdit(R.id.ip_Text,ip);
-        setTextToEdit(R.id.topic_Text,topic);
         setTextToEdit(R.id.api_Text,api);
+        setTextToEdit(R.id.id_Text,restID);
         setTextToEdit(R.id.complete_Text,complete);
 
     }
@@ -38,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
     public void saveSettings(View view)
     {
         String ip = getTextFromEdit(R.id.ip_Text);
-        settings.save("ip",ip);
-        String topic = getTextFromEdit(R.id.topic_Text);
-        settings.save("topic",topic);
+        settings.save(ID.ip,ip);
         String api = getTextFromEdit(R.id.api_Text);
-        settings.save("api",api);
+        settings.save(apiKey,api);
+        String restID = getTextFromEdit(R.id.id_Text);
+        settings.save(id,restID);
         String complete = getTextFromEdit(R.id.complete_Text);
-        settings.save("complete",complete);
+        settings.save(url,complete);
     }
 
     public String getTextFromEdit(@IdRes int id)

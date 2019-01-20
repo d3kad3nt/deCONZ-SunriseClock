@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:text="@string/alarm_sender"
+        android:text="@string/sunrise_clock"
         android:textAppearance="@android:style/TextAppearance.Material.Title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -46,10 +46,10 @@
         android:text="API Key"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topic_Text" />
+        app:layout_constraintTop_toBottomOf="@+id/id_Text" />
 
     <EditText
-        android:id="@+id/topic_Text"
+        android:id="@+id/id_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -58,7 +58,7 @@
         android:ems="10"
         android:enabled="true"
         android:inputType="textPersonName"
-        android:text="Topic"
+        android:text="ID"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ip_Text" />
@@ -90,9 +90,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:text="Topic"
-        app:layout_constraintBaseline_toBaselineOf="@+id/topic_Text"
-        app:layout_constraintEnd_toStartOf="@+id/topic_Text" />
+        android:text="ID"
+        app:layout_constraintBaseline_toBaselineOf="@+id/id_Text"
+        app:layout_constraintEnd_toStartOf="@+id/id_Text" />
 
     <TextView
         android:id="@+id/textView5"
