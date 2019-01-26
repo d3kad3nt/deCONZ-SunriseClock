@@ -18,27 +18,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/ip_Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:editable="false"
-        android:ems="10"
-        android:enabled="true"
-        android:inputType="textPersonName"
-        android:text="IP Adresse"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/complete_Text" />
-
-    <EditText
         android:id="@+id/api_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="19dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:enabled="true"
@@ -46,14 +30,14 @@
         android:text="API Key"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_Text" />
+        app:layout_constraintTop_toBottomOf="@+id/complete_Text" />
 
     <EditText
         android:id="@+id/id_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:enabled="true"
@@ -61,29 +45,20 @@
         android:text="ID"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ip_Text" />
+        app:layout_constraintTop_toBottomOf="@+id/api_Text" />
 
     <Button
         android:id="@+id/save_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="129dp"
         android:layout_marginEnd="16dp"
         android:onClick="saveSettings"
         android:text="Speichern"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/api_Text" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:text="IP:"
-        app:layout_constraintBaseline_toBaselineOf="@+id/ip_Text"
-        app:layout_constraintEnd_toStartOf="@+id/ip_Text" />
+        app:layout_constraintTop_toBottomOf="@+id/id_Text" />
 
     <TextView
         android:id="@+id/textView4"
@@ -99,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:text="API"
+        android:text="API-Key"
         app:layout_constraintBaseline_toBaselineOf="@+id/api_Text"
         app:layout_constraintEnd_toStartOf="@+id/api_Text" />
 
@@ -122,9 +97,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="19dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Complete URL"
+        android:text="IP:Port"
+        app:layout_constraintBottom_toTopOf="@+id/api_Text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -137,5 +114,19 @@
         android:text="Full URL"
         app:layout_constraintBaseline_toBaselineOf="@+id/complete_Text"
         app:layout_constraintEnd_toStartOf="@+id/complete_Text" />
+
+    <Button
+        android:id="@+id/testConnection_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="157dp"
+        android:onClick="testConnection"
+        android:text="Test HTTP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.56"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sync_Button" />
 
 </android.support.constraint.ConstraintLayout>

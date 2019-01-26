@@ -2,6 +2,7 @@ package org.asdfgamer.sunriseClock;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 
 public class Settings {
 
