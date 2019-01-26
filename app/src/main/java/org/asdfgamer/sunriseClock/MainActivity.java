@@ -16,6 +16,8 @@ import org.asdfgamer.sunriseClock.Settings.ID;
 import org.asdfgamer.sunriseClock.network.DeconzClient;
 import org.asdfgamer.sunriseClock.network.DeconzConnection;
 
+import java.util.Calendar;
+
 import static org.asdfgamer.sunriseClock.Settings.ID.apiKey;
 import static org.asdfgamer.sunriseClock.Settings.ID.id;
 import static org.asdfgamer.sunriseClock.Settings.ID.url;
@@ -81,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
     public void testConnection(View view) {
         Uri baseUrl = Uri.parse(settings.loadString(ID.url, ""));
         DeconzConnection deconz = new DeconzConnection(baseUrl, settings.loadString(ID.apiKey, ""));
-        deconz.testConnection();
+        //deconz.testConnection();
+        deconz.scheduleLight(1, Calendar.getInstance().getTime());
     }
 
     public static Context getContext() {
