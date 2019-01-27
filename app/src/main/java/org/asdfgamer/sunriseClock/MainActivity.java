@@ -6,9 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -17,6 +14,9 @@ import org.asdfgamer.sunriseClock.network.DeconzClient;
 import org.asdfgamer.sunriseClock.network.DeconzConnection;
 
 import java.util.Calendar;
+
+import androidx.annotation.IdRes;
+import androidx.appcompat.app.AppCompatActivity;
 
 import static org.asdfgamer.sunriseClock.Settings.ID.apiKey;
 import static org.asdfgamer.sunriseClock.Settings.ID.id;
