@@ -91,13 +91,13 @@ public class MainActivity extends AppCompatActivity {
         settings.save(url,complete);
     }
 
-    public String getTextFromEdit(@IdRes int id)
+    private String getTextFromEdit(@IdRes int id)
     {
         EditText text = findViewById(id);
         return text.getText().toString();
     }
 
-    public void setTextToEdit(@IdRes int id, String text)
+    private void setTextToEdit(@IdRes int id, String text)
     {
         EditText ip_text = findViewById(id);
         ip_text.setText(text);
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         //alarm.set(AlarmManager.RTC_WAKEUP, triggerTime, startPIntent);
     }
 
-    public void showPreferences() {
+    private void showPreferences() {
         Intent showPreferences = new Intent(this, PreferencesActivity.class);
         startActivity(showPreferences);
     }
