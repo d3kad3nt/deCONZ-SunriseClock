@@ -11,7 +11,7 @@
         android:id="@+id/main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +38,8 @@
         android:ems="10"
         android:enabled="true"
         android:inputType="textPersonName"
-        android:text="API Key"
+        android:text="@string/text_api_key"
+        android:hint="@string/text_api_key_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/complete_Text" />
@@ -51,7 +52,8 @@
         android:ems="10"
         android:enabled="true"
         android:inputType="textPersonName"
-        android:text="ID"
+        android:text="@string/text_id"
+        android:hint="@string/text_id_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/api_Text" />
@@ -62,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:onClick="saveSettings"
-        android:text="Speichern"
+        android:text="@string/text_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/id_Text" />
@@ -72,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="ID"
+        android:text="@string/text_id"
         app:layout_constraintBaseline_toBaselineOf="@+id/id_Text"
         app:layout_constraintEnd_toStartOf="@+id/id_Text" />
 
@@ -81,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="API-Key"
+        android:text="@string/text_api_key"
         app:layout_constraintBaseline_toBaselineOf="@+id/api_Text"
         app:layout_constraintEnd_toStartOf="@+id/api_Text" />
 
@@ -91,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:onClick="syncAlarm"
-        android:text="Sync"
+        android:text="@string/text_sync"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/save_Button" />
@@ -103,7 +105,8 @@
         android:layout_marginTop="24dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="IP:Port"
+        android:text="@string/text_ip_port"
+        android:hint="@string/text_ip_port_hint"
         app:layout_constraintBottom_toTopOf="@+id/api_Text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,7 +117,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
-        android:text="Full URL"
+        android:text="@string/text_url"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/complete_Text"
         app:layout_constraintTop_toTopOf="parent" />
@@ -125,7 +128,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:onClick="testConnection"
-        android:text="Test HTTP"
+        android:text="@string/text_test_http"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sync_Button" />
@@ -135,7 +138,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="IP:Port"
+        android:text="@string/text_ip_port"
         app:layout_constraintBaseline_toBaselineOf="@+id/complete_Text"
         app:layout_constraintEnd_toStartOf="@+id/complete_Text" />
 

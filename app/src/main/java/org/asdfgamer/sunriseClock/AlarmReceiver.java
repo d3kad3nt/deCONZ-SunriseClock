@@ -6,13 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
 import java.util.Objects;
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -22,7 +15,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         {
             Log.w(context.getString(R.string.app_name),"The received Broadcast had the wrong action: " + intent.getAction());
             return;
-        };
+        }
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarm == null || alarm.getNextAlarmClock() == null) {
             return;
