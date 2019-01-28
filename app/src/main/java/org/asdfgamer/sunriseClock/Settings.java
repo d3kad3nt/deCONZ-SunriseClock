@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 public class Settings {
 
-    private SharedPreferences settings;
+    private final SharedPreferences settings;
 
     public Settings(Context applicationContext)
     {
