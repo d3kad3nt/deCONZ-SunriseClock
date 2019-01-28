@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -9,8 +10,8 @@
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="@string/sunrise_clock"
         android:textAppearance="@android:style/TextAppearance.Material.Title"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -21,9 +22,7 @@
         android:id="@+id/api_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:enabled="true"
         android:inputType="textPersonName"
@@ -36,9 +35,7 @@
         android:id="@+id/id_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:enabled="true"
         android:inputType="textPersonName"
@@ -51,9 +48,7 @@
         android:id="@+id/save_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="129dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
         android:onClick="saveSettings"
         android:text="Speichern"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +59,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         android:text="ID"
         app:layout_constraintBaseline_toBaselineOf="@+id/id_Text"
         app:layout_constraintEnd_toStartOf="@+id/id_Text" />
@@ -73,7 +68,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         android:text="API-Key"
         app:layout_constraintBaseline_toBaselineOf="@+id/api_Text"
         app:layout_constraintEnd_toStartOf="@+id/api_Text" />
@@ -82,9 +77,8 @@
         android:id="@+id/sync_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
+        android:onClick="showPreferences"
         android:text="Sync"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -94,10 +88,7 @@
         android:id="@+id/complete_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="19dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="IP:Port"
@@ -109,24 +100,31 @@
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
         android:text="Full URL"
-        app:layout_constraintBaseline_toBaselineOf="@+id/complete_Text"
-        app:layout_constraintEnd_toStartOf="@+id/complete_Text" />
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/complete_Text"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/testConnection_button"
-        android:layout_width="wrap_content"
+        android:layout_width="96dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="156dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="157dp"
+        android:layout_marginTop="24dp"
         android:onClick="testConnection"
         android:text="Test HTTP"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.56"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sync_Button" />
 
-</androidx.constraintlayout.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="IP:Port"
+        app:layout_constraintBaseline_toBaselineOf="@+id/complete_Text"
+        app:layout_constraintEnd_toStartOf="@+id/complete_Text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -80,6 +80,11 @@ public class MainActivity extends AppCompatActivity {
         //alarm.set(AlarmManager.RTC_WAKEUP, triggerTime, startPIntent);
     }
 
+    public void showPreferences(View view) {
+        Intent showPreferences = new Intent(this, PreferencesActivity.class);
+        startActivity(showPreferences);
+    }
+
     public void testConnection(View view) {
         Uri baseUrl = Uri.parse(settings.loadString(ID.url, ""));
         DeconzConnection deconz = new DeconzConnection(baseUrl, settings.loadString(ID.apiKey, ""));
