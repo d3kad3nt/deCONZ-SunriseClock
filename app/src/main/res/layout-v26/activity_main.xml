@@ -44,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/complete_Text"
-        tools:ignore="Autofill" />
+        android:autofillHints="deconz/apikey" />
 
     <EditText
         android:id="@+id/id_Text"
@@ -59,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/api_Text"
-        tools:ignore="Autofill" />
+        android:autofillHints="deconz/id" />
 
     <Button
         android:id="@+id/save_Button"
@@ -114,7 +114,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:ignore="Autofill" />
+        android:autofillHints="deconz/address" />
 
     <TextView
         android:id="@+id/textView7"

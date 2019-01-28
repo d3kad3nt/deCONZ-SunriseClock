@@ -2,10 +2,10 @@
 <resources>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="action_settings">Einstellungen</string>
-    <string name="text_api_key_hint">Dies ist der von deCONZ generierte API Key</string>
-    <string name="text_id_hint">Dies ist die ID des Geräts das angesprochen werden soll.</string>
+    <string name="text_api_key_hint">API Key von deCONZ</string>
+    <string name="text_id_hint">ID des Geräts</string>
     <string name="text_save">Speichern</string>
-    <string name="text_ip_port_hint">Dies sind die IP und der Port des Servers, getrennt durch \':\'.</string>
+    <string name="text_ip_port_hint">IP und Port von Server</string>
     <string name="text_test_http">Test HTTP</string>
     <string name="text_url">Gesamte URL</string>
     <string name="text_sync">Sync</string>
