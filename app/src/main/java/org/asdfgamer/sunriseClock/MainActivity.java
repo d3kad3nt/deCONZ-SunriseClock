@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import org.asdfgamer.sunriseClock.Settings.ID;
-import org.asdfgamer.sunriseClock.network.DeconzClient;
+import org.asdfgamer.sunriseClock.network.RequestQueue;
 import org.asdfgamer.sunriseClock.network.DeconzConnection;
 
 import java.util.Calendar;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         this.settings= new Settings(getApplicationContext());
         loadSettings();
 
-        DeconzClient.getInstance(this);
+        RequestQueue.getInstance(this);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         Uri baseUrl = Uri.parse(settings.loadString(ID.url, ""));
         DeconzConnection deconz = new DeconzConnection(baseUrl, settings.loadString(ID.apiKey, ""));
         //deconz.testConnection();
-        deconz.scheduleLight(1, Calendar.getInstance().getTime());
+        deconz.scheduleLight(1, "placeholder"); //TODO: remove placeholder
     }
 
     public static Context getContext() {
