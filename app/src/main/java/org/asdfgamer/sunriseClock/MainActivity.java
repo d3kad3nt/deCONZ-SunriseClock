@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,8 +16,7 @@ import android.widget.EditText;
 import org.asdfgamer.sunriseClock.Settings.ID;
 import org.asdfgamer.sunriseClock.network.RequestQueue;
 import org.asdfgamer.sunriseClock.network.DeconzConnection;
-
-import java.util.Calendar;
+import org.asdfgamer.sunriseClock.network.UpnpDiscoveryTask;
 
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -121,6 +121,10 @@ public class MainActivity extends AppCompatActivity {
         DeconzConnection deconz = new DeconzConnection(baseUrl, settings.loadString(ID.apiKey, ""));
         //deconz.testConnection();
         deconz.scheduleLight(1, "placeholder"); //TODO: remove placeholder
+
+        UpnpDiscoveryTask task = new UpnpDiscoveryTask(this.getApplicationContext());
+        task.execute();
+
     }
 
     public static Context getContext() {

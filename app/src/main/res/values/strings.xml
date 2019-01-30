@@ -13,4 +13,5 @@
     <string name="text_sync">Sync</string>
     <string name="text_url">Full URL</string>
     <string name="text_test_http">test HTTP</string>
+    <string name="appNameID" />
 </resources>

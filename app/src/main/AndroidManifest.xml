@@ -4,6 +4,7 @@
     package="org.asdfgamer.sunriseClock">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 
     <application
         android:label="@string/app_name"
