@@ -20,11 +20,10 @@ public class UpnpDiscoveryTask extends AsyncTask<Object, Void, Uri> {
 
     private String TAG = "UpnpDiscoveryTask";
 
-    private Context ctx;
+    private WifiManager wifi;
 
-    //TODO: Better access to context. This creates a compiler warning.
-    public UpnpDiscoveryTask(Context context) {
-        ctx = context;
+    public UpnpDiscoveryTask(WifiManager wifiManager) {
+        this.wifi = wifiManager;
     }
 
     @Override
@@ -32,9 +31,6 @@ public class UpnpDiscoveryTask extends AsyncTask<Object, Void, Uri> {
         Uri deconzBaseUrl = null;
 
         Log.i(TAG, "Upnp Discovery started.");
-
-        ctx.getApplicationContext();
-        WifiManager wifi = (WifiManager) ctx.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
         if (wifi != null) {
 
