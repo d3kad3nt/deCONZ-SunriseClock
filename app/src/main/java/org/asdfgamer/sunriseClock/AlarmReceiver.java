@@ -9,6 +9,7 @@ import android.util.Log;
 import java.util.Objects;
 
 public class AlarmReceiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(final Context context, final Intent intent) {
         if (!Objects.equals(intent.getAction(), "android.app.action.NEXT_ALARM_CLOCK_CHANGED"))
@@ -20,9 +21,22 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (alarm == null || alarm.getNextAlarmClock() == null) {
             return;
         }
-        long triggerTime = alarm.getNextAlarmClock().getTriggerTime();
-        Log.i(context.getString(R.string.app_name), "Next alarm rings at :" + triggerTime);
 
+        removeObsoleteSchedules();
+        addSchedule(alarm, context);
+    }
+
+    /* TODO: Retrieve formerly used schedule ids (probably from local storage) to remove obsolete schedulues from deconz.
+    * Could use the new WorkManager from jetpack. */
+    private void removeObsoleteSchedules() {
 
     }
+
+    private void addSchedule(AlarmManager alarm, Context context) {
+        //TODO: Only execute if in defined wifi connection (TODO: settings element).
+        final PendingResult pendingResult = goAsync();
+        SchedulingTask asyncTask = new SchedulingTask(pendingResult, alarm, context);
+        asyncTask.execute();
+    }
+
 }
