@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,7 +17,7 @@ import android.widget.EditText;
 import org.asdfgamer.sunriseClock.Settings.ID;
 import org.asdfgamer.sunriseClock.network.RequestQueue;
 import org.asdfgamer.sunriseClock.network.DeconzConnection;
-import org.asdfgamer.sunriseClock.network.UpnpDiscoveryTask;
+import org.asdfgamer.sunriseClock.network.UpnpDiscovery;
 
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -122,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
         //deconz.testConnection();
         deconz.scheduleLight(1, "placeholder"); //TODO: remove placeholder
 
-        UpnpDiscoveryTask task = new UpnpDiscoveryTask(this.getApplicationContext());
-        task.execute();
+        UpnpDiscovery discovery = new UpnpDiscovery((WifiManager)this.getApplicationContext().getSystemService(Context.WIFI_SERVICE));
+        discovery.discoverBridge();
 
     }
 

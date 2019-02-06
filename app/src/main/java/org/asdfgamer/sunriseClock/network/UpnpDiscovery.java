@@ -16,18 +16,17 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 
-public class UpnpDiscoveryTask extends AsyncTask<Object, Void, Uri> {
+public class UpnpDiscovery {
 
     private String TAG = "UpnpDiscoveryTask";
 
     private WifiManager wifi;
 
-    public UpnpDiscoveryTask(WifiManager wifiManager) {
+    public UpnpDiscovery(WifiManager wifiManager) {
         this.wifi = wifiManager;
     }
 
-    @Override
-    protected Uri doInBackground(Object[] params) {
+    public Uri discoverBridge() {
         Uri deconzBaseUrl = null;
 
         Log.i(TAG, "Upnp Discovery started.");
@@ -65,7 +64,7 @@ public class UpnpDiscoveryTask extends AsyncTask<Object, Void, Uri> {
                 long curTime = System.currentTimeMillis();
 
                 /* For a multicast request, the control point SHOULD wait at least the amount of time specified in the MX header field for responses to arrive from devices. */
-                while (curTime - time < 1000 && !isCancelled()) {
+                while (curTime - time < 1000) {
                     /* Allowing for up to 512 byte long datagrams. Expected to be enough. */
                     DatagramPacket receivedDatagram = new DatagramPacket(new byte[512], 512);
                     socket.receive(receivedDatagram);
@@ -84,19 +83,14 @@ public class UpnpDiscoveryTask extends AsyncTask<Object, Void, Uri> {
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                socket.close();
+                if (socket != null) {
+                    socket.close();
+                }
             }
             lock.release();
         }
         return deconzBaseUrl;
     }
-
-    @Override
-    protected void onPostExecute(Uri deconzBaseUrl) {
-        //TODO
-        Log.d(TAG, "onPostExecute found deconzBaseUrl: " + deconzBaseUrl);
-    }
-
 
     private Uri parseDatagram(DatagramPacket datagram) {
         Uri deconzBaseUrl = null;
@@ -129,12 +123,17 @@ public class UpnpDiscoveryTask extends AsyncTask<Object, Void, Uri> {
             }
 
             /* Multiple UPNP devices could have answered SSDP queries. This tries to find the deconz endpoint by searching for a specific string in the 'Server' field. */
-            if (serverDescription.contains("IpBridge".toLowerCase())) {
+            if ((serverDescription != null) && (xmlDescription != null) && serverDescription.contains("IpBridge".toLowerCase())) {
 
                 Log.i(TAG, "deconz XML description found at: " + xmlDescription.toString());
 
                 //TODO: We should probably get the base url for the deconz endpoint (eg 'deconz.example.org:8080/') from parsing the XML description file.
-                deconzBaseUrl = Uri.parse(xmlDescription.getAuthority());
+                Uri.Builder builder = new Uri.Builder();
+                builder.scheme("http")
+                        .encodedAuthority(xmlDescription.getEncodedAuthority());
+
+                deconzBaseUrl = builder.build();
+
                 Log.i(TAG, "deconz base url is: " + deconzBaseUrl);
 
             }
