@@ -119,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
     public void testConnection(View view) {
         Uri baseUrl = Uri.parse(settings.loadString(ID.url, ""));
         DeconzConnection deconz = new DeconzConnection(baseUrl, settings.loadString(ID.apiKey, ""));
-        //deconz.testConnection();
-        deconz.scheduleLight(1, "placeholder"); //TODO: remove placeholder
+        deconz.testConnection();
     }
 
     public static Context getContext() {

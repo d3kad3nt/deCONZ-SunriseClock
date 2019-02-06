@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 
+import org.asdfgamer.sunriseClock.utils.ISO8601;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,18 +64,18 @@ public class DeconzConnection {
      * @param lightId ID representing the light to be controlled.
      * @param date    Date and time for power on.
      */
-    public void scheduleLight(int lightId, String date) {
+    public void scheduleLight(String lightId, ISO8601 date) {
         Uri requestUrl = buildRequestUrl("schedules");
 
         JSONObject postJsonData = new JSONObject();
         JSONObject commandRequest = new JSONObject();
         JSONObject commandBodyRequest = new JSONObject();
-        String commandAddress = (buildRequestUrl("lights", String.valueOf(lightId), "state")).getPath();
+        String commandAddress = (buildRequestUrl("lights", lightId, "state")).getPath();
 
         try {
             postJsonData.put("name", "000SunriseClock");
             postJsonData.put("description", "created by SunriseClock for Deconz/Hue");
-            postJsonData.put("time", "2013-07-29T09:30:00"); //TODO: remove test value, string object not used
+            postJsonData.put("time", date.toString());
 
             commandRequest.put("method", "PUT");
             commandRequest.put("address", commandAddress);
