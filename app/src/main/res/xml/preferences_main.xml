@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        app:fragment="org.asdfgamer.sunriseClock.preferences.ConnectivityFragment"
+        app:title="Server"
+        app:key="connectivity_category" />
+
+    <Preference
+        app:fragment="org.asdfgamer.sunriseClock.preferences.AlarmFragment"
+        app:title="Alarm"
+        app:key="alarm_category" />
+
+    <Preference
+        app:fragment="org.asdfgamer.sunriseClock.preferences.InterfaceFragment"
+        app:title="Interface"
+        app:key="interface_category" />
+
+    <Preference
+        app:fragment="org.asdfgamer.sunriseClock.preferences.DebugFragment"
+        app:title="Fehlersuche"
+        app:key="debug_category" />
+
+</androidx.preference.PreferenceScreen>
