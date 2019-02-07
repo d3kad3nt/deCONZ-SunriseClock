@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:key="time_category"
+        app:title="Zeitraum">
+
+        <Preference
+            app:key="earliest_time"
+            app:summary="frühster Alarm auf den reagiert wird."
+            app:title="frühster Alarm" />
+        <Preference
+            app:key="latest_time"
+            app:summary="spätester Alarm auf den reagiert wird."
+            app:title="spätester Alarm" />
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>
