@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:key="pref_server_category"
+        app:title="@string/server_category">
+
+        <Preference
+            app:key="pref_findServer"
+            app:title="@string/automaticDiscovery"
+            app:summary="@string/automaticDiscovery_summary" />
+
+        <EditTextPreference
+            app:key="pref_ip"
+            app:title="@string/ip"
+            app:summary="@string/ip_summary" />
+        <EditTextPreference
+            app:key="pref_port"
+            app:title="@string/port"
+            app:summary="@string/port_summary" />
+        <EditTextPreference
+            app:key="pref_api_key"
+            app:title="@string/api_key"
+            app:summary="@string/api_key_summary" />
+        <Preference
+            app:key="pref_test_connection"
+            app:title="@string/connection_test"
+            app:summary="@string/connection_test_summary" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="pref_networks_category"
+        app:title="@string/network_category">
+        <SwitchPreferenceCompat
+            app:key="pref_onlyWlan"
+            app:title="@string/onlyWLAN"
+            app:summary="@string/onlyWLAN_summary" />
+        <EditTextPreference
+            app:key="pref_allowedWlan"
+            app:title="@string/allowedWLAN"
+            app:summary="@string/allowedWLAN_summary" />
+        <!-- Change allowed WLAN to List and add button to add current WLAN -->
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>
