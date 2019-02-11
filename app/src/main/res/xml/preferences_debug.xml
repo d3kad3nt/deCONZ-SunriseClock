@@ -3,17 +3,8 @@
 
 
     <SwitchPreferenceCompat
-        app:key="toast"
-        app:title="Enable alarm Information" />
+        app:key="pref_logs"
+        app:title="@string/logs_enable" />
 
-    <PreferenceCategory
-        app:key="info_category"
-        app:title="Über">
-
-        <Preference
-            app:key="feedback"
-            app:title="Send feedback"
-            app:summary="Report technical issues or suggest new features" />
-    </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

@@ -24,6 +24,17 @@
     <string name="port_summary">Port from deCONZ</string>
     <string name="ip" translatable="false">IP</string>
     <string name="ip_summary">IP from deCONZ</string>
-    <string name="allowedWLAN">allowed WLAN</string>
-    <string name="allowedWLAN_summary">allowed WLAN for scheduling</string>
+    <string name="allowedWLAN">Allowed WLAN</string>
+    <string name="allowedWLAN_summary">Allowed WLAN for scheduling</string>
+    <string name="network">Network</string>
+    <string name="alarm" translatable="false">Alarm</string>
+    <string name="ui_interface">Interface</string>
+    <string name="debug">Debuging</string>
+    <string name="logs_enable">Enable logging</string>
+    <string name="schedule_toast">Message when Schedule set</string>
+    <string name="start_on_boot">Start on boot</string>
+    <string name="alarm_early_summary">Earliest possible time for alarm</string>
+    <string name="alarm_early">Earliest alarm</string>
+    <string name="alarm_late_summary">Latest possible time for alarm</string>
+    <string name="alarm_late">Latest alarm</string>
 </resources>

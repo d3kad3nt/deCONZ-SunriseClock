@@ -3,22 +3,22 @@
 
     <Preference
         app:fragment="org.asdfgamer.sunriseClock.preferences.ConnectivityFragment"
-        app:title="Server"
-        app:key="connectivity_category" />
+        app:title="@string/network"
+        app:key="pref_connectivity_category" />
 
     <Preference
         app:fragment="org.asdfgamer.sunriseClock.preferences.AlarmFragment"
-        app:title="Alarm"
-        app:key="alarm_category" />
+        app:title="@string/alarm"
+        app:key="pref_alarm_category" />
 
     <Preference
         app:fragment="org.asdfgamer.sunriseClock.preferences.InterfaceFragment"
-        app:title="Interface"
-        app:key="interface_category" />
+        app:title="@string/ui_interface"
+        app:key="pref_interface_category" />
 
     <Preference
         app:fragment="org.asdfgamer.sunriseClock.preferences.DebugFragment"
-        app:title="Fehlersuche"
-        app:key="debug_category" />
+        app:title="@string/debug"
+        app:key="pref_debug_category" />
 
 </androidx.preference.PreferenceScreen>
