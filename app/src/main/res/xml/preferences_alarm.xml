@@ -5,11 +5,11 @@
         app:key="pref_time_category"
         app:title="Zeitraum">
 
-        <Preference
+        <EditTextPreference
             app:key="pref_earliest_time"
             app:summary="@string/alarm_early_summary"
             app:title="@string/alarm_early" />
-        <Preference
+        <EditTextPreference
             app:key="pref_latest_time"
             app:summary="@string/alarm_late_summary"
             app:title="@string/alarm_late" />
