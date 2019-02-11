@@ -19,4 +19,14 @@
     <string name="ip_summary">IP von deCONZ</string>
     <string name="allowedWLAN">erlautes WLAN</string>
     <string name="allowedWLAN_summary">erlaubtes WLAN zum syncronisieren</string>
+    <string name="network">Netzwerk</string>
+    <string name="ui_interface">Oberfläche</string>
+    <string name="debug">Fehlersuche</string>
+    <string name="logs_enable">Aktiviere logging</string>
+    <string name="schedule_toast">Nachricht wenn Alarm aktiviert</string>
+    <string name="start_on_boot">Start beim booten</string>
+    <string name="alarm_early_summary">frühster Alarm auf den reagiert wird</string>
+    <string name="alarm_early">frühster Alarm</string>
+    <string name="alarm_late_summary">spätester Alarm auf den reagiert wird</string>
+    <string name="alarm_late">spätester Alarm</string>
 </resources>

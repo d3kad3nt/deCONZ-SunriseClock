@@ -3,17 +3,11 @@
 
 
     <SwitchPreferenceCompat
-        app:key="toast"
-        app:title="Enable alarm Information" />
+        app:key="pref_schedule_set_toast"
+        app:title="@string/schedule_toast" />
 
-    <PreferenceCategory
-        app:key="info_category"
-        app:title="Über">
-
-        <Preference
-            app:key="feedback"
-            app:title="Send feedback"
-            app:summary="Report technical issues or suggest new features" />
-    </PreferenceCategory>
+    <SwitchPreferenceCompat
+        app:key="pref_boot"
+        app:title="@string/start_on_boot" />
 
 </androidx.preference.PreferenceScreen>
