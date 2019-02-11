@@ -2,11 +2,21 @@
 <resources>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="action_settings">Einstellungen</string>
-    <string name="text_api_key_hint">API Key von deCONZ</string>
-    <string name="text_id_hint">ID des Geräts</string>
-    <string name="text_save">Speichern</string>
-    <string name="text_ip_port_hint">IP und Port von Server</string>
-    <string name="text_test_http">Test HTTP</string>
-    <string name="text_url">Gesamte URL</string>
-    <string name="text_sync">Sync</string>
+    <string name="api_key_summary">API Key von deCONZ</string>
+    <string name="id_hint">ID des Geräts</string>
+    <string name="save">Speichern</string>
+    <string name="ip_port_hint">IP und Port von Server</string>
+    <string name="connection_test">Teste Verbindung</string>
+    <string name="url">Gesamte URL</string>
+    <string name="sync">Sync</string>
+    <string name="onlyWLAN_summary">"Syncronisiere nur bei aktiver WLAN-Verbindung "</string>
+    <string name="onlyWLAN">Nur im WLAN</string>
+    <string name="network_category">Netzwerk</string>
+    <string name="automaticDiscovery">Finde server automatisch</string>
+    <string name="automaticDiscovery_summary">Findet den Server über UPnP im lokalen Netz</string>
+    <string name="connection_test_summary">Überprüft die Verbindung zum Server</string>
+    <string name="port_summary">Port von deCONZ</string>
+    <string name="ip_summary">IP von deCONZ</string>
+    <string name="allowedWLAN">erlautes WLAN</string>
+    <string name="allowedWLAN_summary">erlaubtes WLAN zum syncronisieren</string>
 </resources>
