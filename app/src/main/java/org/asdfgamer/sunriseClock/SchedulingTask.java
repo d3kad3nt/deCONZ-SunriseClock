@@ -11,6 +11,7 @@ import android.widget.Toast;
 import org.asdfgamer.sunriseClock.network.DeconzConnection;
 import org.asdfgamer.sunriseClock.utils.ISO8601;
 
+import java.lang.ref.WeakReference;
 import java.util.Date;
 
 public class SchedulingTask extends AsyncTask<Void, Void, String> {
@@ -20,14 +21,14 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
     private final BroadcastReceiver.PendingResult pendingResult;
     private final AlarmManager alarm;
 
-    private Context context;
+    private WeakReference<Context> context;
     private Settings settings;
 
-    public SchedulingTask(BroadcastReceiver.PendingResult pendingResult, AlarmManager alarm, Context context) {
+    SchedulingTask(BroadcastReceiver.PendingResult pendingResult, AlarmManager alarm, Context context) {
         this.pendingResult = pendingResult;
         this.alarm = alarm;
 
-        this.context = context;
+        this.context = new WeakReference<>(context);
         this.settings = new Settings(context);
     }
 
@@ -53,7 +54,7 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String s) {
 
-        Toast.makeText(this.context, s,
+        Toast.makeText(this.context.get(), s,
                 Toast.LENGTH_LONG).show();
 
         // Must call finish() so the BroadcastReceiver can be recycled.
