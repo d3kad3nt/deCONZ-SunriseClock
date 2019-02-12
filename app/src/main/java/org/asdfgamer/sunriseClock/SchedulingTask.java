@@ -59,8 +59,10 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String s) {
 
-        Toast.makeText(this.context.get(), s,
-                Toast.LENGTH_LONG).show();
+        if (preferences.getBoolean("pref_schedule_set_toast", true)) {
+            Toast.makeText(this.context.get(), s,
+                    Toast.LENGTH_LONG).show();
+        }
 
         // Must call finish() so the BroadcastReceiver can be recycled.
         pendingResult.finish();
