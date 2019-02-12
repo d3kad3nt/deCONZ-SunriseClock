@@ -13,12 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.asdfgamer.sunriseClock.network.RequestQueue;
-import org.asdfgamer.sunriseClock.network.DeconzConnection;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.inflateMenu(R.menu.toolbar);
         setSupportActionBar(toolbar);
 
-        this.preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
 
         RequestQueue.getInstance(this);
     }
@@ -74,16 +72,6 @@ public class MainActivity extends AppCompatActivity {
     private void showPreferences() {
         Intent showPreferences = new Intent(this, PreferencesActivity.class);
         startActivity(showPreferences);
-    }
-
-    public void testConnection(View view) {
-
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("http")
-                .encodedAuthority(preferences.getString("pref_ip", "") + ":" + preferences.getString("pref_port", ""));
-
-        DeconzConnection deconz = new DeconzConnection(builder.build(), preferences.getString("pref_api_key", ""));
-        deconz.testConnection();
     }
 
     public static Context getContext() {
