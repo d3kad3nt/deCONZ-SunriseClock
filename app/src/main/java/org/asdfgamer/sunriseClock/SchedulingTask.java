@@ -3,6 +3,7 @@ package org.asdfgamer.sunriseClock;
 import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -14,6 +15,8 @@ import org.asdfgamer.sunriseClock.utils.ISO8601;
 import java.lang.ref.WeakReference;
 import java.util.Date;
 
+import androidx.preference.PreferenceManager;
+
 public class SchedulingTask extends AsyncTask<Void, Void, String> {
 
     private final String TAG = "SchedulingTask";
@@ -22,14 +25,14 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
     private final AlarmManager alarm;
 
     private WeakReference<Context> context;
-    private Settings settings;
+    private SharedPreferences preferences;
 
     SchedulingTask(BroadcastReceiver.PendingResult pendingResult, AlarmManager alarm, Context context) {
         this.pendingResult = pendingResult;
         this.alarm = alarm;
 
         this.context = new WeakReference<>(context);
-        this.settings = new Settings(context);
+        this.preferences = PreferenceManager.getDefaultSharedPreferences(this.context.get());
     }
 
     @Override
@@ -41,11 +44,13 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
 
         //TODO: Check if deconz url, apikey etc are valid. A 'valid' flag could be set when first adding or modifying these settings.
         //TODO: Improve defaultValues
-        Uri baseUrl = Uri.parse(settings.loadString(Settings.ID.url, ""));
-        String apiKey = settings.loadString(Settings.ID.apiKey, "");
-        String lightId = settings.loadString(Settings.ID.id, "");
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("http")
+                .encodedAuthority(preferences.getString("pref_ip", "") + ":" + preferences.getString("pref_port", ""));
+        String apiKey = preferences.getString("pref_api_key", "");
+        String lightId = preferences.getString("1", ""); //TODO: setting options for light ids
 
-        DeconzConnection deconz = new DeconzConnection(baseUrl, apiKey);
+        DeconzConnection deconz = new DeconzConnection(builder.build(), apiKey);
         deconz.scheduleLight(lightId, schedulingTime);
 
         return "TODO" + schedulingTime;
