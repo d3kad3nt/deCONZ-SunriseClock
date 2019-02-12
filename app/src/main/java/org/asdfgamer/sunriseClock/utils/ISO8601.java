@@ -5,10 +5,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class ISO8601 {
 
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.getDefault());
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
 
     private String iso8601;
     private Date date;
@@ -17,15 +18,17 @@ public class ISO8601 {
      * @param date Time in UTC (!)
      */
     public ISO8601(Date date) {
+        this.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         this.date = date;
         this.iso8601 = formatToIso(date);
     }
 
     /**
-     * @param iso8601 iso8601 formatted time string with format yyyy-MM-dd'T'hh:mm:ss
+     * @param iso8601 iso8601 formatted time string with format yyyy-MM-dd'T'HH:mm:ss
      */
     public ISO8601(String iso8601) {
         try {
+            this.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             this.date = getFromIso(iso8601);
             this.iso8601 = iso8601;
         }
