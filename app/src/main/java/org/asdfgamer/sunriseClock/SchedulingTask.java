@@ -48,7 +48,7 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
         builder.scheme("http")
                 .encodedAuthority(preferences.getString("pref_ip", "") + ":" + preferences.getString("pref_port", ""));
         String apiKey = preferences.getString("pref_api_key", "");
-        String lightId = preferences.getString("1", ""); //TODO: setting options for light ids
+        String lightId = preferences.getString("", "2"); //TODO: setting options for light ids
 
         DeconzConnection deconz = new DeconzConnection(builder.build(), apiKey);
         deconz.scheduleLight(lightId, schedulingTime);
