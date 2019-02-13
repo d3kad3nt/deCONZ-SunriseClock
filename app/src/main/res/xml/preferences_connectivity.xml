@@ -38,7 +38,8 @@
         <EditTextPreference
             app:key="pref_allowedWlan"
             app:title="@string/allowedWLAN"
-            app:summary="@string/allowedWLAN_summary" />
+            app:summary="@string/allowedWLAN_summary"
+            app:dependency="pref_onlyWlan"/>
         <!-- Change allowed WLAN to List and add button to add current WLAN -->
     </PreferenceCategory>
 
