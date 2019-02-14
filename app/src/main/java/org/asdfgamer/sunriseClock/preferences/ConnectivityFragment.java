@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.View;
 
 import org.asdfgamer.sunriseClock.R;
+import org.asdfgamer.sunriseClock.TestConnectionTask;
 import org.asdfgamer.sunriseClock.network.DeconzConnection;
 
 import java.util.Objects;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -44,8 +46,16 @@ public class ConnectivityFragment extends PreferenceFragmentCompat {
         });
     }
 
-    //TODO: Actually make the GUI give some feedback to the user.
     private void testConnection() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(this.getContext()));
+        alertDialogBuilder.setTitle("Your Title")
+                .setMessage("Message here!");
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+        new TestConnectionTask(alertDialog).execute();
+
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(this.getContext()));
 
         Uri.Builder builder = new Uri.Builder();
