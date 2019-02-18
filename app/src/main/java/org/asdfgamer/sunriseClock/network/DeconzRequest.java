@@ -27,7 +27,7 @@ public class DeconzRequest extends DeconzConnection {
     private Uri baseCommandPath;
 
     /* Helper class for building request URLs */
-    private RequestPathBuilder requestPathBuilder;
+    RequestPathBuilder requestPathBuilder;
 
     private VolleyErrorNetworkReponse volleyErrorNetworkReponse;
     private VolleyParseNetworkReponse volleyParseNetworkReponse;
