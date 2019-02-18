@@ -24,8 +24,6 @@ public class DeconzRequestSchLight extends DeconzRequest {
     private String lightId;
     private ISO8601 date;
 
-    private RequestPathBuilder requestPathBuilder;
-
     /**
      * Schedule basic power on for the given lightId. Time and date have to be given in the constructor.
      * See deconz REST-API docs for the required format.
