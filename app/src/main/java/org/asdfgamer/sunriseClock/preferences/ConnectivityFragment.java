@@ -9,6 +9,8 @@ import android.view.View;
 import org.asdfgamer.sunriseClock.R;
 import org.asdfgamer.sunriseClock.TestConnectionTask;
 import org.asdfgamer.sunriseClock.network.DeconzConnection;
+import org.asdfgamer.sunriseClock.network.DeconzRequest;
+import org.asdfgamer.sunriseClock.network.DeconzRequestTestConn;
 
 import java.util.Objects;
 
@@ -62,7 +64,7 @@ public class ConnectivityFragment extends PreferenceFragmentCompat {
         builder.scheme("http")
                 .encodedAuthority(preferences.getString("pref_ip", "") + ":" + preferences.getString("pref_port", ""));
 
-        DeconzConnection deconz = new DeconzConnection(builder.build(), preferences.getString("pref_api_key", ""));
+        DeconzRequestTestConn deconz = new DeconzRequestTestConn(builder.build(), preferences.getString("pref_api_key", ""));
         deconz.testConnection();
     }
 }

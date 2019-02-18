@@ -10,6 +10,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import org.asdfgamer.sunriseClock.network.DeconzConnection;
+import org.asdfgamer.sunriseClock.network.DeconzRequest;
+import org.asdfgamer.sunriseClock.network.DeconzRequestSchLight;
 import org.asdfgamer.sunriseClock.utils.ISO8601;
 
 import java.lang.ref.WeakReference;
@@ -50,8 +52,8 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
         String apiKey = preferences.getString("pref_api_key", "");
         String lightId = preferences.getString("", "2"); //TODO: setting options for light ids
 
-        DeconzConnection deconz = new DeconzConnection(builder.build(), apiKey);
-        deconz.scheduleLight(lightId, schedulingTime);
+        DeconzRequestSchLight deconz = new DeconzRequestSchLight(builder.build(), apiKey, lightId, schedulingTime);
+        deconz.scheduleLight();
 
         return "TODO" + schedulingTime;
     }
