@@ -5,12 +5,14 @@ import android.net.Uri;
 public class DeconzRequestTestConn extends DeconzRequest{
 
     public DeconzRequestTestConn(Uri baseUrl, String apiKey) {
-        super(baseUrl, apiKey);
+        super(baseUrl, apiKey, BASE_COMMAND_PATH);
     }
 
-    public void testConnection() {
-        Uri requestUrl = buildRequestUrl("lights");
+    private static final String TAG = "DeconzRequestTestConn";
 
-        getFromDeconz(requestUrl);
+    private static final Uri BASE_COMMAND_PATH = Uri.parse("lights");
+
+    public void testConnection() {
+        getFromDeconz();
     }
 }

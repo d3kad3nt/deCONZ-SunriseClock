@@ -27,21 +27,17 @@ public class DeconzConnection {
 
     private static final String TAG = "DeconzConnection";
 
-    /* Full path to the API endpoint including API key, eg. 'deconz.example.org:8080/XXXXX' */
+    /* Full path to the API endpoint including API key, eg. 'deconz.example.org:8080/api/XXXXX' */
     private Uri fullApiUrl;
 
     /* Path to the deconz server (Phoscon Webapp), eg. 'deconz.example.org:8080' */
     private Uri baseUrl;
 
-    /* API key for cmmunicating with deconz API. */
+    /* API key for communicating with deconz API. */
     private String apiKey;
 
     /* Used for sending out network requests to the deconz endpoint. */
     com.android.volley.RequestQueue networkRequestQueue = RequestQueue.getInstance().requestQueue;
-
-    DeconzConnection() {
-
-    }
 
     DeconzConnection(Uri baseUrl, String apiKey) {
         this.baseUrl = baseUrl;
@@ -55,31 +51,7 @@ public class DeconzConnection {
         Log.i(TAG, "DeconzConnection created. fullApiUrl: " + fullApiUrl);
     }
 
-    Uri buildRequestUrl(String path) {
-        return fullApiUrl
-                .buildUpon()
-                .appendPath(path)
-                .build();
-    }
-
-    Uri buildRequestUrl(String path, String id) {
-        return fullApiUrl
-                .buildUpon()
-                .appendPath(path)
-                .appendPath(id)
-                .build();
-    }
-
-    Uri buildRequestUrl(String path, String id, String additional) {
-        return fullApiUrl
-                .buildUpon()
-                .appendPath(path)
-                .appendPath(id)
-                .appendPath(additional)
-                .build();
-    }
-
-    public Uri getFullApiUrl() {
+    Uri getFullApiUrl() {
         return fullApiUrl;
     }
 
