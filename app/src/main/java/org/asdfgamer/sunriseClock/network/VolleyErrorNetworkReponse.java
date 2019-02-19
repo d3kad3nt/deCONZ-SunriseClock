@@ -9,9 +9,9 @@ import com.android.volley.ParseError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 
-class VolleyErrorNetworkReponse {
+public class VolleyErrorNetworkReponse {
 
-    VolleyErrorNetworkReponse(VolleyError volleyError) {
+    public VolleyErrorNetworkReponse(VolleyError volleyError) {
         this.volleyError = volleyError;
     }
 
@@ -24,7 +24,7 @@ class VolleyErrorNetworkReponse {
      * Currently, only prints warnings.
      *
      */
-    void printError() {
+    public void printError() {
 
         //Handle volley specific errors.
         if (volleyError instanceof NoConnectionError) {
@@ -42,19 +42,19 @@ class VolleyErrorNetworkReponse {
         if (networkResponse != null) {
             switch (networkResponse.statusCode) {
                 case 400:
-                    Log.w(TAG, "onError: API returned: " + DeconzReturnCodes.Bad_Request);
+                    Log.w(TAG, "onError: API returned: " + DeconzApiReturncodes.Bad_Request);
                     break;
                 case 401:
-                    Log.w(TAG, "onError: API returned: " + DeconzReturnCodes.Unauthorized);
+                    Log.w(TAG, "onError: API returned: " + DeconzApiReturncodes.Unauthorized);
                     break;
                 case 403:
-                    Log.w(TAG, "onError: API returned: " + DeconzReturnCodes.Forbidden);
+                    Log.w(TAG, "onError: API returned: " + DeconzApiReturncodes.Forbidden);
                     break;
                 case 404:
-                    Log.w(TAG, "onError: API returned: " + DeconzReturnCodes.Resource_Not_Found);
+                    Log.w(TAG, "onError: API returned: " + DeconzApiReturncodes.Resource_Not_Found);
                     break;
                 case 503:
-                    Log.w(TAG, "onError: API returned: " + DeconzReturnCodes.Service_Unavailable);
+                    Log.w(TAG, "onError: API returned: " + DeconzApiReturncodes.Service_Unavailable);
                     break;
                 default:
                     Log.w(TAG, "onError: API returned unknown error code: " + networkResponse.statusCode);

@@ -4,7 +4,7 @@ package org.asdfgamer.sunriseClock.network;
  * Shows error codes for the deconz api.
  * Found at: https://dresden-elektronik.github.io/deconz-rest-doc/errors/
  */
-public enum DeconzReturnCodes {
+public enum DeconzApiReturncodes {
 
     //TODO: Use localized Strings
     OK(200, "Request succeded"),
@@ -21,7 +21,7 @@ public enum DeconzReturnCodes {
     private final int code;
     private final String description;
 
-    DeconzReturnCodes(int code, String description) {
+    DeconzApiReturncodes(int code, String description) {
         this.code = code;
         this.description = description;
     }

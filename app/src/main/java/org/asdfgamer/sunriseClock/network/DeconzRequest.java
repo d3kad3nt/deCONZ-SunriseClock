@@ -4,41 +4,43 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.asdfgamer.sunriseClock.network.utils.RequestPathBuilder;
+import org.asdfgamer.sunriseClock.network.utils.VolleyJsonArrayRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class DeconzRequest extends DeconzConnection {
+public abstract class DeconzRequest extends DeconzConnection {
 
-    DeconzRequest(Uri baseUrl, String apiKey, Uri baseCommandPath) {
+    DeconzRequest(Uri baseUrl, String apiKey) {
         super(baseUrl, apiKey);
-        this.baseCommandPath = baseCommandPath;
-        this.requestPathBuilder = new RequestPathBuilder(super.getFullApiUrl());
     }
 
     private static final String TAG = "DeconzRequest";
 
-    /* Path of the command address (e.g. 'lights' or 'lights/1')*/
+    /* Path of the command address (e.g. 'lights' or 'lights/1') */
     private Uri baseCommandPath;
-
-    /* Helper class for building request URLs */
-    RequestPathBuilder requestPathBuilder;
 
     private VolleyErrorNetworkReponse volleyErrorNetworkReponse;
     private VolleyParseNetworkReponse volleyParseNetworkReponse;
+
+    /* Should initialize the base command path (see above).
+    * Also, should set the data for the deconz request.*/
+    public abstract void init();
+
+    /* Should fire  the request towards deconz. Uses default success and error listeners.
+    * Useful for debugging.*/
+    public abstract void fire();
 
     /**
      * Uses GET to get data (duh!) from the deconz endpoint. Uses default listeners for response and Error Listeners.
      * Default listeners are useful for debugging purposes because they print several status messages.
      */
     void getFromDeconz() {
-        Log.d("getFromDeconz", "GET from: " + this.buildFullRequestPath());
-        final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, this.buildFullRequestPath().toString(), null
+        Log.d("getFromDeconz", "GET from: " + this.baseCommandPath);
+        final JsonObjectRequest jsObjRequest = new JsonObjectRequest(DeconzApiMethods.GET.getVolleyMethod(), this.baseCommandPath.toString(), null
                 , new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -69,8 +71,8 @@ public class DeconzRequest extends DeconzConnection {
      * @param customListenerError   Custom listener for when the request returns unsuccessfully.
      */
     void getFromDeconz(Response.Listener<JSONObject> customListenerSuccess, Response.ErrorListener customListenerError) {
-        Log.d("getFromDeconz", "GET from: " + this.buildFullRequestPath());
-        final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, this.buildFullRequestPath().toString(), null, customListenerSuccess, customListenerError);
+        Log.d("getFromDeconz", "GET from: " + this.baseCommandPath);
+        final JsonObjectRequest jsObjRequest = new JsonObjectRequest(DeconzApiMethods.GET.getVolleyMethod(), this.baseCommandPath.toString(), null, customListenerSuccess, customListenerError);
         networkRequestQueue.add(jsObjRequest);
     }
 
@@ -82,8 +84,8 @@ public class DeconzRequest extends DeconzConnection {
      * @param postJsonData Json object to send to the deconz API.
      */
     void sendToDeconz(JSONObject postJsonData) {
-        Log.d("sendToDeconz", "POSTing " + postJsonData.toString() + " to: " + this.buildFullRequestPath());
-        final VolleyJsonArrayRequest jsObjRequest = new VolleyJsonArrayRequest(Request.Method.POST, this.buildFullRequestPath().toString(), postJsonData
+        Log.d("sendToDeconz", "POSTing " + postJsonData.toString() + " to: " + this.baseCommandPath);
+        final VolleyJsonArrayRequest jsObjRequest = new VolleyJsonArrayRequest(DeconzApiMethods.POST.getVolleyMethod(), this.baseCommandPath.toString(), postJsonData
                 , new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -116,19 +118,25 @@ public class DeconzRequest extends DeconzConnection {
      * @param customListenerError   Custom listener for when the request returns unsuccessfully.
      */
     void sendToDeconz(JSONObject postJsonData, Response.Listener<JSONArray> customListenerSuccess, Response.ErrorListener customListenerError) {
-        Log.d("sendToDeconz", "POSTing " + postJsonData.toString() + " to: " + this.buildFullRequestPath());
-        final VolleyJsonArrayRequest jsObjRequest = new VolleyJsonArrayRequest(Request.Method.POST, this.buildFullRequestPath().toString(), postJsonData, customListenerSuccess, customListenerError);
+        Log.d("sendToDeconz", "POSTing " + postJsonData.toString() + " to: " + this.baseCommandPath);
+        final VolleyJsonArrayRequest jsObjRequest = new VolleyJsonArrayRequest(DeconzApiMethods.POST.getVolleyMethod(), this.baseCommandPath.toString(), postJsonData, customListenerSuccess, customListenerError);
         networkRequestQueue.add(jsObjRequest);
     }
 
     /**
      * @return Full path to the used deconz API endpoint, e.g. 'deconz.example.org:8080/lights/1'
      */
-    private Uri buildFullRequestPath() {
-        return super.getFullApiUrl()
-                .buildUpon()
-                .appendEncodedPath(this.baseCommandPath.toString())
-                .build();
+    Uri getBaseCommandPath() {
+        if (baseCommandPath == null) {
+            return super.getFullApiUrl();
+        }
+        else {
+            return baseCommandPath;
+        }
+    }
+
+    void setBaseCommandPath(Uri baseCommandPath) {
+        this.baseCommandPath = baseCommandPath;
     }
 
 }

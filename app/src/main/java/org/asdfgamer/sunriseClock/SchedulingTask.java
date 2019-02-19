@@ -53,7 +53,9 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
         String lightId = preferences.getString("", "2"); //TODO: setting options for light ids
 
         DeconzRequestSchLight deconz = new DeconzRequestSchLight(builder.build(), apiKey, lightId, schedulingTime);
-        deconz.scheduleLight();
+        deconz.init();
+        //TODO: Check if API call was successfull, use own listeners instead of default ones.
+        deconz.fire();
 
         return "TODO" + schedulingTime;
     }

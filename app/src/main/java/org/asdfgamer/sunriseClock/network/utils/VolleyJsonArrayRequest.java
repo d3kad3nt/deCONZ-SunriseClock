@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network;
+package org.asdfgamer.sunriseClock.network.utils;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -20,8 +20,8 @@ import java.io.UnsupportedEncodingException;
 public class VolleyJsonArrayRequest extends JsonRequest<JSONArray> {
 
 
-    VolleyJsonArrayRequest(int method, String url, JSONObject jsonRequest,
-                           Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {
+    public VolleyJsonArrayRequest(int method, String url, JSONObject jsonRequest,
+                                  Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {
         super(method, url, (jsonRequest == null) ? null : jsonRequest.toString(), listener,
                 errorListener);
     }

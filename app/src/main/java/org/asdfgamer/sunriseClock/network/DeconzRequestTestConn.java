@@ -2,17 +2,36 @@ package org.asdfgamer.sunriseClock.network;
 
 import android.net.Uri;
 
-public class DeconzRequestTestConn extends DeconzRequest{
+import com.android.volley.Response;
+
+import org.json.JSONObject;
+
+public class DeconzRequestTestConn extends DeconzRequest implements  IResponseListenerJSONObject {
 
     public DeconzRequestTestConn(Uri baseUrl, String apiKey) {
-        super(baseUrl, apiKey, BASE_COMMAND_PATH);
+        super(baseUrl, apiKey);
     }
 
     private static final String TAG = "DeconzRequestTestConn";
 
-    private static final Uri BASE_COMMAND_PATH = Uri.parse("lights");
+    public void testConnection(Response.Listener<JSONObject> customListenerSuccess, Response.ErrorListener customListenerError) {
+        getFromDeconz(customListenerSuccess, customListenerError);
+    }
 
-    public void testConnection() {
+    @Override
+    public void init() {
+        super.setBaseCommandPath(super.getBaseCommandPath().buildUpon().appendPath(DeconzApiEndpoints.LIGHTS.getApiEndpoint()).build());
+    }
+
+    @Override
+    public void fire(Response.Listener<JSONObject> customListenerSuccess, Response.ErrorListener customListenerError) {
+        getFromDeconz(customListenerSuccess, customListenerError);
+    }
+
+    @Override
+    public void fire() {
         getFromDeconz();
     }
+
+
 }
