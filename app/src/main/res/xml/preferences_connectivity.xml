@@ -13,19 +13,18 @@
         <EditTextPreference
             app:key="pref_ip"
             app:title="@string/ip"
-            app:summary="@string/ip_summary" />
+            app:useSimpleSummaryProvider = "true" />
         <EditTextPreference
             app:key="pref_port"
             app:title="@string/port"
-            app:summary="@string/port_summary" />
+            app:useSimpleSummaryProvider = "true" />
         <EditTextPreference
             app:key="pref_api_key"
             app:title="@string/api_key"
-            app:summary="@string/api_key_summary" />
+            app:useSimpleSummaryProvider = "true" />
         <Preference
             app:key="pref_test_connection"
-            app:title="@string/connection_test"
-            app:summary="@string/connection_test_summary" />
+            app:title="@string/connection_test" />
     </PreferenceCategory>
 
     <PreferenceCategory
