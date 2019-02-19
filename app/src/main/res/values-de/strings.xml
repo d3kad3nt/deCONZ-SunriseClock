@@ -2,7 +2,6 @@
 <resources>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="action_settings">Einstellungen</string>
-    <string name="api_key_summary">API Key von deCONZ</string>
     <string name="id_hint">ID des Geräts</string>
     <string name="save">Speichern</string>
     <string name="ip_port_hint">IP und Port von Server</string>
@@ -14,9 +13,6 @@
     <string name="network_category">Netzwerk</string>
     <string name="automaticDiscovery">Finde server automatisch</string>
     <string name="automaticDiscovery_summary">Findet den Server über UPnP im lokalen Netz</string>
-    <string name="connection_test_summary">Überprüft die Verbindung zum Server</string>
-    <string name="port_summary">Port von deCONZ</string>
-    <string name="ip_summary">IP von deCONZ</string>
     <string name="allowedWLAN">erlautes WLAN</string>
     <string name="allowedWLAN_summary">erlaubtes WLAN zum syncronisieren</string>
     <string name="network">Netzwerk</string>
@@ -29,4 +25,15 @@
     <string name="alarm_early">frühster Alarm</string>
     <string name="alarm_late_summary">spätester Alarm auf den reagiert wird</string>
     <string name="alarm_late">spätester Alarm</string>
+    <string name="connection_test_error_noconnection">Keine Netzwerkverbindung oder Verbindung konnte nicht hergestellt werden.</string>
+    <string name="connection_test_error_parse">Die Antwort des Servers konnte nicht ausgewertet werden, da sie nicht den Vorgaben entsprach.</string>
+    <string name="connection_test_error_wrongapikey">Der angegebene API-Schlüssel wurde vom Server abgelehnt.</string>
+    <string name="api_key">API-Schlüssel</string>
+    <string name="connection_test_error_title">Verbindung fehlgeschlagen</string>
+    <string name="connection_test_success_title">Verbindung erfolgreich</string>
+    <string name="connection_test_inprogress">Test der Verbindung läuft…</string>
+    <string name="connection_test_success_apiversion">API-Version</string>
+    <string name="connection_test_success_ipaddress">IP-Adresse</string>
+    <string name="connection_test_summary_lastconnected">Letzte erfolgreiche Test-Verbindung</string>
+    <string name="connection_test_summary_neverconnected">Niemals verbunden.</string>
 </resources>
