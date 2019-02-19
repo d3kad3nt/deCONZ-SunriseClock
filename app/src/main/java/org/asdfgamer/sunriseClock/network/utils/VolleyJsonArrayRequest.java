@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network;
+package org.asdfgamer.sunriseClock.network.utils;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -17,11 +17,11 @@ import java.io.UnsupportedEncodingException;
  * Adds the capability for listening for JSON ARRAY responses when sending JSON OBJECT requests.
  * This 'feature' existed in older versions of volley.
  */
-public class CustomVolleyJsonArrayRequest extends JsonRequest<JSONArray> {
+public class VolleyJsonArrayRequest extends JsonRequest<JSONArray> {
 
 
-    public CustomVolleyJsonArrayRequest(int method, String url, JSONObject jsonRequest,
-                                        Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {
+    public VolleyJsonArrayRequest(int method, String url, JSONObject jsonRequest,
+                                  Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {
         super(method, url, (jsonRequest == null) ? null : jsonRequest.toString(), listener,
                 errorListener);
     }
