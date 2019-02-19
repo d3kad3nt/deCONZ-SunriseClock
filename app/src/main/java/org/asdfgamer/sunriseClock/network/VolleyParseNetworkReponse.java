@@ -25,16 +25,16 @@ class VolleyParseNetworkReponse {
         if (networkResponse != null) {
             switch (networkResponse.statusCode) {
                 case 200:
-                    Log.i(TAG, "onParseNetworkResponse: API returned: " + DeconzReturnCodes.OK);
+                    Log.i(TAG, "onParseNetworkResponse: API returned: " + DeconzApiReturncodes.OK);
                     break;
                 case 201:
-                    Log.i(TAG, "onParseNetworkResponse: API returned: " + DeconzReturnCodes.Created);
+                    Log.i(TAG, "onParseNetworkResponse: API returned: " + DeconzApiReturncodes.Created);
                     break;
                 case 202:
-                    Log.i(TAG, "onParseNetworkResponse: API returned: " + DeconzReturnCodes.Accepted);
+                    Log.i(TAG, "onParseNetworkResponse: API returned: " + DeconzApiReturncodes.Accepted);
                     break;
                 case 304:
-                    Log.i(TAG, "onParseNetworkResponse: API returned: " + DeconzReturnCodes.Not_Modified);
+                    Log.i(TAG, "onParseNetworkResponse: API returned: " + DeconzApiReturncodes.Not_Modified);
                     break;
                 default:
                     Log.i(TAG, "onParseNetworkResponse: API returned unknown success code: " + networkResponse.statusCode);

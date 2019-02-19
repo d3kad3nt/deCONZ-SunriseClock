@@ -23,7 +23,7 @@ import org.json.JSONObject;
  * DIRECTLY to the endpoint. Therefore you have to ensure that the parameters are correctly
  * formatted for the deconz endpoint to successfully process them.
  */
-public class DeconzConnection {
+public abstract class DeconzConnection {
 
     private static final String TAG = "DeconzConnection";
 
@@ -51,14 +51,24 @@ public class DeconzConnection {
         Log.i(TAG, "DeconzConnection created. fullApiUrl: " + fullApiUrl);
     }
 
+    /**
+     * @return Full path to the API endpoint including API key,
+     * eg. 'deconz.example.org:8080/api/XXXXX'.
+     */
     Uri getFullApiUrl() {
         return fullApiUrl;
     }
 
+    /**
+     * @return Path to the deconz server (Phoscon Webapp), eg. 'deconz.example.org:8080'.
+     */
     public Uri getBaseUrl() {
         return baseUrl;
     }
 
+    /**
+     * @return The API key used to communicate with deconz.
+     */
     public String getApiKey() {
         return apiKey;
     }
