@@ -41,9 +41,7 @@ public class TimeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_lights, container, false);
-        TextView tvLabel = view.findViewById(R.id.tvLabel);
-        tvLabel.setText(MessageFormat.format("{0} -- {1}", page, title));
-        return view;
+
+        return inflater.inflate(R.layout.fragment_time, container, false);
     }
 }

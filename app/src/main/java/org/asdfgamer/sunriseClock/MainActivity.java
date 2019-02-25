@@ -11,7 +11,6 @@ import com.google.android.material.tabs.TabLayout;
 import org.asdfgamer.sunriseClock.maintabs.DeconzPagerAdapter;
 import org.asdfgamer.sunriseClock.network.RequestQueue;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         /* Add a ViewPager to swipe between fragments/tabs. */
         ViewPager viewPager = findViewById(R.id.view_pager);
-        FragmentPagerAdapter adapterViewPager = new DeconzPagerAdapter(getSupportFragmentManager());
+        FragmentPagerAdapter adapterViewPager = new DeconzPagerAdapter(getSupportFragmentManager(), this.getApplicationContext());
         viewPager.setAdapter(adapterViewPager);
 
         /* Bind TabLayout to our ViewPager. TabLayout in combination with ViewPager
