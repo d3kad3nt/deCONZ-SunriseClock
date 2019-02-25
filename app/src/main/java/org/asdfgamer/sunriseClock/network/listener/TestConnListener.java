@@ -21,7 +21,7 @@ public class TestConnListener extends SuccessListener {
 
 
     public TestConnListener(GUIListener guiListener, DeconzResponseTestConn respose, Uri uri, SharedPreferences preferences) {
-        super(guiListener);
+        super(guiListener, respose);
         this.deconzResponse = respose;
         this.uri = uri;
         this.preferences = preferences;
