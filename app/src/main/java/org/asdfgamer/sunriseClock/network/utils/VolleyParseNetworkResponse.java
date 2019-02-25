@@ -1,12 +1,14 @@
-package org.asdfgamer.sunriseClock.network;
+package org.asdfgamer.sunriseClock.network.utils;
 
 import android.util.Log;
 
 import com.android.volley.NetworkResponse;
 
-class VolleyParseNetworkReponse {
+import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
 
-    VolleyParseNetworkReponse(NetworkResponse networkResponse) {
+public class VolleyParseNetworkResponse {
+
+    public VolleyParseNetworkResponse(NetworkResponse networkResponse) {
         this.networkResponse = networkResponse;
     }
 
@@ -20,7 +22,7 @@ class VolleyParseNetworkReponse {
      * Currently, only prints info.
      *
      */
-    void printReturnCode() {
+    public void printReturnCode() {
         //Handle API specific errors.
         if (networkResponse != null) {
             switch (networkResponse.statusCode) {
