@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.response;
+package org.asdfgamer.sunriseClock.network.utils;
 
 import android.util.Log;
 
@@ -6,9 +6,9 @@ import com.android.volley.NetworkResponse;
 
 import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
 
-public class VolleyParseNetworkReponse {
+public class VolleyParseNetworkResponse {
 
-    public VolleyParseNetworkReponse(NetworkResponse networkResponse) {
+    public VolleyParseNetworkResponse(NetworkResponse networkResponse) {
         this.networkResponse = networkResponse;
     }
 

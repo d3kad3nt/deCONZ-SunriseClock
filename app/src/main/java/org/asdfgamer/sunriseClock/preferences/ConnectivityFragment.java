@@ -16,7 +16,7 @@ import org.asdfgamer.sunriseClock.R;
 import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
 import org.asdfgamer.sunriseClock.network.request.DeconzRequestGetConf;
 import org.asdfgamer.sunriseClock.network.request.DeconzRequestTestConn;
-import org.asdfgamer.sunriseClock.network.response.VolleyErrorNetworkReponse;
+import org.asdfgamer.sunriseClock.network.utils.VolleyErrorNetworkReponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 

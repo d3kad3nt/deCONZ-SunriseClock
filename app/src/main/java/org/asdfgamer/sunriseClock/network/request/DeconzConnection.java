@@ -3,6 +3,8 @@ package org.asdfgamer.sunriseClock.network.request;
 import android.net.Uri;
 import android.util.Log;
 
+import com.android.volley.RequestQueue;
+
 import org.asdfgamer.sunriseClock.network.utils.DeconzRequestQueue;
 
 /**
@@ -24,7 +26,7 @@ public abstract class DeconzConnection {
     private String apiKey;
 
     /* Used for sending out network requests to the deconz endpoint. */
-    com.android.volley.RequestQueue networkRequestQueue = DeconzRequestQueue.getInstance().getRequestQueue();
+    private RequestQueue networkRequestQueue = DeconzRequestQueue.getInstance().getRequestQueue();
 
     DeconzConnection(Uri baseUrl, String apiKey) {
         this.baseUrl = baseUrl;
@@ -60,7 +62,10 @@ public abstract class DeconzConnection {
         return apiKey;
     }
 
-    public com.android.volley.RequestQueue getNetworkRequestQueue() {
+    /**
+     * @return the used RequestQueue
+     */
+    RequestQueue getNetworkRequestQueue() {
         return networkRequestQueue;
     }
 
