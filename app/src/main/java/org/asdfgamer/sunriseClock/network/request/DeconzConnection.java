@@ -1,22 +1,9 @@
-package org.asdfgamer.sunriseClock.network;
+package org.asdfgamer.sunriseClock.network.request;
 
 import android.net.Uri;
 import android.util.Log;
 
-import com.android.volley.NetworkError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.asdfgamer.sunriseClock.utils.ISO8601;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.asdfgamer.sunriseClock.network.utils.DeconzRequestQueue;
 
 /**
  * Used to communicate with the deconz endpoint. Expects the right required arguments to pass them
@@ -37,7 +24,7 @@ public abstract class DeconzConnection {
     private String apiKey;
 
     /* Used for sending out network requests to the deconz endpoint. */
-    com.android.volley.RequestQueue networkRequestQueue = RequestQueue.getInstance().requestQueue;
+    com.android.volley.RequestQueue networkRequestQueue = DeconzRequestQueue.getInstance().getRequestQueue();
 
     DeconzConnection(Uri baseUrl, String apiKey) {
         this.baseUrl = baseUrl;

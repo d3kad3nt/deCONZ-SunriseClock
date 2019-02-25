@@ -9,9 +9,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.asdfgamer.sunriseClock.network.DeconzConnection;
-import org.asdfgamer.sunriseClock.network.DeconzRequest;
-import org.asdfgamer.sunriseClock.network.DeconzRequestSchLight;
+import org.asdfgamer.sunriseClock.network.request.DeconzRequestSchLight;
 import org.asdfgamer.sunriseClock.utils.ISO8601;
 
 import java.lang.ref.WeakReference;

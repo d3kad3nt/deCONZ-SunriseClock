@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network;
+package org.asdfgamer.sunriseClock.network.response;
 
 import android.util.Log;
 
@@ -8,6 +8,8 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+
+import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
 
 public class VolleyErrorNetworkReponse {
 

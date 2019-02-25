@@ -5,15 +5,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.asdfgamer.sunriseClock.network.RequestQueue;
-
+import org.asdfgamer.sunriseClock.network.utils.DeconzRequestQueue;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -35,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-
-        RequestQueue.getInstance(this);
+        DeconzRequestQueue.getInstance(this);
     }
 
     @Override
