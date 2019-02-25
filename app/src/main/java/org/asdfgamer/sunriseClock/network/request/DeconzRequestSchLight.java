@@ -1,10 +1,13 @@
-package org.asdfgamer.sunriseClock.network;
+package org.asdfgamer.sunriseClock.network.request;
 
 import android.net.Uri;
 import android.util.Log;
 
 import com.android.volley.Response;
 
+import org.asdfgamer.sunriseClock.network.DeconzApiEndpoints;
+import org.asdfgamer.sunriseClock.network.DeconzApiMethods;
+import org.asdfgamer.sunriseClock.network.response.IResponseListenerJSONArray;
 import org.asdfgamer.sunriseClock.utils.ISO8601;
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,9 +1,11 @@
-package org.asdfgamer.sunriseClock.network;
+package org.asdfgamer.sunriseClock.network.request;
 
 import android.net.Uri;
 
 import com.android.volley.Response;
 
+import org.asdfgamer.sunriseClock.network.DeconzApiEndpoints;
+import org.asdfgamer.sunriseClock.network.response.IResponseListenerJSONObject;
 import org.json.JSONObject;
 
 public class DeconzRequestGetConf extends DeconzRequest implements IResponseListenerJSONObject {

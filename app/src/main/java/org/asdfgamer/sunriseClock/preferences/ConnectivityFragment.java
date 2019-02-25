@@ -1,6 +1,5 @@
 package org.asdfgamer.sunriseClock.preferences;
 
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,10 +13,10 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 
 import org.asdfgamer.sunriseClock.R;
-import org.asdfgamer.sunriseClock.network.DeconzRequestGetConf;
-import org.asdfgamer.sunriseClock.network.DeconzRequestTestConn;
 import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
-import org.asdfgamer.sunriseClock.network.VolleyErrorNetworkReponse;
+import org.asdfgamer.sunriseClock.network.request.DeconzRequestGetConf;
+import org.asdfgamer.sunriseClock.network.request.DeconzRequestTestConn;
+import org.asdfgamer.sunriseClock.network.response.VolleyErrorNetworkReponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +28,6 @@ import java.util.Objects;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 
 public class ConnectivityFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 

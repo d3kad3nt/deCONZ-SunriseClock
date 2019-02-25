@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network;
+package org.asdfgamer.sunriseClock.network.request;
 
 import android.net.Uri;
 import android.util.Log;
@@ -8,6 +8,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.asdfgamer.sunriseClock.network.DeconzApiMethods;
+import org.asdfgamer.sunriseClock.network.response.VolleyErrorNetworkReponse;
+import org.asdfgamer.sunriseClock.network.response.VolleyParseNetworkReponse;
 import org.asdfgamer.sunriseClock.network.utils.VolleyJsonArrayRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
