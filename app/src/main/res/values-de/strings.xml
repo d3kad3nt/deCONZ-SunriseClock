@@ -36,4 +36,7 @@
     <string name="connection_test_success_ipaddress">IP-Adresse</string>
     <string name="connection_test_summary_lastconnected">Letzte erfolgreiche Test-Verbindung</string>
     <string name="connection_test_summary_neverconnected">Niemals verbunden.</string>
+    <string name="tab_overview">Übersicht</string>
+    <string name="tab_lights">Lichter</string>
+    <string name="tab_time">Zeit</string>
 </resources>
