@@ -1,7 +1,6 @@
 package org.asdfgamer.sunriseClock;
 
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,7 +9,7 @@ import android.view.MenuItem;
 import com.google.android.material.tabs.TabLayout;
 
 import org.asdfgamer.sunriseClock.maintabs.DeconzPagerAdapter;
-import org.asdfgamer.sunriseClock.network.DeconzRequestQueue;
+import org.asdfgamer.sunriseClock.network.utils.DeconzRequestQueue;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
