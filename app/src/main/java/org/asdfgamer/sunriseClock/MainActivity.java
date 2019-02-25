@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import com.google.android.material.tabs.TabLayout;
 
 import org.asdfgamer.sunriseClock.maintabs.DeconzPagerAdapter;
-import org.asdfgamer.sunriseClock.network.RequestQueue;
+import org.asdfgamer.sunriseClock.network.utils.DeconzRequestQueue;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tab_bar);
         tabLayout.setupWithViewPager(viewPager);
 
-        RequestQueue.getInstance(this);
+        DeconzRequestQueue.getInstance(this);
     }
 
     @Override

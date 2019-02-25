@@ -25,10 +25,10 @@
     <string name="alarm_early">frühster Alarm</string>
     <string name="alarm_late_summary">spätester Alarm auf den reagiert wird</string>
     <string name="alarm_late">spätester Alarm</string>
+    <string name="api_key">API-Schlüssel</string>
     <string name="connection_test_error_noconnection">Keine Netzwerkverbindung oder Verbindung konnte nicht hergestellt werden.</string>
     <string name="connection_test_error_parse">Die Antwort des Servers konnte nicht ausgewertet werden, da sie nicht den Vorgaben entsprach.</string>
     <string name="connection_test_error_wrongapikey">Der angegebene API-Schlüssel wurde vom Server abgelehnt.</string>
-    <string name="api_key">API-Schlüssel</string>
     <string name="connection_test_error_title">Verbindung fehlgeschlagen</string>
     <string name="connection_test_success_title">Verbindung erfolgreich</string>
     <string name="connection_test_inprogress">Test der Verbindung läuft…</string>
