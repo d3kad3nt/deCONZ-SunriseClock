@@ -43,4 +43,7 @@
     <string name="connection_test_success_ipaddress">IP address</string>
     <string name="connection_test_summary_lastconnected">Last test connection at</string>
     <string name="connection_test_summary_neverconnected">Never connected.</string>
+    <string name="tab_overview">Overview</string>
+    <string name="tab_lights">Lights</string>
+    <string name="tab_time">Time</string>
 </resources>
