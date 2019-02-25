@@ -9,9 +9,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.asdfgamer.sunriseClock.network.DeconzApiMethods;
-import org.asdfgamer.sunriseClock.network.response.VolleyErrorNetworkReponse;
-import org.asdfgamer.sunriseClock.network.response.VolleyParseNetworkReponse;
+import org.asdfgamer.sunriseClock.network.utils.VolleyErrorNetworkReponse;
 import org.asdfgamer.sunriseClock.network.utils.VolleyJsonArrayRequest;
+import org.asdfgamer.sunriseClock.network.utils.VolleyParseNetworkResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -27,7 +27,7 @@ public abstract class DeconzRequest extends DeconzConnection {
     private Uri baseCommandPath;
 
     private VolleyErrorNetworkReponse volleyErrorNetworkReponse;
-    private VolleyParseNetworkReponse volleyParseNetworkReponse;
+    private VolleyParseNetworkResponse volleyParseNetworkResponse;
 
     /* Should initialize the base command path (see above).
     * Also, should set the data for the deconz request.*/
@@ -58,12 +58,12 @@ public abstract class DeconzRequest extends DeconzConnection {
         }) {
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                volleyParseNetworkReponse = new VolleyParseNetworkReponse(response);
-                volleyParseNetworkReponse.printReturnCode();
+                volleyParseNetworkResponse = new VolleyParseNetworkResponse(response);
+                volleyParseNetworkResponse.printReturnCode();
                 return super.parseNetworkResponse(response);
             }
         };
-        networkRequestQueue.add(jsObjRequest);
+        getNetworkRequestQueue().add(jsObjRequest);
     }
 
     /**
@@ -76,7 +76,7 @@ public abstract class DeconzRequest extends DeconzConnection {
     void getFromDeconz(Response.Listener<JSONObject> customListenerSuccess, Response.ErrorListener customListenerError) {
         Log.d("getFromDeconz", "GET from: " + this.baseCommandPath);
         final JsonObjectRequest jsObjRequest = new JsonObjectRequest(DeconzApiMethods.GET.getVolleyMethod(), this.baseCommandPath.toString(), null, customListenerSuccess, customListenerError);
-        networkRequestQueue.add(jsObjRequest);
+        getNetworkRequestQueue().add(jsObjRequest);
     }
 
     /**
@@ -103,12 +103,12 @@ public abstract class DeconzRequest extends DeconzConnection {
         }) {
             @Override
             protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
-                volleyParseNetworkReponse = new VolleyParseNetworkReponse(response);
-                volleyParseNetworkReponse.printReturnCode();
+                volleyParseNetworkResponse = new VolleyParseNetworkResponse(response);
+                volleyParseNetworkResponse.printReturnCode();
                 return super.parseNetworkResponse(response);
             }
         };
-        networkRequestQueue.add(jsObjRequest);
+        getNetworkRequestQueue().add(jsObjRequest);
     }
 
     /**
@@ -123,7 +123,7 @@ public abstract class DeconzRequest extends DeconzConnection {
     void sendToDeconz(JSONObject postJsonData, Response.Listener<JSONArray> customListenerSuccess, Response.ErrorListener customListenerError) {
         Log.d("sendToDeconz", "POSTing " + postJsonData.toString() + " to: " + this.baseCommandPath);
         final VolleyJsonArrayRequest jsObjRequest = new VolleyJsonArrayRequest(DeconzApiMethods.POST.getVolleyMethod(), this.baseCommandPath.toString(), postJsonData, customListenerSuccess, customListenerError);
-        networkRequestQueue.add(jsObjRequest);
+        getNetworkRequestQueue().add(jsObjRequest);
     }
 
     /**
