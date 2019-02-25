@@ -5,24 +5,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.android.volley.NetworkResponse;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.Response;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
-
 import org.asdfgamer.sunriseClock.R;
 import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
-import org.asdfgamer.sunriseClock.network.request.DeconzRequestGetConf;
+import org.asdfgamer.sunriseClock.network.listener.GUIListener;
 import org.asdfgamer.sunriseClock.network.request.DeconzRequestTestConn;
-import org.asdfgamer.sunriseClock.network.utils.VolleyErrorNetworkReponse;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.asdfgamer.sunriseClock.network.response.DeconzResponse;
+import org.asdfgamer.sunriseClock.network.response.DeconzResponseTestConn;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.Objects;
 
 import androidx.appcompat.app.AlertDialog;
@@ -90,77 +79,43 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
          * */
         DeconzRequestTestConn deconz = new DeconzRequestTestConn(builder.build(), preferences.getString("pref_api_key", ""));
         deconz.init();
-        deconz.testConnection(new Response.Listener<JSONObject>() {
-            //1st Step: If something fails error handling is used to give status information to the user.
+        deconz.testConnection(preferences, new GUIListener() {
+
             @Override
-            public void onResponse(JSONObject response) {
-                DeconzRequestGetConf deconzRequestGetConf = new DeconzRequestGetConf(builder.build(), preferences.getString("pref_api_key", ""));
-                deconzRequestGetConf.init();
-
-                //2nd Step: No error handling on this step. Simply requests information from deconz without error handling.
-                //Only reached if 1st step returned successfully (-> we got an answer from deconz).
-                deconzRequestGetConf.fire(new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            alertDialog.setMessage(getResources().getString(R.string.connection_test_success_apiversion) + ": " + response.get("apiversion").toString()
-                                    + System.getProperty("line.separator")
-                                    + getResources().getString(R.string.connection_test_success_ipaddress) + ": " + response.get("ipaddress"));
-                            alertDialog.setTitle(getResources().getString(R.string.connection_test_success_title));
-
-                            SharedPreferences.Editor prefEditor = preferences.edit();
-                            Calendar calendar = Calendar.getInstance();
-                            SimpleDateFormat mdformat = new SimpleDateFormat("dd.MM.YY HH:mm", Locale.getDefault());
-                            String strDate = mdformat.format(calendar.getTime());
-                            prefEditor.putString("pref_test_connection", strDate);
-                            prefEditor.apply();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //TODO
-                    }
-                });
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                VolleyErrorNetworkReponse volleyErrorNetworkReponse = new VolleyErrorNetworkReponse(volleyError);
-                volleyErrorNetworkReponse.printError();
-
-                alertDialog.setTitle(getResources().getString(R.string.connection_test_error_title));
-
-                if (volleyError instanceof NoConnectionError || volleyError instanceof TimeoutError) {
-                    alertDialog.setMessage(getResources().getString(R.string.connection_test_error_noconnection));
-                } else if (volleyError instanceof ParseError) {
-                    alertDialog.setMessage(getResources().getString(R.string.connection_test_error_parse));
+            public void successOutput(DeconzResponse response) {
+                if (!(response instanceof DeconzResponseTestConn)) {
+                    return;
                 }
+                DeconzResponseTestConn responseTestConn = (DeconzResponseTestConn) response;
+                alertDialog.setMessage(getResources().getString(R.string.connection_test_success_apiversion) + ": " + responseTestConn.getApiVersion()
+                        + System.getProperty("line.separator")
+                        + getResources().getString(R.string.connection_test_success_ipaddress) + ": " + responseTestConn.getIp());
+                alertDialog.setTitle(getResources().getString(R.string.connection_test_success_title));
+            }
 
-                NetworkResponse networkResponse = volleyError.networkResponse;
-                if (networkResponse != null) {
-                    switch (networkResponse.statusCode) {
-                        case 400:
-                            alertDialog.setMessage("onError: API returned: " + DeconzApiReturncodes.Bad_Request);
-                            break;
-                        case 401:
-                            alertDialog.setMessage("onError: API returned: " + DeconzApiReturncodes.Unauthorized);
-                            break;
-                        case 403:
-                            alertDialog.setMessage(getResources().getString(R.string.connection_test_error_wrongapikey));
-                            break;
-                        case 404:
-                            alertDialog.setMessage("onError: API returned: " + DeconzApiReturncodes.Resource_Not_Found);
-                            break;
-                        case 503:
-                            alertDialog.setMessage("onError: API returned: " + DeconzApiReturncodes.Service_Unavailable);
-                            break;
-                        default:
-                            alertDialog.setMessage("onError: API returned unknown error code: " + networkResponse.statusCode);
-                    }
+            @Override
+            public void errorOutput(DeconzResponse response) {
+                switch (response.getStatuscode()) {
+                    case -1:
+                        alertDialog.setMessage("unknown Networking error: " + response.getError().getMessage());
+                        break;
+                    case 400:
+                        alertDialog.setMessage("onError: API returned: " + DeconzApiReturncodes.Bad_Request);
+                        break;
+                    case 401:
+                        alertDialog.setMessage("onError: API returned: " + DeconzApiReturncodes.Unauthorized);
+                        break;
+                    case 403:
+                        alertDialog.setMessage(getResources().getString(R.string.connection_test_error_wrongapikey));
+                        break;
+                    case 404:
+                        alertDialog.setMessage("onError: API returned: " + DeconzApiReturncodes.Resource_Not_Found);
+                        break;
+                    case 503:
+                        alertDialog.setMessage("onError: API returned: " + DeconzApiReturncodes.Service_Unavailable);
+                        break;
+                    default:
+                        alertDialog.setMessage("onError: API returned unknown error code: " + response.getStatuscode());
                 }
             }
         });
