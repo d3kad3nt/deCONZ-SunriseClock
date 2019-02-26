@@ -2,6 +2,8 @@ package org.asdfgamer.sunriseClock.network.response;
 
 import com.android.volley.VolleyError;
 
+import java.util.Calendar;
+
 /**
  * This is the abstract class of all Responses from Deconz. It is specialised in {@link DeconzResponseArray} and {@link DeconzResponseObject}.
  */
@@ -22,6 +24,11 @@ public abstract class DeconzResponse {
      * This contains the VolleyError, if an error occured.
      */
     private VolleyError error = null;
+
+    /**
+     * This is the time when the volley request returned (regardless of whether it was successful or not).
+     */
+    private long time = 0;
 
     public int getStatuscode() {
         return statuscode;
@@ -45,5 +52,13 @@ public abstract class DeconzResponse {
 
     public void setError(VolleyError error) {
         this.error = error;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

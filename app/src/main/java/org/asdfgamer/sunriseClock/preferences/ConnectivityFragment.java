@@ -5,13 +5,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+
 import org.asdfgamer.sunriseClock.R;
 import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
 import org.asdfgamer.sunriseClock.network.listener.GUIListener;
-import org.asdfgamer.sunriseClock.network.request.DeconzRequestTestConn;
+import org.asdfgamer.sunriseClock.network.request.DeconzRequestGetConf;
+import org.asdfgamer.sunriseClock.network.request.DeconzRequestGetLights;
 import org.asdfgamer.sunriseClock.network.response.DeconzResponse;
-import org.asdfgamer.sunriseClock.network.response.DeconzResponseTestConn;
+import org.asdfgamer.sunriseClock.network.response.DeconzResponseGetConf;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
 
 import androidx.appcompat.app.AlertDialog;
@@ -77,27 +85,57 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         /* 1st Step: Tests connection (and authentication!) to deconz by requesting an API endpoint which is key-protected.
          * 2nd step: Requests some information from deconz to show it to the user.
          * */
-        DeconzRequestTestConn deconz = new DeconzRequestTestConn(builder.build(), preferences.getString("pref_api_key", ""));
-        deconz.init();
-        deconz.testConnection(preferences, new GUIListener() {
+        DeconzRequestGetLights deconzLights = new DeconzRequestGetLights(builder.build(), preferences.getString("pref_api_key", ""));
+        deconzLights.init();
+        deconzLights.fire(new GUIListener() {
 
             @Override
             public void successOutput(DeconzResponse response) {
-                if (!(response instanceof DeconzResponseTestConn)) {
-                    return;
-                }
-                DeconzResponseTestConn responseTestConn = (DeconzResponseTestConn) response;
-                alertDialog.setMessage(getResources().getString(R.string.connection_test_success_apiversion) + ": " + responseTestConn.getApiVersion()
-                        + System.getProperty("line.separator")
-                        + getResources().getString(R.string.connection_test_success_ipaddress) + ": " + responseTestConn.getIp());
-                alertDialog.setTitle(getResources().getString(R.string.connection_test_success_title));
+                DeconzRequestGetConf deconzConf = new DeconzRequestGetConf(builder.build(), preferences.getString("pref_api_key", ""));
+                deconzConf.init();
+                deconzConf.fire(new GUIListener() {
+
+                    @Override
+                    public void successOutput(DeconzResponse response) {
+                        if (!(response instanceof DeconzResponseGetConf)) {
+                            return;
+                        }
+                        DeconzResponseGetConf responseGetConf = (DeconzResponseGetConf) response;
+                        //TODO: Use xml layout for this alertDialog.
+                        alertDialog.setMessage(getResources().getString(R.string.connection_test_success_apiversion) + ": " + responseGetConf.getApiVersion()
+                                + System.getProperty("line.separator")
+                                + getResources().getString(R.string.connection_test_success_ipaddress) + ": " + responseGetConf.getIp());
+                        alertDialog.setTitle(getResources().getString(R.string.connection_test_success_title));
+
+                        SharedPreferences.Editor prefEditor = preferences.edit();
+                        Calendar calendar = Calendar.getInstance();
+                        SimpleDateFormat mdformat = new SimpleDateFormat("dd.MM.YY HH:mm", Locale.getDefault());
+                        String strDate = mdformat.format(calendar.getTime());
+                        prefEditor.putString("pref_test_connection", strDate);
+                        prefEditor.apply();
+                    }
+
+                    @Override
+                    public void errorOutput(DeconzResponse response) {
+
+                    }
+
+
+                });
             }
 
             @Override
             public void errorOutput(DeconzResponse response) {
+                if (response.getError() instanceof NoConnectionError || response.getError() instanceof  NetworkError) {
+                    alertDialog.setMessage(getResources().getString(R.string.connection_test_error_noconnection));
+                }
+                else if (response.getError() instanceof ParseError) {
+                    alertDialog.setMessage(getResources().getString(R.string.connection_test_error_parse));
+                }
+
                 switch (response.getStatuscode()) {
                     case -1:
-                        alertDialog.setMessage("unknown Networking error: " + response.getError().getMessage());
+                        //alertDialog.setMessage("unknown Networking error: " + response.getError().getMessage());
                         break;
                     case 400:
                         alertDialog.setMessage("onError: API returned: " + DeconzApiReturncodes.Bad_Request);
