@@ -1,6 +1,6 @@
 package org.asdfgamer.sunriseClock.network.response;
 
-public class DeconzResponseTestConn extends DeconzResponseObject {
+public class DeconzResponseGetConf extends DeconzResponseObject {
 
     /**
      * The api-version of the connected deconz server.
@@ -12,7 +12,7 @@ public class DeconzResponseTestConn extends DeconzResponseObject {
      */
     private String ip;
 
-    public DeconzResponseTestConn() {
+    public DeconzResponseGetConf() {
         super();
     }
 

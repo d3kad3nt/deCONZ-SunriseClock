@@ -2,19 +2,18 @@ package org.asdfgamer.sunriseClock.network.request;
 
 import android.net.Uri;
 
-import com.android.volley.Response;
-
 import org.asdfgamer.sunriseClock.network.DeconzApiEndpoints;
 import org.asdfgamer.sunriseClock.network.listener.ErrorListener;
 import org.asdfgamer.sunriseClock.network.listener.GUIListener;
 import org.asdfgamer.sunriseClock.network.listener.GetConfListener;
+import org.asdfgamer.sunriseClock.network.listener.GetLightsListener;
 import org.asdfgamer.sunriseClock.network.response.DeconzResponseGetConf;
+import org.asdfgamer.sunriseClock.network.response.DeconzResponseGetLights;
 import org.asdfgamer.sunriseClock.network.response.IResponseListenerJSONObject;
-import org.json.JSONObject;
 
-public class DeconzRequestGetConf extends DeconzRequest implements IResponseListenerJSONObject {
+public class DeconzRequestGetLights extends DeconzRequest implements IResponseListenerJSONObject {
 
-    public DeconzRequestGetConf(Uri baseUrl, String apiKey) {
+    public DeconzRequestGetLights(Uri baseUrl, String apiKey) {
         super(baseUrl, apiKey);
     }
 
@@ -22,15 +21,15 @@ public class DeconzRequestGetConf extends DeconzRequest implements IResponseList
 
     @Override
     public void init() {
-        super.setBaseCommandPath(super.getBaseCommandPath().buildUpon().appendPath(DeconzApiEndpoints.CONFIGURATION.getApiEndpoint()).build());
+        super.setBaseCommandPath(super.getBaseCommandPath().buildUpon().appendPath(DeconzApiEndpoints.LIGHTS.getApiEndpoint()).build());
     }
 
     @Override
     public void fire(GUIListener listener) {
-        DeconzResponseGetConf deconzResponseGetConf = new DeconzResponseGetConf();
-        GetConfListener getConfListener = new GetConfListener(listener, deconzResponseGetConf);
+        DeconzResponseGetLights deconzResponseGetLights = new DeconzResponseGetLights();
+        GetLightsListener getLightsListener = new GetLightsListener(listener, deconzResponseGetLights);
 
-        getFromDeconz(getConfListener, new ErrorListener(listener, deconzResponseGetConf));
+        getFromDeconz(getLightsListener, new ErrorListener(listener, deconzResponseGetLights));
     }
 
     @Override

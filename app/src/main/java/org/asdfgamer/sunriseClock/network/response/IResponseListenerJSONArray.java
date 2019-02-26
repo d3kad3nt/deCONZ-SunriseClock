@@ -7,6 +7,6 @@ import org.json.JSONArray;
 public interface IResponseListenerJSONArray {
 
     /* Should fire  the request towards deconz. Uses own success and error listeners. */
-    void fire(Response.Listener<JSONArray> customListenerSuccess, Response.ErrorListener customListenerError);
+    void fire(Response.Listener<JSONArray> customListenerSuccess, Response.ErrorListener customListenerError); //TODO: change method signature as in IResponseListenerJSONObject
 
 }
