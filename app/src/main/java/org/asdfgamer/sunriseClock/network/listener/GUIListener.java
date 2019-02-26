@@ -16,8 +16,9 @@ public abstract class GUIListener {
         if (response.isSuccess()) {
             successOutput(response);
         }
-        errorOutput(response);
-
+        else {
+            errorOutput(response);
+        }
     }
 
     /**
