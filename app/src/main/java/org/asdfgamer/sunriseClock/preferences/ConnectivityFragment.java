@@ -5,26 +5,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 
 import org.asdfgamer.sunriseClock.R;
-import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
-import org.asdfgamer.sunriseClock.network.listener.GUIListener;
-import org.asdfgamer.sunriseClock.network.request.DeconzRequestGetConf;
-import org.asdfgamer.sunriseClock.network.request.DeconzRequestGetLights;
-import org.asdfgamer.sunriseClock.network.response.DeconzResponse;
-import org.asdfgamer.sunriseClock.network.response.DeconzResponseGetConf;
+import org.asdfgamer.sunriseClock.network.request.DeconzRequestLights;
+import org.asdfgamer.sunriseClock.network.response.model.Light;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ConnectivityFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -85,8 +80,26 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         /* 1st Step: Tests connection (and authentication!) to deconz by requesting an API endpoint which is key-protected.
          * 2nd step: Requests some information from deconz to show it to the user.
          * */
-        DeconzRequestGetLights deconzLights = new DeconzRequestGetLights(builder.build(), preferences.getString("pref_api_key", ""));
+        DeconzRequestLights deconzLights = new DeconzRequestLights(builder.build(), preferences.getString("pref_api_key", ""));
         deconzLights.init();
+
+        deconzLights.getLight(new Callback<Light>() {
+            @Override
+            public void onResponse(@NonNull Call<Light> call, @NonNull Response<Light> response) {
+                Log.d(TAG, "Success!");
+                Light light = response.body();
+                assert light != null;
+                Log.d(TAG, light.getModelid());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Light> call, @NonNull Throwable t) {
+                Log.d(TAG, "Error..");
+            }
+        }, String.valueOf(1));
+
+
+        /*
         deconzLights.fire(new GUIListener() {
 
             @Override
@@ -157,7 +170,11 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
                 }
             }
         });
+
+    */
+
     }
+
 
     /**
      * Updates the summary of a preference.
