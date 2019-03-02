@@ -9,7 +9,7 @@ import com.android.volley.ParseError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 
-import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
+import org.asdfgamer.sunriseClock.network.response.DeconzApiReturncodes;
 
 public class VolleyErrorNetworkReponse {
 

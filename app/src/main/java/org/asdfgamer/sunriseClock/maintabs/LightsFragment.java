@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.asdfgamer.sunriseClock.R;
+import org.asdfgamer.sunriseClock.network.request.DeconzRequestLights;
 
 import java.text.MessageFormat;
 

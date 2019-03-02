@@ -1,3 +1,4 @@
+/*
 package org.asdfgamer.sunriseClock.network.request;
 
 import android.net.Uri;
@@ -5,7 +6,6 @@ import android.util.Log;
 
 import com.android.volley.Response;
 
-import org.asdfgamer.sunriseClock.network.DeconzApiEndpoints;
 import org.asdfgamer.sunriseClock.network.DeconzApiMethods;
 import org.asdfgamer.sunriseClock.network.response.IResponseListenerJSONArray;
 import org.asdfgamer.sunriseClock.utils.ISO8601;
@@ -15,10 +15,12 @@ import org.json.JSONObject;
 
 public class DeconzRequestSchLight extends DeconzRequest implements IResponseListenerJSONArray {
 
-    /**
+    */
+/**
      * Schedule basic power on for the given lightId. Time and date have to be given in the constructor.
      * See deconz REST-API docs for the required format.
-     */
+     *//*
+
     public DeconzRequestSchLight(Uri baseUrl, String apiKey, String lightId, ISO8601 date) {
         super(baseUrl, apiKey);
 
@@ -77,3 +79,4 @@ public class DeconzRequestSchLight extends DeconzRequest implements IResponseLis
         return date;
     }
 }
+*/
