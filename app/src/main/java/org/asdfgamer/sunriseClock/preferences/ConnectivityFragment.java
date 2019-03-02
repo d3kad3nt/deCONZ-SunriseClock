@@ -5,26 +5,27 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 
 import org.asdfgamer.sunriseClock.R;
-import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
-import org.asdfgamer.sunriseClock.network.listener.GUIListener;
-import org.asdfgamer.sunriseClock.network.request.DeconzRequestGetConf;
-import org.asdfgamer.sunriseClock.network.request.DeconzRequestGetLights;
-import org.asdfgamer.sunriseClock.network.response.DeconzResponse;
-import org.asdfgamer.sunriseClock.network.response.DeconzResponseGetConf;
+import org.asdfgamer.sunriseClock.network.request.DeconzRequestConfig;
+import org.asdfgamer.sunriseClock.network.request.DeconzRequestLights;
+import org.asdfgamer.sunriseClock.network.response.callback.BaseCallback;
+import org.asdfgamer.sunriseClock.network.response.callback.GetCallback;
+import org.asdfgamer.sunriseClock.network.response.model.Config;
+import org.asdfgamer.sunriseClock.network.response.model.Error;
+import org.asdfgamer.sunriseClock.network.response.model.Light;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class ConnectivityFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -85,26 +86,22 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         /* 1st Step: Tests connection (and authentication!) to deconz by requesting an API endpoint which is key-protected.
          * 2nd step: Requests some information from deconz to show it to the user.
          * */
-        DeconzRequestGetLights deconzLights = new DeconzRequestGetLights(builder.build(), preferences.getString("pref_api_key", ""));
-        deconzLights.init();
-        deconzLights.fire(new GUIListener() {
+        DeconzRequestLights deconzLights = new DeconzRequestLights(builder.build(), preferences.getString("pref_api_key", ""));
 
+        deconzLights.getLights(new BaseCallback<List<Light>>() {
             @Override
-            public void successOutput(DeconzResponse response) {
-                DeconzRequestGetConf deconzConf = new DeconzRequestGetConf(builder.build(), preferences.getString("pref_api_key", ""));
-                deconzConf.init();
-                deconzConf.fire(new GUIListener() {
+            public void onSuccess(Response<List<Light>> response) {
+                DeconzRequestConfig deconzConfig = new DeconzRequestConfig(builder.build(), preferences.getString("pref_api_key", ""));
 
+                deconzConfig.getConfig(new BaseCallback<Config>() {
                     @Override
-                    public void successOutput(DeconzResponse response) {
-                        if (!(response instanceof DeconzResponseGetConf)) {
-                            return;
-                        }
-                        DeconzResponseGetConf responseGetConf = (DeconzResponseGetConf) response;
+                    public void onSuccess(Response<Config> response) {
+                        Config config = response.body();
+
                         //TODO: Use xml layout for this alertDialog.
-                        alertDialog.setMessage(getResources().getString(R.string.connection_test_success_apiversion) + ": " + responseGetConf.getApiVersion()
+                        alertDialog.setMessage(getResources().getString(R.string.connection_test_success_apiversion) + ": " + Objects.requireNonNull(config).getApiversion()
                                 + System.getProperty("line.separator")
-                                + getResources().getString(R.string.connection_test_success_ipaddress) + ": " + responseGetConf.getIp());
+                                + getResources().getString(R.string.connection_test_success_ipaddress) + ": " + config.getIpaddress());
                         alertDialog.setTitle(getResources().getString(R.string.connection_test_success_title));
 
                         SharedPreferences.Editor prefEditor = preferences.edit();
@@ -116,48 +113,60 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
                     }
 
                     @Override
-                    public void errorOutput(DeconzResponse response) {
-
+                    public void onForbidden(Error error) {
+                        //This should not fail because we requested /lights a few moments earlier.
                     }
 
+                    @Override
+                    public void onServiceUnavailable() {
+                        //This should not fail because we requested /lights a few moments earlier.
+                    }
 
+                    @Override
+                    public void onEverytime() {
+                        //This should not fail because we requested /lights a few moments earlier.
+                    }
+
+                    @Override
+                    public void onInvalidErrorObject() {
+                        //This should not fail because we requested /lights a few moments earlier.
+                    }
+
+                    @Override
+                    public void onFailure(Call<Config> call, Throwable throwable) {
+                        //This should not fail because we requested /lights a few moments earlier.
+                    }
                 });
             }
 
             @Override
-            public void errorOutput(DeconzResponse response) {
-                if (response.getError() instanceof NoConnectionError || response.getError() instanceof  NetworkError) {
-                    alertDialog.setMessage(getResources().getString(R.string.connection_test_error_noconnection));
-                }
-                else if (response.getError() instanceof ParseError) {
-                    alertDialog.setMessage(getResources().getString(R.string.connection_test_error_parse));
-                }
+            public void onForbidden(Error error) {
+                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_wrongapikey));
+            }
 
-                switch (response.getStatuscode()) {
-                    case -1:
-                        //alertDialog.setMessage("unknown Networking error: " + response.getError().getMessage());
-                        break;
-                    case 400:
-                        alertDialog.setMessage("onError: API returned: " + DeconzApiReturncodes.Bad_Request);
-                        break;
-                    case 401:
-                        alertDialog.setMessage("onError: API returned: " + DeconzApiReturncodes.Unauthorized);
-                        break;
-                    case 403:
-                        alertDialog.setMessage(getResources().getString(R.string.connection_test_error_wrongapikey));
-                        break;
-                    case 404:
-                        alertDialog.setMessage("onError: API returned: " + DeconzApiReturncodes.Resource_Not_Found);
-                        break;
-                    case 503:
-                        alertDialog.setMessage("onError: API returned: " + DeconzApiReturncodes.Service_Unavailable);
-                        break;
-                    default:
-                        alertDialog.setMessage("onError: API returned unknown error code: " + response.getStatuscode());
-                }
+            @Override
+            public void onServiceUnavailable() {
+                //Nothing
+            }
+
+            @Override
+            public void onEverytime() {
+                Log.d(TAG, "onEveryTime() called.");
+            }
+
+            @Override
+            public void onInvalidErrorObject() {
+                //TODO: Improve: Probably no deconz instance
+                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_parse));
+            }
+
+            @Override
+            public void onFailure(Call<List<Light>> call, Throwable throwable) {
+                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_noconnection));
             }
         });
     }
+
 
     /**
      * Updates the summary of a preference.
