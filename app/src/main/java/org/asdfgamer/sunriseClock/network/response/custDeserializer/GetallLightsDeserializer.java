@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.response.customDeserializers;
+package org.asdfgamer.sunriseClock.network.response.custDeserializer;
 
 import android.util.Log;
 
@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class LightsDeserializer implements JsonDeserializer<List<?>> {
+public class GetallLightsDeserializer implements JsonDeserializer<List<?>> {
 
-    private static final String TAG = "LightsDeserializer";
+    private static final String TAG = "GetallLightsDeserial.";
 
     @Override
     public List<Light> deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jdc) throws JsonParseException
@@ -29,7 +29,6 @@ public class LightsDeserializer implements JsonDeserializer<List<?>> {
         List<Light> lights = new ArrayList<>();
 
         for (Map.Entry<String,JsonElement> entry : fullJsonObject.entrySet()) {
-            Log.d(TAG, "Handling light with lightId: " + entry.getKey());
 
             // Using a new instance of Gson to avoid infinite recursion to this deserializer.
             Light light = new Gson().fromJson(entry.getValue(), Light.class);
@@ -37,6 +36,8 @@ public class LightsDeserializer implements JsonDeserializer<List<?>> {
 
             lights.add(light);
         }
+
+        Log.i(TAG, "Finished custom deserialization");
 
         return lights;
     }

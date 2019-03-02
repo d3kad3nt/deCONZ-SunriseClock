@@ -5,10 +5,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
-import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
-
 import java.io.IOException;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import okhttp3.Interceptor;
@@ -52,6 +49,7 @@ public abstract class DeconzRequest {
                 .build();
 
         this.gsonDeserializer = new Gson();
+        buildRetrofit();
 
         Log.i(TAG, "DeconzRequest created. fullApiUrl: " + fullApiUrl);
     }
@@ -65,9 +63,7 @@ public abstract class DeconzRequest {
                         Request request = chain.request();
                         okhttp3.Response response = chain.proceed(request);
 
-                        //For now: use debug loggers
-                        //TODO: could be used to globally start error handling activities to inform the user of the malfunction.
-                        Log.d(TAG, "Request to: " + response.request().url().toString() + " led to HTTP code: " + response.code());
+                        Log.d(TAG, "Intercepted request to: " + response.request().url().toString() + " led to HTTP code: " + response.code());
 
                         return response;
                     }
@@ -112,5 +108,10 @@ public abstract class DeconzRequest {
     public String getApiKey() {
         return apiKey;
     }
+
+    /**
+     * This initializes the request to deconz. It MUST be called before starting requests.
+     */
+    abstract void init();
 
 }
