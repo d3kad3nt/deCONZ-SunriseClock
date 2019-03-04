@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.response.model;
+package org.asdfgamer.sunriseClock.network.utils.response.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

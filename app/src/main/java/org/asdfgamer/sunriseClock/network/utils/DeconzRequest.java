@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.request;
+package org.asdfgamer.sunriseClock.network.utils;
 
 import android.net.Uri;
 import android.util.Log;
@@ -38,7 +38,7 @@ public abstract class DeconzRequest {
 
     private Gson gsonDeserializer;
 
-    DeconzRequest(Uri baseUrl, String apiKey) {
+    protected DeconzRequest(Uri baseUrl, String apiKey) {
         this.baseUrl = baseUrl;
         this.apiKey = apiKey;
 
@@ -77,11 +77,11 @@ public abstract class DeconzRequest {
                 .build();
     }
 
-    <S> S createService(Class<S> serviceClass) {
+    protected <S> S createService(Class<S> serviceClass) {
         return this.retrofit.create(serviceClass);
     }
 
-    void setGsonDeserializer(Gson gson) {
+    protected void setGsonDeserializer(Gson gson) {
         this.gsonDeserializer = gson;
         Log.i(TAG, "Setting custom deserializer and rebuilding retrofit http client.");
         buildRetrofit();
@@ -112,6 +112,6 @@ public abstract class DeconzRequest {
     /**
      * This initializes the request to deconz. It MUST be called before starting requests.
      */
-    abstract void init();
+    public abstract void init();
 
 }
