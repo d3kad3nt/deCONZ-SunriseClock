@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.android.volley.NetworkResponse;
 
-import org.asdfgamer.sunriseClock.network.response.DeconzApiReturncodes;
+import org.asdfgamer.sunriseClock.network.utils.response.DeconzApiReturncodes;
 
 public class VolleyParseNetworkResponse {
 

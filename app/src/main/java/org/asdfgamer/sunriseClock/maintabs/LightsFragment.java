@@ -5,12 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.asdfgamer.sunriseClock.R;
-import org.asdfgamer.sunriseClock.network.request.DeconzRequestLights;
-
-import java.text.MessageFormat;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
