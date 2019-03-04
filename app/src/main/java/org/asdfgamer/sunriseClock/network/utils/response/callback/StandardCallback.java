@@ -2,6 +2,7 @@ package org.asdfgamer.sunriseClock.network.utils.response.callback;
 
 import android.util.Log;
 
+import org.asdfgamer.sunriseClock.network.utils.response.DeconzApiReturncodes;
 import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
 
 import androidx.annotation.NonNull;
@@ -18,12 +19,14 @@ public abstract class StandardCallback {
         Log.i(TAG, error.toString());
     }
 
+    protected void standardCallback(DeconzApiReturncodes error) {
+        Log.i(TAG, error.getDescription());
+    }
     protected void everytime() {
         //Nothing to do
     }
 
     protected enum ConnectionError {
-        ServiceUnavailable("Service Unavailable"),
         InvalidErrorObject("Server response could not be parsed");
 
         private final String text;

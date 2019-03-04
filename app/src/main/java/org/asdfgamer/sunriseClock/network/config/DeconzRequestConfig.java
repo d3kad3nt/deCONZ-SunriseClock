@@ -4,8 +4,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import org.asdfgamer.sunriseClock.network.utils.DeconzRequest;
-import org.asdfgamer.sunriseClock.network.utils.response.callback.BaseCallback;
-import org.asdfgamer.sunriseClock.network.utils.response.callback.BaseCallbackAdapter;
+import org.asdfgamer.sunriseClock.network.utils.response.callback.GetCallbackAdapter;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -28,9 +27,9 @@ public class DeconzRequestConfig extends DeconzRequest {
         this.configEndpoint = super.createService(ConfigEndpoint.class);
     }
 
-    public void getConfig(BaseCallback<Config> callback) {
+    public void getConfig(GetConfigCallback callback) {
         Call<Config> call = configEndpoint.getConfig();
-        call.enqueue(new BaseCallbackAdapter<>(callback));
+        call.enqueue(new GetCallbackAdapter<>(callback));
     }
 
     private interface ConfigEndpoint {
