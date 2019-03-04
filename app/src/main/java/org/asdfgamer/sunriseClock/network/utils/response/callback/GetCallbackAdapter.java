@@ -1,6 +1,6 @@
-package org.asdfgamer.sunriseClock.network.response.callback;
+package org.asdfgamer.sunriseClock.network.utils.response.callback;
 
-import org.asdfgamer.sunriseClock.network.response.model.Error;
+import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
 
 /**
  * Callback interface adapter for deconz network requests returning the HTTP status codes from

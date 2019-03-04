@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import com.google.android.material.tabs.TabLayout;
 
 import org.asdfgamer.sunriseClock.maintabs.DeconzPagerAdapter;
-import org.asdfgamer.sunriseClock.network.utils.DeconzRequestQueue;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -39,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
          * to switch between fragments. */
         TabLayout tabLayout = findViewById(R.id.tab_bar);
         tabLayout.setupWithViewPager(viewPager);
-
-        DeconzRequestQueue.getInstance(this);
     }
 
     @Override

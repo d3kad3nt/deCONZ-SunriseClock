@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.response.custDeserializer;
+package org.asdfgamer.sunriseClock.network.utils.response.custDeserializer;
 
 import android.util.Log;
 
@@ -9,7 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.asdfgamer.sunriseClock.network.response.model.Light;
+import org.asdfgamer.sunriseClock.network.lights.Light;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
