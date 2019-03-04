@@ -5,20 +5,15 @@ import org.asdfgamer.sunriseClock.network.utils.response.callback.GetCallback;
 import org.asdfgamer.sunriseClock.network.utils.response.callback.StandardCallback;
 import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Response;
 
-
-public abstract class GetLightsCallback extends StandardCallback implements GetCallback<List<Light>> {
+public abstract class GetLightCallback extends StandardCallback implements GetCallback<Light> {
     @Override
-    public void onRessourceNotFound(Error error) {
-        standardCallback(error);
-    }
+    public abstract void onRessourceNotFound(Error error);
 
     @Override
-    public abstract void onSuccess(Response<List<Light>> response);
+    public abstract void onSuccess(Response<Light> response);
 
     @Override
     public abstract void onForbidden(Error error);
@@ -39,5 +34,5 @@ public abstract class GetLightsCallback extends StandardCallback implements GetC
     }
 
     @Override
-    public abstract void onFailure(Call<List<Light>> call, Throwable throwable);
+    public abstract void onFailure(Call<Light> call, Throwable throwable);
 }

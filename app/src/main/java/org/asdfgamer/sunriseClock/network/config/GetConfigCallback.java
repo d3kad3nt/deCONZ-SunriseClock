@@ -1,5 +1,6 @@
 package org.asdfgamer.sunriseClock.network.config;
 
+import org.asdfgamer.sunriseClock.network.utils.response.DeconzApiReturncodes;
 import org.asdfgamer.sunriseClock.network.utils.response.callback.GetCallback;
 import org.asdfgamer.sunriseClock.network.utils.response.callback.StandardCallback;
 import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
@@ -17,7 +18,7 @@ public abstract class GetConfigCallback extends StandardCallback implements GetC
 
     @Override
     public void onServiceUnavailable() {
-        standardCallback(ConnectionError.ServiceUnavailable);
+        standardCallback(DeconzApiReturncodes.Service_Unavailable);
     }
 
     @Override
