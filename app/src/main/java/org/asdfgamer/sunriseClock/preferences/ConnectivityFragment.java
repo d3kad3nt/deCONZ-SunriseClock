@@ -5,15 +5,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-
 import org.asdfgamer.sunriseClock.R;
-import org.asdfgamer.sunriseClock.network.request.DeconzRequestConfig;
-import org.asdfgamer.sunriseClock.network.request.DeconzRequestLights;
-import org.asdfgamer.sunriseClock.network.response.callback.BaseCallback;
-import org.asdfgamer.sunriseClock.network.response.callback.GetCallback;
-import org.asdfgamer.sunriseClock.network.response.model.Config;
-import org.asdfgamer.sunriseClock.network.response.model.Error;
-import org.asdfgamer.sunriseClock.network.response.model.Light;
+import org.asdfgamer.sunriseClock.network.config.Config;
+import org.asdfgamer.sunriseClock.network.config.DeconzRequestConfig;
+import org.asdfgamer.sunriseClock.network.config.GetConfigCallback;
+import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLights;
+import org.asdfgamer.sunriseClock.network.lights.GetLightsCallback;
+import org.asdfgamer.sunriseClock.network.lights.Light;
+import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -88,12 +87,12 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
          * */
         DeconzRequestLights deconzLights = new DeconzRequestLights(builder.build(), preferences.getString("pref_api_key", ""));
 
-        deconzLights.getLights(new BaseCallback<List<Light>>() {
+        deconzLights.getLights(new GetLightsCallback() {
             @Override
             public void onSuccess(Response<List<Light>> response) {
                 DeconzRequestConfig deconzConfig = new DeconzRequestConfig(builder.build(), preferences.getString("pref_api_key", ""));
 
-                deconzConfig.getConfig(new BaseCallback<Config>() {
+                deconzConfig.getConfig(new GetConfigCallback() {
                     @Override
                     public void onSuccess(Response<Config> response) {
                         Config config = response.body();
@@ -113,26 +112,6 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
                     }
 
                     @Override
-                    public void onForbidden(Error error) {
-                        //This should not fail because we requested /lights a few moments earlier.
-                    }
-
-                    @Override
-                    public void onServiceUnavailable() {
-                        //This should not fail because we requested /lights a few moments earlier.
-                    }
-
-                    @Override
-                    public void onEverytime() {
-                        //This should not fail because we requested /lights a few moments earlier.
-                    }
-
-                    @Override
-                    public void onInvalidErrorObject() {
-                        //This should not fail because we requested /lights a few moments earlier.
-                    }
-
-                    @Override
                     public void onFailure(Call<Config> call, Throwable throwable) {
                         //This should not fail because we requested /lights a few moments earlier.
                     }
@@ -142,22 +121,6 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
             @Override
             public void onForbidden(Error error) {
                 alertDialog.setMessage(getResources().getString(R.string.connection_test_error_wrongapikey));
-            }
-
-            @Override
-            public void onServiceUnavailable() {
-                //Nothing
-            }
-
-            @Override
-            public void onEverytime() {
-                Log.d(TAG, "onEveryTime() called.");
-            }
-
-            @Override
-            public void onInvalidErrorObject() {
-                //TODO: Improve: Probably no deconz instance
-                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_parse));
             }
 
             @Override

@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.request;
+package org.asdfgamer.sunriseClock.network.lights;
 
 import android.net.Uri;
 import android.util.Log;
@@ -6,12 +6,12 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.asdfgamer.sunriseClock.network.response.callback.BaseCallback;
-import org.asdfgamer.sunriseClock.network.response.callback.BaseCallbackAdapter;
-import org.asdfgamer.sunriseClock.network.response.callback.GetCallback;
-import org.asdfgamer.sunriseClock.network.response.callback.GetCallbackAdapter;
-import org.asdfgamer.sunriseClock.network.response.custDeserializer.GetallLightsDeserializer;
-import org.asdfgamer.sunriseClock.network.response.model.Light;
+import org.asdfgamer.sunriseClock.network.utils.DeconzRequest;
+import org.asdfgamer.sunriseClock.network.utils.response.callback.BaseCallback;
+import org.asdfgamer.sunriseClock.network.utils.response.callback.BaseCallbackAdapter;
+import org.asdfgamer.sunriseClock.network.utils.response.callback.GetCallback;
+import org.asdfgamer.sunriseClock.network.utils.response.callback.GetCallbackAdapter;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.GetallLightsDeserializer;
 
 import java.util.List;
 
@@ -30,7 +30,8 @@ public class DeconzRequestLights extends DeconzRequest {
 
     private LightsEndpoint lightsEndpoint;
 
-    void init() {
+    @Override
+    public void init() {
         Log.d(TAG, "Init() called.");
 
         //Set custom Gson deserializer

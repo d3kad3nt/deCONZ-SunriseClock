@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.response.custDeserializer;
+package org.asdfgamer.sunriseClock.network.utils.response.custDeserializer;
 
 import android.util.Log;
 
@@ -7,10 +7,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.asdfgamer.sunriseClock.network.response.model.Error;
+import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
 
 import java.lang.reflect.Type;
 
