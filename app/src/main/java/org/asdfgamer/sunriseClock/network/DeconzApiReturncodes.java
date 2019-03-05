@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.utils.response;
+package org.asdfgamer.sunriseClock.network;
 
 /**
  * Shows error codes for the deconz api.

@@ -9,7 +9,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
-import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 
 import java.lang.reflect.Type;
 

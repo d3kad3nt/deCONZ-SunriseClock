@@ -6,9 +6,12 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.asdfgamer.sunriseClock.network.utils.DeconzRequest;
-import org.asdfgamer.sunriseClock.network.utils.response.callback.GetCallbackAdapter;
-import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.GetallLightsDeserializer;
+import org.asdfgamer.sunriseClock.network.lights.model.Light;
+import org.asdfgamer.sunriseClock.network.DeconzRequest;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.DeconzBaseCallbackAdapter;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.DeconzGetCallbackAdapter;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallbackAdapter;
 
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class DeconzRequestLights extends DeconzRequest {
 
         //Set custom Gson deserializer
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(List.class, new GetallLightsDeserializer())
+                .registerTypeAdapter(List.class, new GetLightsDeserializer())
                 .create();
         super.setGsonDeserializer(gson);
 
@@ -42,12 +45,22 @@ public class DeconzRequestLights extends DeconzRequest {
 
     public void getLights(GetLightsCallback callback) {
         Call<List<Light>> call = lightsEndpoint.getLights();
-        call.enqueue(new GetCallbackAdapter<>(callback));
+        call.enqueue(new DeconzBaseCallbackAdapter<>(callback));
+    }
+
+    public void getLights(SimplifiedCallback<List<Light>> callback) {
+        Call<List<Light>> call = lightsEndpoint.getLights();
+        call.enqueue(new SimplifiedCallbackAdapter<>(callback));
     }
 
     public void getLight(GetLightCallback callback, String lightId) {
         Call<Light> call = lightsEndpoint.getLight(lightId);
-        call.enqueue(new GetCallbackAdapter<>(callback));
+        call.enqueue(new DeconzGetCallbackAdapter<>(callback));
+    }
+
+    public void getLight(SimplifiedCallback<Light> callback, String lightId) {
+        Call<Light> call = lightsEndpoint.getLight(lightId);
+        call.enqueue(new SimplifiedCallbackAdapter<>(callback));
     }
 
     private interface LightsEndpoint {

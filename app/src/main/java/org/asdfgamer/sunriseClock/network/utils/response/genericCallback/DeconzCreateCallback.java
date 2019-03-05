@@ -1,16 +1,16 @@
-package org.asdfgamer.sunriseClock.network.utils.response.callback;
+package org.asdfgamer.sunriseClock.network.utils.response.genericCallback;
 
-import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 
 /**
  * Callback interface for deconz network requests returning the following HTTP status codes:
- * HTTP status code 400 and the ones from {@see BaseCallback}.
+ * HTTP status code 400 and the ones from {@see DeconzBaseCallback}.
  * <p>
  * This is often returned for requests CREATING a resource, hence the name.
  *
  * @param <T>
  */
-public interface CreateCallback<T> extends BaseCallback<T> {
+public interface DeconzCreateCallback<T> extends DeconzBaseCallback<T> {
 
     /**
      * Called for all HTTP status codes representing a bad (eg. malformed) request:

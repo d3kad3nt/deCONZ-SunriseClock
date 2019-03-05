@@ -1,23 +1,25 @@
-package org.asdfgamer.sunriseClock.network.utils.response.callback;
+package org.asdfgamer.sunriseClock.network.utils.response.genericCallback;
 
-import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
+import android.util.Log;
+
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
 /**
  * Callback interface adapter for deconz network requests returning the HTTP status codes from
- * {@see BaseCallback}.
+ * {@see DeconzBaseCallback}.
  *
  * @param <T>
  */
-public class BaseCallbackAdapter<T> extends AbstractCallbackAdapter<T> {
+public class DeconzBaseCallbackAdapter<T> extends RetrofitCallbackAdapter<T> {
 
-    private BaseCallback<T> callback;
+    private DeconzBaseCallback<T> callback;
 
-    private static final String TAG = "BaseCallbackAdapter";
+    private static final String TAG = "DecBaseCallbackAdapter";
 
-    public BaseCallbackAdapter(BaseCallback<T> callback) {
+    public DeconzBaseCallbackAdapter(DeconzBaseCallback<T> callback) {
         this.callback = callback;
     }
 
@@ -48,13 +50,13 @@ public class BaseCallbackAdapter<T> extends AbstractCallbackAdapter<T> {
 
     @Override
     void handleBadRequest(Error error) {
-        callback.onEverytime();
+        Log.w(TAG, "handleBadRequest() should not have been called. This callback adapter is NOT intended for this request.");
         //Should not occur with this CallbackAdapter.
     }
 
     @Override
     void handleUnauthorized(Error error) {
-        callback.onEverytime();
+        Log.w(TAG, "handleUnauthorized() should not have been called. This callback adapter is NOT intended for this request.");
         //Should not occur with this CallbackAdapter.
     }
 
@@ -66,14 +68,14 @@ public class BaseCallbackAdapter<T> extends AbstractCallbackAdapter<T> {
 
     @Override
     void handleResourceNotFound(Error error) {
-        callback.onEverytime();
+        Log.w(TAG, "handleResourceNotFound() should not have been called. This callback adapter is NOT intended for this request.");
         //Should not occur with this CallbackAdapter.
     }
 
     @Override
     void handleServiceUnavailable() {
-        callback.onEverytime();
-        callback.onServiceUnavailable();
+        Log.w(TAG, "handleServiceUnavailable() should not have been called. This callback adapter is NOT intended for this request.");
+        //Should not occur with this CallbackAdapter.
     }
 
     @Override
@@ -83,8 +85,15 @@ public class BaseCallbackAdapter<T> extends AbstractCallbackAdapter<T> {
     }
 
     @Override
-    void handleFailure(Call<T> call, Throwable throwable) {
-        callback.onFailure(call, throwable);
+    void handleInvalidResponseObject(Call<T> call, Throwable throwable) {
+        callback.onEverytime();
+        callback.onInvalidResponseObject(call, throwable);
+    }
+
+    @Override
+    void handleNetworkFailure(Call<T> call, Throwable throwable) {
+        callback.onEverytime();
+        callback.onNetworkFailure(call, throwable);
     }
 
 
