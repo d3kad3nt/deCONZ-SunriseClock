@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.utils.response.callback;
+package org.asdfgamer.sunriseClock.network.utils.response.genericCallback;
 
 import android.util.Log;
 
@@ -6,9 +6,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 
-import org.asdfgamer.sunriseClock.network.utils.response.DeconzApiReturncodes;
+import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
 import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.ErrorDeserializer;
-import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 
 import java.util.Objects;
 
@@ -17,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public abstract class AbstractCallbackAdapter<T> implements Callback<T> {
+public abstract class RetrofitCallbackAdapter<T> implements Callback<T> {
     @Override
     public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
 

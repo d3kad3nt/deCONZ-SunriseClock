@@ -1,6 +1,6 @@
-package org.asdfgamer.sunriseClock.network.utils.response.callback;
+package org.asdfgamer.sunriseClock.network.utils.response.genericCallback;
 
-import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -17,7 +17,7 @@ import retrofit2.Response;
  *
  * @param <T>
  */
-public interface BaseCallback<T> {
+public interface DeconzBaseCallback<T> {
 
     /**
      * Called for all HTTP status codes representing a successful response:

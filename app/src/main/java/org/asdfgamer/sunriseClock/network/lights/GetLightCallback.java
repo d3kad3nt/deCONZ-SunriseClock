@@ -1,14 +1,15 @@
 package org.asdfgamer.sunriseClock.network.lights;
 
-import org.asdfgamer.sunriseClock.network.utils.response.DeconzApiReturncodes;
-import org.asdfgamer.sunriseClock.network.utils.response.callback.GetCallback;
-import org.asdfgamer.sunriseClock.network.utils.response.callback.StandardCallback;
-import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
+import org.asdfgamer.sunriseClock.network.lights.model.Light;
+import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.DeconzGetCallback;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.StandardCallback;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
-public abstract class GetLightCallback extends StandardCallback implements GetCallback<Light> {
+public abstract class GetLightCallback extends StandardCallback implements DeconzGetCallback<Light> {
     @Override
     public abstract void onRessourceNotFound(Error error);
 

@@ -3,8 +3,9 @@ package org.asdfgamer.sunriseClock.network.config;
 import android.net.Uri;
 import android.util.Log;
 
-import org.asdfgamer.sunriseClock.network.utils.DeconzRequest;
-import org.asdfgamer.sunriseClock.network.utils.response.callback.GetCallbackAdapter;
+import org.asdfgamer.sunriseClock.network.config.model.Config;
+import org.asdfgamer.sunriseClock.network.DeconzRequest;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.DeconzGetCallbackAdapter;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -29,7 +30,7 @@ public class DeconzRequestConfig extends DeconzRequest {
 
     public void getConfig(GetConfigCallback callback) {
         Call<Config> call = configEndpoint.getConfig();
-        call.enqueue(new GetCallbackAdapter<>(callback));
+        call.enqueue(new DeconzGetCallbackAdapter<>(callback));
     }
 
     private interface ConfigEndpoint {

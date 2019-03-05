@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.utils;
+package org.asdfgamer.sunriseClock.network;
 
 import android.net.Uri;
 import android.util.Log;

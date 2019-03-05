@@ -1,23 +1,23 @@
-package org.asdfgamer.sunriseClock.network.utils.response.callback;
+package org.asdfgamer.sunriseClock.network.utils.response.genericCallback;
 
-import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
 /**
  * Callback interface adapter for deconz network requests returning the HTTP status codes from
- * {@see BaseCallback}.
+ * {@see DeconzBaseCallback}.
  *
  * @param <T>
  */
-public class BaseCallbackAdapter<T> extends AbstractCallbackAdapter<T> {
+class DeconzBaseCallbackAdapter<T> extends RetrofitCallbackAdapter<T> {
 
-    private BaseCallback<T> callback;
+    private DeconzBaseCallback<T> callback;
 
-    private static final String TAG = "BaseCallbackAdapter";
+    private static final String TAG = "DeconzBaseCallbackAdapter";
 
-    public BaseCallbackAdapter(BaseCallback<T> callback) {
+    DeconzBaseCallbackAdapter(DeconzBaseCallback<T> callback) {
         this.callback = callback;
     }
 
