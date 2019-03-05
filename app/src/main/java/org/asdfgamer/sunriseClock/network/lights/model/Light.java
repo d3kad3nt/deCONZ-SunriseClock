@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.lights;
+package org.asdfgamer.sunriseClock.network.lights.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -22,9 +22,6 @@ public class Light {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("pointsymbol")
-    @Expose
-    private LightPointsymbol pointsymbol;
     @SerializedName("state")
     @Expose
     private LightState state;
@@ -84,14 +81,6 @@ public class Light {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public LightPointsymbol getPointsymbol() {
-        return pointsymbol;
-    }
-
-    public void setPointsymbol(LightPointsymbol pointsymbol) {
-        this.pointsymbol = pointsymbol;
     }
 
     public LightState getState() {

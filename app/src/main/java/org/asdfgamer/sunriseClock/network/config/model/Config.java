@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.config;
+package org.asdfgamer.sunriseClock.network.config.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,9 +1,9 @@
-package org.asdfgamer.sunriseClock.network.utils.response.callback;
+package org.asdfgamer.sunriseClock.network.utils.response.genericCallback;
 
 import android.util.Log;
 
-import org.asdfgamer.sunriseClock.network.utils.response.DeconzApiReturncodes;
-import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
+import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 
 import androidx.annotation.NonNull;
 

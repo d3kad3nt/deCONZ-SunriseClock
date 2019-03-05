@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.util.Log;
 
 import org.asdfgamer.sunriseClock.R;
-import org.asdfgamer.sunriseClock.network.config.Config;
+import org.asdfgamer.sunriseClock.network.config.model.Config;
 import org.asdfgamer.sunriseClock.network.config.DeconzRequestConfig;
 import org.asdfgamer.sunriseClock.network.config.GetConfigCallback;
 import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLights;
 import org.asdfgamer.sunriseClock.network.lights.GetLightsCallback;
-import org.asdfgamer.sunriseClock.network.lights.Light;
-import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
+import org.asdfgamer.sunriseClock.network.lights.model.Light;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
