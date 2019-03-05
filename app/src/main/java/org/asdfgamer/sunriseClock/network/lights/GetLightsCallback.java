@@ -1,43 +1,22 @@
 package org.asdfgamer.sunriseClock.network.lights;
 
-import org.asdfgamer.sunriseClock.network.utils.response.DeconzApiReturncodes;
-import org.asdfgamer.sunriseClock.network.utils.response.callback.GetCallback;
-import org.asdfgamer.sunriseClock.network.utils.response.callback.StandardCallback;
-import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
+import org.asdfgamer.sunriseClock.network.lights.model.Light;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.DeconzBaseCallback;
 
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Response;
+/**
+ * Nothing special: This action does not return anything special, apart from the HTTP codes
+ * defined in the super class. This interface could be used to define additional callbacks for
+ * this request.
+ * To maintain a clean file structure even these empty files (subclassed from their super class)
+ * are added.
+ *
+ * @see DeconzBaseCallback
+ */
+public interface GetLightsCallback extends DeconzBaseCallback<List<Light>> {
 
+    /* Getting all lights from deconz (GET /lights) does not return HTTP 404 and therefore does
+     * not require a specific callback to inherit from.*/
 
-public abstract class GetLightsCallback extends StandardCallback implements GetCallback<List<Light>> {
-    @Override
-    public void onRessourceNotFound(Error error) {
-        standardCallback(error);
-    }
-
-    @Override
-    public abstract void onSuccess(Response<List<Light>> response);
-
-    @Override
-    public abstract void onForbidden(Error error);
-
-    @Override
-    public void onServiceUnavailable() {
-        standardCallback(DeconzApiReturncodes.Service_Unavailable);
-    }
-
-    @Override
-    public void onEverytime() {
-        everytime();
-    }
-
-    @Override
-    public void onInvalidErrorObject() {
-        standardCallback(ConnectionError.InvalidErrorObject);
-    }
-
-    @Override
-    public abstract void onFailure(Call<List<Light>> call, Throwable throwable);
 }

@@ -1,35 +1,21 @@
 package org.asdfgamer.sunriseClock.network.config;
 
-import org.asdfgamer.sunriseClock.network.utils.response.DeconzApiReturncodes;
-import org.asdfgamer.sunriseClock.network.utils.response.callback.GetCallback;
-import org.asdfgamer.sunriseClock.network.utils.response.callback.StandardCallback;
-import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
+import org.asdfgamer.sunriseClock.network.config.model.Config;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.DeconzBaseCallback;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.DeconzGetCallback;
 
-public abstract class GetConfigCallback extends StandardCallback implements GetCallback<Config> {
-    @Override
-    public void onRessourceNotFound(Error error) {
-        standardCallback(error);
-    }
+/**
+ * Nothing special: This action does not return anything special, apart from the HTTP codes
+ * defined in the super class. This interface could be used to define additional callbacks for
+ * this request.
+ * To maintain a clean file structure even these empty files (subclassed from their super class)
+ * are added.
+ *
+ * @see DeconzGetCallback
+ */
+public interface GetConfigCallback extends DeconzBaseCallback<Config> {
 
-    @Override
-    public void onForbidden(Error error) {
-        standardCallback(error);
-    }
-
-    @Override
-    public void onServiceUnavailable() {
-        standardCallback(DeconzApiReturncodes.Service_Unavailable);
-    }
-
-    @Override
-    public void onEverytime() {
-        everytime();
-    }
-
-    @Override
-    public void onInvalidErrorObject() {
-        standardCallback(ConnectionError.InvalidErrorObject);
-    }
-
+    /* Getting the config from deconz (GET /config) does not return HTTP 404 and therefore does
+     * not require a specific callback to inherit from.*/
 
 }

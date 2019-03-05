@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.utils.response.callback;
+package org.asdfgamer.sunriseClock.network.utils.response.genericCallback;
 
 import android.util.Log;
 
@@ -6,10 +6,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 
-import org.asdfgamer.sunriseClock.network.utils.response.DeconzApiReturncodes;
+import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
 import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.ErrorDeserializer;
-import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 
+import java.io.IOError;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -17,11 +18,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public abstract class AbstractCallbackAdapter<T> implements Callback<T> {
+public abstract class RetrofitCallbackAdapter<T> implements Callback<T> {
+
+    private final static String TAG = "AbstractCallBackAdapter";
+
     @Override
     public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-
-        final String TAG = "AbstractCallBackAdapter";
 
         int responseCode = response.code();
 
@@ -46,8 +48,7 @@ public abstract class AbstractCallbackAdapter<T> implements Callback<T> {
 
             try {
                 error = gsonErrorDeserializer.fromJson(Objects.requireNonNull(response.errorBody()).charStream(), Error.class);
-            }
-            catch (JsonParseException e) {
+            } catch (JsonParseException e) {
                 Log.w(TAG, "Could not deserialize error object from response: " + e.getMessage());
                 handleInvalidErrorObject(response);
                 return;
@@ -69,7 +70,18 @@ public abstract class AbstractCallbackAdapter<T> implements Callback<T> {
 
     @Override
     public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
-        handleFailure(call, t);
+        Log.i(TAG, "Request to " + call.request().url() + " did not return anything at all!");
+
+        /* Retrofits onFailures are in most cases IOErrors: This means that the network could not
+         * be reached, the server could not be found etc. */
+        if (t instanceof IOError) {
+            handleNetworkFailure(call, t);
+        } else {
+            /* If this was not a network error then deconz probably returned an invalid
+            * (unexpected-for-us) response that could not be deserialized by GSON. In most cases,
+            * however, this just means that we reached a server that IS NOT a deconz instance. */
+            handleInvalidResponseObject(call, t);
+        }
     }
 
     abstract void handleOK(Response<T> response);
@@ -94,5 +106,7 @@ public abstract class AbstractCallbackAdapter<T> implements Callback<T> {
 
     abstract void handleInvalidErrorObject(Response<T> response);
 
-    abstract void handleFailure(Call<T> call, Throwable throwable);
+    abstract void handleInvalidResponseObject(Call<T> call, Throwable throwable);
+
+    abstract void handleNetworkFailure(Call<T> call, Throwable throwable);
 }

@@ -1,13 +1,13 @@
-package org.asdfgamer.sunriseClock.network.utils.response.callback;
+package org.asdfgamer.sunriseClock.network.utils.response.genericCallback;
 
-import org.asdfgamer.sunriseClock.network.utils.response.model.Error;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
 /**
  * Callback interface for deconz network requests returning the following HTTP status codes:
- * HTTP status codes {200, 201, 202, 304}, 403, 503.
+ * HTTP status codes {200, 201, 202, 304}, 403.
  * <p>
  * Note that ALL deconz requests could return these status codes. Therefore it is used as
  * base-interface.
@@ -17,7 +17,7 @@ import retrofit2.Response;
  *
  * @param <T>
  */
-public interface BaseCallback<T> {
+public interface DeconzBaseCallback<T> {
 
     /**
      * Called for all HTTP status codes representing a successful response:
@@ -35,18 +35,29 @@ public interface BaseCallback<T> {
      */
     void onForbidden(Error error);
 
-    /**
-     * Called for all HTTP status codes representing an request which was not successful due to the server being too busy:
-     * HTTP status code 503.
-     * Seems to be currently unused by deconz: It is mentioned in the 'error handling' section in
-     * the API docs, but is not returned by any response.
-     */
-    void onServiceUnavailable();
+    /* 'Special' callbacks: Not directly related to HTTP status codes.*/
 
     /**
-     * Called for ALL HTTP status codes.
+     * Called regardless of the exact outcome of the request. Even if the request failed,
+     * this should be triggered.
      */
     void onEverytime();
+
+    /**
+     * Custom error: Invoked when a network exception occurred talking to the server.
+     *
+     * @see java.io.IOException
+     * @see retrofit2.Callback
+     */
+    void onNetworkFailure(Call<T> call, Throwable throwable);
+
+    /**
+     * Custom error: Invoked when an unexpected exception occurred deserializing the server
+     * response.
+     *
+     * @see retrofit2.Callback
+     */
+    void onInvalidResponseObject(Call<T> call, Throwable throwable);
 
     /**
      * Custom error: Returned if HTTP code suggested an error, but the given deconz response
@@ -54,12 +65,5 @@ public interface BaseCallback<T> {
      * a deconz endpoint, but rather to another (unrelated) webserver.
      */
     void onInvalidErrorObject();
-
-    /**
-     * Invoked when a network exception occurred talking to the server or when an unexpected
-     * exception occurred creating the request or processing the response.
-     * @see retrofit2.Callback
-     */
-    void onFailure(Call<T> call, Throwable throwable);
 
 }

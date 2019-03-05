@@ -1,4 +1,4 @@
-package org.asdfgamer.sunriseClock.network.lights;
+package org.asdfgamer.sunriseClock.network.lights.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
