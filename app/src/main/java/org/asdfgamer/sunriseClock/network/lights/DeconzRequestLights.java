@@ -8,6 +8,8 @@ import com.google.gson.GsonBuilder;
 
 import org.asdfgamer.sunriseClock.network.lights.model.Light;
 import org.asdfgamer.sunriseClock.network.DeconzRequest;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.DeconzBaseCallback;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.DeconzBaseCallbackAdapter;
 import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.DeconzGetCallbackAdapter;
 
 import java.util.List;
@@ -42,7 +44,7 @@ public class DeconzRequestLights extends DeconzRequest {
 
     public void getLights(GetLightsCallback callback) {
         Call<List<Light>> call = lightsEndpoint.getLights();
-        call.enqueue(new DeconzGetCallbackAdapter<>(callback));
+        call.enqueue(new DeconzBaseCallbackAdapter<>(callback));
     }
 
     public void getLight(GetLightCallback callback, String lightId) {

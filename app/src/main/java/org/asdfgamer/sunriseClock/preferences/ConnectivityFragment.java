@@ -112,8 +112,13 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
                     }
 
                     @Override
-                    public void onFailure(Call<Config> call, Throwable throwable) {
-                        //This should not fail because we requested /lights a few moments earlier.
+                    public void onNetworkFailure(Call<Config> call, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onInvalidResponseObject(Call<Config> call, Throwable throwable) {
+
                     }
                 });
             }
@@ -124,8 +129,14 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
             }
 
             @Override
-            public void onFailure(Call<List<Light>> call, Throwable throwable) {
+            public void onNetworkFailure(Call<List<Light>> call, Throwable throwable) {
                 alertDialog.setMessage(getResources().getString(R.string.connection_test_error_noconnection));
+            }
+
+            @Override
+            public void onInvalidResponseObject(Call<List<Light>> call, Throwable throwable) {
+                alertDialog.setMessage("Probably no deconz instance..");
+                //TODO: Better message
             }
         });
     }
