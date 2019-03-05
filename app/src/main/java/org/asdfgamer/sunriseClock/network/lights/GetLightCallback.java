@@ -1,43 +1,17 @@
 package org.asdfgamer.sunriseClock.network.lights;
 
 import org.asdfgamer.sunriseClock.network.lights.model.Light;
-import org.asdfgamer.sunriseClock.network.DeconzApiReturncodes;
 import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.DeconzGetCallback;
-import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.StandardCallback;
-import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 
-import retrofit2.Call;
-import retrofit2.Response;
-
-public abstract class GetLightCallback extends StandardCallback implements DeconzGetCallback<Light> {
-    @Override
-    public abstract void onRessourceNotFound(Error error);
-
-    @Override
-    public abstract void onSuccess(Response<Light> response);
-
-    @Override
-    public abstract void onForbidden(Error error);
-
-    @Override
-    public void onEverytime() {
-        everytime();
-    }
-
-    @Override
-    public void onNetworkFailure(Call<Light> call, Throwable throwable) {
-
-    }
-
-    @Override
-    public void onInvalidResponseObject(Call<Light> call, Throwable throwable) {
-
-    }
-
-    @Override
-    public void onInvalidErrorObject() {
-        standardCallback(ConnectionError.InvalidErrorObject);
-    }
-
+/**
+ * Nothing special: This action does not return anything special, apart from the HTTP codes
+ * defined in the super class. This interface could be used to define additional callbacks for
+ * this request.
+ * To maintain a clean file structure even these empty files (subclassed from their super class)
+ * are added.
+ *
+ * @see DeconzGetCallback
+ */
+public interface GetLightCallback extends DeconzGetCallback<Light> {
 
 }

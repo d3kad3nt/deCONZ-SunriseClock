@@ -10,9 +10,12 @@ import org.asdfgamer.sunriseClock.network.config.model.Config;
 import org.asdfgamer.sunriseClock.network.config.DeconzRequestConfig;
 import org.asdfgamer.sunriseClock.network.config.GetConfigCallback;
 import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLights;
+import org.asdfgamer.sunriseClock.network.lights.GetLightCallback;
 import org.asdfgamer.sunriseClock.network.lights.GetLightsCallback;
 import org.asdfgamer.sunriseClock.network.lights.model.Light;
 import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallbackAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -83,16 +86,15 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
                 .encodedAuthority(preferences.getString("pref_ip", "") + ":" + preferences.getString("pref_port", ""));
 
         /* 1st Step: Tests connection (and authentication!) to deconz by requesting an API endpoint which is key-protected.
-         * 2nd step: Requests some information from deconz to show it to the user.
-         * */
+         * 2nd step: Requests some information from deconz to show it to the user. */
         DeconzRequestLights deconzLights = new DeconzRequestLights(builder.build(), preferences.getString("pref_api_key", ""));
 
-        deconzLights.getLights(new GetLightsCallback() {
+        deconzLights.getLights(new CustomGetLightsCallback() {
             @Override
             public void onSuccess(Response<List<Light>> response) {
                 DeconzRequestConfig deconzConfig = new DeconzRequestConfig(builder.build(), preferences.getString("pref_api_key", ""));
 
-                deconzConfig.getConfig(new GetConfigCallback() {
+                deconzConfig.getConfig(new SimplifiedCallback<Config>() {
                     @Override
                     public void onSuccess(Response<Config> response) {
                         Config config = response.body();
@@ -112,13 +114,8 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
                     }
 
                     @Override
-                    public void onNetworkFailure(Call<Config> call, Throwable throwable) {
-
-                    }
-
-                    @Override
-                    public void onInvalidResponseObject(Call<Config> call, Throwable throwable) {
-
+                    public void onError() {
+                        //This should not fail because getLights returned successfully just a few moments ago.
                     }
                 });
             }
@@ -135,8 +132,12 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
 
             @Override
             public void onInvalidResponseObject(Call<List<Light>> call, Throwable throwable) {
-                alertDialog.setMessage("Probably no deconz instance..");
-                //TODO: Better message
+                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_nodeconz));
+            }
+
+            @Override
+            public void onInvalidErrorObject() {
+                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_nodeconz));
             }
         });
     }
@@ -166,4 +167,32 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
             updatePrefSummary(sharedPreferences, key);
         }
     }
+
+    /**
+     * Example for a callback in an inner class. This is used to 'remove'/hide some callbacks.
+     * This particular example is not that useful, though.
+     */
+    abstract class CustomGetLightsCallback implements GetLightsCallback {
+
+        @Override
+        public abstract void onSuccess(Response<List<Light>> response);
+
+        @Override
+        public abstract void onForbidden(Error error);
+
+        @Override
+        public void onEverytime() {
+            //Demo: Nothing should happen here.
+        }
+
+        @Override
+        public abstract void onNetworkFailure(Call<List<Light>> call, Throwable throwable);
+
+        @Override
+        public abstract void onInvalidResponseObject(Call<List<Light>> call, Throwable throwable);
+
+        @Override
+        public abstract void onInvalidErrorObject();
+    }
+
 }
