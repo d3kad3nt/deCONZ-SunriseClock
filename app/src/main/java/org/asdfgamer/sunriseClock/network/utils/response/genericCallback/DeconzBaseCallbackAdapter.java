@@ -1,5 +1,7 @@
 package org.asdfgamer.sunriseClock.network.utils.response.genericCallback;
 
+import android.util.Log;
+
 import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 
 import retrofit2.Call;
@@ -11,13 +13,13 @@ import retrofit2.Response;
  *
  * @param <T>
  */
-class DeconzBaseCallbackAdapter<T> extends RetrofitCallbackAdapter<T> {
+public class DeconzBaseCallbackAdapter<T> extends RetrofitCallbackAdapter<T> {
 
     private DeconzBaseCallback<T> callback;
 
-    private static final String TAG = "DeconzBaseCallbackAdapter";
+    private static final String TAG = "DecBaseCallbackAdapter";
 
-    DeconzBaseCallbackAdapter(DeconzBaseCallback<T> callback) {
+    public DeconzBaseCallbackAdapter(DeconzBaseCallback<T> callback) {
         this.callback = callback;
     }
 
@@ -48,13 +50,13 @@ class DeconzBaseCallbackAdapter<T> extends RetrofitCallbackAdapter<T> {
 
     @Override
     void handleBadRequest(Error error) {
-        callback.onEverytime();
+        Log.w(TAG, "handleBadRequest() should not have been called. This callback adapter is NOT intended for this request.");
         //Should not occur with this CallbackAdapter.
     }
 
     @Override
     void handleUnauthorized(Error error) {
-        callback.onEverytime();
+        Log.w(TAG, "handleUnauthorized() should not have been called. This callback adapter is NOT intended for this request.");
         //Should not occur with this CallbackAdapter.
     }
 
@@ -66,14 +68,14 @@ class DeconzBaseCallbackAdapter<T> extends RetrofitCallbackAdapter<T> {
 
     @Override
     void handleResourceNotFound(Error error) {
-        callback.onEverytime();
+        Log.w(TAG, "handleResourceNotFound() should not have been called. This callback adapter is NOT intended for this request.");
         //Should not occur with this CallbackAdapter.
     }
 
     @Override
     void handleServiceUnavailable() {
-        callback.onEverytime();
-        callback.onServiceUnavailable();
+        Log.w(TAG, "handleServiceUnavailable() should not have been called. This callback adapter is NOT intended for this request.");
+        //Should not occur with this CallbackAdapter.
     }
 
     @Override
@@ -83,8 +85,15 @@ class DeconzBaseCallbackAdapter<T> extends RetrofitCallbackAdapter<T> {
     }
 
     @Override
-    void handleFailure(Call<T> call, Throwable throwable) {
-        callback.onFailure(call, throwable);
+    void handleInvalidResponseObject(Call<T> call, Throwable throwable) {
+        callback.onEverytime();
+        callback.onInvalidResponseObject(call, throwable);
+    }
+
+    @Override
+    void handleNetworkFailure(Call<T> call, Throwable throwable) {
+        callback.onEverytime();
+        callback.onNetworkFailure(call, throwable);
     }
 
 

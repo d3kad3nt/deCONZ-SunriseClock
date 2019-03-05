@@ -20,13 +20,18 @@ public abstract class GetLightCallback extends StandardCallback implements Decon
     public abstract void onForbidden(Error error);
 
     @Override
-    public void onServiceUnavailable() {
-        standardCallback(DeconzApiReturncodes.Service_Unavailable);
+    public void onEverytime() {
+        everytime();
     }
 
     @Override
-    public void onEverytime() {
-        everytime();
+    public void onNetworkFailure(Call<Light> call, Throwable throwable) {
+
+    }
+
+    @Override
+    public void onInvalidResponseObject(Call<Light> call, Throwable throwable) {
+
     }
 
     @Override
@@ -34,6 +39,5 @@ public abstract class GetLightCallback extends StandardCallback implements Decon
         standardCallback(ConnectionError.InvalidErrorObject);
     }
 
-    @Override
-    public abstract void onFailure(Call<Light> call, Throwable throwable);
+
 }
