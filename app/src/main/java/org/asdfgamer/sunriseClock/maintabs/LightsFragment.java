@@ -34,6 +34,7 @@ public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private final static String TAG = "LightsFragment";
+    private RecyclerView recyclerView;
 
     // newInstance constructor for creating fragment with arguments
     static LightsFragment newInstance(int page, String title) {
@@ -65,14 +66,13 @@ public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
 
-
-        RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
         List<Light> emptyList = new ArrayList<>();
         LightsAdapter recyclerviewAdapter = new LightsAdapter(emptyList);
+
+        recyclerView = rootView.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerviewAdapter);
-        getLightData(recyclerviewAdapter);
         swipeRefreshLayout = rootView.findViewById(R.id.refresh_container);
         swipeRefreshLayout.setOnRefreshListener(this);
 
@@ -92,7 +92,7 @@ public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         return rootView;
     }
 
-    private void getLightData(final LightsAdapter recyclerviewAdapter) {
+    private void updateLightData(final RecyclerView.Adapter recyclerviewAdapter) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(this.getContext()));
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
@@ -106,12 +106,18 @@ public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRef
             public void onSuccess(Response<List<Light>> response) {
                 assert response.body() != null;
                 Log.i(TAG, response.body().size() + " Lights loaded");
-                recyclerviewAdapter.updateData(response.body());
+                if (recyclerviewAdapter instanceof LightsAdapter) {
+                    ((LightsAdapter) recyclerviewAdapter).updateData(response.body());
+                } else {
+                    Log.e(TAG, "Given wrong Adapter to updated Light data.");
+                }
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onError() {
                 Log.w(TAG, "Error while loading lamps");
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -125,6 +131,7 @@ public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private void loadRecyclerViewData() {
         //TODO: Showing refresh animation before making http call
         swipeRefreshLayout.setRefreshing(true);
-        swipeRefreshLayout.setRefreshing(false);
+        updateLightData(recyclerView.getAdapter());
+
     }
 }
