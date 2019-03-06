@@ -9,12 +9,20 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.asdfgamer.sunriseClock.network.schedules.CreateScheduleCallback;
+import org.asdfgamer.sunriseClock.network.schedules.DeconzRequestSchedulesHelper;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Success;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
 import org.asdfgamer.sunriseClock.utils.ISO8601;
 
 import java.lang.ref.WeakReference;
 import java.util.Date;
+import java.util.Objects;
 
 import androidx.preference.PreferenceManager;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class SchedulingTask extends AsyncTask<Void, Void, String> {
 
@@ -49,10 +57,19 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
         String apiKey = preferences.getString("pref_api_key", "");
         String lightId = preferences.getString("", "2"); //TODO: setting options for light ids
 
-        //DeconzRequestSchLight deconz = new DeconzRequestSchLight(builder.build(), apiKey, lightId, schedulingTime);
-        //deconz.init();
-        //TODO: Check if API call was successfull, use own listeners instead of default ones.
-        //deconz.fire();
+        DeconzRequestSchedulesHelper deconz = new DeconzRequestSchedulesHelper(builder.build(), apiKey);
+        deconz.schedulePowerOn(new SimplifiedCallback<Success>() {
+            @Override
+            public void onSuccess(Response<Success> response) {
+                Success success = response.body();
+                Log.i(TAG, "Successfully created schedule with id: " + Objects.requireNonNull(success).getId());
+            }
+
+            @Override
+            public void onError() {
+                //TODO
+            }
+        }, lightId, schedulingTime);
 
         return "TODO" + schedulingTime;
     }
