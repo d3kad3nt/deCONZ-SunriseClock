@@ -1,5 +1,7 @@
 package org.asdfgamer.sunriseClock.maintabs;
 
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,12 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.asdfgamer.sunriseClock.R;
+import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLights;
+import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper;
+import org.asdfgamer.sunriseClock.network.lights.model.Light;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import retrofit2.Response;
 
 public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -44,21 +56,23 @@ public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     // Inflate the view for the fragment based on layout XML
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         //TODO: Use deconz to get lights instead of demo data.
-        String[] testData = new String[] {"Hans", "Renate", "Günther"};
+
 
         View rootView = inflater.inflate(R.layout.fragment_lights, container, false);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
-        RecyclerView.Adapter recyclerviewAdapter = new LightsAdapter(testData);
+
 
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
+        List<Light> emptyList = new ArrayList<>();
+        LightsAdapter recyclerviewAdapter = new LightsAdapter(emptyList);
         recyclerView.setAdapter(recyclerviewAdapter);
-
+        getLightData(recyclerviewAdapter);
         swipeRefreshLayout = rootView.findViewById(R.id.refresh_container);
         swipeRefreshLayout.setOnRefreshListener(this);
 
@@ -76,6 +90,30 @@ public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         });
 
         return rootView;
+    }
+
+    private void getLightData(final LightsAdapter recyclerviewAdapter) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(this.getContext()));
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("http")
+                .encodedAuthority(preferences.getString("pref_ip", "") + ":" + preferences.getString("pref_port", ""));
+        Uri uri = builder.build();//TODO save Uri as string in Preferences that it doesn't has to be created multiple times
+        String apiKey = preferences.getString("pref_api_key", "");
+        DeconzRequestLights deconzRequestLights = new DeconzRequestLightsHelper(uri, apiKey) {
+        };
+        deconzRequestLights.getLights(new SimplifiedCallback<List<Light>>() {
+            @Override
+            public void onSuccess(Response<List<Light>> response) {
+                assert response.body() != null;
+                Log.i(TAG, response.body().size() + " Lights loaded");
+                recyclerviewAdapter.updateData(response.body());
+            }
+
+            @Override
+            public void onError() {
+                Log.w(TAG, "Error while loading lamps");
+            }
+        });
     }
 
     @Override
