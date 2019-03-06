@@ -12,9 +12,15 @@ import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.Simplif
 import retrofit2.Call;
 import retrofit2.http.GET;
 
-public class DeconzRequestConfig extends DeconzRequest {
+/**
+ * The configuration endpoint allows to retrieve and modify the current configuration of the gateway.
+ * This implements some actions for the "config/" endpoint.
+ *
+ * @see <a href="https://dresden-elektronik.github.io/deconz-rest-doc/configuration/">https://dresden-elektronik.github.io/deconz-rest-doc/configuration/</a>
+ */
+public abstract class DeconzRequestConfig extends DeconzRequest {
 
-    public DeconzRequestConfig(Uri baseUrl, String apiKey) {
+    DeconzRequestConfig(Uri baseUrl, String apiKey) {
         super(baseUrl, apiKey);
         init();
     }
@@ -30,11 +36,21 @@ public class DeconzRequestConfig extends DeconzRequest {
         this.configEndpoint = super.createService(ConfigEndpoint.class);
     }
 
+    /**
+     * This request returns the current gateway configuration.
+     *
+     * @param callback The callback to handle the request-related events.
+     */
     public void getConfig(GetConfigCallback callback) {
         Call<Config> call = configEndpoint.getConfig();
         call.enqueue(new DeconzBaseCallbackAdapter<>(callback));
     }
 
+    /**
+     * This request returns the current gateway configuration.
+     *
+     * @param callback The callback to handle the request-related events.
+     */
     public void getConfig(SimplifiedCallback<Config> callback) {
         Call<Config> call = configEndpoint.getConfig();
         call.enqueue(new SimplifiedCallbackAdapter<>(callback));
