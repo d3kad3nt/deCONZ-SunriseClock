@@ -1,18 +1,21 @@
 package org.asdfgamer.sunriseClock.maintabs;
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.asdfgamer.sunriseClock.R;
+import org.asdfgamer.sunriseClock.network.lights.model.Light;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHolder> {
-    private String[] mDataset;
+    private List<Light> lights;
+
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -31,8 +34,8 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    LightsAdapter(String[] myDataset) {
-        mDataset = myDataset;
+    LightsAdapter(List<Light> lightList) {
+        lights = lightList;
     }
 
     // Create new views (invoked by the layout manager)
@@ -47,20 +50,31 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
     }
 
     // Replace the contents of a view (invoked by the layout manager)
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.lightName.setText(mDataset[position]);
-        //TODO: Temp text until actual light data is retrieved from deconz.
-        holder.lightType.setText("Type: Temp");
-        holder.lightManufacturer.setText("Manufacturer: Temp");
+        Light light = lights.get(position);
+        holder.lightName.setText(light.getName());
+        holder.lightType.setText(light.getType());
+        holder.lightManufacturer.setText(light.getManufacturername());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return lights.size();
     }
+
+    /**
+     * Deletes all old Lights and adds the new Lights to the RecyclerView.
+     *
+     * @param newLights A List with the new Lights that should be displayed in the RecyclerView.
+     */
+    void updateData(List<Light> newLights) {
+        lights.clear();
+        lights.addAll(newLights);
+        notifyDataSetChanged();
+    }
+
 }
