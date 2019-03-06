@@ -6,19 +6,27 @@ import android.os.Bundle;
 import android.util.Log;
 
 import org.asdfgamer.sunriseClock.R;
+import org.asdfgamer.sunriseClock.network.config.DeconzRequestConfigHelper;
 import org.asdfgamer.sunriseClock.network.config.model.Config;
 import org.asdfgamer.sunriseClock.network.config.DeconzRequestConfig;
 import org.asdfgamer.sunriseClock.network.config.GetConfigCallback;
 import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLights;
+import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper;
 import org.asdfgamer.sunriseClock.network.lights.GetLightCallback;
 import org.asdfgamer.sunriseClock.network.lights.GetLightsCallback;
 import org.asdfgamer.sunriseClock.network.lights.model.Light;
+import org.asdfgamer.sunriseClock.network.schedules.CreateScheduleCallback;
+import org.asdfgamer.sunriseClock.network.schedules.DeconzRequestSchedules;
+import org.asdfgamer.sunriseClock.network.schedules.DeconzRequestSchedulesHelper;
 import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
+import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Success;
 import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
 import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallbackAdapter;
+import org.asdfgamer.sunriseClock.utils.ISO8601;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -87,12 +95,12 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
 
         /* 1st Step: Tests connection (and authentication!) to deconz by requesting an API endpoint which is key-protected.
          * 2nd step: Requests some information from deconz to show it to the user. */
-        DeconzRequestLights deconzLights = new DeconzRequestLights(builder.build(), preferences.getString("pref_api_key", ""));
+        DeconzRequestLightsHelper deconzLights = new DeconzRequestLightsHelper(builder.build(), preferences.getString("pref_api_key", ""));
 
         deconzLights.getLights(new CustomGetLightsCallback() {
             @Override
             public void onSuccess(Response<List<Light>> response) {
-                DeconzRequestConfig deconzConfig = new DeconzRequestConfig(builder.build(), preferences.getString("pref_api_key", ""));
+                DeconzRequestConfigHelper deconzConfig = new DeconzRequestConfigHelper(builder.build(), preferences.getString("pref_api_key", ""));
 
                 deconzConfig.getConfig(new SimplifiedCallback<Config>() {
                     @Override
