@@ -19,9 +19,15 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public class DeconzRequestLights extends DeconzRequest {
+/**
+ * Monitor and control single lights.
+ * This implements some actions for the "lights/" endpoint.
+ *
+ * @see <a href="https://dresden-elektronik.github.io/deconz-rest-doc/lights/">https://dresden-elektronik.github.io/deconz-rest-doc/lights/</a>
+ */
+public abstract class DeconzRequestLights extends DeconzRequest {
 
-    public DeconzRequestLights(Uri baseUrl, String apiKey) {
+    DeconzRequestLights(Uri baseUrl, String apiKey) {
         super(baseUrl, apiKey);
         init();
     }
@@ -43,21 +49,43 @@ public class DeconzRequestLights extends DeconzRequest {
         this.lightsEndpoint = super.createService(LightsEndpoint.class);
     }
 
+    /**
+     * This request returns a list of all lights.
+     *
+     * @param callback The callback to handle the request-related events.
+     */
     public void getLights(GetLightsCallback callback) {
         Call<List<Light>> call = lightsEndpoint.getLights();
         call.enqueue(new DeconzBaseCallbackAdapter<>(callback));
     }
 
+    /**
+     * This request returns a list of all lights.
+     *
+     * @param callback The callback to handle the request-related events.
+     */
     public void getLights(SimplifiedCallback<List<Light>> callback) {
         Call<List<Light>> call = lightsEndpoint.getLights();
         call.enqueue(new SimplifiedCallbackAdapter<>(callback));
     }
 
+    /**
+     * This request returns the full state of a light.
+     *
+     * @param callback The callback to handle the request-related events.
+     * @param lightId Id of the light to aks deconz for.
+     */
     public void getLight(GetLightCallback callback, String lightId) {
         Call<Light> call = lightsEndpoint.getLight(lightId);
         call.enqueue(new DeconzGetCallbackAdapter<>(callback));
     }
 
+    /**
+     * This request returns the full state of a light.
+     *
+     * @param callback The callback to handle the request-related events.
+     * @param lightId Id of the light to aks deconz for.
+     */
     public void getLight(SimplifiedCallback<Light> callback, String lightId) {
         Call<Light> call = lightsEndpoint.getLight(lightId);
         call.enqueue(new SimplifiedCallbackAdapter<>(callback));
