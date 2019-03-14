@@ -1,5 +1,6 @@
 package org.asdfgamer.sunriseClock.maintabs;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,16 @@ import androidx.recyclerview.widget.RecyclerView;
 public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHolder> {
     private List<Light> lights;
 
+    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(final View view) {
+            Log.i("Click", "Click");
+            view.setActivated(true);
+            notifyDataSetChanged();
+
+        }
+    };
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -45,7 +56,7 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
                                                          int viewType) {
         // create a new view
         View cardView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_light, parent, false);
-
+        cardView.setOnClickListener(mOnClickListener);
         return new MyViewHolder(cardView);
     }
 
