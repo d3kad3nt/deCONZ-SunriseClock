@@ -32,8 +32,8 @@ public class GetLightsDeserializer implements JsonDeserializer<List<?>> {
 
             // Using a new instance of Gson to avoid infinite recursion to this deserializer.
             Light light = new Gson().fromJson(entry.getValue(), Light.class);
-            light.setLightId(entry.getKey());
-
+            int lightID = Integer.parseInt(entry.getKey());
+            light.setLightId(lightID);
             lights.add(light);
         }
 

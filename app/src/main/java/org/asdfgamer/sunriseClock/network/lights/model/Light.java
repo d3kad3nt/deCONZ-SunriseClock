@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Light {
 
-    private transient String lightId;
+    private transient int lightId;
 
     @SerializedName("etag")
     @Expose
@@ -35,11 +35,11 @@ public class Light {
     @Expose
     private String uniqueid;
 
-    public String getLightId() {
+    public int getLightId() {
         return lightId;
     }
 
-    public void setLightId(String lightId) {
+    public void setLightId(int lightId) {
         this.lightId = lightId;
     }
 
