@@ -67,7 +67,8 @@ public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
 
         List<Light> emptyList = new ArrayList<>();
-        LightsAdapter recyclerviewAdapter = new LightsAdapter(emptyList);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(this.getContext()));
+        LightsAdapter recyclerviewAdapter = new LightsAdapter(emptyList, preferences);
 
         recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);

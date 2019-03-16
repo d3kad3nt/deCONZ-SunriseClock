@@ -1,5 +1,7 @@
 package org.asdfgamer.sunriseClock.maintabs;
 
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,21 +9,33 @@ import android.widget.TextView;
 
 import org.asdfgamer.sunriseClock.R;
 import org.asdfgamer.sunriseClock.network.lights.model.Light;
+import org.asdfgamer.sunriseClock.utils.Settings;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHolder> {
+    private final SharedPreferences PREFERENCES;
     private List<Light> lights;
 
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(final View view) {
-            view.setActivated(!view.isActivated());
-
+            Log.i("LightsAdapter", view.getId() + "");
+            Set<String> activatedLights = PREFERENCES.getStringSet(Settings.ACTIVATED_LIGHTS.toString(), new HashSet<String>());
+            if (view.isActivated()) {
+                activatedLights.remove(Integer.toString(view.getId()));
+                view.setActivated(false);
+            } else {
+                activatedLights.add(Integer.toString(view.getId()));
+                view.setActivated(true);
+            }
+            PREFERENCES.edit().putStringSet(Settings.ACTIVATED_LIGHTS.toString(), activatedLights).apply();
             notifyDataSetChanged();
         }
     };
@@ -43,8 +57,9 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    LightsAdapter(List<Light> lightList) {
+    LightsAdapter(List<Light> lightList, SharedPreferences preferences) {
         lights = lightList;
+        this.PREFERENCES = preferences;
     }
 
     // Create new views (invoked by the layout manager)
@@ -67,6 +82,7 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
         holder.lightName.setText(light.getName());
         holder.lightType.setText(light.getType());
         holder.lightManufacturer.setText(light.getManufacturername());
+        holder.itemView.setId(light.getLightId());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
