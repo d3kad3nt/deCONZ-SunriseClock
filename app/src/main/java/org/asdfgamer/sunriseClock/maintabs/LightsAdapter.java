@@ -1,6 +1,5 @@
 package org.asdfgamer.sunriseClock.maintabs;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +20,9 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
 
         @Override
         public void onClick(final View view) {
-            Log.i("Click", "Click");
-            view.setActivated(true);
-            notifyDataSetChanged();
+            view.setActivated(!view.isActivated());
 
+            notifyDataSetChanged();
         }
     };
 
