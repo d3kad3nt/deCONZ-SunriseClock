@@ -1,7 +1,10 @@
 package org.asdfgamer.sunriseClock;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -9,10 +12,12 @@ import android.view.MenuItem;
 import com.google.android.material.tabs.TabLayout;
 
 import org.asdfgamer.sunriseClock.maintabs.DeconzPagerAdapter;
+import org.asdfgamer.sunriseClock.utils.SettingKeys;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +43,30 @@ public class MainActivity extends AppCompatActivity {
          * to switch between fragments. */
         TabLayout tabLayout = findViewById(R.id.tab_bar);
         tabLayout.setupWithViewPager(viewPager);
+
+        setDefaultPreferences(getApplicationContext());
+    }
+
+    private void setDefaultPreferences(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        initPreference(SettingKeys.ALARM_ACTIVE, true, preferences);
+        initPreference(SettingKeys.IP, "localhost", preferences);
+        initPreference(SettingKeys.PORT, "80", preferences);
+
+    }
+
+    private void initPreference(SettingKeys setting, boolean value, SharedPreferences preferences) {
+        if (!preferences.contains(setting.toString())) {
+            Log.i(TAG, "Set default value for " + setting + " to " + value);
+            preferences.edit().putBoolean(setting.toString(), value).apply();
+        }
+    }
+
+    private void initPreference(SettingKeys setting, String value, SharedPreferences preferences) {
+        if (!preferences.contains(setting.toString())) {
+            Log.i(TAG, "Set default value for " + setting + " to " + value);
+            preferences.edit().putString(setting.toString(), value).apply();
+        }
     }
 
     @Override

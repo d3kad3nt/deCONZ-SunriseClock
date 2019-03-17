@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 
 public enum SettingKeys {
     ACTIVATED_LIGHTS("activatedLights"),
-    ;
+    ALARM_ACTIVE("pref_alarm_active"),
+    IP("pref_ip"),
+    PORT("pref_port");
 
     String name;
 
