@@ -13,6 +13,7 @@ import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLights;
 import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper;
 import org.asdfgamer.sunriseClock.network.lights.model.Light;
 import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
+import org.asdfgamer.sunriseClock.utils.SettingKeys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +98,7 @@ public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(this.getContext()));
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
-                .encodedAuthority(preferences.getString("pref_ip", "") + ":" + preferences.getString("pref_port", ""));
+                .encodedAuthority(preferences.getString(SettingKeys.IP.toString(), "") + ":" + preferences.getString(SettingKeys.PORT.toString(), ""));
         Uri uri = builder.build();//TODO save Uri as string in Preferences that it doesn't has to be created multiple times
         String apiKey = preferences.getString("pref_api_key", "");
         DeconzRequestLights deconzRequestLights = new DeconzRequestLightsHelper(uri, apiKey) {

@@ -9,9 +9,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.asdfgamer.sunriseClock.network.schedules.CreateScheduleCallback;
 import org.asdfgamer.sunriseClock.network.schedules.DeconzRequestSchedulesHelper;
-import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Success;
 import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
 import org.asdfgamer.sunriseClock.utils.ISO8601;
@@ -21,7 +19,6 @@ import java.util.Date;
 import java.util.Objects;
 
 import androidx.preference.PreferenceManager;
-import retrofit2.Call;
 import retrofit2.Response;
 
 public class SchedulingTask extends AsyncTask<Void, Void, String> {
@@ -44,6 +41,10 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... voids) {
+        if (!preferences.getBoolean("pref_alarm_active", false)) {
+            Log.i(TAG, "SunriseClock is not active");
+            return "SunriseClock is not active";
+        }
         Date date = new Date();
         date.setTime(alarm.getNextAlarmClock().getTriggerTime());
         ISO8601 schedulingTime = new ISO8601(date);
