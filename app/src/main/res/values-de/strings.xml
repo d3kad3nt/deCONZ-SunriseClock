@@ -40,4 +40,5 @@
     <string name="tab_lights">Lichter</string>
     <string name="tab_time">Zeit</string>
     <string name="connection_test_error_nodeconz">Die erhaltene Antwort entsprach nicht den Vorgaben. Handelt es sich wirklich um eine Deconz-Instanz?</string>
+    <string name="alarm_enable">Aktiviere Alarme</string>
 </resources>

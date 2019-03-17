@@ -47,4 +47,5 @@
     <string name="tab_lights">Lights</string>
     <string name="tab_time">Time</string>
     <string name="connection_test_error_nodeconz">The response could not be identified as deconz response. Is this a deconz instance?</string>
+    <string name="alarm_enable">Enable Alarms</string>
 </resources>
