@@ -2,13 +2,13 @@ package org.asdfgamer.sunriseClock.utils;
 
 import androidx.annotation.NonNull;
 
-public enum Settings {
+public enum SettingKeys {
     ACTIVATED_LIGHTS("activatedLights"),
     ;
 
     String name;
 
-    Settings(String string) {
+    SettingKeys(String string) {
         name = string;
     }
 

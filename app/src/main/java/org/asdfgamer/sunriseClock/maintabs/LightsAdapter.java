@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import org.asdfgamer.sunriseClock.R;
 import org.asdfgamer.sunriseClock.network.lights.model.Light;
-import org.asdfgamer.sunriseClock.utils.Settings;
+import org.asdfgamer.sunriseClock.utils.SettingKeys;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,27 +22,31 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
     private final SharedPreferences PREFERENCES;
     private List<Light> lights;
 
+    private final static String TAG = "LightsAdapter";
+
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(final View view) {
-            Log.i("LightsAdapter", view.getId() + "");
-            Set<String> activatedLights = PREFERENCES.getStringSet(Settings.ACTIVATED_LIGHTS.toString(), new HashSet<String>());
+            Set<String> activatedLights = PREFERENCES.getStringSet(SettingKeys.ACTIVATED_LIGHTS.toString(), new HashSet<String>());
             if (view.isActivated()) {
+                Log.i(TAG, "Deactivate light with id:" + view.getId());
                 activatedLights.remove(Integer.toString(view.getId()));
-                view.setActivated(false);
             } else {
+                Log.i(TAG, "Activate light with id:" + view.getId());
                 activatedLights.add(Integer.toString(view.getId()));
-                view.setActivated(true);
             }
-            PREFERENCES.edit().putStringSet(Settings.ACTIVATED_LIGHTS.toString(), activatedLights).apply();
+            PREFERENCES.edit().putStringSet(SettingKeys.ACTIVATED_LIGHTS.toString(), activatedLights).apply();
             notifyDataSetChanged();
         }
     };
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+
+    /**
+     * Provide a reference to the views for each data item
+     * Complex data items may need more than one view per item, and
+     * you provide access to all the views for a data item in a view holder
+     */
     static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView lightName;
         TextView lightType;
@@ -56,13 +60,17 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
+    /**
+     * Provide a suitable constructor (depends on the kind of dataset)
+     */
     LightsAdapter(List<Light> lightList, SharedPreferences preferences) {
         lights = lightList;
         this.PREFERENCES = preferences;
     }
 
-    // Create new views (invoked by the layout manager)
+    /**
+     * Create new views (invoked by the layout manager)
+     */
     @NonNull
     @Override
     public LightsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
@@ -73,7 +81,9 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
         return new MyViewHolder(cardView);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    /**
+     * Replace the contents of a view (invoked by the layout manager)
+     */
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         // - get element from your dataset at this position
@@ -82,10 +92,19 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
         holder.lightName.setText(light.getName());
         holder.lightType.setText(light.getType());
         holder.lightManufacturer.setText(light.getManufacturername());
+        //Set ID of View
         holder.itemView.setId(light.getLightId());
+        //Activate view
+        Set<String> set = PREFERENCES.getStringSet(SettingKeys.ACTIVATED_LIGHTS.toString(), new HashSet<String>());
+        boolean activated = set.contains(Integer.toString(light.getLightId()));
+        holder.itemView.setActivated(activated);
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+    /**
+     * Return the size of your dataset (invoked by the layout manager)
+     *
+     * @return Size of the dataset
+     */
     @Override
     public int getItemCount() {
         return lights.size();
