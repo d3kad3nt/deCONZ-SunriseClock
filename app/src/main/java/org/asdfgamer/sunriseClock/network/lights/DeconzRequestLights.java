@@ -6,8 +6,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.asdfgamer.sunriseClock.network.lights.model.Light;
 import org.asdfgamer.sunriseClock.network.DeconzRequest;
+import org.asdfgamer.sunriseClock.network.lights.model.Light;
 import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.DeconzBaseCallbackAdapter;
 import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.DeconzGetCallbackAdapter;
 import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
@@ -22,6 +22,8 @@ import retrofit2.http.Path;
 /**
  * Monitor and control single lights.
  * This implements some actions for the "lights/" endpoint.
+ *
+ * To use the functions of this class use {@code org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper}
  *
  * @see <a href="https://dresden-elektronik.github.io/deconz-rest-doc/lights/">https://dresden-elektronik.github.io/deconz-rest-doc/lights/</a>
  */
