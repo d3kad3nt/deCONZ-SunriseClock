@@ -4,11 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import com.tomerrosenfeld.customanalogclockview.CustomAnalogClock;
 
 import org.asdfgamer.sunriseClock.R;
-
-import java.text.MessageFormat;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -42,6 +41,10 @@ public class OverviewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_overview, container, false);
+        View view = inflater.inflate(R.layout.fragment_overview, container, false);
+        CustomAnalogClock customAnalogClock = view.findViewById(R.id.analog_clock);
+        customAnalogClock.setFace(R.drawable.ic_clock_face_green);
+        customAnalogClock.setScale(2);
+        return view;
     }
 }
