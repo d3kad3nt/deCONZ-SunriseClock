@@ -9,11 +9,12 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.preference.PreferenceManager;
+
 import org.asdfgamer.sunriseClock.network.schedules.DeconzRequestSchedulesHelper;
 import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Success;
 import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
 import org.asdfgamer.sunriseClock.utils.ISO8601;
-import org.asdfgamer.sunriseClock.utils.SettingKeys;
 
 import java.lang.ref.WeakReference;
 import java.util.Date;
@@ -21,8 +22,15 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import androidx.preference.PreferenceManager;
 import retrofit2.Response;
+
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.ACTIVATED_LIGHTS;
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.ALARM_ACTIVE;
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.ALARM_TIME;
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.API_KEY;
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.IP;
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.PORT;
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.TOAST_ACTIVE;
 
 public class SchedulingTask extends AsyncTask<Void, Void, String> {
 
@@ -44,12 +52,13 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... voids) {
-        if (!preferences.getBoolean("pref_alarm_active", false)) {
+        if (!preferences.getBoolean(ALARM_ACTIVE.toString(), false)) {
             Log.i(TAG, "SunriseClock is not active");
             return "SunriseClock is not active";
         }
         Date date = new Date();
-        date.setTime(alarm.getNextAlarmClock().getTriggerTime());
+        final long alarmTime = alarm.getNextAlarmClock().getTriggerTime();
+        date.setTime(alarmTime);
         ISO8601 schedulingTime = new ISO8601(date);
         Log.i(TAG, "Next alarm rings at :" + schedulingTime);
 
@@ -57,9 +66,9 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
         //TODO: Improve defaultValues
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
-                .encodedAuthority(preferences.getString("pref_ip", "") + ":" + preferences.getString("pref_port", ""));
-        String apiKey = preferences.getString("pref_api_key", "");
-        Set<String> lightIds = preferences.getStringSet(SettingKeys.ACTIVATED_LIGHTS.toString(), new HashSet<String>());
+                .encodedAuthority(preferences.getString(IP.toString(), "") + ":" + preferences.getString(PORT.toString(), ""));
+        String apiKey = preferences.getString(API_KEY.toString(), "");
+        Set<String> lightIds = preferences.getStringSet(ACTIVATED_LIGHTS.toString(), new HashSet<String>());
         for (String lightId : lightIds) {
             DeconzRequestSchedulesHelper deconz = new DeconzRequestSchedulesHelper(builder.build(), apiKey);
             deconz.schedulePowerOn(new SimplifiedCallback<Success>() {
@@ -67,6 +76,7 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
                 public void onSuccess(Response<Success> response) {
                     Success success = response.body();
                     Log.i(TAG, "Successfully created schedule with id: " + Objects.requireNonNull(success).getId());
+                    preferences.edit().putLong(ALARM_TIME.toString(), alarmTime).apply();
                 }
 
                 @Override
@@ -83,7 +93,7 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String s) {
 
-        if (preferences.getBoolean("pref_schedule_set_toast", true)) {
+        if (preferences.getBoolean(TOAST_ACTIVE.toString(), true)) {
             Toast.makeText(this.context.get(), s,
                     Toast.LENGTH_LONG).show();
         }
