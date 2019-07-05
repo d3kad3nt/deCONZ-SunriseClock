@@ -13,10 +13,13 @@ import org.asdfgamer.sunriseClock.network.schedules.DeconzRequestSchedulesHelper
 import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Success;
 import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
 import org.asdfgamer.sunriseClock.utils.ISO8601;
+import org.asdfgamer.sunriseClock.utils.SettingKeys;
 
 import java.lang.ref.WeakReference;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import androidx.preference.PreferenceManager;
 import retrofit2.Response;
@@ -56,21 +59,23 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
         builder.scheme("http")
                 .encodedAuthority(preferences.getString("pref_ip", "") + ":" + preferences.getString("pref_port", ""));
         String apiKey = preferences.getString("pref_api_key", "");
-        String lightId = preferences.getString("", "2"); //TODO: setting options for light ids
+        Set<String> lightIds = preferences.getStringSet(SettingKeys.ACTIVATED_LIGHTS.toString(), new HashSet<String>());
+        for (String lightId : lightIds) {
+            DeconzRequestSchedulesHelper deconz = new DeconzRequestSchedulesHelper(builder.build(), apiKey);
+            deconz.schedulePowerOn(new SimplifiedCallback<Success>() {
+                @Override
+                public void onSuccess(Response<Success> response) {
+                    Success success = response.body();
+                    Log.i(TAG, "Successfully created schedule with id: " + Objects.requireNonNull(success).getId());
+                }
 
-        DeconzRequestSchedulesHelper deconz = new DeconzRequestSchedulesHelper(builder.build(), apiKey);
-        deconz.schedulePowerOn(new SimplifiedCallback<Success>() {
-            @Override
-            public void onSuccess(Response<Success> response) {
-                Success success = response.body();
-                Log.i(TAG, "Successfully created schedule with id: " + Objects.requireNonNull(success).getId());
-            }
+                @Override
+                public void onError() {
+                    //TODO
+                }
+            }, lightId, schedulingTime);
+        }
 
-            @Override
-            public void onError() {
-                //TODO
-            }
-        }, lightId, schedulingTime);
 
         return "TODO" + schedulingTime;
     }
