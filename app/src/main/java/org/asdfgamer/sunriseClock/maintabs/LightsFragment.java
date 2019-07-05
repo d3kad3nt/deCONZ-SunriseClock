@@ -8,24 +8,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.asdfgamer.sunriseClock.R;
-import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLights;
-import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper;
-import org.asdfgamer.sunriseClock.network.lights.model.Light;
-import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
-import org.asdfgamer.sunriseClock.utils.SettingKeys;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import org.asdfgamer.sunriseClock.R;
+import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLights;
+import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper;
+import org.asdfgamer.sunriseClock.network.lights.model.Light;
+import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import retrofit2.Response;
+
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.API_KEY;
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.IP;
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.PORT;
 
 public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -98,9 +102,9 @@ public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(this.getContext()));
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
-                .encodedAuthority(preferences.getString(SettingKeys.IP.toString(), "") + ":" + preferences.getString(SettingKeys.PORT.toString(), ""));
+                .encodedAuthority(preferences.getString(IP.toString(), "") + ":" + preferences.getString(PORT.toString(), ""));
         Uri uri = builder.build();//TODO save Uri as string in Preferences that it doesn't has to be created multiple times
-        String apiKey = preferences.getString("pref_api_key", "");
+        String apiKey = preferences.getString(API_KEY.toString(), "");
         DeconzRequestLights deconzRequestLights = new DeconzRequestLightsHelper(uri, apiKey) {
         };
         deconzRequestLights.getLights(new SimplifiedCallback<List<Light>>() {

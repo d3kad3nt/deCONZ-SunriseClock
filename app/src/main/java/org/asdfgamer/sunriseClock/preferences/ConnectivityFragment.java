@@ -5,37 +5,32 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+
 import org.asdfgamer.sunriseClock.R;
 import org.asdfgamer.sunriseClock.network.config.DeconzRequestConfigHelper;
 import org.asdfgamer.sunriseClock.network.config.model.Config;
-import org.asdfgamer.sunriseClock.network.config.DeconzRequestConfig;
-import org.asdfgamer.sunriseClock.network.config.GetConfigCallback;
-import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLights;
 import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper;
-import org.asdfgamer.sunriseClock.network.lights.GetLightCallback;
 import org.asdfgamer.sunriseClock.network.lights.GetLightsCallback;
 import org.asdfgamer.sunriseClock.network.lights.model.Light;
-import org.asdfgamer.sunriseClock.network.schedules.CreateScheduleCallback;
-import org.asdfgamer.sunriseClock.network.schedules.DeconzRequestSchedules;
-import org.asdfgamer.sunriseClock.network.schedules.DeconzRequestSchedulesHelper;
 import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
-import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Success;
 import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
-import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallbackAdapter;
-import org.asdfgamer.sunriseClock.utils.ISO8601;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 import retrofit2.Call;
 import retrofit2.Response;
+
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.API_KEY;
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.IP;
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.PORT;
+import static org.asdfgamer.sunriseClock.utils.SettingKeys.TEST_CONNECTION;
 
 public class ConnectivityFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -63,7 +58,7 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         Log.i("sunriseClock", "Settings");
         setPreferencesFromResource(R.xml.preferences_connectivity, rootKey);
 
-        findPreference("pref_test_connection").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        Objects.requireNonNull(findPreference("pref_test_connection")).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Log.d(TAG, "Click on testConnection registered.");
@@ -75,7 +70,7 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         //Manually update the preferences summary on creation of this fragment.
         //This is used instead of a custom SimpleSummaryProvider. This method is easier for
         //updating the summary from different dialogs (eg. AlertDialog).
-        updatePrefSummary(findPreference("pref_test_connection").getSharedPreferences(), "pref_test_connection");
+        updatePrefSummary(Objects.requireNonNull(findPreference("pref_test_connection")).getSharedPreferences(), TEST_CONNECTION.toString());
     }
 
     private void testConnection() {
@@ -87,20 +82,20 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         alertDialog.show();
 
 
-        final SharedPreferences preferences = findPreference("pref_test_connection").getSharedPreferences();
+        final SharedPreferences preferences = Objects.requireNonNull(findPreference("pref_test_connection")).getSharedPreferences();
 
         final Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
-                .encodedAuthority(preferences.getString("pref_ip", "") + ":" + preferences.getString("pref_port", ""));
+                .encodedAuthority(preferences.getString(IP.toString(), "") + ":" + preferences.getString(PORT.toString(), ""));
 
         /* 1st Step: Tests connection (and authentication!) to deconz by requesting an API endpoint which is key-protected.
          * 2nd step: Requests some information from deconz to show it to the user. */
-        DeconzRequestLightsHelper deconzLights = new DeconzRequestLightsHelper(builder.build(), preferences.getString("pref_api_key", ""));
+        DeconzRequestLightsHelper deconzLights = new DeconzRequestLightsHelper(builder.build(), preferences.getString(API_KEY.toString(), ""));
 
         deconzLights.getLights(new CustomGetLightsCallback() {
             @Override
             public void onSuccess(Response<List<Light>> response) {
-                DeconzRequestConfigHelper deconzConfig = new DeconzRequestConfigHelper(builder.build(), preferences.getString("pref_api_key", ""));
+                DeconzRequestConfigHelper deconzConfig = new DeconzRequestConfigHelper(builder.build(), preferences.getString(API_KEY.toString(), ""));
 
                 deconzConfig.getConfig(new SimplifiedCallback<Config>() {
                     @Override
@@ -158,9 +153,9 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         String lastConnect = sharedPreferences.getString(key, "");
         Log.d(TAG, "updatePrefSummary with value: " + lastConnect);
         if (Objects.equals(lastConnect, "")) {
-            findPreference(key).setSummary(getResources().getString(R.string.connection_test_summary_neverconnected));
+            Objects.requireNonNull(findPreference(key)).setSummary(getResources().getString(R.string.connection_test_summary_neverconnected));
         } else {
-            findPreference(key).setSummary(getResources().getString(R.string.connection_test_summary_lastconnected) + ": " + lastConnect);
+            Objects.requireNonNull(findPreference(key)).setSummary(getResources().getString(R.string.connection_test_summary_lastconnected) + ": " + lastConnect);
         }
     }
 

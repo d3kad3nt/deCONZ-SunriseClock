@@ -10,6 +10,7 @@ public enum SettingKeys {
     IP("pref_ip"),                              //String
     PORT("pref_port"),                          //String
     TOAST_ACTIVE("pref_schedule_set_toast"),    //Boolean
+    TEST_CONNECTION("pref_test_connection"),    //String
     ;
 
     String name;
