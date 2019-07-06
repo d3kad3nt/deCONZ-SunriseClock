@@ -11,6 +11,10 @@ public class SimpleTime {
     public SimpleTime() {
     }
 
+    public SimpleTime(long unixTime) {
+        date.setTime(new Date(unixTime));
+    }
+
     public SimpleTime(int hour, int minute) {
         date.set(Calendar.HOUR, hour);
         date.set(Calendar.MINUTE, minute);
@@ -56,6 +60,10 @@ public class SimpleTime {
 
     public Date getDate() {
         return date.getTime();
+    }
+
+    public String getTimeOfDay() {
+        return date.get(Calendar.HOUR) + ":" + date.get(Calendar.MINUTE);
     }
 
 }

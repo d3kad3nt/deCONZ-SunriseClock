@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -59,6 +60,9 @@ public class OverviewFragment extends Fragment {
         customAnalogClock.setScale(2);
         long standardTime = new SimpleTime(0, 0).getUnixTime();
         customAnalogClock.setTime(standardTime);
+
+        TextView textView = view.findViewById(R.id.infoText);
+        textView.setText(getResources().getString(R.string.alarm_not_set));
     }
 
     private void showClock(@NonNull View view, long alarm) {
@@ -66,5 +70,10 @@ public class OverviewFragment extends Fragment {
         customAnalogClock.setFace(R.drawable.ic_clock_face_green);
         customAnalogClock.setScale(2);
         customAnalogClock.setTime(alarm);
+
+        TextView textView = view.findViewById(R.id.infoText);
+        SimpleTime time = new SimpleTime(alarm);
+        String infoText = String.format(getResources().getString(R.string.alarm_time), time.getTimeOfDay());
+        textView.setText(infoText);
     }
 }

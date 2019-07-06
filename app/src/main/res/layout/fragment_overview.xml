@@ -6,6 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/infoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="24sp" />
+
     <com.tomerrosenfeld.customanalogclockview.CustomAnalogClock
         android:id="@+id/analog_clock"
         android:layout_width="match_parent"
