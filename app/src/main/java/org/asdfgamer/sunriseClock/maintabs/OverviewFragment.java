@@ -17,6 +17,7 @@ import org.asdfgamer.sunriseClock.R;
 import org.asdfgamer.sunriseClock.utils.SettingKeys;
 import org.asdfgamer.sunriseClock.utils.SimpleTime;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class OverviewFragment extends Fragment {
@@ -45,7 +46,7 @@ public class OverviewFragment extends Fragment {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getActivity()));
         long alarm = preferences.getLong(SettingKeys.ALARM_TIME.toString(), 0);
-        if (alarm != 0) {
+        if (alarm != 0 && alarm > (new Date().getTime())) {
             showClock(view, alarm);
         } else {
             showInfo(view);
