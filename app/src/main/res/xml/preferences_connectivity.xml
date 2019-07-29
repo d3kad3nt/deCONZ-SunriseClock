@@ -12,7 +12,7 @@
 
         <EditTextPreference
             app:key="pref_ip"
-            app:title="@string/ip"
+            app:title="@string/ip_or_domain"
             app:useSimpleSummaryProvider = "true" />
         <EditTextPreference
             app:key="pref_port"
