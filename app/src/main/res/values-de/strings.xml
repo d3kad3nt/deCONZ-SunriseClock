@@ -8,13 +8,13 @@
     <string name="connection_test">Teste Verbindung</string>
     <string name="url">Gesamte URL</string>
     <string name="sync">Sync</string>
-    <string name="onlyWLAN_summary">"Syncronisiere nur bei aktiver WLAN-Verbindung "</string>
+    <string name="onlyWLAN_summary">"Synchronisiere nur bei aktiver WLAN-Verbindung "</string>
     <string name="onlyWLAN">Nur im WLAN</string>
     <string name="network_category">Netzwerk</string>
     <string name="automaticDiscovery">Finde server automatisch</string>
     <string name="automaticDiscovery_summary">Findet den Server über UPnP im lokalen Netz</string>
     <string name="allowedWLAN">erlautes WLAN</string>
-    <string name="allowedWLAN_summary">erlaubtes WLAN zum syncronisieren</string>
+    <string name="allowedWLAN_summary">erlaubtes WLAN zum synchronisieren</string>
     <string name="network">Netzwerk</string>
     <string name="ui_interface">Oberfläche</string>
     <string name="debug">Fehlersuche</string>
@@ -41,4 +41,5 @@
     <string name="tab_time">Zeit</string>
     <string name="connection_test_error_nodeconz">Die erhaltene Antwort entsprach nicht den Vorgaben. Handelt es sich wirklich um eine Deconz-Instanz?</string>
     <string name="alarm_enable">Aktiviere Alarme</string>
+    <string name="ip_or_domain">IP/Domain</string>
 </resources>
