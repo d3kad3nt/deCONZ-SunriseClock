@@ -21,10 +21,28 @@
                 fill="transparent" />
         </symbol>
 
+        <linearGradient id="Verlauf1" x1="0%" y1="0%" x2="50%" y2="0%">
+            <stop offset="0%" stop-color="black" />
+            <stop offset="100%" stop-color="white" />
+            <stop offset="200%" stop-color="black" />
+        </linearGradient>
+
+        <radialGradient id="grad1" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="white" />
+            <stop offset="90%" stop-color="white" />
+            <stop offset="100%" stop-color="rgb(64,64,64)" />
+        </radialGradient>
+
+        <mask id="mask">
+            <circle cx="256" cy="256" r="256" fill="url(#grad1)" />
+        </mask>
+
     </defs>
 
     <!-- Background -->
-    <rect height="256" width="512" x="0" y="256" fill="rgb(24, 192, 32)" />
+    <path d="M 512,256 
+            C 512,404 394,512 256,512 
+            C 118,512 0,404 0,256 z " style="fill: rgb(24, 192, 32); mask: url(#mask)" />
     <!-- Lightbulb -->
     <use xlink:href="#chassis" x="256" y="304" />
     <ellipse cx="256" cy="280" rx="120" ry="112" fill="rgb(208, 128, 12)" />
