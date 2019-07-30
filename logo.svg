@@ -1,0 +1,40 @@
+<svg width="512px" height="512px" xmlns="http://www.w3.org/2000/svg" version="1.1"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <symbol id="ray">
+            <line x1="144" y1="0" x2="256" y2="0" stroke-linecap="round"
+                style="stroke:rgb(255,128,0);stroke-width:24" />
+        </symbol>
+
+        <symbol id="chassis">
+            <path d="M0 0 
+                     H112 
+                     L56 208 
+                     H-56 
+                     L-112 0 Z" fill="grey" />
+        </symbol>
+
+        <symbol id="thread">
+            <path d="M 0 0  C 16 32, 32 32, 48 0 L 56 80" stroke="black" stroke-width="6"
+                fill="transparent" />
+            <path d="M 0 0  C -16 32, -32 32, -48 0 L -56 80" stroke="black" stroke-width="6"
+                fill="transparent" />
+        </symbol>
+
+    </defs>
+
+    <!-- Background -->
+    <rect height="256" width="512" x="0" y="256" fill="rgb(24, 192, 32)" />
+    <!-- Lightbulb -->
+    <use xlink:href="#chassis" x="256" y="304" />
+    <ellipse cx="256" cy="280" rx="120" ry="112" fill="rgb(208, 128, 12)" />
+    <ellipse cx="256" cy="288" rx="96" ry="96" fill="rgb(255, 255, 255)" />
+    <use xlink:href="#thread" x="256" y="288" />
+    <!-- Light rays-->
+    <use xlink:href="#ray" x="256" y="280" transform="rotate(210,256,280), scale(1)" />
+    <use xlink:href="#ray" x="256" y="280" transform="rotate(240,256,280)" />
+    <use xlink:href="#ray" x="256" y="280" transform="rotate(270,256,280)" />
+    <use xlink:href="#ray" x="256" y="280" transform="rotate(300,256,280)" />
+    <use xlink:href="#ray" x="256" y="280" transform="rotate(330,256,280)" />
+
+</svg>
