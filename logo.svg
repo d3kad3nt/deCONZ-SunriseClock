@@ -28,9 +28,9 @@
 
         <symbol id="light-bulb">
             <circle r="120" fill="gold" cx="0" cy="0" />
-            <circle r="84" fill="orangered" cx="0" cy="0" />
+            <!--<circle r="84" fill="orangered" cx="0" cy="0" />
             <circle r="48" fill="crimson" cx="0" cy="0" />
-            <circle r="16" fill="maroon" cx="0" cy="0" />
+            <circle r="16" fill="maroon" cx="0" cy="0" />-->
         </symbol>
 
         <linearGradient id="Verlauf1" x1="0%" y1="0%" x2="50%" y2="0%">
