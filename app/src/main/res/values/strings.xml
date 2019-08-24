@@ -48,5 +48,7 @@
     <string name="tab_time">Time</string>
     <string name="connection_test_error_nodeconz">The response could not be identified as deconz response. Is this a deconz instance?</string>
     <string name="alarm_enable">Enable Alarms</string>
+    <string name="alarm_not_set">There is no alarm set.</string>
+    <string name="alarm_time">Light activates at %1$s.</string>
     <string name="ip_or_domain">IP / Domain</string>
 </resources>
