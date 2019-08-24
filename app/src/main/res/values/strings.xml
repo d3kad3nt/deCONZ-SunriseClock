@@ -50,4 +50,5 @@
     <string name="alarm_enable">Enable Alarms</string>
     <string name="alarm_not_set">There is no alarm set.</string>
     <string name="alarm_time">Light activates at %1$s.</string>
+    <string name="ip_or_domain">IP / Domain</string>
 </resources>
