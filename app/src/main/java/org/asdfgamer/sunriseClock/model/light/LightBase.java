@@ -1,38 +1,55 @@
 package org.asdfgamer.sunriseClock.model.light;
 
-import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.room.ColumnInfo;
+import androidx.room.Dao;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.List;
+
 @Entity(tableName = LightBase.TABLENAME)
-public abstract class LightBase {
+public class LightBase {
 
     static final String TABLENAME = "light_base";
+
+    final static boolean SWITCHABLE = false;
+    final static boolean DIMMABLE = false;
+    final static boolean TEMPERATURABLE = false;
+    final static boolean COLORABLE = false;
 
     @PrimaryKey
     private int id;
     private String friendlyName;
 
-    public static boolean SWITCHABLE = false;
+    @ColumnInfo(name = "cap_switchable")
+    protected boolean switchable;
     @ColumnInfo(name = "on")
     private boolean on;
 
-    public static boolean DIMMABLE = false;
+    @ColumnInfo(name = "cap_dimmable")
+    protected boolean dimmable;
     @ColumnInfo(name = "brightness")
     private int brightness;
 
-    public static boolean TEMPERATURABLE = false;
+    @ColumnInfo(name = "cap_temperaturable")
+    protected boolean temperaturable;
     @ColumnInfo(name = "ct")
     private int colorTemperature;
 
-    public static boolean COLORABLE = false;
+    @ColumnInfo(name = "cap_colorable")
+    protected boolean colorable;
     @ColumnInfo(name = "color")
     private int color;
 
-    LightBase(int id, String friendlyName) {
+    LightBase(int id, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
         this.id = id;
         this.friendlyName = friendlyName;
+
+        this.switchable = switchable;
+        this.dimmable = dimmable;
+        this.temperaturable = temperaturable;
+        this.colorable = colorable;
     }
 
     public int getId() {
@@ -47,7 +64,8 @@ public abstract class LightBase {
         return this.friendlyName;
     }
 
-    protected void setFriendlyName(String friendlyName) {
+    //TODO: set back to protected after tests
+    public void setFriendlyName(String friendlyName) {
         this.friendlyName = friendlyName;
     }
 

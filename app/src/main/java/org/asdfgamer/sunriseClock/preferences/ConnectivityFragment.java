@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.LiveData;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.asdfgamer.sunriseClock.R;
-import org.asdfgamer.sunriseClock.model.light.ILightBaseDao;
-import org.asdfgamer.sunriseClock.model.light.LightRemoteDao_UnswitchableUndimmableUntemperaturableColorable;
+import org.asdfgamer.sunriseClock.model.light.LightBase;
+import org.asdfgamer.sunriseClock.model.light.LightRemote_SwitchableUndimmableUntemperaturableUncolorable;
+import org.asdfgamer.sunriseClock.model.light.LightRemote_SwitchableUndimmableUntemperaturableUncolorableDao;
 import org.asdfgamer.sunriseClock.model.light.LightRemote_UnswitchableUndimmableUntemperaturableColorable;
 import org.asdfgamer.sunriseClock.network.config.DeconzRequestConfigHelper;
 import org.asdfgamer.sunriseClock.network.config.model.Config;
@@ -80,7 +82,7 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
     private void testConnection() {
 
 
-        LightRemote_UnswitchableUndimmableUntemperaturableColorable test = new LightRemote_UnswitchableUndimmableUntemperaturableColorable(1, "friendlyName", 2);
+        LightRemote_SwitchableUndimmableUntemperaturableUncolorable test = new LightRemote_SwitchableUndimmableUntemperaturableUncolorable(1, "friendlyName", true);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(this.getContext()));
         alertDialogBuilder.setTitle("Light Test")
@@ -88,14 +90,16 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         final AlertDialog testAlert = alertDialogBuilder.create();
         testAlert.show();
 
-        LightRemoteDao_UnswitchableUndimmableUntemperaturableColorable dao = AppDatabase.getInstance(this.getContext()).LightRemoteDao_UnswitchableUndimmableUntemperaturableColorable();
+        LightRemote_SwitchableUndimmableUntemperaturableUncolorableDao dao = AppDatabase.getInstance(this.getContext()).dao1();
         dao.insertOrUpdate(test);
-        //LiveData<BaseRemoteSwitchableLight> test2 = dao.load(1);
 
-        //test2.observeForever(baseRemoteSwitchableLight -> {Log.d(TAG, baseRemoteSwitchableLight.getFriendlyName());
-        //    baseRemoteSwitchableLight.setFriendlyName("test");
-        //    dao.update(baseRemoteSwitchableLight);
-        //});
+        LiveData<List<LightRemote_SwitchableUndimmableUntemperaturableUncolorable>> test2 = dao.loadAll();
+
+        test2.observeForever(light -> {
+            Log.d(TAG, light.get(0).getFriendlyName());
+            light.get(0).setFriendlyName("test");
+            dao.update(light.get(0));
+        });
 
         //TODO: Show loading animation for running ConnectionTests instead of static message. volley returns after max 5 seconds (or so) automatically.
         alertDialogBuilder.setTitle(getResources().getString(R.string.connection_test))

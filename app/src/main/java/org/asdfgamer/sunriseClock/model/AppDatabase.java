@@ -6,16 +6,14 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import org.asdfgamer.sunriseClock.model.light.ILightBaseDao;
 import org.asdfgamer.sunriseClock.model.light.LightBase;
-import org.asdfgamer.sunriseClock.model.light.LightRemoteDao_UnswitchableUndimmableUntemperaturableColorable;
 import org.asdfgamer.sunriseClock.model.light.LightRemote_SwitchableUndimmableUntemperaturableUncolorable;
+import org.asdfgamer.sunriseClock.model.light.LightRemote_SwitchableUndimmableUntemperaturableUncolorableDao;
 import org.asdfgamer.sunriseClock.model.light.LightRemote_UnswitchableUndimmableUntemperaturableColorable;
 
-import java.lang.reflect.Field;
-
 @Database(entities = {LightBase.class,
-        LightRemote_UnswitchableUndimmableUntemperaturableColorable.class},
+        LightRemote_UnswitchableUndimmableUntemperaturableColorable.class,
+        LightRemote_SwitchableUndimmableUntemperaturableUncolorable.class},
         version = 1,
         exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
@@ -37,7 +35,7 @@ public abstract class AppDatabase extends RoomDatabase {
         INSTANCE = null;
     }
 
-    public abstract LightRemoteDao_UnswitchableUndimmableUntemperaturableColorable LightRemoteDao_UnswitchableUndimmableUntemperaturableColorable();
+    public abstract LightRemote_SwitchableUndimmableUntemperaturableUncolorableDao dao1();
 
     //TODO: getDaoInstanceFor(T extends LightBase) implementieren. Oder ist das ne schlechte Idee?
 
