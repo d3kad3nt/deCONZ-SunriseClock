@@ -10,6 +10,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.asdfgamer.sunriseClock.R;
+import org.asdfgamer.sunriseClock.model.light.ILightBaseDao;
+import org.asdfgamer.sunriseClock.model.light.LightRemoteDao_UnswitchableUndimmableUntemperaturableColorable;
+import org.asdfgamer.sunriseClock.model.light.LightRemote_UnswitchableUndimmableUntemperaturableColorable;
 import org.asdfgamer.sunriseClock.network.config.DeconzRequestConfigHelper;
 import org.asdfgamer.sunriseClock.network.config.model.Config;
 import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper;
@@ -17,6 +20,7 @@ import org.asdfgamer.sunriseClock.network.lights.GetLightsCallback;
 import org.asdfgamer.sunriseClock.network.lights.model.Light;
 import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
 import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
+import org.asdfgamer.sunriseClock.model.AppDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,7 +62,7 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         Log.i("sunriseClock", "Settings");
         setPreferencesFromResource(R.xml.preferences_connectivity, rootKey);
 
-        Objects.requireNonNull(findPreference("pref_test_connection")).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        findPreference("pref_test_connection").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Log.d(TAG, "Click on testConnection registered.");
@@ -70,11 +74,29 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         //Manually update the preferences summary on creation of this fragment.
         //This is used instead of a custom SimpleSummaryProvider. This method is easier for
         //updating the summary from different dialogs (eg. AlertDialog).
-        updatePrefSummary(Objects.requireNonNull(findPreference("pref_test_connection")).getSharedPreferences(), TEST_CONNECTION.toString());
+        updatePrefSummary(findPreference("pref_test_connection").getSharedPreferences(), TEST_CONNECTION.toString());
     }
 
     private void testConnection() {
+
+
+        LightRemote_UnswitchableUndimmableUntemperaturableColorable test = new LightRemote_UnswitchableUndimmableUntemperaturableColorable(1, "friendlyName", 2);
+
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(this.getContext()));
+        alertDialogBuilder.setTitle("Light Test")
+                .setMessage(test.getFriendlyName());
+        final AlertDialog testAlert = alertDialogBuilder.create();
+        testAlert.show();
+
+        LightRemoteDao_UnswitchableUndimmableUntemperaturableColorable dao = AppDatabase.getInstance(this.getContext()).LightRemoteDao_UnswitchableUndimmableUntemperaturableColorable();
+        dao.insertOrUpdate(test);
+        //LiveData<BaseRemoteSwitchableLight> test2 = dao.load(1);
+
+        //test2.observeForever(baseRemoteSwitchableLight -> {Log.d(TAG, baseRemoteSwitchableLight.getFriendlyName());
+        //    baseRemoteSwitchableLight.setFriendlyName("test");
+        //    dao.update(baseRemoteSwitchableLight);
+        //});
+
         //TODO: Show loading animation for running ConnectionTests instead of static message. volley returns after max 5 seconds (or so) automatically.
         alertDialogBuilder.setTitle(getResources().getString(R.string.connection_test))
                 .setMessage(getResources().getString(R.string.connection_test_inprogress));
@@ -82,7 +104,7 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         alertDialog.show();
 
 
-        final SharedPreferences preferences = Objects.requireNonNull(findPreference("pref_test_connection")).getSharedPreferences();
+        final SharedPreferences preferences = findPreference("pref_test_connection").getSharedPreferences();
 
         final Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
@@ -153,9 +175,9 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         String lastConnect = sharedPreferences.getString(key, "");
         Log.d(TAG, "updatePrefSummary with value: " + lastConnect);
         if (Objects.equals(lastConnect, "")) {
-            Objects.requireNonNull(findPreference(key)).setSummary(getResources().getString(R.string.connection_test_summary_neverconnected));
+            findPreference(key).setSummary(getResources().getString(R.string.connection_test_summary_neverconnected));
         } else {
-            Objects.requireNonNull(findPreference(key)).setSummary(getResources().getString(R.string.connection_test_summary_lastconnected) + ": " + lastConnect);
+            findPreference(key).setSummary(getResources().getString(R.string.connection_test_summary_lastconnected) + ": " + lastConnect);
         }
     }
 
