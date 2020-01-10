@@ -28,7 +28,7 @@ public abstract class RetrofitCallbackAdapter<T> implements Callback<T> {
         int responseCode = response.code();
 
         if (response.isSuccessful()) {
-            Log.i(TAG, "Request to " + call.request().url() + " returned successfully with HTTP code: " + String.valueOf(responseCode));
+            Log.i(TAG, "Request to " + call.request().url() + " returned successfully with HTTP code: " + responseCode);
             if (responseCode == DeconzApiReturncodes.OK.getCode()) {
                 handleOK(response);
             } else if (responseCode == DeconzApiReturncodes.Created.getCode()) {
@@ -39,7 +39,7 @@ public abstract class RetrofitCallbackAdapter<T> implements Callback<T> {
                 handleNotModified(response);
             }
         } else {
-            Log.i(TAG, "Request to " + call.request().url() + " returned UNsucessfully with HTTP code: " + String.valueOf(responseCode));
+            Log.i(TAG, "Request to " + call.request().url() + " returned UNsucessfully with HTTP code: " + responseCode);
             Gson gsonErrorDeserializer = new GsonBuilder()
                     .registerTypeAdapter(Error.class, new ErrorDeserializer())
                     .create();
