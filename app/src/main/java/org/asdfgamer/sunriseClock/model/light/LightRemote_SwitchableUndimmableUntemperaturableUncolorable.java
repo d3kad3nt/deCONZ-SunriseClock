@@ -7,8 +7,6 @@ public class LightRemote_SwitchableUndimmableUntemperaturableUncolorable extends
 
     static final String TABLENAME = "light_switchable_undimmable_untemperaturable_uncolorable";
 
-    public static LightRemoteDao_UnswitchableUndimmableUntemperaturableColorable dao;
-
     public LightRemote_SwitchableUndimmableUntemperaturableUncolorable(int id, String friendlyName, boolean on) {
         super(id, friendlyName);
         super.setOn(on);
@@ -16,12 +14,12 @@ public class LightRemote_SwitchableUndimmableUntemperaturableUncolorable extends
 
     @Override
     public boolean isOn() {
-        return false;
+        return super.isOn();
     }
 
     @Override
     public void requestSetOn(boolean on) {
-
+        super.setOn(on);
     }
 }
 
