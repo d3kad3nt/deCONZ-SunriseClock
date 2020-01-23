@@ -12,18 +12,18 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao
-public interface LightBaseDao<T extends LightBase> {
+public interface BaseLightDao<T extends BaseLight> {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE, entity = LightBase.class)
+    @Insert(onConflict = OnConflictStrategy.REPLACE, entity = BaseLight.class)
     void save(T obj);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE, entity = LightBase.class)
+    @Insert(onConflict = OnConflictStrategy.IGNORE, entity = BaseLight.class)
     long insertWithoutReplace(T obj);
 
-    @Update(entity = LightBase.class)
+    @Update(entity = BaseLight.class)
     void update(T obj);
 
-    @Delete(entity = LightBase.class)
+    @Delete(entity = BaseLight.class)
     void delete(T obj);
 
     @Transaction
@@ -38,7 +38,7 @@ public interface LightBaseDao<T extends LightBase> {
     //@Query("SELECT * FROM 'light_base'")
     //LiveData<List<T>> loadAllWithCaps();
 
-    @Query("SELECT * FROM 'light_base' WHERE cap_switchable = :switchable AND cap_dimmable = :dimmable AND cap_temperaturable = :temperaturable AND cap_colorable = :colorable")
+    @Query("SELECT * FROM light_base WHERE cap_switchable = :switchable AND cap_dimmable = :dimmable AND cap_temperaturable = :temperaturable AND cap_colorable = :colorable")
     LiveData<List<T>> loadWithCap(boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable);
 
     //@Query("SELECT * FROM 'light_base' WHERE cap_switchable = :switchable AND cap_dimmable = :dimmable AND cap_temperaturable = :temperaturable AND cap_colorable = :colorable")
