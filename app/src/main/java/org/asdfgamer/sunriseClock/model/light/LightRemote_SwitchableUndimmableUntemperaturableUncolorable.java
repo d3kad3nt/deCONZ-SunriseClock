@@ -11,7 +11,7 @@ public class LightRemote_SwitchableUndimmableUntemperaturableUncolorable extends
 
     public LightRemote_SwitchableUndimmableUntemperaturableUncolorable(int id, String friendlyName, boolean on) {
         super(id, friendlyName, SWITCHABLE, DIMMABLE, TEMPERATURABLE, COLORABLE);
-        super.setOn(on);
+        super.requestSetOn(on);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class LightRemote_SwitchableUndimmableUntemperaturableUncolorable extends
 
     @Override
     public void requestSetOn(boolean on) {
-        super.setOn(on);
+        super.requestSetOn(on);
     }
 }
 

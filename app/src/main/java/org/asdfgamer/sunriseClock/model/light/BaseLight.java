@@ -2,12 +2,31 @@ package org.asdfgamer.sunriseClock.model.light;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = BaseLight.TABLENAME)
+import org.asdfgamer.sunriseClock.model.endpoint.BaseMasterEndpoint;
+
+@Entity(tableName = BaseLight.TABLENAME,
+        foreignKeys = @ForeignKey(entity = BaseMasterEndpoint.class,
+        parentColumns = "id",
+        childColumns = "endpointId",
+        onDelete = ForeignKey.CASCADE))
 public abstract class BaseLight {
 
     static final String TABLENAME = "light_base";
+
+    /**
+     * The endpoint probably cannot be set by ROOM library automatically. Therefore it has to be
+     * manually set when creating this object.
+     * A specific implementation of the BaseMasterEndpoint has to be used - with overridden methods for
+     * relevant endpoint actions like switching a light on.
+     */
+    @Ignore
+    protected transient BaseMasterEndpoint endpoint;
+
+    protected int endpointId;
 
     @PrimaryKey
     private int id;
@@ -16,22 +35,22 @@ public abstract class BaseLight {
     @ColumnInfo(name = "cap_switchable")
     protected boolean switchable;
     @ColumnInfo(name = "on")
-    private boolean on;
+    protected boolean on;
 
     @ColumnInfo(name = "cap_dimmable")
     protected boolean dimmable;
     @ColumnInfo(name = "brightness")
-    private int brightness;
+    protected int brightness;
 
     @ColumnInfo(name = "cap_temperaturable")
     protected boolean temperaturable;
     @ColumnInfo(name = "ct")
-    private int colorTemperature;
+    protected int colorTemperature;
 
     @ColumnInfo(name = "cap_colorable")
     protected boolean colorable;
     @ColumnInfo(name = "color")
-    private int color;
+    protected int color;
 
     BaseLight(int id, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
         this.id = id;
@@ -61,36 +80,36 @@ public abstract class BaseLight {
     }
 
 
-    protected boolean isOn() {
+    boolean isOn() {
         return this.on;
     }
 
-    protected void setOn(boolean on) {
-        this.on = on;
+    void requestSetOn(boolean on) {
+        this.endpoint.baseLightEndpoint.setOn(this, on);
     }
 
-    protected int getBrightness() {
+    int getBrightness() {
         return this.brightness;
     }
 
-    protected void setBrightness(int brightness) {
-        this.brightness = brightness;
+    void requestSetBrightness(int brightness) {
+        this.endpoint.baseLightEndpoint.setBrightness(this, brightness);
     }
 
-    protected int getColorTemperature() {
+    int getColorTemperature() {
         return this.colorTemperature;
     }
 
-    protected void setColorTemperature(int colorTemperature) {
-        this.colorTemperature = colorTemperature;
+    void requestSetColorTemperature(int colorTemperature) {
+        this.endpoint.baseLightEndpoint.setColorTemperature(this, colorTemperature);
     }
-    
-    protected int getColor() {
+
+    int getColor() {
         return this.color;
     }
 
-    protected void setColor(int color) {
-        this.color = color;
+    void requestSetColor(int color) {
+        this.endpoint.baseLightEndpoint.setColor(this, color);
     }
 
 }

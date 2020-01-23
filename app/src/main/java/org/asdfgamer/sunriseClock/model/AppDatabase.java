@@ -6,12 +6,15 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import org.asdfgamer.sunriseClock.model.endpoint.BaseMasterEndpoint;
 import org.asdfgamer.sunriseClock.model.light.BaseLight;
 import org.asdfgamer.sunriseClock.model.light.LightRemote_SwitchableUndimmableUntemperaturableUncolorable;
 import org.asdfgamer.sunriseClock.model.light.LightRemote_SwitchableUndimmableUntemperaturableUncolorableDao;
 import org.asdfgamer.sunriseClock.model.light.LightRemote_UnswitchableUndimmableUntemperaturableColorable;
 
-@Database(entities = {BaseLight.class,
+@Database(entities = {
+        BaseMasterEndpoint.class,
+        BaseLight.class,
         LightRemote_UnswitchableUndimmableUntemperaturableColorable.class,
         LightRemote_SwitchableUndimmableUntemperaturableUncolorable.class},
         version = 1,

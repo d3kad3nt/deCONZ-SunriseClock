@@ -11,6 +11,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.asdfgamer.sunriseClock.R;
+import org.asdfgamer.sunriseClock.model.endpoint.BaseMasterEndpoint;
+import org.asdfgamer.sunriseClock.model.endpoint.deconz.DeconzMasterEndpoint;
+import org.asdfgamer.sunriseClock.model.light.BaseLightEndpoint;
 import org.asdfgamer.sunriseClock.model.light.LightRemote_SwitchableUndimmableUntemperaturableUncolorable;
 import org.asdfgamer.sunriseClock.model.light.LightRemote_SwitchableUndimmableUntemperaturableUncolorableDao;
 import org.asdfgamer.sunriseClock.network.config.DeconzRequestConfigHelper;
