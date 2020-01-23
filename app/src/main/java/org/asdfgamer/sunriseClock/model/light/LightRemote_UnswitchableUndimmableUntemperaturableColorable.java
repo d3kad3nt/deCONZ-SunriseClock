@@ -11,7 +11,7 @@ public class LightRemote_UnswitchableUndimmableUntemperaturableColorable extends
 
     public LightRemote_UnswitchableUndimmableUntemperaturableColorable(int id, String friendlyName, int color) {
         super(id, friendlyName, SWITCHABLE, DIMMABLE, TEMPERATURABLE, COLORABLE);
-        super.setColor(color);
+        super.requestSetColor(color);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class LightRemote_UnswitchableUndimmableUntemperaturableColorable extends
 
     @Override
     public void requestSetColor(int color) {
-        super.setColor(color);
+        super.requestSetColor(color);
     }
 
 }
