@@ -1,22 +1,13 @@
 package org.asdfgamer.sunriseClock.model.light;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.ColumnInfo;
-import androidx.room.Dao;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.List;
-
-@Entity(tableName = LightBase.TABLENAME)
-public class LightBase {
+@Entity(tableName = BaseLight.TABLENAME)
+public abstract class BaseLight {
 
     static final String TABLENAME = "light_base";
-
-    final static boolean SWITCHABLE = false;
-    final static boolean DIMMABLE = false;
-    final static boolean TEMPERATURABLE = false;
-    final static boolean COLORABLE = false;
 
     @PrimaryKey
     private int id;
@@ -42,7 +33,7 @@ public class LightBase {
     @ColumnInfo(name = "color")
     private int color;
 
-    LightBase(int id, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
+    BaseLight(int id, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
         this.id = id;
         this.friendlyName = friendlyName;
 
