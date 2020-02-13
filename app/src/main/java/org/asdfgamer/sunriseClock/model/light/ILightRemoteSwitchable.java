@@ -1,8 +1,8 @@
 package org.asdfgamer.sunriseClock.model.light;
 
-public interface ILightRemoteSwitchable {
+public interface ILightRemoteSwitchable extends ICapability  {
 
-    boolean SWITCHABLE = true;
+    String FILTER = "Switchable = 1";
 
     boolean isOn();
 

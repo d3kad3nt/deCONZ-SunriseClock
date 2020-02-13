@@ -1,8 +1,8 @@
 package org.asdfgamer.sunriseClock.model.light;
 
-public interface ILightRemoteDimmable {
+public interface ILightRemoteDimmable extends ICapability {
 
-    boolean DIMMABLE = true;
+    String FILTER = "Dimmable = 1";
 
     int getBrightness();
 
