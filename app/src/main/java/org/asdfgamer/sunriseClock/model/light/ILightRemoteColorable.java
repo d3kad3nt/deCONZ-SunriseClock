@@ -1,8 +1,8 @@
 package org.asdfgamer.sunriseClock.model.light;
 
-public interface ILightRemoteColorable {
+public interface ILightRemoteColorable extends ICapability {
 
-    boolean COLORABLE = true;
+    String FILTER = "COLORABLE = 1";
 
     int getColor();
 

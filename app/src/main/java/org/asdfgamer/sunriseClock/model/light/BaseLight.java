@@ -8,23 +8,23 @@ import androidx.room.PrimaryKey;
 
 import org.asdfgamer.sunriseClock.model.endpoint.BaseMasterEndpoint;
 
-@Entity(tableName = BaseLight.TABLENAME,
-        foreignKeys = @ForeignKey(entity = BaseMasterEndpoint.class,
-        parentColumns = "id",
-        childColumns = "endpointId",
-        onDelete = ForeignKey.CASCADE))
+@Entity(tableName = BaseLight.TABLENAME)
+//        foreignKeys = @ForeignKey(entity = BaseMasterEndpoint.class,
+//        parentColumns = "id",
+//        childColumns = "endpointId",
+//        onDelete = ForeignKey.CASCADE))
 public abstract class BaseLight {
 
     static final String TABLENAME = "light_base";
 
-    /**
-     * The endpoint probably cannot be set by ROOM library automatically. Therefore it has to be
-     * manually set when creating this object.
-     * A specific implementation of the BaseMasterEndpoint has to be used - with overridden methods for
-     * relevant endpoint actions like switching a light on.
-     */
-    @Ignore
-    protected transient BaseMasterEndpoint endpoint;
+//    /**
+//     * The endpoint probably cannot be set by ROOM library automatically. Therefore it has to be
+//     * manually set when creating this object.
+//     * A specific implementation of the BaseMasterEndpoint has to be used - with overridden methods for
+//     * relevant endpoint actions like switching a light on.
+//     */
+//    @Ignore
+//    protected transient BaseMasterEndpoint endpoint;
 
     protected int endpointId;
 
@@ -44,7 +44,7 @@ public abstract class BaseLight {
 
     @ColumnInfo(name = "cap_temperaturable")
     protected boolean temperaturable;
-    @ColumnInfo(name = "ct")
+    @ColumnInfo(name = "colorTemperature")
     protected int colorTemperature;
 
     @ColumnInfo(name = "cap_colorable")

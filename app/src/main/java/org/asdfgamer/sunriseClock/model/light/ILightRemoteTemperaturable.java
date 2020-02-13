@@ -1,8 +1,8 @@
 package org.asdfgamer.sunriseClock.model.light;
 
-public interface ILightRemoteTemperaturable {
+public interface ILightRemoteTemperaturable extends ICapability  {
 
-    boolean TEMPERATURABLE = true;
+    String FILTER = "Temperaturable = 1";
 
     int getColorTemperature();
 
