@@ -42,8 +42,7 @@ public class PreferencesActivity extends AppCompatActivity implements Preference
         final Bundle args = pref.getExtras();
         final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(
                 getClassLoader(),
-                pref.getFragment(),
-                args);
+                pref.getFragment());
         fragment.setArguments(args);
         fragment.setTargetFragment(caller, 0);
         // Replace the existing Fragment with the new Fragment

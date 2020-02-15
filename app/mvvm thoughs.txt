@@ -18,3 +18,4 @@ DAO:
     @RawQuery Benutzen um eine query dynamisch zu erstellen, z.B. mit unterschiedlichen Where Parametern
         https://stackoverflow.com/a/51911228
 
+     Capabillity in einem Feld mit Bits
