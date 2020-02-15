@@ -17,6 +17,10 @@ public class LightRepository {
 
     private BaseLightDao baseLightDao;
 
+    public LightRepository(){
+        baseLightDao = AppDatabase.getInstance(null).dao1();//TODO null is bad
+    }
+
     public LiveData<BaseLight> getLight(int lightid){
         refreshLight(lightid);
         return baseLightDao.load(lightid);
