@@ -28,6 +28,21 @@ public class BaseMasterEndpoint implements BaseLightObserver {
 
     @Override
     public void setOn(BaseLight light, boolean value) {
-        Log.e("Observer", "setOn: Aufgerufen" );
+        light.setOn(value);
+    }
+
+    @Override
+    public void requestSetColor(BaseLight light, int color) {
+        light.setColor(color);
+    }
+
+    @Override
+    public void requestSetBrightness(BaseLight light, int brightness) {
+        light.setBrightness(brightness);
+    }
+
+    @Override
+    public void requestSetColorTemperature(BaseLight light, int colortemp) {
+        light.setColorTemperature(colortemp);
     }
 }
