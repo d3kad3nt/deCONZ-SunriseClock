@@ -1,16 +1,16 @@
 package org.asdfgamer.sunriseClock.model.light;
 
+import android.util.Log;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import org.asdfgamer.sunriseClock.model.endpoint.BaseMasterEndpoint;
+import org.asdfgamer.sunriseClock.model.BaseLightObserver;
 
 @Entity(tableName = BaseLight.TABLENAME)
-
-public class BaseLight {
+public class BaseLight implements Light {
 
     static final String TABLENAME = "light_base";
 
@@ -42,7 +42,10 @@ public class BaseLight {
     @ColumnInfo(name = "color")
     protected int color;
 
-    BaseLight(int id, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable, int endpointUUID) {
+    @Ignore
+    private BaseLightObserver observer;
+
+    public BaseLight(int id, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable, int endpointUUID) {
         this.id = id;
         this.friendlyName = friendlyName;
         this.endpointUUID = endpointUUID;
@@ -70,37 +73,53 @@ public class BaseLight {
         this.friendlyName = friendlyName;
     }
 
+    public void observeState(BaseLightObserver endpoint){
+        this.observer = endpoint;
+        Log.e("BaseLight", "observeState: set observer" );
+    }
 
-    boolean isOn() {
+
+    public BaseLightObserver getObserver(){
+        return observer;
+    }
+
+    public boolean isOn() {
         return this.on;
     }
 
-    void requestSetOn(boolean on) {
-//        this.endpoint.baseLightEndpoint.setOn(this, on);
+    public void requestSetOn(boolean on) {
+        if (observer != null){
+        observer.setOn(this,on);
+
+        }else{
+            Log.e("BaseLight", "requestSetOn: Observer is Null");
+        }
     }
 
-    int getBrightness() {
+    public void setOn(boolean on){
+        this.on = on;
+    }
+
+
+    public int getBrightness() {
         return this.brightness;
     }
 
-    void requestSetBrightness(int brightness) {
-//        this.endpoint.baseLightEndpoint.setBrightness(this, brightness);
+    public void requestSetBrightness(int brightness) {
     }
 
-    int getColorTemperature() {
+    public int getColorTemperature() {
         return this.colorTemperature;
     }
 
-    void requestSetColorTemperature(int colorTemperature) {
-//        this.endpoint.baseLightEndpoint.setColorTemperature(this, colorTemperature);
+    public void requestSetColorTemperature(int colorTemperature) {
     }
 
-    int getColor() {
+    public int getColor() {
         return this.color;
     }
 
-    void requestSetColor(int color) {
-//        this.endpoint.baseLightEndpoint.setColor(this, color);
+    public void requestSetColor(int color) {
     }
 
     public int getEndpointUUID() {

@@ -1,6 +1,6 @@
 package org.asdfgamer.sunriseClock.model.light;
 
-public interface ICapability {
+public interface ICapability extends Cloneable{
 
     String FILTER = "";
 
