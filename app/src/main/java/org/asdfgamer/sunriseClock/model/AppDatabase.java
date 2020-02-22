@@ -12,7 +12,7 @@ import org.asdfgamer.sunriseClock.model.light.BaseLightDao;
 
 @Database(entities = {
         BaseLight.class},
-        version = 1,
+        version = 2,
         exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 

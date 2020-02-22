@@ -54,8 +54,8 @@ public interface BaseLightDao {
     //@Query("SELECT * FROM 'light_base' WHERE cap_switchable = :switchable AND cap_dimmable = :dimmable AND cap_temperaturable = :temperaturable AND cap_colorable = :colorable")
     //LiveData<List<T>> loadAllWithCaps(boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable);
 
-    //@Query("SELECT * FROM " + T.)
-    //LiveData<List<T>> loadAll();
+    @Query("SELECT * FROM 'light_base'")
+    LiveData<List<BaseLight>> loadAll();
 
     //default LiveData<List<LightRemote_SwitchableUndimmableUntemperaturableUncolorable>> loadLightsFor(LightRemote_SwitchableUndimmableUntemperaturableUncolorable obj) {
     //    return loadAllWithCaps(obj.switchable, obj.dimmable, obj.temperaturable, obj.colorable);
