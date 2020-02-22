@@ -88,12 +88,7 @@ public class BaseLight implements Light {
     }
 
     public void requestSetOn(boolean on) {
-        if (observer != null){
         observer.setOn(this,on);
-
-        }else{
-            Log.e("BaseLight", "requestSetOn: Observer is Null");
-        }
     }
 
     public void setOn(boolean on){
@@ -106,6 +101,11 @@ public class BaseLight implements Light {
     }
 
     public void requestSetBrightness(int brightness) {
+        observer.requestSetBrightness(this,brightness);
+    }
+
+    public void setBrightness(int brightness){
+        this.brightness = brightness;
     }
 
     public int getColorTemperature() {
@@ -113,6 +113,11 @@ public class BaseLight implements Light {
     }
 
     public void requestSetColorTemperature(int colorTemperature) {
+        observer.requestSetColorTemperature(this,colorTemperature);
+    }
+
+    public void setColorTemperature(int colorTemperature) {
+        this.colorTemperature = colorTemperature;
     }
 
     public int getColor() {
@@ -120,6 +125,11 @@ public class BaseLight implements Light {
     }
 
     public void requestSetColor(int color) {
+        observer.requestSetColor(this,color);
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     public int getEndpointUUID() {
