@@ -4,24 +4,32 @@ import android.util.Log;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import org.asdfgamer.sunriseClock.model.LightEndpoint;
+import org.asdfgamer.sunriseClock.model.endpoint.EndpointConfig;
 
-@Entity(tableName = BaseLight.TABLENAME)
+@Entity(tableName = BaseLight.TABLENAME,
+        indices = {@Index("endpointUUID")},
+        foreignKeys = @ForeignKey(entity = EndpointConfig.class,
+                parentColumns = "endpointID",
+                childColumns = "endpointUUID",
+                onDelete = ForeignKey.CASCADE))
 public class BaseLight implements Light {
 
-    static final String TABLENAME = "light_base";
+    static final String TABLENAME = "light";
 
     @PrimaryKey
+    @ColumnInfo(name = "lightID")
     private int id;
+    @ColumnInfo(name = "endpointUUID")
+    private int endpointUUID;
+
     @ColumnInfo(name = "friendlyName")
     private String friendlyName;
-
-//    @ForeignKey()
-    @ColumnInfo(name = "enpointUUID")
-    private int endpointUUID;
 
     @ColumnInfo(name = "cap_switchable")
     protected boolean switchable;
@@ -44,12 +52,13 @@ public class BaseLight implements Light {
     protected int color;
 
     @Ignore
-    private LightEndpoint endpoint;
+    private transient LightEndpoint endpoint;
 
-    public BaseLight(int id, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable, int endpointUUID) {
+    public BaseLight(int id, int endpointUUID, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
         this.id = id;
-        this.friendlyName = friendlyName;
         this.endpointUUID = endpointUUID;
+
+        this.friendlyName = friendlyName;
 
         this.switchable = switchable;
         this.dimmable = dimmable;
@@ -69,7 +78,6 @@ public class BaseLight implements Light {
         return this.friendlyName;
     }
 
-    //TODO: set back to protected after tests
     public void setFriendlyName(String friendlyName) {
         this.friendlyName = friendlyName;
     }
@@ -81,7 +89,7 @@ public class BaseLight implements Light {
 
 
     public LightEndpoint getEndpoint(){
-        return endpoint;
+        return this.endpoint;
     }
 
     public boolean isOn() {
@@ -114,7 +122,9 @@ public class BaseLight implements Light {
     }
 
     public void requestSetColorTemperature(int colorTemperature) {
-        endpoint.requestSetColorTemperature(this,colorTemperature);
+        //TODO: Only useful for testing observable Lights (as long as the endpoint for a light is null and e.g. requestSetColor is not usable)
+        //endpoint.requestSetColorTemperature(this,colorTemperature);
+        this.colorTemperature = colorTemperature;
     }
 
     public void setColorTemperature(int colorTemperature) {
@@ -125,8 +135,9 @@ public class BaseLight implements Light {
         return this.color;
     }
 
+    @Override
     public void requestSetColor(int color) {
-        endpoint.requestSetColor(this,color);
+        endpoint.requestSetColor(this, color);
     }
 
     public void setColor(int color) {

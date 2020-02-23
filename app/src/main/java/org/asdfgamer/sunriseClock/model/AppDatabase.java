@@ -6,12 +6,15 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import org.asdfgamer.sunriseClock.model.endpoint.EndpointConfig;
+import org.asdfgamer.sunriseClock.model.endpoint.EndpointConfigDao;
 import org.asdfgamer.sunriseClock.model.light.BaseLight;
 import org.asdfgamer.sunriseClock.model.light.BaseLightDao;
 
 @Database(entities = {
-        BaseLight.class},
-        version = 2,
+        BaseLight.class,
+        EndpointConfig.class},
+        version = 1,
         exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -32,8 +35,7 @@ public abstract class AppDatabase extends RoomDatabase {
         INSTANCE = null;
     }
 
-    public abstract BaseLightDao dao1();
-
-    //TODO: getDaoInstanceFor(T extends BaseLight) implementieren. Oder ist das ne schlechte Idee?
+    public abstract BaseLightDao baseLightDao();
+    public abstract EndpointConfigDao endpointConfigDao();
 
 }

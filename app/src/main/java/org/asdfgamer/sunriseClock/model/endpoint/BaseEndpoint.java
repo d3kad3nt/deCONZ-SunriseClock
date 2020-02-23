@@ -2,14 +2,9 @@ package org.asdfgamer.sunriseClock.model.endpoint;
 
 import org.asdfgamer.sunriseClock.model.LightEndpoint;
 import org.asdfgamer.sunriseClock.model.light.BaseLight;
-import org.asdfgamer.sunriseClock.model.light.BaseLightEndpoint;
 
-//TODO: The MasterEndpoint has probably to be set manually for our BaseLight. MasterEndpoint
-// and specific lights could be retrieved by a class like EndpointAndLights with the help of ROOM relations.
-public class MasterEndpoint implements LightEndpoint {
-
-    //TODO: Maybe a custom ROOM type converter could handle the creation of endpoint-specific objects for this?
-    public transient BaseLightEndpoint baseLightEndpoint;
+//TODO: The BaseEndpoint has probably to be set manually for our BaseLight.
+public class BaseEndpoint implements LightEndpoint {
 
     @Override
     public void requestSetOn(BaseLight light, boolean value) {
