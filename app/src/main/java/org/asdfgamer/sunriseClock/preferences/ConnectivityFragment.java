@@ -11,26 +11,14 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.asdfgamer.sunriseClock.R;
+import org.asdfgamer.sunriseClock.model.AppDatabase;
 import org.asdfgamer.sunriseClock.model.LightRepository;
 import org.asdfgamer.sunriseClock.model.light.BaseLight;
 import org.asdfgamer.sunriseClock.model.light.BaseLightDao;
-import org.asdfgamer.sunriseClock.network.config.DeconzRequestConfigHelper;
-import org.asdfgamer.sunriseClock.network.config.model.Config;
-import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper;
-import org.asdfgamer.sunriseClock.network.lights.GetLightsCallback;
 import org.asdfgamer.sunriseClock.model.light.Light;
-import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
-import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
-import org.asdfgamer.sunriseClock.model.AppDatabase;
+import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Response;
 
 import static org.asdfgamer.sunriseClock.utils.SettingKeys.API_KEY;
 import static org.asdfgamer.sunriseClock.utils.SettingKeys.IP;
@@ -92,12 +80,14 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         BaseLight baselight = new BaseLight(1,"Test",true,true,true,true,1);
         BaseLightDao dao = AppDatabase.getInstance(this.getContext()).dao1();
         dao.save(baselight);
-//        Log.i(TAG, String.valueOf(dao.loadAll().getValue()));
+
         LightRepository repo = new LightRepository();
         LiveData<Light> light = repo.getLight(1);
-        light.observeForever(observe -> {
-            Log.d(TAG,"Colot: " + String.valueOf(observe.getColor()));
+        Log.e(TAG, "testConnection: " + light.getClass());
+        light.observe(this,observe -> {
+            Log.d(TAG,"Color: " + String.valueOf(observe.getColor()));
             observe.requestSetOn(true);
+
         });
 //        Light lightValue = light.getValue();
 //        lightValue.requestSetOn(true);
