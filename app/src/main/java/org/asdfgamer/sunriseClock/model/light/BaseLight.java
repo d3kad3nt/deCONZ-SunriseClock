@@ -1,36 +1,27 @@
 package org.asdfgamer.sunriseClock.model.light;
 
+import android.util.Log;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import org.asdfgamer.sunriseClock.model.endpoint.BaseMasterEndpoint;
+import org.asdfgamer.sunriseClock.model.LightEndpoint;
 
-@Entity(tableName = BaseLight.TABLENAME,
-        foreignKeys = @ForeignKey(entity = BaseMasterEndpoint.class,
-        parentColumns = "id",
-        childColumns = "endpointId",
-        onDelete = ForeignKey.CASCADE))
-public abstract class BaseLight {
+@Entity(tableName = BaseLight.TABLENAME)
+public class BaseLight implements Light {
 
     static final String TABLENAME = "light_base";
 
-    /**
-     * The endpoint probably cannot be set by ROOM library automatically. Therefore it has to be
-     * manually set when creating this object.
-     * A specific implementation of the BaseMasterEndpoint has to be used - with overridden methods for
-     * relevant endpoint actions like switching a light on.
-     */
-    @Ignore
-    protected transient BaseMasterEndpoint endpoint;
-
-    protected int endpointId;
-
     @PrimaryKey
     private int id;
+    @ColumnInfo(name = "friendlyName")
     private String friendlyName;
+
+//    @ForeignKey()
+    @ColumnInfo(name = "enpointUUID")
+    private int endpointUUID;
 
     @ColumnInfo(name = "cap_switchable")
     protected boolean switchable;
@@ -44,7 +35,7 @@ public abstract class BaseLight {
 
     @ColumnInfo(name = "cap_temperaturable")
     protected boolean temperaturable;
-    @ColumnInfo(name = "ct")
+    @ColumnInfo(name = "colorTemperature")
     protected int colorTemperature;
 
     @ColumnInfo(name = "cap_colorable")
@@ -52,9 +43,13 @@ public abstract class BaseLight {
     @ColumnInfo(name = "color")
     protected int color;
 
-    BaseLight(int id, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
+    @Ignore
+    private LightEndpoint endpoint;
+
+    public BaseLight(int id, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable, int endpointUUID) {
         this.id = id;
         this.friendlyName = friendlyName;
+        this.endpointUUID = endpointUUID;
 
         this.switchable = switchable;
         this.dimmable = dimmable;
@@ -79,37 +74,67 @@ public abstract class BaseLight {
         this.friendlyName = friendlyName;
     }
 
+    public void observeState(LightEndpoint endpoint){
+        this.endpoint = endpoint;
+        Log.e("BaseLight", "observeState: set endpoint" );
+    }
 
-    boolean isOn() {
+
+    public LightEndpoint getEndpoint(){
+        return endpoint;
+    }
+
+    public boolean isOn() {
         return this.on;
     }
 
-    void requestSetOn(boolean on) {
-        this.endpoint.baseLightEndpoint.setOn(this, on);
+    public void requestSetOn(boolean on) {
+        endpoint.requestSetOn(this,on);
     }
 
-    int getBrightness() {
+    public void setOn(boolean on){
+        this.on = on;
+    }
+
+
+    public int getBrightness() {
         return this.brightness;
     }
 
-    void requestSetBrightness(int brightness) {
-        this.endpoint.baseLightEndpoint.setBrightness(this, brightness);
+    public void requestSetBrightness(int brightness) {
+        endpoint.requestSetBrightness(this,brightness);
     }
 
-    int getColorTemperature() {
+    public void setBrightness(int brightness){
+        this.brightness = brightness;
+    }
+
+    public int getColorTemperature() {
         return this.colorTemperature;
     }
 
-    void requestSetColorTemperature(int colorTemperature) {
-        this.endpoint.baseLightEndpoint.setColorTemperature(this, colorTemperature);
+    public void requestSetColorTemperature(int colorTemperature) {
+        endpoint.requestSetColorTemperature(this,colorTemperature);
     }
 
-    int getColor() {
+    public void setColorTemperature(int colorTemperature) {
+        this.colorTemperature = colorTemperature;
+    }
+
+    public int getColor() {
         return this.color;
     }
 
-    void requestSetColor(int color) {
-        this.endpoint.baseLightEndpoint.setColor(this, color);
+    public void requestSetColor(int color) {
+        endpoint.requestSetColor(this,color);
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public int getEndpointUUID() {
+        return endpointUUID;
     }
 
 }

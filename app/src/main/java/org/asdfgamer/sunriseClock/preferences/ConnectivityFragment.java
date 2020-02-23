@@ -11,28 +11,14 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.asdfgamer.sunriseClock.R;
-import org.asdfgamer.sunriseClock.model.endpoint.BaseMasterEndpoint;
-import org.asdfgamer.sunriseClock.model.endpoint.deconz.DeconzMasterEndpoint;
-import org.asdfgamer.sunriseClock.model.light.BaseLightEndpoint;
-import org.asdfgamer.sunriseClock.model.light.LightRemote_SwitchableUndimmableUntemperaturableUncolorable;
-import org.asdfgamer.sunriseClock.model.light.LightRemote_SwitchableUndimmableUntemperaturableUncolorableDao;
-import org.asdfgamer.sunriseClock.network.config.DeconzRequestConfigHelper;
-import org.asdfgamer.sunriseClock.network.config.model.Config;
-import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper;
-import org.asdfgamer.sunriseClock.network.lights.GetLightsCallback;
-import org.asdfgamer.sunriseClock.network.lights.model.Light;
-import org.asdfgamer.sunriseClock.network.utils.response.custDeserializer.model.Error;
-import org.asdfgamer.sunriseClock.network.utils.response.genericCallback.SimplifiedCallback;
 import org.asdfgamer.sunriseClock.model.AppDatabase;
+import org.asdfgamer.sunriseClock.model.LightRepository;
+import org.asdfgamer.sunriseClock.model.light.BaseLight;
+import org.asdfgamer.sunriseClock.model.light.BaseLightDao;
+import org.asdfgamer.sunriseClock.model.light.Light;
+import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Response;
 
 import static org.asdfgamer.sunriseClock.utils.SettingKeys.API_KEY;
 import static org.asdfgamer.sunriseClock.utils.SettingKeys.IP;
@@ -83,24 +69,39 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
     private void testConnection() {
 
 
-        LightRemote_SwitchableUndimmableUntemperaturableUncolorable test = new LightRemote_SwitchableUndimmableUntemperaturableUncolorable(1, "friendlyName", true);
+//        LightRemote_SwitchableUndimmableUntemperaturableUncolorable test = new LightRemote_SwitchableUndimmableUntemperaturableUncolorable(1, "friendlyName", true);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(this.getContext()));
         alertDialogBuilder.setTitle("Light Test")
-                .setMessage(test.getFriendlyName());
+                .setMessage("Test");
+//                .setMessage(test.getFriendlyName());
         final AlertDialog testAlert = alertDialogBuilder.create();
         testAlert.show();
+        BaseLight baselight = new BaseLight(1,"Test",true,true,true,true,1);
+        BaseLightDao dao = AppDatabase.getInstance(this.getContext()).dao1();
+        dao.save(baselight);
 
-        LightRemote_SwitchableUndimmableUntemperaturableUncolorableDao dao = AppDatabase.getInstance(this.getContext()).dao1();
-        dao.insertOrUpdate(test);
+        LightRepository repo = new LightRepository();
+        LiveData<Light> light = repo.getLight(1);
+        Log.e(TAG, "testConnection: " + light.getClass());
+        light.observe(this,observe -> {
+            Log.d(TAG,"Color: " + String.valueOf(observe.getColor()));
+            observe.requestSetOn(true);
 
-        LiveData<List<LightRemote_SwitchableUndimmableUntemperaturableUncolorable>> test2 = dao.loadAll();
-
-        test2.observeForever(light -> {
-            Log.d(TAG, light.get(0).getFriendlyName());
-            light.get(0).setFriendlyName("test");
-            dao.update(light.get(0));
         });
+//        Light lightValue = light.getValue();
+//        lightValue.requestSetOn(true);
+//        Log.i("SunriseClock", light.toString());
+//        LightRemote_SwitchableUndimmableUntemperaturableUncolorableDao dao = AppDatabase.getInstance(this.getContext()).dao1();
+//        dao.insertOrUpdate(test);
+
+//        LiveData<List<LightRemote_SwitchableUndimmableUntemperaturableUncolorable>> test2 = dao.loadAll();
+
+//        test2.observeForever(light -> {
+//            Log.d(TAG, light.get(0).getFriendlyName());
+//            light.get(0).setFriendlyName("test");
+//            dao.update(light.get(0));
+//        });
 
         //TODO: Show loading animation for running ConnectionTests instead of static message. volley returns after max 5 seconds (or so) automatically.
         alertDialogBuilder.setTitle(getResources().getString(R.string.connection_test))
@@ -119,57 +120,57 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
          * 2nd step: Requests some information from deconz to show it to the user. */
         DeconzRequestLightsHelper deconzLights = new DeconzRequestLightsHelper(builder.build(), preferences.getString(API_KEY.toString(), ""));
 
-        deconzLights.getLights(new CustomGetLightsCallback() {
-            @Override
-            public void onSuccess(Response<List<Light>> response) {
-                DeconzRequestConfigHelper deconzConfig = new DeconzRequestConfigHelper(builder.build(), preferences.getString(API_KEY.toString(), ""));
-
-                deconzConfig.getConfig(new SimplifiedCallback<Config>() {
-                    @Override
-                    public void onSuccess(Response<Config> response) {
-                        Config config = response.body();
-
-                        //TODO: Use xml layout for this alertDialog.
-                        alertDialog.setMessage(getResources().getString(R.string.connection_test_success_apiversion) + ": " + Objects.requireNonNull(config).getApiversion()
-                                + System.getProperty("line.separator")
-                                + getResources().getString(R.string.connection_test_success_ipaddress) + ": " + config.getIpaddress());
-                        alertDialog.setTitle(getResources().getString(R.string.connection_test_success_title));
-
-                        SharedPreferences.Editor prefEditor = preferences.edit();
-                        Calendar calendar = Calendar.getInstance();
-                        SimpleDateFormat mdformat = new SimpleDateFormat("dd.MM.YY HH:mm", Locale.getDefault());
-                        String strDate = mdformat.format(calendar.getTime());
-                        prefEditor.putString("pref_test_connection", strDate);
-                        prefEditor.apply();
-                    }
-
-                    @Override
-                    public void onError() {
-                        //This should not fail because getLights returned successfully just a few moments ago.
-                    }
-                });
-            }
-
-            @Override
-            public void onForbidden(Error error) {
-                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_wrongapikey));
-            }
-
-            @Override
-            public void onNetworkFailure(Call<List<Light>> call, Throwable throwable) {
-                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_noconnection));
-            }
-
-            @Override
-            public void onInvalidResponseObject(Call<List<Light>> call, Throwable throwable) {
-                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_nodeconz));
-            }
-
-            @Override
-            public void onInvalidErrorObject() {
-                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_nodeconz));
-            }
-        });
+//        deconzLights.getLights(new CustomGetLightsCallback() {
+//            @Override
+//            public void onSuccess(Response<List<Light>> response) {
+//                DeconzRequestConfigHelper deconzConfig = new DeconzRequestConfigHelper(builder.build(), preferences.getString(API_KEY.toString(), ""));
+//
+//                deconzConfig.getConfig(new SimplifiedCallback<Config>() {
+//                    @Override
+//                    public void onSuccess(Response<Config> response) {
+//                        Config config = response.body();
+//
+//                        //TODO: Use xml layout for this alertDialog.
+//                        alertDialog.setMessage(getResources().getString(R.string.connection_test_success_apiversion) + ": " + Objects.requireNonNull(config).getApiversion()
+//                                + System.getProperty("line.separator")
+//                                + getResources().getString(R.string.connection_test_success_ipaddress) + ": " + config.getIpaddress());
+//                        alertDialog.setTitle(getResources().getString(R.string.connection_test_success_title));
+//
+//                        SharedPreferences.Editor prefEditor = preferences.edit();
+//                        Calendar calendar = Calendar.getInstance();
+//                        SimpleDateFormat mdformat = new SimpleDateFormat("dd.MM.YY HH:mm", Locale.getDefault());
+//                        String strDate = mdformat.format(calendar.getTime());
+//                        prefEditor.putString("pref_test_connection", strDate);
+//                        prefEditor.apply();
+//                    }
+//
+//                    @Override
+//                    public void onError() {
+//                        //This should not fail because getLights returned successfully just a few moments ago.
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onForbidden(Error error) {
+//                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_wrongapikey));
+//            }
+//
+//            @Override
+//            public void onNetworkFailure(Call<List<Light>> call, Throwable throwable) {
+//                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_noconnection));
+//            }
+//
+//            @Override
+//            public void onInvalidResponseObject(Call<List<Light>> call, Throwable throwable) {
+//                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_nodeconz));
+//            }
+//
+//            @Override
+//            public void onInvalidErrorObject() {
+//                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_nodeconz));
+//            }
+//        });
     }
 
 
@@ -198,31 +199,31 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         }
     }
 
-    /**
-     * Example for a callback in an inner class. This is used to 'remove'/hide some callbacks.
-     * This particular example is not that useful, though.
-     */
-    abstract class CustomGetLightsCallback implements GetLightsCallback {
-
-        @Override
-        public abstract void onSuccess(Response<List<Light>> response);
-
-        @Override
-        public abstract void onForbidden(Error error);
-
-        @Override
-        public void onEverytime() {
-            //Demo: Nothing should happen here.
-        }
-
-        @Override
-        public abstract void onNetworkFailure(Call<List<Light>> call, Throwable throwable);
-
-        @Override
-        public abstract void onInvalidResponseObject(Call<List<Light>> call, Throwable throwable);
-
-        @Override
-        public abstract void onInvalidErrorObject();
-    }
+//    /**
+//     * Example for a callback in an inner class. This is used to 'remove'/hide some callbacks.
+//     * This particular example is not that useful, though.
+//     */
+//    abstract class CustomGetLightsCallback implements GetLightsCallback {
+//
+//        @Override
+//        public abstract void onSuccess(Response<List<Light>> response);
+//
+//        @Override
+//        public abstract void onForbidden(Error error);
+//
+//        @Override
+//        public void onEverytime() {
+//            //Demo: Nothing should happen here.
+//        }
+//
+//        @Override
+//        public abstract void onNetworkFailure(Call<List<Light>> call, Throwable throwable);
+//
+//        @Override
+//        public abstract void onInvalidResponseObject(Call<List<Light>> call, Throwable throwable);
+//
+//        @Override
+//        public abstract void onInvalidErrorObject();
+//    }
 
 }
