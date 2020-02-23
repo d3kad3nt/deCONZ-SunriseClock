@@ -10,14 +10,23 @@ import androidx.lifecycle.LiveData;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.gson.JsonObject;
+
 import org.asdfgamer.sunriseClock.R;
 import org.asdfgamer.sunriseClock.model.AppDatabase;
 import org.asdfgamer.sunriseClock.model.LightRepository;
+import org.asdfgamer.sunriseClock.model.endpoint.EndpointConfig;
+import org.asdfgamer.sunriseClock.model.endpoint.EndpointConfigDao;
+import org.asdfgamer.sunriseClock.model.endpoint.EndpointType;
+import org.asdfgamer.sunriseClock.model.endpoint.EndpointWithLights;
 import org.asdfgamer.sunriseClock.model.light.BaseLight;
 import org.asdfgamer.sunriseClock.model.light.BaseLightDao;
 import org.asdfgamer.sunriseClock.model.light.Light;
 import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import static org.asdfgamer.sunriseClock.utils.SettingKeys.API_KEY;
@@ -68,47 +77,41 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
 
     private void testConnection() {
 
+        //An endpoint with the correct ID has to be created before saving a BaseLight into the database.
+        //Otherwise the foreign key constraint would fail.
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 1988);
+        cal.set(Calendar.MONTH, Calendar.JANUARY);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date date = cal.getTime();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("testInt", 2);
+        jsonObject.addProperty("testString", "liveoverflow");
+        EndpointConfig endpointConfig = new EndpointConfig(1, EndpointType.DECONZ, date, jsonObject);
+        EndpointConfigDao endpointConfigDao = AppDatabase.getInstance(this.getContext()).endpointConfigDao();
+        endpointConfigDao.save(endpointConfig);
 
-//        LightRemote_SwitchableUndimmableUntemperaturableUncolorable test = new LightRemote_SwitchableUndimmableUntemperaturableUncolorable(1, "friendlyName", true);
+        BaseLight baselight = new BaseLight(1, 1,"Test",true,true,true,true);
+        BaseLightDao baseLightDao = AppDatabase.getInstance(this.getContext()).baseLightDao();
+        baseLightDao.save(baselight);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(this.getContext()));
-        alertDialogBuilder.setTitle("Light Test")
-                .setMessage("Test");
-//                .setMessage(test.getFriendlyName());
-        final AlertDialog testAlert = alertDialogBuilder.create();
-        testAlert.show();
-        BaseLight baselight = new BaseLight(1,"Test",true,true,true,true,1);
-        BaseLightDao dao = AppDatabase.getInstance(this.getContext()).dao1();
-        dao.save(baselight);
+        //Test: Retrieve an endpoint with a list of associated lights.
+        LiveData<List<EndpointWithLights>> test = endpointConfigDao.getEndpointWithLights();
+        test.observe(this, observedtest -> {
+            Log.d(TAG, "One attribute updated of EndpointWithLights (or initial async query returned): " + observedtest.get(0).endpointConfig.id);
+        });
 
         LightRepository repo = new LightRepository();
         LiveData<Light> light = repo.getLight(1);
-        Log.e(TAG, "testConnection: " + light.getClass());
-        light.observe(this,observe -> {
-            Log.d(TAG,"Color: " + String.valueOf(observe.getColor()));
-            observe.requestSetOn(true);
+        light.observe(this, observedLight -> {
+            Log.d(TAG,"One attribute updated of light name (or initial async query returned): " + String.valueOf(observedLight.getFriendlyName()));
 
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(this.getContext()));
+            alertDialogBuilder.setTitle("Light Test")
+                    .setMessage("Friendly Name of test light: " + light.getValue().getFriendlyName());
+            final AlertDialog testAlert = alertDialogBuilder.create();
+            testAlert.show();
         });
-//        Light lightValue = light.getValue();
-//        lightValue.requestSetOn(true);
-//        Log.i("SunriseClock", light.toString());
-//        LightRemote_SwitchableUndimmableUntemperaturableUncolorableDao dao = AppDatabase.getInstance(this.getContext()).dao1();
-//        dao.insertOrUpdate(test);
-
-//        LiveData<List<LightRemote_SwitchableUndimmableUntemperaturableUncolorable>> test2 = dao.loadAll();
-
-//        test2.observeForever(light -> {
-//            Log.d(TAG, light.get(0).getFriendlyName());
-//            light.get(0).setFriendlyName("test");
-//            dao.update(light.get(0));
-//        });
-
-        //TODO: Show loading animation for running ConnectionTests instead of static message. volley returns after max 5 seconds (or so) automatically.
-        alertDialogBuilder.setTitle(getResources().getString(R.string.connection_test))
-                .setMessage(getResources().getString(R.string.connection_test_inprogress));
-        final AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-
 
         final SharedPreferences preferences = findPreference("pref_test_connection").getSharedPreferences();
 
