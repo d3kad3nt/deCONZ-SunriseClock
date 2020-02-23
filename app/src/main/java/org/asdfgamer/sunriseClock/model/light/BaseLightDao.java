@@ -47,10 +47,6 @@ public interface BaseLightDao {
     @Query("SELECT * FROM light_base WHERE cap_switchable = :switchable AND cap_dimmable = :dimmable AND cap_temperaturable = :temperaturable AND cap_colorable = :colorable")
     LiveData<List<BaseLight>> loadWithCap(boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable);
 
-//    @Query("SELECT * FROM light_base WHERE " + T.FILTER)
-//    <T extends ICapability> LiveData<List<T>> loadWithCap(T capability);
-
-
     //@Query("SELECT * FROM 'light_base' WHERE cap_switchable = :switchable AND cap_dimmable = :dimmable AND cap_temperaturable = :temperaturable AND cap_colorable = :colorable")
     //LiveData<List<T>> loadAllWithCaps(boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable);
 

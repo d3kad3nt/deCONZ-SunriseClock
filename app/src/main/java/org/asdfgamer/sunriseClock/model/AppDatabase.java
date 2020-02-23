@@ -6,7 +6,6 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import org.asdfgamer.sunriseClock.model.endpoint.BaseMasterEndpoint;
 import org.asdfgamer.sunriseClock.model.light.BaseLight;
 import org.asdfgamer.sunriseClock.model.light.BaseLightDao;
 

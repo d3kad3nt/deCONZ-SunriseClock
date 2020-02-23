@@ -7,7 +7,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import org.asdfgamer.sunriseClock.model.BaseLightObserver;
+import org.asdfgamer.sunriseClock.model.LightEndpoint;
 
 @Entity(tableName = BaseLight.TABLENAME)
 public class BaseLight implements Light {
@@ -19,6 +19,7 @@ public class BaseLight implements Light {
     @ColumnInfo(name = "friendlyName")
     private String friendlyName;
 
+//    @ForeignKey()
     @ColumnInfo(name = "enpointUUID")
     private int endpointUUID;
 
@@ -43,7 +44,7 @@ public class BaseLight implements Light {
     protected int color;
 
     @Ignore
-    private BaseLightObserver observer;
+    private LightEndpoint endpoint;
 
     public BaseLight(int id, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable, int endpointUUID) {
         this.id = id;
@@ -73,14 +74,14 @@ public class BaseLight implements Light {
         this.friendlyName = friendlyName;
     }
 
-    public void observeState(BaseLightObserver endpoint){
-        this.observer = endpoint;
-        Log.e("BaseLight", "observeState: set observer" );
+    public void observeState(LightEndpoint endpoint){
+        this.endpoint = endpoint;
+        Log.e("BaseLight", "observeState: set endpoint" );
     }
 
 
-    public BaseLightObserver getObserver(){
-        return observer;
+    public LightEndpoint getEndpoint(){
+        return endpoint;
     }
 
     public boolean isOn() {
@@ -88,7 +89,7 @@ public class BaseLight implements Light {
     }
 
     public void requestSetOn(boolean on) {
-        observer.setOn(this,on);
+        endpoint.requestSetOn(this,on);
     }
 
     public void setOn(boolean on){
@@ -101,7 +102,7 @@ public class BaseLight implements Light {
     }
 
     public void requestSetBrightness(int brightness) {
-        observer.requestSetBrightness(this,brightness);
+        endpoint.requestSetBrightness(this,brightness);
     }
 
     public void setBrightness(int brightness){
@@ -113,7 +114,7 @@ public class BaseLight implements Light {
     }
 
     public void requestSetColorTemperature(int colorTemperature) {
-        observer.requestSetColorTemperature(this,colorTemperature);
+        endpoint.requestSetColorTemperature(this,colorTemperature);
     }
 
     public void setColorTemperature(int colorTemperature) {
@@ -125,7 +126,7 @@ public class BaseLight implements Light {
     }
 
     public void requestSetColor(int color) {
-        observer.requestSetColor(this,color);
+        endpoint.requestSetColor(this,color);
     }
 
     public void setColor(int color) {
