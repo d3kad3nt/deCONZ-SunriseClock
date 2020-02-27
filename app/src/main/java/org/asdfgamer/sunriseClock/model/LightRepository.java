@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import org.asdfgamer.sunriseClock.model.endpoint.BaseEndpoint;
+import org.asdfgamer.sunriseClock.model.endpoint.EndpointManager;
 import org.asdfgamer.sunriseClock.model.light.BaseLight;
 import org.asdfgamer.sunriseClock.model.light.BaseLightDao;
 import org.asdfgamer.sunriseClock.model.light.ICapability;
@@ -22,8 +23,11 @@ public class LightRepository {
 
     private BaseLightDao baseLightDao;
 
+    private EndpointManager endpointManager;
+
     public LightRepository(){
         baseLightDao = AppDatabase.getInstance(null).baseLightDao();//TODO null is bad
+        endpointManager = EndpointManager.getEndpointManager(null);//TODO null is bad
     }
 
     public LiveData<Light> getLight(int lightid){
@@ -59,9 +63,8 @@ public class LightRepository {
 
         @Override
         public void onChanged(BaseLight light) {
-            LightEndpoint observer = new BaseEndpoint();
-            light.observeState(observer);
-            Log.e("Temp Observer", "onChanged: Set Observer");
+            BaseEndpoint endpoint = endpointManager.getEndpoint(light.getEndpointUUID());
+            light.observeState(endpoint);
             this.light.removeObserver(this);
         }
     }
