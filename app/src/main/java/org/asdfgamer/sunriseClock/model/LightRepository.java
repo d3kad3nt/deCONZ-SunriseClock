@@ -12,6 +12,7 @@ import org.asdfgamer.sunriseClock.model.light.ICapability;
 import org.asdfgamer.sunriseClock.model.light.ILightRemoteColorable;
 import org.asdfgamer.sunriseClock.model.light.Light;
 
+import java.util.Collection;
 import java.util.List;
 
 public class LightRepository {
@@ -44,12 +45,8 @@ public class LightRepository {
 //        TODO implement
     }
 
-    public <T extends ICapability> LiveData<List<Light>> getLightByCapability(Class<T> capability){
-        return null;
-    }
-    public <T extends ICapability> LiveData<List<Light>> getLightByCapability(Class<T> capability, Class<T> capability2){
-//        TODO implement
-        return null;
+    public LiveData<List<Light>> getLightByCapability(Class<? extends ICapability>... capabilities ){
+        return (LiveData<List<Light>>)(LiveData<? extends List<? extends Light>>) baseLightDao.loadWithCap(capabilities);
     }
 
     private class endpointAdder implements Observer<BaseLight> {
