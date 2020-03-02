@@ -13,7 +13,7 @@ import java.util.List;
 public interface EndpointConfigDao {
 
     @Query("SELECT * FROM  'endpoint' WHERE endpointID = :id")
-    LiveData<EndpointConfig> load(int id);
+    EndpointConfig load(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE, entity = EndpointConfig.class)
     void save(EndpointConfig obj);

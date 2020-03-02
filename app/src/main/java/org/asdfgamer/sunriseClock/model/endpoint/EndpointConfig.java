@@ -20,7 +20,7 @@ public class EndpointConfig {
 
     @PrimaryKey
     @ColumnInfo(name = "endpointID")
-    public int id;
+    public long id;
 
     @ColumnInfo(name = "type")
     @TypeConverters(EndpointTypeConverter.class)
