@@ -6,12 +6,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import org.asdfgamer.sunriseClock.model.endpoint.BaseEndpoint;
+import org.asdfgamer.sunriseClock.model.endpoint.EndpointManager;
 import org.asdfgamer.sunriseClock.model.light.BaseLight;
 import org.asdfgamer.sunriseClock.model.light.BaseLightDao;
 import org.asdfgamer.sunriseClock.model.light.ICapability;
 import org.asdfgamer.sunriseClock.model.light.ILightRemoteColorable;
 import org.asdfgamer.sunriseClock.model.light.Light;
 
+import java.util.Collection;
 import java.util.List;
 
 public class LightRepository {
@@ -21,8 +23,11 @@ public class LightRepository {
 
     private BaseLightDao baseLightDao;
 
+    private EndpointManager endpointManager;
+
     public LightRepository(){
         baseLightDao = AppDatabase.getInstance(null).baseLightDao();//TODO null is bad
+        endpointManager = EndpointManager.getEndpointManager(null);//TODO null is bad
     }
 
     public LiveData<Light> getLight(int lightid){
@@ -44,12 +49,8 @@ public class LightRepository {
 //        TODO implement
     }
 
-    public <T extends ICapability> LiveData<List<Light>> getLightByCapability(Class<T> capability){
-        return null;
-    }
-    public <T extends ICapability> LiveData<List<Light>> getLightByCapability(Class<T> capability, Class<T> capability2){
-//        TODO implement
-        return null;
+    public LiveData<List<Light>> getLightByCapability(Class<? extends ICapability>... capabilities ){
+        return (LiveData<List<Light>>)(LiveData<? extends List<? extends Light>>) baseLightDao.loadWithCap(capabilities);
     }
 
     private class endpointAdder implements Observer<BaseLight> {
@@ -62,9 +63,8 @@ public class LightRepository {
 
         @Override
         public void onChanged(BaseLight light) {
-            LightEndpoint observer = new BaseEndpoint();
-            light.observeState(observer);
-            Log.e("Temp Observer", "onChanged: Set Observer");
+            BaseEndpoint endpoint = endpointManager.getEndpoint(light.getEndpointUUID());
+            light.observeState(endpoint);
             this.light.removeObserver(this);
         }
     }
