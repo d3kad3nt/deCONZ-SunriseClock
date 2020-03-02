@@ -84,7 +84,6 @@ public interface BaseLightDao {
     @Query("SELECT * FROM light WHERE  cap_colorable = :colorable")
     LiveData<List<BaseLight>> loadWithCapColor(boolean colorable);
 
-    @Transaction
     default LiveData<List<BaseLight>> loadWithCap(Class<? extends ICapability>... capabilities ) {
         boolean switchable = false;
         boolean dimmable = false;

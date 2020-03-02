@@ -36,7 +36,7 @@ public class EndpointConfig {
     @ColumnInfo(name = "config")
     JsonObject config;
 
-    public EndpointConfig(int id, EndpointType type, Date addedAt, JsonObject config) {
+    public EndpointConfig(long id, EndpointType type, Date addedAt, JsonObject config) {
         this.id = id;
         this.type = type;
 
