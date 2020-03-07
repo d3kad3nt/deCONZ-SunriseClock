@@ -70,7 +70,7 @@ public class BaseLight implements Light {
         return this.id;
     }
 
-    protected void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -166,7 +166,9 @@ public interface BaseLightDao {
         }
     }
 
-        @Query("SELECT * FROM 'light'")
+    @Query("SELECT * FROM light")
     LiveData<List<BaseLight>> loadAll();
 
+    @Query("SELECT * FROM light WHERE endpointUUID = :endpointId")
+    LiveData<List<BaseLight>> loadAllForEndpoint(long endpointId);
 }

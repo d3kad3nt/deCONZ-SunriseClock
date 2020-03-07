@@ -9,14 +9,17 @@ import androidx.lifecycle.LiveData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
 
 import org.asdfgamer.sunriseClock.model.endpoint.BaseEndpoint;
+import org.asdfgamer.sunriseClock.model.endpoint.deconz.typeadapter.BaseLightListTypeAdapter;
 import org.asdfgamer.sunriseClock.model.endpoint.deconz.typeadapter.BaseLightTypeAdapter;
 import org.asdfgamer.sunriseClock.model.endpoint.deconz.util.LiveDataCallAdapterFactory;
 import org.asdfgamer.sunriseClock.model.endpoint.remoteApi.ApiResponse;
 import org.asdfgamer.sunriseClock.model.light.BaseLight;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import okhttp3.Interceptor;
@@ -30,8 +33,9 @@ public class DeconzEndpoint extends BaseEndpoint {
     private static final String TAG = "DeconzEndpoint";
 
     /* Path to the deconz server (Phoscon Webapp), eg. 'deconz.example.org' */
+    //TODO: Change back to Uri class and write custom TypeAdapter
     @Expose
-    private Uri baseUrl;
+    private String baseUrl;
 
     /* Port of the deconz server (Phoscon Webapp), eg. '80' */
     @Expose
@@ -45,21 +49,28 @@ public class DeconzEndpoint extends BaseEndpoint {
 
     private transient OkHttpClient httpClient;
 
-    public DeconzEndpoint(Uri baseUrl, int port, String apiKey) {
+    public DeconzEndpoint(String baseUrl, int port, String apiKey) {
         this.baseUrl = baseUrl;
         this.port = port;
         this.apiKey = apiKey;
+    }
+
+    public DeconzEndpoint init() {
 
         //TODO: De-Uglify
-        Uri fullApiUrl = baseUrl
+        Uri fullApiUrl = Uri.parse(baseUrl)
                 .buildUpon()
                 .appendEncodedPath(":" + port)
                 .path("api")
                 .appendEncodedPath(apiKey + "/")
                 .build();
 
+        //Gson has to be instructed to use our custom type adapter for a list of light.
+        Type baseLightListType = new TypeToken<List<BaseLight>>() {}.getType();
+
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(BaseLight.class, new BaseLightTypeAdapter())
+                .registerTypeAdapter(baseLightListType, new BaseLightListTypeAdapter())
                 .create();
 
         this.httpClient = new OkHttpClient.Builder()
@@ -84,11 +95,13 @@ public class DeconzEndpoint extends BaseEndpoint {
                 .client(httpClient)
                 // Set custom GSON deserializer, eg. for parsing JSON into BaseLight objects.
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                // Allow retrofit to return observable LiveData<Apiresponse> objects.
+                // Allow retrofit to return observable LiveData<ApiResponse> objects.
                 .addCallAdapterFactory(new LiveDataCallAdapterFactory())
                 .build()
                 // Implement methods to access REST endpoints / URLs.
                 .create(IServices.class);
+
+        return this;
     }
 
     @Override
@@ -113,11 +126,13 @@ public class DeconzEndpoint extends BaseEndpoint {
 
     @Override
     public LiveData<ApiResponse<List<BaseLight>>> getLights() {
+        Log.d(TAG, "Requesting all lights from endpoint: " + this.baseUrl);
         return this.retrofit.getLights();
     }
 
     @Override
     public LiveData<ApiResponse<BaseLight>> getLight(long id) {
+        Log.d(TAG, "Requesting single light with id " + id + " from endpoint: " + this.baseUrl);
         return this.retrofit.getLight(String.valueOf(id));
     }
 
