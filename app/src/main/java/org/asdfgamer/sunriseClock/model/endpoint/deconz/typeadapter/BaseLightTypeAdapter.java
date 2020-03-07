@@ -1,5 +1,7 @@
 package org.asdfgamer.sunriseClock.model.endpoint.deconz.typeadapter;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -20,8 +22,16 @@ public class BaseLightTypeAdapter implements JsonDeserializer<BaseLight> {
         Gson gson = new Gson();
         JsonObject rawJson = json.getAsJsonObject();
 
-        BaseLight baseLight = new BaseLight()
+        Log.d(TAG, "Parsing JSON for single light: " + rawJson.toString());
 
-        rawJson.get("name").getAsString();
+        JsonObject rawJsonState = rawJson.getAsJsonObject("state");
+
+        String friendlyName = rawJson.get("name").getAsString();
+        boolean switchable = rawJsonState.has("on");
+        boolean dimmable = rawJsonState.has("bri");
+        //TODO: Other capabilites of BaseLight
+
+        //TODO: Set correct values for light id and endpointid
+        return new BaseLight(1, 1, friendlyName, switchable, dimmable, false, false);
     }
 }

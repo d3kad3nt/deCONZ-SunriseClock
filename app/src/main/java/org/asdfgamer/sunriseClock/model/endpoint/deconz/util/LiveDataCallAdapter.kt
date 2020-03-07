@@ -16,6 +16,7 @@
 
 package org.asdfgamer.sunriseClock.model.endpoint.deconz.util
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import org.asdfgamer.sunriseClock.model.endpoint.remoteApi.ApiResponse
 
@@ -35,6 +36,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 class LiveDataCallAdapter<R>(private val responseType: Type) :
         CallAdapter<R, LiveData<ApiResponse<R>>> {
 
+    private val TAG = "DeconzLiveDataCallA."
+
     override fun responseType() = responseType
 
     override fun adapt(call: Call<R>): LiveData<ApiResponse<R>> {
@@ -45,10 +48,12 @@ class LiveDataCallAdapter<R>(private val responseType: Type) :
                 if (started.compareAndSet(false, true)) {
                     call.enqueue(object : Callback<R> {
                         override fun onResponse(call: Call<R>, response: Response<R>) {
+                            Log.d(TAG, "onResponse() called.")
                             postValue(ApiResponse.create(response))
                         }
 
                         override fun onFailure(call: Call<R>, throwable: Throwable) {
+                            Log.d(TAG, "onFailure() called.")
                             postValue(ApiResponse.create(throwable))
                         }
                     })

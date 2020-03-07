@@ -10,15 +10,20 @@ import androidx.lifecycle.LiveData;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.google.gson.JsonObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 
 import org.asdfgamer.sunriseClock.R;
 import org.asdfgamer.sunriseClock.model.AppDatabase;
+import org.asdfgamer.sunriseClock.model.LightEndpoint;
 import org.asdfgamer.sunriseClock.model.LightRepository;
 import org.asdfgamer.sunriseClock.model.endpoint.EndpointConfig;
 import org.asdfgamer.sunriseClock.model.endpoint.EndpointConfigDao;
 import org.asdfgamer.sunriseClock.model.endpoint.EndpointType;
 import org.asdfgamer.sunriseClock.model.endpoint.EndpointWithLights;
+import org.asdfgamer.sunriseClock.model.endpoint.deconz.DeconzEndpoint;
+import org.asdfgamer.sunriseClock.model.endpoint.remoteApi.ApiResponse;
+import org.asdfgamer.sunriseClock.model.endpoint.remoteApi.Resource;
 import org.asdfgamer.sunriseClock.model.light.BaseLight;
 import org.asdfgamer.sunriseClock.model.light.BaseLightDao;
 import org.asdfgamer.sunriseClock.model.light.Light;
@@ -77,6 +82,12 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
 
     private void testConnection() {
 
+        final SharedPreferences preferences = findPreference("pref_test_connection").getSharedPreferences();
+
+        final Uri.Builder deconzUribuilder = new Uri.Builder();
+        deconzUribuilder.scheme("http")
+                .encodedAuthority(preferences.getString(IP.toString(), ""));
+
         //An endpoint with the correct ID has to be created before saving a BaseLight into the database.
         //Otherwise the foreign key constraint would fail.
         Calendar cal = Calendar.getInstance();
@@ -84,12 +95,21 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         cal.set(Calendar.MONTH, Calendar.JANUARY);
         cal.set(Calendar.DAY_OF_MONTH, 1);
         Date date = cal.getTime();
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("testInt", 2);
-        jsonObject.addProperty("testString", "liveoverflow");
-        EndpointConfig endpointConfig = new EndpointConfig(1, EndpointType.DECONZ, date, jsonObject);
+
+        DeconzEndpoint deconzTest = new DeconzEndpoint(deconzUribuilder.build().toString(), Integer.parseInt(preferences.getString(PORT.toString(), "")), preferences.getString(API_KEY.toString(), ""));
+        Gson gson = new Gson();
+
+        LightRepository repo = new LightRepository(getContext());
         EndpointConfigDao endpointConfigDao = AppDatabase.getInstance(this.getContext()).endpointConfigDao();
-        endpointConfigDao.save(endpointConfig);
+
+        EndpointConfig endpointConfig = new EndpointConfig(1, EndpointType.DECONZ, date, new JsonParser().parse(gson.toJson(deconzTest, DeconzEndpoint.class)).getAsJsonObject());
+        LightEndpoint lightEndpoint = repo.createEndpoint(endpointConfig);
+        LiveData<ApiResponse<BaseLight>> tmp = lightEndpoint.getLight(1);
+
+        LiveData<Resource<List<BaseLight>>> lights = repo.testGetLights(1);
+        lights.observe(this, observedtest -> {
+            Log.d(TAG, "Status: " + observedtest.getStatus().toString());
+        });
 
         BaseLight baselight = new BaseLight(1, 1,"Test",true,true,true,true);
         BaseLightDao baseLightDao = AppDatabase.getInstance(this.getContext()).baseLightDao();
@@ -101,7 +121,6 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
             Log.d(TAG, "One attribute updated of EndpointWithLights (or initial async query returned): " + observedtest.get(0).endpointConfig.id);
         });
 
-        LightRepository repo = new LightRepository();
         LiveData<Light> light = repo.getLight(1);
         light.observe(this, observedLight -> {
             Log.d(TAG,"One attribute updated of light name (or initial async query returned): " + String.valueOf(observedLight.getFriendlyName()));
@@ -113,7 +132,9 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
             testAlert.show();
         });
 
-        final SharedPreferences preferences = findPreference("pref_test_connection").getSharedPreferences();
+        //
+        //OLD:
+        //
 
         final Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
