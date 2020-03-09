@@ -20,14 +20,10 @@ import org.asdfgamer.sunriseClock.model.LightRepository;
 import org.asdfgamer.sunriseClock.model.endpoint.EndpointConfig;
 import org.asdfgamer.sunriseClock.model.endpoint.EndpointConfigDao;
 import org.asdfgamer.sunriseClock.model.endpoint.EndpointType;
-import org.asdfgamer.sunriseClock.model.endpoint.EndpointWithLights;
 import org.asdfgamer.sunriseClock.model.endpoint.deconz.DeconzEndpoint;
-import org.asdfgamer.sunriseClock.model.endpoint.remoteApi.ApiResponse;
 import org.asdfgamer.sunriseClock.model.endpoint.remoteApi.Resource;
+import org.asdfgamer.sunriseClock.model.endpoint.remoteApi.Status;
 import org.asdfgamer.sunriseClock.model.light.BaseLight;
-import org.asdfgamer.sunriseClock.model.light.BaseLightDao;
-import org.asdfgamer.sunriseClock.model.light.Light;
-import org.asdfgamer.sunriseClock.network.lights.DeconzRequestLightsHelper;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -103,98 +99,30 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         EndpointConfigDao endpointConfigDao = AppDatabase.getInstance(this.getContext()).endpointConfigDao();
 
         EndpointConfig endpointConfig = new EndpointConfig(1, EndpointType.DECONZ, date, new JsonParser().parse(gson.toJson(deconzTest, DeconzEndpoint.class)).getAsJsonObject());
-        LightEndpoint lightEndpoint = repo.createEndpoint(endpointConfig);
-        LiveData<ApiResponse<BaseLight>> tmp = lightEndpoint.getLight(1);
+        endpointConfigDao.save(endpointConfig);
+        LightEndpoint lightEndpoint = repo.getEndpoint(endpointConfig.id);
 
         LiveData<Resource<List<BaseLight>>> lights = repo.testGetLights(1);
-        lights.observe(this, observedtest -> {
-            Log.d(TAG, "Status: " + observedtest.getStatus().toString());
+        lights.observe(this, observedApiresponse -> {
+            Log.d(TAG, "Status: " + observedApiresponse.getStatus().toString());
+
+            if (observedApiresponse.getStatus() == Status.SUCCESS) {
+                List<BaseLight> tmpLights = observedApiresponse.getData();
+
+                for (BaseLight tmpLight : tmpLights ) {
+                    Log.d(TAG,"One attribute updated of light name (or initial async query returned): " + String.valueOf(tmpLight.getFriendlyName()));
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(this.getContext()));
+                    alertDialogBuilder.setTitle("Light Test")
+                            .setMessage("Friendly Name of test light: " + tmpLight.getFriendlyName());
+                    final AlertDialog testAlert = alertDialogBuilder.create();
+                    testAlert.show();
+                }
+
+            }
+
         });
 
-        BaseLight baselight = new BaseLight(1, 1,"Test",true,true,true,true);
-        BaseLightDao baseLightDao = AppDatabase.getInstance(this.getContext()).baseLightDao();
-        baseLightDao.save(baselight);
-
-        //Test: Retrieve an endpoint with a list of associated lights.
-        LiveData<List<EndpointWithLights>> test = endpointConfigDao.getEndpointWithLights();
-        test.observe(this, observedtest -> {
-            Log.d(TAG, "One attribute updated of EndpointWithLights (or initial async query returned): " + observedtest.get(0).endpointConfig.id);
-        });
-
-        LiveData<Light> light = repo.getLight(1);
-        light.observe(this, observedLight -> {
-            Log.d(TAG,"One attribute updated of light name (or initial async query returned): " + String.valueOf(observedLight.getFriendlyName()));
-
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(this.getContext()));
-            alertDialogBuilder.setTitle("Light Test")
-                    .setMessage("Friendly Name of test light: " + light.getValue().getFriendlyName());
-            final AlertDialog testAlert = alertDialogBuilder.create();
-            testAlert.show();
-        });
-
-        //
-        //OLD:
-        //
-
-        final Uri.Builder builder = new Uri.Builder();
-        builder.scheme("http")
-                .encodedAuthority(preferences.getString(IP.toString(), "") + ":" + preferences.getString(PORT.toString(), ""));
-
-        /* 1st Step: Tests connection (and authentication!) to deconz by requesting an API endpoint which is key-protected.
-         * 2nd step: Requests some information from deconz to show it to the user. */
-        DeconzRequestLightsHelper deconzLights = new DeconzRequestLightsHelper(builder.build(), preferences.getString(API_KEY.toString(), ""));
-
-//        deconzLights.getLights(new CustomGetLightsCallback() {
-//            @Override
-//            public void onSuccess(Response<List<Light>> response) {
-//                DeconzRequestConfigHelper deconzConfig = new DeconzRequestConfigHelper(builder.build(), preferences.getString(API_KEY.toString(), ""));
-//
-//                deconzConfig.getConfig(new SimplifiedCallback<Config>() {
-//                    @Override
-//                    public void onSuccess(Response<Config> response) {
-//                        Config config = response.body();
-//
-//                        //TODO: Use xml layout for this alertDialog.
-//                        alertDialog.setMessage(getResources().getString(R.string.connection_test_success_apiversion) + ": " + Objects.requireNonNull(config).getApiversion()
-//                                + System.getProperty("line.separator")
-//                                + getResources().getString(R.string.connection_test_success_ipaddress) + ": " + config.getIpaddress());
-//                        alertDialog.setTitle(getResources().getString(R.string.connection_test_success_title));
-//
-//                        SharedPreferences.Editor prefEditor = preferences.edit();
-//                        Calendar calendar = Calendar.getInstance();
-//                        SimpleDateFormat mdformat = new SimpleDateFormat("dd.MM.YY HH:mm", Locale.getDefault());
-//                        String strDate = mdformat.format(calendar.getTime());
-//                        prefEditor.putString("pref_test_connection", strDate);
-//                        prefEditor.apply();
-//                    }
-//
-//                    @Override
-//                    public void onError() {
-//                        //This should not fail because getLights returned successfully just a few moments ago.
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onForbidden(Error error) {
-//                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_wrongapikey));
-//            }
-//
-//            @Override
-//            public void onNetworkFailure(Call<List<Light>> call, Throwable throwable) {
-//                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_noconnection));
-//            }
-//
-//            @Override
-//            public void onInvalidResponseObject(Call<List<Light>> call, Throwable throwable) {
-//                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_nodeconz));
-//            }
-//
-//            @Override
-//            public void onInvalidErrorObject() {
-//                alertDialog.setMessage(getResources().getString(R.string.connection_test_error_nodeconz));
-//            }
-//        });
     }
 
 

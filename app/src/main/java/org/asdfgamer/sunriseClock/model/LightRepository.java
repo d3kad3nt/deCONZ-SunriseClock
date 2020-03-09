@@ -90,6 +90,8 @@ public class LightRepository {
             @Override
             protected void saveCallResult(List<BaseLight> items) {
                 for (BaseLight light : items) {
+                    //TODO: Maybe the endpoint id could be set elsewhere. This is to satisfy the foreign key constraint.
+                    light.setEndpointUUID(endpointId);
                     baseLightDao.insertOrUpdate(light);
                 }
             }
