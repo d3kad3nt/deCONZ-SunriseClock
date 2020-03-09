@@ -58,10 +58,10 @@ public class DeconzEndpoint extends BaseEndpoint {
     public DeconzEndpoint init() {
 
         //TODO: De-Uglify
-        Uri fullApiUrl = Uri.parse(baseUrl)
+        Uri fullApiUrl = Uri.parse(baseUrl.concat(":" + port))
                 .buildUpon()
-                .appendEncodedPath(":" + port)
-                .path("api")
+                .scheme("http")
+                .appendPath("api")
                 .appendEncodedPath(apiKey + "/")
                 .build();
 
