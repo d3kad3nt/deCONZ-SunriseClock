@@ -24,9 +24,9 @@ public class BaseLight implements Light {
 
     @PrimaryKey
     @ColumnInfo(name = "lightID")
-    private int id;
+    private long id;
     @ColumnInfo(name = "endpointUUID")
-    private int endpointUUID;
+    private long endpointUUID;
 
     @ColumnInfo(name = "friendlyName")
     private String friendlyName;
@@ -54,7 +54,7 @@ public class BaseLight implements Light {
     @Ignore
     private transient LightEndpoint endpoint;
 
-    public BaseLight(int id, int endpointUUID, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
+    public BaseLight(long id, long endpointUUID, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
         this.id = id;
         this.endpointUUID = endpointUUID;
 
@@ -66,11 +66,11 @@ public class BaseLight implements Light {
         this.colorable = colorable;
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    protected void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -144,8 +144,12 @@ public class BaseLight implements Light {
         this.color = color;
     }
 
-    public int getEndpointUUID() {
-        return endpointUUID;
+    public long getEndpointUUID() {
+        return this.endpointUUID;
+    }
+
+    public void setEndpointUUID(long endpointUUID){
+        this.endpointUUID = endpointUUID;
     }
 
 }
