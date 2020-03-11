@@ -54,10 +54,8 @@ public class BaseLightListTypeAdapter implements JsonDeserializer<List<BaseLight
 
             // Postprocessing: Manipulate returned BaseLight to include all required
             // (non-automatically deserialized) fields.
-            light.setEndpointLightId(Integer.parseInt(lightId));
+            light.setEndpointLightId(lightId);
             light.setEndpointId(this.endpointId);
-
-            light.id = Integer.parseInt(lightId);
 
             lights.add(light);
         }

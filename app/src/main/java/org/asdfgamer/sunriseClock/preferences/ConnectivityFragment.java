@@ -102,15 +102,15 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         endpointConfigDao.save(endpointConfig);
         LightEndpoint lightEndpoint = repo.getEndpoint(endpointConfig.id);
 
-        LiveData<Resource<List<BaseLight>>> lights = repo.testGetLights(1);
+        LiveData<Resource<List<BaseLight>>> lights = repo.getLightsForEndpoint(1);
         lights.observe(this, observedApiresponse -> {
-            Log.d(TAG, "Status: " + observedApiresponse.getStatus().toString());
+            Log.d(TAG, "getLightsForEndpoint, Status: " + observedApiresponse.getStatus().toString());
 
             if (observedApiresponse.getStatus() == Status.SUCCESS) {
                 List<BaseLight> tmpLights = observedApiresponse.getData();
 
                 for (BaseLight tmpLight : tmpLights ) {
-                    Log.d(TAG,"One attribute updated of light name (or initial async query returned): " + String.valueOf(tmpLight.friendlyName));
+                    Log.d(TAG,"getLightsForEndpoint, One attribute updated of light name (or initial async query returned): " + String.valueOf(tmpLight.friendlyName));
 
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(this.getContext()));
                     alertDialogBuilder.setTitle("Light Test")
@@ -122,6 +122,16 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
             }
 
         });
+
+
+//        LiveData<Resource<BaseLight>> light = repo.getLight(1, "1");
+//        light.observe(this, observedApiResponse -> {
+//            Log.d(TAG, "getSingleLight, Status: " + observedApiResponse.getStatus().toString());
+//
+//            if (observedApiResponse.getStatus() == Status.SUCCESS) {
+//                Log.d(TAG,"getSingleLight, One attribute updated of light name (or initial async query returned): " + String.valueOf(observedApiResponse.getData().friendlyName));
+//            }
+//        });
 
     }
 

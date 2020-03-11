@@ -17,14 +17,18 @@ import org.asdfgamer.sunriseClock.model.endpoint.deconz.typeadapter.BaseLightTyp
 import org.asdfgamer.sunriseClock.model.endpoint.deconz.util.LiveDataCallAdapterFactory;
 import org.asdfgamer.sunriseClock.model.endpoint.remoteApi.ApiResponse;
 import org.asdfgamer.sunriseClock.model.light.BaseLight;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -83,8 +87,36 @@ public class DeconzEndpoint extends BaseEndpoint {
                     public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
                         Request request = chain.request();
                         okhttp3.Response response = chain.proceed(request);
+                        Log.d(TAG, "HTTP interceptor: Intercepted request to: " + response.request().url().toString() + " led to HTTP code: " + response.code());
 
-                        Log.d(TAG, "Intercepted request to: " + response.request().url().toString() + " led to HTTP code: " + response.code());
+                        if (response.code() >= 200 && response.code() <= 399 && response.body() != null) {
+
+                            // Workaround: Deconz endpoint does not return the id of a light when requesting a single
+                            // light. The Gson deserializer is automatically called and cannot access the id inside of
+                            // the original request. A okHttp interceptor is used to modify the JSON response from the
+                            // Deconz endpoint and adds this light id.
+                            if (request.header(IServices.endpointLightIdHeader) != null) {
+                                Log.d(TAG, "HTTP interceptor: Try to set light id in JSON response as workaround.");
+
+                                assert response.body() != null;
+                                String stringJson = response.body().string();
+                                JSONObject jsonObject = null;
+
+                                try {
+                                    jsonObject = new JSONObject(stringJson);
+                                    jsonObject.put(IServices.endpointLightIdHeader, request.header(IServices.endpointLightIdHeader));
+
+                                    MediaType contentType = response.body().contentType();
+                                    ResponseBody body = ResponseBody.create(contentType, String.valueOf(jsonObject));
+
+                                    return response.newBuilder().body(body).build();
+
+                                } catch (JSONException ignored) {
+
+                                }
+
+                            }
+                        }
 
                         return response;
                     }
@@ -134,9 +166,14 @@ public class DeconzEndpoint extends BaseEndpoint {
     }
 
     @Override
-    public LiveData<ApiResponse<BaseLight>> getLight(long id) {
+    public LiveData<ApiResponse<BaseLight>> getLight(String id) {
         Log.d(TAG, "Requesting single light with id " + id + " from endpoint: " + this.baseUrl);
-        return this.retrofit.getLight(String.valueOf(id));
+
+        // Workaround: Deconz endpoint does not return the id of a light when requesting a single
+        // light. The Gson deserializer is automatically called and cannot access the id inside of
+        // the original request. A okHttp interceptor is used to modify the JSON response from the
+        // Deconz endpoint and adds this light id.
+        return this.retrofit.getLight(id, id);
     }
 
 }

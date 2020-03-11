@@ -2,12 +2,12 @@ package org.asdfgamer.sunriseClock.model.light;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
-import androidx.room.PrimaryKey;
 
 import org.asdfgamer.sunriseClock.model.LightEndpoint;
 import org.asdfgamer.sunriseClock.model.endpoint.EndpointConfig;
@@ -17,11 +17,9 @@ import org.asdfgamer.sunriseClock.model.endpoint.EndpointConfig;
 @Entity(tableName = BaseLight.TABLENAME,
         indices = {@Index("endpointId")},
         // Only one endpoint light id (specific for that endpoint!) can exist for a single endpoint.
-        //primaryKeys =
-        //        {"endpointLightId", "endpointId"},
-        //indices =
-        //@Index(value = {"endpointId", "endpointLightId"},
-        //        unique = true),
+        // This is suitable as a composite primary key.
+        primaryKeys =
+                {"endpointLightId", "endpointId"},
         // A BaseLight is always bound to a single endpoint. It cannot exist without one:
         // Therefore Room is instructed to delete this BaseLight if the endpoint gets deleted.
         foreignKeys =
@@ -34,25 +32,24 @@ public class BaseLight implements Light {
     static final String TABLENAME = "light";
 
     /**
-     * Unique ID for a single BaseLight. Should not be set manually as it is automatically generated
-     * by Room library. This is the single primary key for BaseLights.
-     */
-    @PrimaryKey
-    @ColumnInfo(name = "lightId")
-    public int id;
-
-    /**
      * Foreign key of the remote endpoint that this BaseLight belongs to.
+     * Only one endpoint light id (specific for that endpoint!) can exist for a single endpoint.
+     *
+     * This is suitable as part of a composite primary key.
      */
+    @NonNull
     @ColumnInfo(name = "endpointId")
     private int endpointId;
 
     /**
      * Id for this BaseLight inside (!) the remote endpoint. This field helps the remote endpoint
-     * to identify the correct BaseLight. It should not be confused with the primary key id.
+     * to identify the correct BaseLight.
+     *
+     * This is suitable as part of a composite primary key.
      */
+    @NonNull
     @ColumnInfo(name = "endpointLightId")
-    private int endpointLightId;
+    private String endpointLightId;
 
     @ColumnInfo(name = "friendlyName")
     public String friendlyName = "";
@@ -78,9 +75,9 @@ public class BaseLight implements Light {
     private int color; //TODO: Create contract for allowed values.
 
     @Ignore
-    private transient LightEndpoint endpoint;
+    public transient LightEndpoint endpoint;
 
-    public BaseLight(int endpointId, int endpointLightId, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
+    public BaseLight(int endpointId, String endpointLightId, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
         this.endpointId = endpointId;
         this.endpointLightId = endpointLightId;
 
@@ -93,24 +90,21 @@ public class BaseLight implements Light {
     }
 
     @Ignore
-    public BaseLight(int endpointId, int endpointLightId) {
+    public BaseLight(int endpointId, String endpointLightId) {
         this.endpointId = endpointId;
         this.endpointLightId = endpointLightId;
     }
 
-    public int getId() {
-        return this.id;
+    @Ignore
+    public BaseLight(int endpointId) {
+        this.endpointId = endpointId;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getEndpointLightId() {
+    public String getEndpointLightId() {
         return endpointLightId;
     }
 
-    public void setEndpointLightId(int endpointLightId) {
+    public void setEndpointLightId(String endpointLightId) {
         this.endpointLightId = endpointLightId;
     }
 
