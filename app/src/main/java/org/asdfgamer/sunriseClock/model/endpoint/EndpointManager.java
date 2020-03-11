@@ -14,7 +14,7 @@ public class EndpointManager {
 
     private final EndpointConfigDao configDAO;
 
-    private Map<Long, BaseEndpoint> endpointCache = new HashMap<>();
+    private Map<Integer, BaseEndpoint> endpointCache = new HashMap<Integer, BaseEndpoint>();
 
     public static EndpointManager getEndpointManager(Context context){
         if (endpointManager == null){
@@ -35,7 +35,7 @@ public class EndpointManager {
         return endpointCache.get(config.id);
     }
 
-    public BaseEndpoint getEndpoint(long id){
+    public BaseEndpoint getEndpoint(Integer id){
         if (!endpointCache.containsKey(id)){
             EndpointConfig config = getConfig(id);
             endpointCache.put(id,createEndpoint(config));

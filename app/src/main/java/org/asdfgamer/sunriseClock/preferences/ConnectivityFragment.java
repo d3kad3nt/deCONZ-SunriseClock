@@ -110,11 +110,11 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
                 List<BaseLight> tmpLights = observedApiresponse.getData();
 
                 for (BaseLight tmpLight : tmpLights ) {
-                    Log.d(TAG,"One attribute updated of light name (or initial async query returned): " + String.valueOf(tmpLight.getFriendlyName()));
+                    Log.d(TAG,"One attribute updated of light name (or initial async query returned): " + String.valueOf(tmpLight.friendlyName));
 
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(this.getContext()));
                     alertDialogBuilder.setTitle("Light Test")
-                            .setMessage("Friendly Name of test light: " + tmpLight.getFriendlyName());
+                            .setMessage("Friendly Name of test light: " + tmpLight.friendlyName);
                     final AlertDialog testAlert = alertDialogBuilder.create();
                     testAlert.show();
                 }

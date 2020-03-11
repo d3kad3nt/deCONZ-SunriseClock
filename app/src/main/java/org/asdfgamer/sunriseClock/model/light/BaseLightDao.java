@@ -11,6 +11,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -28,8 +29,11 @@ public interface BaseLightDao {
     @Delete(entity = BaseLight.class)
     void delete(BaseLight obj);
 
-    @Query("SELECT * FROM  'light' WHERE lightID = :id")
+    @Query("SELECT * FROM  'light' WHERE lightId = :id")
     LiveData<BaseLight> load(int id);
+
+    @Query("SELECT * FROM  'light' WHERE lightId = :id")
+    BaseLight loadSimple(int id);
 
     @Transaction
     default void insertOrUpdate(BaseLight obj) {
@@ -39,49 +43,51 @@ public interface BaseLightDao {
         }
     }
 
-    @Query("SELECT * FROM light WHERE cap_switchable = :switchable AND cap_dimmable = :dimmable AND cap_temperaturable = :temperaturable AND cap_colorable = :colorable")
+
+
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable AND isDimmable = :dimmable AND isTemperaturable = :temperaturable AND isColorable = :colorable")
     LiveData<List<BaseLight>> loadWithCap(boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable);
 
-    @Query("SELECT * FROM light WHERE cap_switchable = :switchable AND cap_dimmable = :dimmable AND cap_temperaturable = :temperaturable ")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable AND isDimmable = :dimmable AND isTemperaturable = :temperaturable ")
     LiveData<List<BaseLight>> loadWithCapSwitchDimmTemp(boolean switchable, boolean dimmable, boolean temperaturable);
 
-    @Query("SELECT * FROM light WHERE cap_switchable = :switchable AND cap_dimmable = :dimmable AND cap_colorable = :colorable")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable AND isDimmable = :dimmable AND isColorable = :colorable")
     LiveData<List<BaseLight>> loadWithCapSwitchDimmColor(boolean switchable, boolean dimmable,  boolean colorable);
 
-    @Query("SELECT * FROM light WHERE cap_switchable = :switchable  AND cap_temperaturable = :temperaturable AND cap_colorable = :colorable")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable  AND isTemperaturable = :temperaturable AND isColorable = :colorable")
     LiveData<List<BaseLight>> loadWithCapSwitchTempColor(boolean switchable, boolean temperaturable, boolean colorable);
 
-    @Query("SELECT * FROM light WHERE cap_switchable = :switchable AND cap_dimmable = :dimmable")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable AND isDimmable = :dimmable")
     LiveData<List<BaseLight>> loadWithCapSwitchDimm(boolean switchable, boolean dimmable);
 
-    @Query("SELECT * FROM light WHERE cap_switchable = :switchable AND cap_temperaturable = :temperaturable")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable AND isTemperaturable = :temperaturable")
     LiveData<List<BaseLight>> loadWithCapSwitchTemp(boolean switchable, boolean temperaturable);
 
-    @Query("SELECT * FROM light WHERE cap_switchable = :switchable AND cap_colorable = :colorable")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable AND isColorable = :colorable")
     LiveData<List<BaseLight>> loadWithCapSwitchColor(boolean switchable, boolean colorable);
 
-    @Query("SELECT * FROM light WHERE cap_switchable = :switchable")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable")
     LiveData<List<BaseLight>> loadWithCapSwitch(boolean switchable);
 
-    @Query("SELECT * FROM light WHERE cap_dimmable = :dimmable AND cap_temperaturable = :temperaturable AND cap_colorable = :colorable")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isDimmable = :dimmable AND isTemperaturable = :temperaturable AND isColorable = :colorable")
     LiveData<List<BaseLight>> loadWithCapDimmTempColor(boolean dimmable, boolean temperaturable, boolean colorable);
 
-    @Query("SELECT * FROM light WHERE cap_dimmable = :dimmable AND cap_colorable = :colorable")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isDimmable = :dimmable AND isColorable = :colorable")
     LiveData<List<BaseLight>> loadWithCapDimmColor(boolean dimmable,  boolean colorable);
 
-    @Query("SELECT * FROM light WHERE cap_dimmable = :dimmable  AND cap_temperaturable = :temperaturable")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isDimmable = :dimmable  AND isTemperaturable = :temperaturable")
     LiveData<List<BaseLight>> loadWithCapDimmTemp(boolean dimmable, boolean temperaturable);
 
-    @Query("SELECT * FROM light WHERE cap_dimmable = :dimmable ")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isDimmable = :dimmable ")
     LiveData<List<BaseLight>> loadWithCapDimm(boolean dimmable);
 
-    @Query("SELECT * FROM light WHERE cap_temperaturable = :temperaturable AND cap_colorable = :colorable")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isTemperaturable = :temperaturable AND isColorable = :colorable")
     LiveData<List<BaseLight>> loadWithCapTempColor(boolean temperaturable, boolean colorable);
 
-    @Query("SELECT * FROM light WHERE cap_temperaturable = :temperaturable")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isTemperaturable = :temperaturable")
     LiveData<List<BaseLight>> loadWithCapTemp(boolean temperaturable);
 
-    @Query("SELECT * FROM light WHERE  cap_colorable = :colorable")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE  isColorable = :colorable")
     LiveData<List<BaseLight>> loadWithCapColor(boolean colorable);
 
     default LiveData<List<BaseLight>> loadWithCap(Class<? extends ICapability>... capabilities ) {
@@ -166,9 +172,9 @@ public interface BaseLightDao {
         }
     }
 
-    @Query("SELECT * FROM light")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME)
     LiveData<List<BaseLight>> loadAll();
 
-    @Query("SELECT * FROM light WHERE endpointUUID = :endpointId")
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE endpointId = :endpointId")
     LiveData<List<BaseLight>> loadAllForEndpoint(long endpointId);
 }

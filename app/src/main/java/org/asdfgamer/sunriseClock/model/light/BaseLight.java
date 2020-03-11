@@ -12,51 +12,77 @@ import androidx.room.PrimaryKey;
 import org.asdfgamer.sunriseClock.model.LightEndpoint;
 import org.asdfgamer.sunriseClock.model.endpoint.EndpointConfig;
 
+
+
 @Entity(tableName = BaseLight.TABLENAME,
-        indices = {@Index("endpointUUID")},
-        foreignKeys = @ForeignKey(entity = EndpointConfig.class,
-                parentColumns = "endpointID",
-                childColumns = "endpointUUID",
+        indices = {@Index("endpointId")},
+        // Only one endpoint light id (specific for that endpoint!) can exist for a single endpoint.
+        //primaryKeys =
+        //        {"endpointLightId", "endpointId"},
+        //indices =
+        //@Index(value = {"endpointId", "endpointLightId"},
+        //        unique = true),
+        // A BaseLight is always bound to a single endpoint. It cannot exist without one:
+        // Therefore Room is instructed to delete this BaseLight if the endpoint gets deleted.
+        foreignKeys =
+        @ForeignKey(entity = EndpointConfig.class,
+                parentColumns = "endpointId",
+                childColumns = "endpointId",
                 onDelete = ForeignKey.CASCADE))
 public class BaseLight implements Light {
 
     static final String TABLENAME = "light";
 
+    /**
+     * Unique ID for a single BaseLight. Should not be set manually as it is automatically generated
+     * by Room library. This is the single primary key for BaseLights.
+     */
     @PrimaryKey
-    @ColumnInfo(name = "lightID")
-    private long id;
-    @ColumnInfo(name = "endpointUUID")
-    private long endpointUUID;
+    @ColumnInfo(name = "lightId")
+    public int id;
+
+    /**
+     * Foreign key of the remote endpoint that this BaseLight belongs to.
+     */
+    @ColumnInfo(name = "endpointId")
+    private int endpointId;
+
+    /**
+     * Id for this BaseLight inside (!) the remote endpoint. This field helps the remote endpoint
+     * to identify the correct BaseLight. It should not be confused with the primary key id.
+     */
+    @ColumnInfo(name = "endpointLightId")
+    private int endpointLightId;
 
     @ColumnInfo(name = "friendlyName")
-    private String friendlyName;
+    public String friendlyName = "";
 
-    @ColumnInfo(name = "cap_switchable")
-    protected boolean switchable;
+    @ColumnInfo(name = "isSwitchable")
+    public boolean switchable = false;
     @ColumnInfo(name = "on")
     protected boolean on;
 
-    @ColumnInfo(name = "cap_dimmable")
-    protected boolean dimmable;
+    @ColumnInfo(name = "isDimmable")
+    public boolean dimmable = false;
     @ColumnInfo(name = "brightness")
-    protected int brightness;
+    private int brightness; //TODO: Create contract for allowed values.
 
-    @ColumnInfo(name = "cap_temperaturable")
-    protected boolean temperaturable;
+    @ColumnInfo(name = "isTemperaturable")
+    public boolean temperaturable = false;
     @ColumnInfo(name = "colorTemperature")
-    protected int colorTemperature;
+    private int colorTemperature; //TODO: Create contract for allowed values.
 
-    @ColumnInfo(name = "cap_colorable")
-    protected boolean colorable;
+    @ColumnInfo(name = "isColorable")
+    public boolean colorable = false;
     @ColumnInfo(name = "color")
-    protected int color;
+    private int color; //TODO: Create contract for allowed values.
 
     @Ignore
     private transient LightEndpoint endpoint;
 
-    public BaseLight(long id, long endpointUUID, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
-        this.id = id;
-        this.endpointUUID = endpointUUID;
+    public BaseLight(int endpointId, int endpointLightId, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
+        this.endpointId = endpointId;
+        this.endpointLightId = endpointLightId;
 
         this.friendlyName = friendlyName;
 
@@ -66,7 +92,13 @@ public class BaseLight implements Light {
         this.colorable = colorable;
     }
 
-    public long getId() {
+    @Ignore
+    public BaseLight(int endpointId, int endpointLightId) {
+        this.endpointId = endpointId;
+        this.endpointLightId = endpointLightId;
+    }
+
+    public int getId() {
         return this.id;
     }
 
@@ -74,19 +106,18 @@ public class BaseLight implements Light {
         this.id = id;
     }
 
-    public String getFriendlyName() {
-        return this.friendlyName;
+    public int getEndpointLightId() {
+        return endpointLightId;
     }
 
-    public void setFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
+    public void setEndpointLightId(int endpointLightId) {
+        this.endpointLightId = endpointLightId;
     }
 
     public void observeState(LightEndpoint endpoint){
         this.endpoint = endpoint;
         Log.e("BaseLight", "observeState: set endpoint" );
     }
-
 
     public LightEndpoint getEndpoint(){
         return this.endpoint;
@@ -96,6 +127,7 @@ public class BaseLight implements Light {
         return this.on;
     }
 
+    @Override
     public void requestSetOn(boolean on) {
         endpoint.requestSetOn(this,on);
     }
@@ -104,11 +136,11 @@ public class BaseLight implements Light {
         this.on = on;
     }
 
-
     public int getBrightness() {
         return this.brightness;
     }
 
+    @Override
     public void requestSetBrightness(int brightness) {
         endpoint.requestSetBrightness(this,brightness);
     }
@@ -121,10 +153,9 @@ public class BaseLight implements Light {
         return this.colorTemperature;
     }
 
+    @Override
     public void requestSetColorTemperature(int colorTemperature) {
-        //TODO: Only useful for testing observable Lights (as long as the endpoint for a light is null and e.g. requestSetColor is not usable)
-        //endpoint.requestSetColorTemperature(this,colorTemperature);
-        this.colorTemperature = colorTemperature;
+        endpoint.requestSetColorTemperature(this, colorTemperature);
     }
 
     public void setColorTemperature(int colorTemperature) {
@@ -144,12 +175,12 @@ public class BaseLight implements Light {
         this.color = color;
     }
 
-    public long getEndpointUUID() {
-        return this.endpointUUID;
+    public int getEndpointId() {
+        return this.endpointId;
     }
 
-    public void setEndpointUUID(long endpointUUID){
-        this.endpointUUID = endpointUUID;
+    public void setEndpointId(int endpointId){
+        this.endpointId = endpointId;
     }
 
 }

@@ -55,6 +55,7 @@ public class DeconzEndpoint extends BaseEndpoint {
         this.apiKey = apiKey;
     }
 
+    @Override
     public DeconzEndpoint init() {
 
         //TODO: De-Uglify
@@ -66,13 +67,15 @@ public class DeconzEndpoint extends BaseEndpoint {
                 .build();
 
         //Gson has to be instructed to use our custom type adapter for a list of light.
+        Type baseLightType = new TypeToken<BaseLight>() {}.getType();
         Type baseLightListType = new TypeToken<List<BaseLight>>() {}.getType();
 
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(BaseLight.class, new BaseLightTypeAdapter())
-                .registerTypeAdapter(baseLightListType, new BaseLightListTypeAdapter())
+                .registerTypeAdapter(baseLightType, new BaseLightTypeAdapter(super.getOriginalEndpointConfig().getId()))
+                .registerTypeAdapter(baseLightListType, new BaseLightListTypeAdapter(super.getOriginalEndpointConfig().getId()))
                 .create();
 
+        // Debugging HTTP interceptor for underlying okHttp library.
         this.httpClient = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
                     @NonNull

@@ -1,6 +1,7 @@
 package org.asdfgamer.sunriseClock.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -35,12 +36,13 @@ public class LightRepository {
         endpointManager = EndpointManager.getEndpointManager(null);//TODO null is bad
     }
 
-    public LiveData<Light> getLight(int lightid){
-        refreshLight(lightid);
-        LiveData<BaseLight>baseLight =  baseLightDao.load(lightid);
-        baseLight.observeForever(new endpointAdder(baseLight));//TODO only if not already set
-        return (LiveData<Light>) (LiveData<? extends Light>) baseLight;
-    }
+    //TODO: Find alternative (BaseLight uses a composite primary key)
+    //public LiveData<Light> getLight(int lightid){
+        //refreshLight(lightid);
+        //LiveData<BaseLight>baseLight =  baseLightDao.load(lightid);
+        //baseLight.observeForever(new endpointAdder(baseLight));//TODO only if not already set
+        //return (LiveData<Light>) (LiveData<? extends Light>) baseLight;
+    //}
 
     public LiveData<List<Light>> getAllLights(){
         return null;
@@ -55,7 +57,7 @@ public class LightRepository {
         return (LiveData<List<Light>>)(LiveData<? extends List<? extends Light>>) baseLightDao.loadWithCap(capabilities);
     }
 
-    public LightEndpoint getEndpoint(long id) {
+    public LightEndpoint getEndpoint(int id) {
         return endpointManager.getEndpoint(id);
     }
 
@@ -63,7 +65,7 @@ public class LightRepository {
         return endpointManager.getEndpoint(endpointConfig);
     }
 
-    public LiveData<Resource<List<BaseLight>>> testGetLights(long endpointId) {
+    public LiveData<Resource<List<BaseLight>>> testGetLights(int endpointId) {
         return new NetworkBoundResource<List<BaseLight>, List<BaseLight>>() {
             BaseEndpoint endpoint = endpointManager.getEndpoint(endpointId);
 
@@ -77,7 +79,7 @@ public class LightRepository {
             @Override
             protected LiveData<List<BaseLight>> loadFromDb() {
                 LiveData<List<BaseLight>> lights =  baseLightDao.loadAllForEndpoint(endpointId);
-                //TODO Use endpointAdder
+                //TODO Probably must use endpointAdder (else endpoint for this this light would be null?)
                 return lights;
             }
 
@@ -90,8 +92,6 @@ public class LightRepository {
             @Override
             protected void saveCallResult(List<BaseLight> items) {
                 for (BaseLight light : items) {
-                    //TODO: Maybe the endpoint id could be set elsewhere. This is to satisfy the foreign key constraint.
-                    light.setEndpointUUID(endpointId);
                     baseLightDao.insertOrUpdate(light);
                 }
             }
@@ -108,7 +108,7 @@ public class LightRepository {
 
         @Override
         public void onChanged(BaseLight light) {
-            BaseEndpoint endpoint = endpointManager.getEndpoint(light.getEndpointUUID());
+            BaseEndpoint endpoint = endpointManager.getEndpoint(light.getEndpointId());
             light.observeState(endpoint);
             this.light.removeObserver(this);
         }
