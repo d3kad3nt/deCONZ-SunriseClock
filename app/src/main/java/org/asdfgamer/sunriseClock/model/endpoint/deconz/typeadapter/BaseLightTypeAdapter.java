@@ -17,21 +17,57 @@ public class BaseLightTypeAdapter implements JsonDeserializer<BaseLight> {
 
     private static final String TAG = "BaseLightTypeAdapter";
 
+    private int endpointId;
+
+    /**
+     * Custom type adapter for usage with Gson.
+     *
+     * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is
+     *                   not part of the JSON response, therefore it has to be set manually for a
+     *                   specific BaseLight when deserializing it.
+     */
+    public BaseLightTypeAdapter(int endpointId) {
+        this.endpointId = endpointId;
+    }
+
     @Override
     public BaseLight deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        Gson gson = new Gson();
+
+        BaseLight deserializedLight = new BaseLight(this.endpointId, 1);
+
+        Log.d(TAG, "Parsing JSON for single light: " + json.toString());
+
         JsonObject rawJson = json.getAsJsonObject();
-
-        Log.d(TAG, "Parsing JSON for single light: " + rawJson.toString());
-
         JsonObject rawJsonState = rawJson.getAsJsonObject("state");
 
-        String friendlyName = rawJson.get("name").getAsString();
-        boolean switchable = rawJsonState.has("on");
-        boolean dimmable = rawJsonState.has("bri");
-        //TODO: Other capabilites of BaseLight
+        if (rawJson.has("name")) {
+            deserializedLight.friendlyName = rawJson.get("name").getAsString();
+        }
 
-        //TODO: Set correct values for light id and endpointid
-        return new BaseLight(1, 1, friendlyName, switchable, dimmable, false, false);
+        if (rawJsonState.has("on")) {
+            deserializedLight.switchable = true;
+            deserializedLight.setOn(rawJsonState.get("on").getAsBoolean());
+        }
+
+        if (rawJsonState.has("bri")) {
+            deserializedLight.dimmable = true;
+            deserializedLight.setBrightness(rawJsonState.get("bri").getAsInt());
+        }
+
+        if (rawJsonState.has("colormode")) {
+            switch (rawJsonState.get("colormode").getAsString()) {
+                case "ct":
+                    deserializedLight.temperaturable = true;
+                    deserializedLight.setColorTemperature(rawJsonState.get("ct").getAsInt());
+                case "xy":
+                    deserializedLight.colorable = true;
+                    //TODO: deserializedLight.setColor();
+                case "hs":
+                    deserializedLight.colorable = true;
+                    //TODO: deserializedLight.setColor();
+            }
+        }
+
+        return deserializedLight;
     }
 }

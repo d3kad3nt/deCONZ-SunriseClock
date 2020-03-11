@@ -19,8 +19,8 @@ public class EndpointConfig {
     static final String TABLENAME = "endpoint";
 
     @PrimaryKey
-    @ColumnInfo(name = "endpointID")
-    public long id;
+    @ColumnInfo(name = "endpointId")
+    public int id;
 
     @ColumnInfo(name = "type")
     @TypeConverters(EndpointTypeConverter.class)
@@ -30,13 +30,13 @@ public class EndpointConfig {
     // Class LocalDateTime is timezone-sensitive, but is not supported until API level 26.
     @TypeConverters(DateTypeConverter.class)
     @ColumnInfo(name = "date_added")
-    Date addedAt;
+    private Date addedAt;
 
     @TypeConverters(JsonTypeConverter.class)
     @ColumnInfo(name = "config")
-    JsonObject jsonConfig;
+    private JsonObject jsonConfig;
 
-    public EndpointConfig(long id, EndpointType type, Date addedAt, JsonObject jsonConfig) {
+    public EndpointConfig(int id, EndpointType type, Date addedAt, JsonObject jsonConfig) {
         this.id = id;
         this.type = type;
 
@@ -44,7 +44,7 @@ public class EndpointConfig {
         this.jsonConfig = jsonConfig;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

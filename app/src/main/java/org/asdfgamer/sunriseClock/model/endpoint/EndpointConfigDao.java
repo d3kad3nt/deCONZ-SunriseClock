@@ -12,13 +12,13 @@ import java.util.List;
 @Dao
 public interface EndpointConfigDao {
 
-    @Query("SELECT * FROM  'endpoint' WHERE endpointID = :id")
+    @Query("SELECT * FROM " + EndpointConfig.TABLENAME + " WHERE endpointId = :id")
     EndpointConfig load(long id);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE, entity = EndpointConfig.class)
+    @Insert(onConflict = OnConflictStrategy.IGNORE, entity = EndpointConfig.class)
     void save(EndpointConfig obj);
 
-    @Transaction
-    @Query("SELECT * FROM endpoint")
-    LiveData<List<EndpointWithLights>> getEndpointWithLights();
+    //@Transaction
+    //@Query("SELECT * FROM " + EndpointConfig.TABLENAME)
+    //LiveData<List<EndpointWithLights>> getEndpointWithLights();
 }

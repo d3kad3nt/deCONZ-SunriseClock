@@ -20,12 +20,27 @@ public class BaseLightListTypeAdapter implements JsonDeserializer<List<BaseLight
 
     private static final String TAG = "BaseLightListTypeAdapt.";
 
+    private int endpointId;
+
+    private Gson gson;
+
+    /**
+     * Custom type adapter for usage with Gson.
+     *
+     * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is
+     *                   not part of the JSON response, therefore it has to be set manually for a
+     *                   specific BaseLight when deserializing it.
+     */
+    public BaseLightListTypeAdapter(int endpointId) {
+        this.endpointId = endpointId;
+
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(BaseLight.class, new BaseLightTypeAdapter(endpointId))
+                .create();
+    }
+
     @Override
     public List<BaseLight> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(BaseLight.class, new BaseLightTypeAdapter())
-                .create();
-
         JsonObject rawJson = json.getAsJsonObject();
         List<BaseLight> lights = new ArrayList<>();
 
@@ -34,8 +49,15 @@ public class BaseLightListTypeAdapter implements JsonDeserializer<List<BaseLight
         for (String lightId : rawJson.keySet()) {
             JsonElement jsonLight = rawJson.get(lightId);
 
+            // Returns a single light by calling the already existing Gson typeadapter.
             BaseLight light = gson.fromJson(jsonLight.getAsJsonObject(), BaseLight.class);
-            light.setId(Integer.parseInt(lightId));
+
+            // Postprocessing: Manipulate returned BaseLight to include all required
+            // (non-automatically deserialized) fields.
+            light.setEndpointLightId(Integer.parseInt(lightId));
+            light.setEndpointId(this.endpointId);
+
+            light.id = Integer.parseInt(lightId);
 
             lights.add(light);
         }

@@ -9,10 +9,10 @@ import java.util.List;
 
 public class EndpointWithLights {
 
-    @Embedded
-    public EndpointConfig endpointConfig;
+    //@Embedded
+    //public EndpointConfig endpointConfig;
 
-    @Relation(parentColumn = "endpointID",
-            entityColumn = "lightID")
-    public List<BaseLight> baseLights;
+    //@Relation(parentColumn = "id",
+    //        entityColumn = "id")
+    //public List<BaseLight> baseLights;
 }
