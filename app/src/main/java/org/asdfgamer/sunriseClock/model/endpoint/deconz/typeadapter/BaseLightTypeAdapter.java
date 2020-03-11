@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import org.asdfgamer.sunriseClock.model.endpoint.deconz.IServices;
 import org.asdfgamer.sunriseClock.model.light.BaseLight;
 
 import java.lang.reflect.Type;
@@ -33,12 +34,20 @@ public class BaseLightTypeAdapter implements JsonDeserializer<BaseLight> {
     @Override
     public BaseLight deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 
-        BaseLight deserializedLight = new BaseLight(this.endpointId, 1);
+        BaseLight deserializedLight = new BaseLight(this.endpointId);
 
         Log.d(TAG, "Parsing JSON for single light: " + json.toString());
 
         JsonObject rawJson = json.getAsJsonObject();
         JsonObject rawJsonState = rawJson.getAsJsonObject("state");
+
+        // Workaround: Deconz endpoint does not return the id of a light when requesting a single
+        // light. The Gson deserializer is automatically called and cannot access the id inside of
+        // the original request. A okHttp interceptor is used to modify the JSON response from the
+        // Deconz endpoint and adds this light id.
+        if (rawJson.has(IServices.endpointLightIdHeader)) {
+            deserializedLight.setEndpointLightId(rawJson.get(IServices.endpointLightIdHeader).getAsString());
+        }
 
         if (rawJson.has("name")) {
             deserializedLight.friendlyName = rawJson.get("name").getAsString();

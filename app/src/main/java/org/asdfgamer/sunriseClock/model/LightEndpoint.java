@@ -15,5 +15,5 @@ public interface LightEndpoint {
     void requestSetColorTemperature(BaseLight light, int colortemp);
 
     LiveData<ApiResponse<List<BaseLight>>> getLights();
-    LiveData<ApiResponse<BaseLight>>  getLight(long id);
+    LiveData<ApiResponse<BaseLight>>  getLight(String id);
 }

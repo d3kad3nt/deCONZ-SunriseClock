@@ -8,16 +8,19 @@ import org.asdfgamer.sunriseClock.model.light.BaseLight;
 import java.util.List;
 
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Path;
 
 /**
  * Defines all relevant deconz API endpoint addresses for usage with the retrofit library.
  */
-interface IServices {
+public interface IServices {
+
+    String endpointLightIdHeader = "X-Deconz-EndpointLightId";
 
     @GET("lights/")
     LiveData<ApiResponse<List<BaseLight>>> getLights();
 
     @GET("lights/{lightId}/")
-    LiveData<ApiResponse<BaseLight>> getLight(@Path("lightId") String lightId);
+    LiveData<ApiResponse<BaseLight>> getLight(@Path("lightId") String lightId, @Header(endpointLightIdHeader) String headerLightId);
 }

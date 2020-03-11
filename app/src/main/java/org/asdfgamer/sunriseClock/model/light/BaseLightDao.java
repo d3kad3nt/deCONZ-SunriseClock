@@ -3,6 +3,7 @@ package org.asdfgamer.sunriseClock.model.light;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -17,11 +18,10 @@ import java.util.List;
 @Dao
 public interface BaseLightDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE, entity = BaseLight.class)
-    void save(BaseLight obj);
+    String TAG = "BaseLightDao";
 
     @Insert(onConflict = OnConflictStrategy.IGNORE, entity = BaseLight.class)
-    long insertWithoutReplace(BaseLight obj);
+    long save(BaseLight obj);
 
     @Update(entity = BaseLight.class)
     void update(BaseLight obj);
@@ -29,17 +29,22 @@ public interface BaseLightDao {
     @Delete(entity = BaseLight.class)
     void delete(BaseLight obj);
 
-    @Query("SELECT * FROM  'light' WHERE lightId = :id")
-    LiveData<BaseLight> load(int id);
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE endpointId = :endpointId AND endpointLightId = :endpointLightId")
+    LiveData<BaseLight> load(int endpointId, String endpointLightId);
 
-    @Query("SELECT * FROM  'light' WHERE lightId = :id")
-    BaseLight loadSimple(int id);
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE endpointId = :endpointId")
+    LiveData<List<BaseLight>> loadAllForEndpoint(int endpointId);
 
     @Transaction
-    default void insertOrUpdate(BaseLight obj) {
-        long id = insertWithoutReplace(obj);
+    default void upsert(BaseLight obj) {
+        long id = save(obj);
+
         if (id == -1L) {
             update(obj);
+            Log.d(TAG, "Updated BaseLight with endpointId " + obj.getEndpointId() + " and endpointLightId: " + obj.getEndpointLightId());
+        }
+        else {
+            Log.d(TAG, "Inserted BaseLight with endpointId " + obj.getEndpointId() + " and endpointLightId: " + obj.getEndpointLightId());
         }
     }
 
@@ -172,9 +177,4 @@ public interface BaseLightDao {
         }
     }
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME)
-    LiveData<List<BaseLight>> loadAll();
-
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE endpointId = :endpointId")
-    LiveData<List<BaseLight>> loadAllForEndpoint(long endpointId);
 }
