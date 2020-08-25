@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -38,6 +39,7 @@ import static org.asdfgamer.sunriseClock.utils.SettingKeys.TEST_CONNECTION;
 public class ConnectivityFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "ConnectivityFragment";
+    private static int observer = 0;
 
     @Override
     public void onResume() {
@@ -103,26 +105,36 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         LightEndpoint lightEndpoint = repo.getEndpoint(endpointConfig.id);
 
         LiveData<Resource<List<BaseLight>>> lights = repo.getLightsForEndpoint(1);
-        lights.observe(this, observedApiresponse -> {
-            Log.d(TAG, "getLightsForEndpoint, Status: " + observedApiresponse.getStatus().toString());
+        /**
+         * If the button is clicked multiple times the old listeners are not removed and activate still on the changes of the data in the database.
+         * The amount of calls to the old listeners varies because they are in different threads.
+         * The status of old requests doesn't change, because the requests aren't reused.
+         * The current listener is always in the last batch of calls.
+         */
+        lights.observe(this, new Observer<Resource<List<BaseLight>>>() {
+            int nr = observer++;
 
-            if (observedApiresponse.getStatus() == Status.SUCCESS) {
-                List<BaseLight> tmpLights = observedApiresponse.getData();
+            @Override
+            public void onChanged(Resource<List<BaseLight>> observedApiresponse) {
 
-                for (BaseLight tmpLight : tmpLights ) {
-                    Log.d(TAG,"getLightsForEndpoint, One attribute updated of light name (or initial async query returned): " + String.valueOf(tmpLight.friendlyName));
+                Log.d(TAG, "getLightsForEndpoint, Nr: " + nr + " Status: " + observedApiresponse.getStatus().toString());
+                if (observedApiresponse.getStatus() == Status.SUCCESS) {
+                    List<BaseLight> tmpLights = observedApiresponse.getData();
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Objects.requireNonNull(this.getContext()));
-                    alertDialogBuilder.setTitle("Light Test")
-                            .setMessage("Friendly Name of test light: " + tmpLight.friendlyName);
-                    final AlertDialog testAlert = alertDialogBuilder.create();
-                    testAlert.show();
+                    for (BaseLight tmpLight : tmpLights) {
+                        Log.d(TAG, "getLightsForEndpoint, One attribute updated of light name (or initial async query returned): " + String.valueOf(tmpLight.friendlyName));
+
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ConnectivityFragment.this.requireContext());
+                        alertDialogBuilder.setTitle("Light Test")
+                                .setMessage("Friendly Name of test light: " + tmpLight.friendlyName);
+                        final AlertDialog testAlert = alertDialogBuilder.create();
+                        testAlert.show();
+                    }
+
                 }
 
             }
-
         });
-
 
 //        LiveData<Resource<BaseLight>> light = repo.getLight(1, "1");
 //        light.observe(this, observedApiResponse -> {
