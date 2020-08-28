@@ -18,9 +18,9 @@ public class EndpointConfig {
 
     static final String TABLENAME = "endpoint";
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "endpointId")
-    public int id;
+    public long id;
 
     @ColumnInfo(name = "type")
     @TypeConverters(EndpointTypeConverter.class)
@@ -36,15 +36,14 @@ public class EndpointConfig {
     @ColumnInfo(name = "config")
     private JsonObject jsonConfig;
 
-    public EndpointConfig(int id, EndpointType type, Date addedAt, JsonObject jsonConfig) {
-        this.id = id;
+    public EndpointConfig(EndpointType type, Date addedAt, JsonObject jsonConfig) {
         this.type = type;
 
         this.addedAt = addedAt;
         this.jsonConfig = jsonConfig;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

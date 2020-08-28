@@ -52,7 +52,7 @@ public class LightRepository {
         return (LiveData<List<Light>>)(LiveData<? extends List<? extends Light>>) baseLightDao.loadWithCap(capabilities);
     }
 
-    public LightEndpoint getEndpoint(int id) {
+    public LightEndpoint getEndpoint(long id) {
         return endpointManager.getEndpoint(id);
     }
 
@@ -61,7 +61,7 @@ public class LightRepository {
     }
 
     //TODO: return Light interface instead of raw BaseLight
-    public LiveData<Resource<List<BaseLight>>> getLightsForEndpoint(int endpointId) {
+    public LiveData<Resource<List<BaseLight>>> getLightsForEndpoint(long endpointId) {
         return new NetworkBoundResource<List<BaseLight>, List<BaseLight>>() {
             BaseEndpoint endpoint = endpointManager.getEndpoint(endpointId);
 

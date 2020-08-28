@@ -17,7 +17,7 @@ public class BaseLightTypeAdapter implements JsonDeserializer<BaseLight> {
 
     private static final String TAG = "BaseLightTypeAdapter";
 
-    private int endpointId;
+    private long endpointId;
 
     /**
      * Custom type adapter for usage with Gson.
@@ -26,7 +26,7 @@ public class BaseLightTypeAdapter implements JsonDeserializer<BaseLight> {
      *                   not part of the JSON response, therefore it has to be set manually for a
      *                   specific BaseLight when deserializing it.
      */
-    public BaseLightTypeAdapter(int endpointId) {
+    public BaseLightTypeAdapter(long endpointId) {
         this.endpointId = endpointId;
     }
 

@@ -23,7 +23,6 @@ import org.d3kad3nt.sunriseClock.network.utils.response.genericCallback.Simplifi
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Response;
 
@@ -32,9 +31,6 @@ import static org.d3kad3nt.sunriseClock.utils.SettingKeys.IP;
 import static org.d3kad3nt.sunriseClock.utils.SettingKeys.PORT;
 
 public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-
-    private String title;
-    private int page;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -56,8 +52,8 @@ public class LightsFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         assert getArguments() != null;
-        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");
+        int page = getArguments().getInt("someInt", 0);
+        String title = getArguments().getString("someTitle");
     }
 
     // Inflate the view for the fragment based on layout XML

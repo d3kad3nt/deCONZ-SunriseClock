@@ -100,12 +100,12 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         LightRepository repo = new LightRepository(getContext());
         EndpointConfigDao endpointConfigDao = AppDatabase.getInstance(this.getContext()).endpointConfigDao();
 
-        EndpointConfig endpointConfig = new EndpointConfig(1, EndpointType.DECONZ, date, new JsonParser().parse(gson.toJson(deconzTest, DeconzEndpoint.class)).getAsJsonObject());
-        endpointConfigDao.save(endpointConfig);
-        LightEndpoint lightEndpoint = repo.getEndpoint(endpointConfig.id);
+        EndpointConfig endpointConfig = new EndpointConfig( EndpointType.DECONZ, date, new JsonParser().parse(gson.toJson(deconzTest, DeconzEndpoint.class)).getAsJsonObject());
+        long endpointConfigID = endpointConfigDao.save(endpointConfig);
+        LightEndpoint lightEndpoint = repo.getEndpoint(endpointConfigID);
 
-        LiveData<Resource<List<BaseLight>>> lights = repo.getLightsForEndpoint(1);
-        /**
+        LiveData<Resource<List<BaseLight>>> lights = repo.getLightsForEndpoint(endpointConfigID);
+        /*
          * If the button is clicked multiple times the old listeners are not removed and activate still on the changes of the data in the database.
          * The amount of calls to the old listeners varies because they are in different threads.
          * The status of old requests doesn't change, because the requests aren't reused.
@@ -130,10 +130,12 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
                         final AlertDialog testAlert = alertDialogBuilder.create();
                         testAlert.show();
                     }
-
+                    endpointConfig.id = endpointConfigID;
+                    endpointConfigDao.delete(endpointConfig);
                 }
 
             }
+
         });
 
 //        LiveData<Resource<BaseLight>> light = repo.getLight(1, "1");
