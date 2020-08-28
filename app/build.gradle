@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 30
     defaultConfig {
-        applicationId "org.asdfgamer.sunriseClock"
+        applicationId "org.d3kad3nt.sunriseClock"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

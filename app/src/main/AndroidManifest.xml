@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.asdfgamer.sunriseClock">
+    package="org.d3kad3nt.sunriseClock">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -23,9 +23,9 @@
         tools:targetApi="m">
 
         <activity
-            android:name=".PreferencesActivity"
+            android:name=".ui.PreferencesActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".ui.MainActivity" />
         <!--One of the most common “solutions” to dealing with orientation changes is to not deal
         with them. But for now this fixes crashes in settings when changing device orientation.
          Furthermore, we have no state in settings that need to be persisted between device
@@ -33,7 +33,7 @@
          Leaving this here as a recommendation for a good tutorial on this topic:
          http://code.hootsuite.com/orientation-changes-on-android/-->
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
