@@ -37,9 +37,8 @@ public class BaseLight implements Light {
      *
      * This is suitable as part of a composite primary key.
      */
-    @NonNull
     @ColumnInfo(name = "endpointId")
-    private int endpointId;
+    private long endpointId;
 
     /**
      * Id for this BaseLight inside (!) the remote endpoint. This field helps the remote endpoint
@@ -77,7 +76,7 @@ public class BaseLight implements Light {
     @Ignore
     public transient LightEndpoint endpoint;
 
-    public BaseLight(int endpointId, String endpointLightId, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
+    public BaseLight(long endpointId, @NonNull String endpointLightId, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
         this.endpointId = endpointId;
         this.endpointLightId = endpointLightId;
 
@@ -90,21 +89,22 @@ public class BaseLight implements Light {
     }
 
     @Ignore
-    public BaseLight(int endpointId, String endpointLightId) {
+    public BaseLight(long endpointId, @NonNull String endpointLightId) {
         this.endpointId = endpointId;
         this.endpointLightId = endpointLightId;
     }
 
     @Ignore
-    public BaseLight(int endpointId) {
+    public BaseLight(long endpointId) {
         this.endpointId = endpointId;
     }
 
+    @NonNull
     public String getEndpointLightId() {
         return endpointLightId;
     }
 
-    public void setEndpointLightId(String endpointLightId) {
+    public void setEndpointLightId(@NonNull String endpointLightId) {
         this.endpointLightId = endpointLightId;
     }
 
@@ -169,11 +169,11 @@ public class BaseLight implements Light {
         this.color = color;
     }
 
-    public int getEndpointId() {
+    public long getEndpointId() {
         return this.endpointId;
     }
 
-    public void setEndpointId(int endpointId){
+    public void setEndpointId(long endpointId){
         this.endpointId = endpointId;
     }
 

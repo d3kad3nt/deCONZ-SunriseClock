@@ -31,7 +31,7 @@ public interface BaseLightDao {
     LiveData<BaseLight> load(int endpointId, String endpointLightId);
 
     @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE endpointId = :endpointId")
-    LiveData<List<BaseLight>> loadAllForEndpoint(int endpointId);
+    LiveData<List<BaseLight>> loadAllForEndpoint(long endpointId);
 
     @Transaction
     default void upsert(BaseLight obj) {
