@@ -97,7 +97,8 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         DeconzEndpoint deconzTest = new DeconzEndpoint(deconzUribuilder.build().toString(), Integer.parseInt(preferences.getString(PORT.toString(), "")), preferences.getString(API_KEY.toString(), ""));
         Gson gson = new Gson();
 
-        LightRepository repo = new LightRepository(getContext());
+        LightRepository repo = LightRepository.getInstance(getContext());
+        // TODO: DAOs should not be accessed directly. Only for testing purposes. Repository should be used at all times!
         EndpointConfigDao endpointConfigDao = AppDatabase.getInstance(this.getContext()).endpointConfigDao();
 
         EndpointConfig endpointConfig = new EndpointConfig( EndpointType.DECONZ, date, new JsonParser().parse(gson.toJson(deconzTest, DeconzEndpoint.class)).getAsJsonObject());

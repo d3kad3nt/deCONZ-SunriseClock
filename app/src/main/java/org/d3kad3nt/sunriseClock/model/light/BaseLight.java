@@ -1,7 +1,5 @@
 package org.d3kad3nt.sunriseClock.model.light;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -106,11 +104,6 @@ public class BaseLight implements Light {
 
     public void setEndpointLightId(@NonNull String endpointLightId) {
         this.endpointLightId = endpointLightId;
-    }
-
-    public void observeState(LightEndpoint endpoint){
-        this.endpoint = endpoint;
-        Log.e("BaseLight", "observeState: set endpoint" );
     }
 
     public LightEndpoint getEndpoint(){
