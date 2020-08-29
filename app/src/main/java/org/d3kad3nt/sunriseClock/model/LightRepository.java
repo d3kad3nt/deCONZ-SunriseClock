@@ -3,13 +3,12 @@ package org.d3kad3nt.sunriseClock.model;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfig;
 import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfigDao;
-import org.d3kad3nt.sunriseClock.model.endpoint.EndpointManager;
+import org.d3kad3nt.sunriseClock.model.endpoint.builder.EndpointBuilder;
 import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.ApiResponse;
 import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.NetworkBoundResource;
 import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.Resource;
@@ -20,29 +19,43 @@ import org.d3kad3nt.sunriseClock.model.light.Light;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * Repository module for handling data operations (network or local database).
+ */
 public class LightRepository {
 
-    private BaseLightDao baseLightDao;
+    private static BaseLightDao baseLightDao;
+    private static EndpointConfigDao endpointConfigDao;
 
-    private EndpointConfigDao endpointConfigDao;
+    private static Map<Long, BaseEndpoint> endpointCache = new HashMap<>();
 
-    private EndpointManager endpointManager;
+    private static volatile LightRepository INSTANCE;
 
-    public LightRepository(Context context){
-        baseLightDao = AppDatabase.getInstance(context).baseLightDao();//TODO Overthink usage of Context
-        endpointConfigDao = AppDatabase.getInstance(context).endpointConfigDao();//TODO Overthink usage of Context
-        endpointManager = EndpointManager.getEndpointManager(null);//TODO null is bad
+    /**
+     * Using singleton pattern as of now. With dependency injection (Dagger, ...) this class could be mocked when unit testing.
+     * TODO: Dependency Injection, optional
+     */
+    private LightRepository (Context context) {
+        baseLightDao = AppDatabase.getInstance(context.getApplicationContext()).baseLightDao();
+        endpointConfigDao = AppDatabase.getInstance(context.getApplicationContext()).endpointConfigDao();
+
+        endpointCache = new HashMap<>();
     }
 
-    //public LiveData<Light> getLight(int lightid){
-        //refreshLight(lightid);
-        //LiveData<BaseLight>baseLight =  baseLightDao.load(lightid);
-        //baseLight.observeForever(new lightEndpointAdder(baseLight));//TODO only if not already set
-        //return (LiveData<Light>) (LiveData<? extends Light>) baseLight;
-    //}
-
+    public static LightRepository getInstance(Context context) {
+        if (INSTANCE == null) {
+            synchronized (LightRepository.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new LightRepository(context);
+                }
+            }
+        }
+        return INSTANCE;
+    }
 
     private void refreshLight(int endpointId, String endpointLightId){
         //TODO: implement, still needed? (as getLight could be called to update light)
@@ -52,18 +65,10 @@ public class LightRepository {
         return (LiveData<List<Light>>)(LiveData<? extends List<? extends Light>>) baseLightDao.loadWithCap(capabilities);
     }
 
-    public LightEndpoint getEndpoint(long id) {
-        return endpointManager.getEndpoint(id);
-    }
-
-    public LightEndpoint createEndpoint(EndpointConfig endpointConfig) {
-        return endpointManager.getEndpoint(endpointConfig);
-    }
-
     //TODO: return Light interface instead of raw BaseLight
     public LiveData<Resource<List<BaseLight>>> getLightsForEndpoint(long endpointId) {
         return new NetworkBoundResource<List<BaseLight>, List<BaseLight>>() {
-            BaseEndpoint endpoint = endpointManager.getEndpoint(endpointId);
+            BaseEndpoint endpoint = getEndpoint(endpointId);
 
             @NotNull
             @Override
@@ -80,7 +85,7 @@ public class LightRepository {
 
                 livedata = Transformations.map(livedata, baseLights -> {
                     for (BaseLight baseLight : baseLights) {
-                        baseLight.endpoint = endpointManager.getEndpoint(baseLight.getEndpointId());
+                        baseLight.endpoint = getEndpoint(baseLight.getEndpointId());
                     }
                     return baseLights;
                 });
@@ -107,7 +112,7 @@ public class LightRepository {
     //TODO: return Light interface instead of raw BaseLight
     public LiveData<Resource<BaseLight>> getLight(int endpointId, String endpointLightId) {
         return new NetworkBoundResource<BaseLight, BaseLight>() {
-            BaseEndpoint endpoint = endpointManager.getEndpoint(endpointId);
+            BaseEndpoint endpoint = getEndpoint(endpointId);
 
             @Override
             protected LiveData<ApiResponse<BaseLight>> createCall() {
@@ -121,7 +126,7 @@ public class LightRepository {
 
                 // Transform LiveData so that lights have non-null endpoint.
                 livedata = Transformations.map(livedata, baseLight -> {
-                    baseLight.endpoint = endpointManager.getEndpoint(baseLight.getEndpointId());
+                    baseLight.endpoint = getEndpoint(baseLight.getEndpointId());
                     return baseLight;
                 });
 
@@ -142,24 +147,24 @@ public class LightRepository {
         }.asLiveData();
     }
 
-
-    //TODO: propably replaced by direct transformation of LiveData
-    private class lightEndpointAdder implements Observer<BaseLight> {
-
-        private final LiveData<BaseLight> light;
-
-        lightEndpointAdder(LiveData<BaseLight>  light){
-            this.light = light;
+    public BaseEndpoint getEndpoint(EndpointConfig config){
+        if (!endpointCache.containsKey(config.id)){
+            endpointCache.put(config.id, createEndpoint(config));
         }
-
-        @Override
-        public void onChanged(BaseLight light) {
-            BaseEndpoint endpoint = endpointManager.getEndpoint(light.getEndpointId());
-            light.observeState(endpoint);
-            this.light.removeObserver(this);
-        }
-
+        return endpointCache.get(config.id);
     }
 
+    public BaseEndpoint getEndpoint(long id){
+        if (!endpointCache.containsKey(id)){
+            EndpointConfig config = endpointConfigDao.load(id);
+            endpointCache.put(id, createEndpoint(config));
+        }
+        return endpointCache.get(id);
+    }
+
+    private BaseEndpoint createEndpoint(EndpointConfig config){
+        EndpointBuilder builder = config.type.getBuilder();
+        return builder.setConfig(config).build();
+    }
 
 }
