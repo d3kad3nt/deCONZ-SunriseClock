@@ -51,4 +51,7 @@
     <string name="alarm_not_set">There is no alarm set.</string>
     <string name="alarm_time">Light activates at %1$s.</string>
     <string name="ip_or_domain">IP / Domain</string>
+    <string name="navigation_drawer_header_content_description">SunriseClock Logo</string>
+    <string name="navigation_drawer_header_title">SunriseClock</string>
+    <string name="lights_title">All Lights</string>
 </resources>

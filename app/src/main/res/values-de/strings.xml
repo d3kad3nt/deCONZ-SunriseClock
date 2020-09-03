@@ -44,4 +44,7 @@
     <string name="alarm_not_set">Aktuell is kein Alarm aktiviert.</string>
     <string name="alarm_time">Licht geht um %1$s an.</string>
     <string name="ip_or_domain">IP/Domain</string>
+    <string name="navigation_drawer_header_content_description">SunriseClock Logo</string>
+    <string name="navigation_drawer_header_title">SunriseClock</string>
+    <string name="lights_title">Alle Lichter</string>
 </resources>
