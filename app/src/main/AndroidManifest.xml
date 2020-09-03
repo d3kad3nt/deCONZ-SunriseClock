@@ -24,21 +24,13 @@
 
         <activity
             android:name=".ui.PreferencesActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:parentActivityName=".ui.MainActivity" />
+            android:configChanges="orientation|screenSize|keyboardHidden" />
         <!--One of the most common “solutions” to dealing with orientation changes is to not deal
         with them. But for now this fixes crashes in settings when changing device orientation.
          Furthermore, we have no state in settings that need to be persisted between device
          orientation changes. I will probably (have to) look into this again..
          Leaving this here as a recommendation for a good tutorial on this topic:
          http://code.hootsuite.com/orientation-changes-on-android/-->
-
-        <activity android:name=".ui.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <receiver
             android:name=".AlarmReceiver"
