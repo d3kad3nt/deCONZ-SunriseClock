@@ -19,4 +19,16 @@
         android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.LightInfo"
         android:label="@string/lightInfo_title"
         tools:layout="@layout/light_info_fragment" />
+    <fragment
+        android:id="@+id/mainSettingsFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preferences.MainSettingsFragment"
+        android:label="@string/preferences_title">
+        <action
+            android:id="@+id/action_mainSettingsFragment_to_connectivityFragment"
+            app:destination="@id/connectivityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/connectivityFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preferences.ConnectivityFragment"
+        android:label="ConnectivityFragment" />
 </navigation>
