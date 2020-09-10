@@ -47,4 +47,5 @@
     <string name="navigation_drawer_header_content_description">SunriseClock Logo</string>
     <string name="navigation_drawer_header_title">SunriseClock</string>
     <string name="lights_title">Alle Lichter</string>
+    <string name="lightInfo_title">Infos zum Licht</string>
 </resources>
