@@ -26,9 +26,31 @@
         <action
             android:id="@+id/action_mainSettingsFragment_to_connectivityFragment"
             app:destination="@id/connectivityFragment" />
+        <action
+            android:id="@+id/action_mainSettingsFragment_to_alarmFragment"
+            app:destination="@id/alarmFragment" />
+        <action
+            android:id="@+id/action_mainSettingsFragment_to_interfaceFragment"
+            app:destination="@id/interfaceFragment" />
+        <action
+            android:id="@+id/action_mainSettingsFragment_to_debugFragment"
+            app:destination="@id/debugFragment" />
     </fragment>
     <fragment
         android:id="@+id/connectivityFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preferences.ConnectivityFragment"
         android:label="ConnectivityFragment" />
+    <action android:id="@+id/action_global_mainSettingsFragment" app:destination="@id/mainSettingsFragment"/>
+    <fragment
+        android:id="@+id/alarmFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preferences.AlarmFragment"
+        android:label="AlarmFragment" />
+    <fragment
+        android:id="@+id/debugFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preferences.DebugFragment"
+        android:label="DebugFragment" />
+    <fragment
+        android:id="@+id/interfaceFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preferences.InterfaceFragment"
+        android:label="InterfaceFragment" />
 </navigation>
