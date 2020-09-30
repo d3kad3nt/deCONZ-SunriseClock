@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.ui.mainWindow;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,16 @@ public class Lights extends Fragment {
 
         mViewModel = new ViewModelProvider(this).get(LightsViewModel.class);
         // TODO: Use the ViewModel
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Log.d("LightInfoFragment", "onViewCreated");
+        super.onViewCreated(view,savedInstanceState);
+        mViewModel = new ViewModelProvider(requireActivity()).get(LightsViewModel.class);
+        mViewModel.getLight().observe(getViewLifecycleOwner(),baseLightResource -> {
+            Log.d("LightInfoFragment", baseLightResource.getData().get(0).friendlyName);
+        });
     }
 
 }
