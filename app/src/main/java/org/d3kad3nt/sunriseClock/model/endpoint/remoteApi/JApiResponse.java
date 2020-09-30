@@ -20,9 +20,9 @@ public abstract class JApiResponse<T> {
         }
     }
 
-    public static <T> JApiResponse<T> create(Response<T> response){
+    public static <T> JApiResponse<T> create(final Response<T> response){
         if (response.isSuccessful()){
-            T body = response.body();
+            final T body = response.body();
             if ( body == null || response.code() == 204){
                 return new JApiEmptyResponse<>();
             }else{
@@ -35,7 +35,7 @@ public abstract class JApiResponse<T> {
                     msg = response.errorBody().string();
                 } catch (IOException ignored) {}
             }
-            String errorMsg;
+            final String errorMsg;
             if ((msg == null) || msg.isEmpty()){
                 if (response.message().isEmpty())
                 {
@@ -67,10 +67,10 @@ class JApiErrorResponse<T> extends JApiResponse<T>{
     }
 }
 
-class JApiSuccessResponse<T> extends JApiResponse<T>{
+class JApiSuccessResponse<T> extends JApiResponse<T> {
     private final T body;
 
-    public JApiSuccessResponse(T body){
+    public JApiSuccessResponse(T body) {
         this.body = body;
     }
 

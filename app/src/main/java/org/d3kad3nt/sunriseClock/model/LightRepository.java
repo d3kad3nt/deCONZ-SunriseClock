@@ -163,6 +163,9 @@ public class LightRepository {
     }
 
     private BaseEndpoint createEndpoint(EndpointConfig config){
+        if (config == null){
+            throw new NullPointerException("The given config object was null.");
+        }
         EndpointBuilder builder = config.type.getBuilder();
         return builder.setConfig(config).build();
     }
