@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.mainWindow;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
-import org.d3kad3nt.sunriseClock.R;
+import org.d3kad3nt.sunriseClock.databinding.LightInfoFragmentBinding;
+import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.Status;
+import org.d3kad3nt.sunriseClock.model.light.LightID;
 import org.d3kad3nt.sunriseClock.ui.viewModel.LightInfoViewModel;
 
 public class LightInfoFragment extends Fragment {
 
-    private LightInfoViewModel mViewModel;
+    private LightInfoViewModel viewModel;
 
     public static LightInfoFragment newInstance() {
         return new LightInfoFragment();
@@ -25,21 +27,20 @@ public class LightInfoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        Log.d("LightInfoFragment", "onCreateView");
-        return inflater.inflate(R.layout.light_info_fragment, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(LightInfoViewModel.class);
-        // TODO: Use the ViewModel
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.d("LightInfoFragment", "onViewCreated");
-        super.onViewCreated(view,savedInstanceState);
-        mViewModel = new ViewModelProvider(requireActivity()).get(LightInfoViewModel.class);
+        LightInfoFragmentBinding binding = LightInfoFragmentBinding.inflate(inflater, container, false);
+        Object lightID_obj = getArguments().get("Light");
+        if (!(lightID_obj instanceof LightID)){
+            NavHostFragment.findNavController(this).navigateUp();
+            return binding.getRoot();
+        }
+        LightID lightID = (LightID)lightID_obj;
+        LightInfoFragmentArgs args = LightInfoFragmentArgs.fromBundle(requireArguments());
+        viewModel = new ViewModelProvider(requireActivity()).get(LightInfoViewModel.class);
+        viewModel.getLight(lightID).observe(getViewLifecycleOwner(), baseLightResource -> {
+            if (baseLightResource.getStatus().equals(Status.SUCCESS)) {
+                binding.setLight(baseLightResource.getData());
+            }
+        });
+        return binding.getRoot();
     }
 }

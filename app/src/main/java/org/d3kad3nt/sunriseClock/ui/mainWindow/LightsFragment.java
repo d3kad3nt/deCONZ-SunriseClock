@@ -52,13 +52,4 @@ public class LightsFragment extends Fragment {
         });
         return binding.getRoot();
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        viewModel = new ViewModelProvider(this).get(LightsViewModel.class);
-        // TODO: Use the ViewModel
-    }
-
 }

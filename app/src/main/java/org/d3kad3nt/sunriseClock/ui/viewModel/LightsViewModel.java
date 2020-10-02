@@ -20,7 +20,6 @@ public class LightsViewModel extends AndroidViewModel {
     public LightsViewModel(@NonNull Application application) {
         super(application);
         //TODO use something better
-//        lights = new MutableLiveData<>();
         lights = lightRepository.getLightsForEndpoint(5L);
     }
 
