@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.model.LightRepository;
 import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.Resource;
@@ -22,9 +21,7 @@ public class LightInfoViewModel extends AndroidViewModel {
     public LightInfoViewModel(@NonNull Application application) {
         super(application);
         //TODO use something better
-        lights = Transformations.switchMap(lightRepository.getLightsForEndpoint(0L),inputLights -> {
-            return lightRepository.getLightsForEndpoint(0);
-        });
+        lights = lightRepository.getLightsForEndpoint(5L);
     }
 
     public LiveData<Resource<List<BaseLight>>> getLight(){
