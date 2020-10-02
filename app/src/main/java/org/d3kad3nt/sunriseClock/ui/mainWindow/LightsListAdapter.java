@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.mainWindow;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.d3kad3nt.sunriseClock.databinding.LightListElementBinding;
 import org.d3kad3nt.sunriseClock.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.model.light.LightID;
 
 
 public class LightsListAdapter extends ListAdapter<BaseLight, LightsListAdapter.ViewHolder> {
@@ -32,13 +32,13 @@ public class LightsListAdapter extends ListAdapter<BaseLight, LightsListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BaseLight light = getItem(position);
-        holder.bind(createOnClickListener(light.friendlyName), light);
+        holder.bind(createOnClickListener(light.getUUID()), light);
         holder.itemView.setTag(light);
     }
 
-    private View.OnClickListener createOnClickListener(String plantId) {
+    private View.OnClickListener createOnClickListener(LightID lightID) {
         return v -> Navigation.findNavController(v).navigate(
-                LightsFragmentDirections.actionLightsToLightInfo());
+                LightsFragmentDirections.actionLightsToLightInfo(lightID));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -51,7 +51,6 @@ public class LightsListAdapter extends ListAdapter<BaseLight, LightsListAdapter.
 
         void bind(View.OnClickListener listener, BaseLight item) {
             binding.setClickListener(listener);
-            Log.d("Test", item.friendlyName);
             binding.setLight(item);
             binding.executePendingBindings();
         }
@@ -62,7 +61,7 @@ public class LightsListAdapter extends ListAdapter<BaseLight, LightsListAdapter.
         @Override
         public boolean areItemsTheSame(@NonNull BaseLight oldItem, @NonNull BaseLight newItem) {
             //TODO: use real UUID
-            return oldItem.friendlyName.equals(newItem.friendlyName);
+            return oldItem.getUUID().equals(newItem.getUUID());
         }
 
         @SuppressLint("DiffUtilEquals")

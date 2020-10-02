@@ -9,22 +9,18 @@ import androidx.lifecycle.LiveData;
 import org.d3kad3nt.sunriseClock.model.LightRepository;
 import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.Resource;
 import org.d3kad3nt.sunriseClock.model.light.BaseLight;
-
-import java.util.List;
+import org.d3kad3nt.sunriseClock.model.light.LightID;
 
 public class LightInfoViewModel extends AndroidViewModel {
 
     private final LightRepository lightRepository = LightRepository.getInstance(getApplication().getApplicationContext());
 
-    private LiveData<Resource<List<BaseLight>>> lights;
-
     public LightInfoViewModel(@NonNull Application application) {
         super(application);
         //TODO use something better
-        lights = lightRepository.getLightsForEndpoint(5L);
     }
 
-    public LiveData<Resource<List<BaseLight>>> getLight(){
-        return lights;
+    public LiveData<Resource<BaseLight>> getLight(LightID lightID){
+        return lightRepository.getLight(lightID);
     }
 }

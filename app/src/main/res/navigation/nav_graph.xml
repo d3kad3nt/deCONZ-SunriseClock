@@ -18,7 +18,11 @@
         android:id="@+id/lightInfo"
         android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.LightInfoFragment"
         android:label="@string/lightInfo_title"
-        tools:layout="@layout/light_info_fragment" />
+        tools:layout="@layout/light_info_fragment" >
+        <argument
+            android:name="Light"
+            app:argType="org.d3kad3nt.sunriseClock.model.light.LightID" />
+    </fragment>
     <fragment
         android:id="@+id/mainSettingsFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preferences.MainSettingsFragment"
