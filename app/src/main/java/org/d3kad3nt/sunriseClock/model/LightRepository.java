@@ -16,6 +16,7 @@ import org.d3kad3nt.sunriseClock.model.light.BaseLight;
 import org.d3kad3nt.sunriseClock.model.light.BaseLightDao;
 import org.d3kad3nt.sunriseClock.model.light.ICapability;
 import org.d3kad3nt.sunriseClock.model.light.Light;
+import org.d3kad3nt.sunriseClock.model.light.LightID;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -109,8 +110,13 @@ public class LightRepository {
         }.asLiveData();
     }
 
+    public LiveData<Resource<BaseLight>> getLight(LightID lightID) {
+        return getLight(lightID.getEndpointID(), lightID.getEndpointLightID());
+    }
+
+
     //TODO: return Light interface instead of raw BaseLight
-    public LiveData<Resource<BaseLight>> getLight(int endpointId, String endpointLightId) {
+    public LiveData<Resource<BaseLight>> getLight(long endpointId, String endpointLightId) {
         return new NetworkBoundResource<BaseLight, BaseLight>() {
             BaseEndpoint endpoint = getEndpoint(endpointId);
 
