@@ -28,7 +28,7 @@ public interface BaseLightDao {
     void delete(BaseLight obj);
 
     @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE endpointId = :endpointId AND endpointLightId = :endpointLightId")
-    LiveData<BaseLight> load(int endpointId, String endpointLightId);
+    LiveData<BaseLight> load(long endpointId, String endpointLightId);
 
     @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE endpointId = :endpointId")
     LiveData<List<BaseLight>> loadAllForEndpoint(long endpointId);

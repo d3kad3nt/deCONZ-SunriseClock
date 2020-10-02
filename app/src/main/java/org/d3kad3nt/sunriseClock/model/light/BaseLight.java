@@ -73,6 +73,8 @@ public class BaseLight implements Light {
 
     @Ignore
     public transient LightEndpoint endpoint;
+    @Ignore
+    private transient LightID lightID;
 
     public BaseLight(long endpointId, @NonNull String endpointLightId, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
         this.endpointId = endpointId;
@@ -168,6 +170,13 @@ public class BaseLight implements Light {
 
     public void setEndpointId(long endpointId){
         this.endpointId = endpointId;
+    }
+
+    public LightID getUUID(){
+        if (lightID == null){
+            lightID = new LightID(endpointId, endpointLightId);
+        }
+        return lightID;
     }
 
 }
