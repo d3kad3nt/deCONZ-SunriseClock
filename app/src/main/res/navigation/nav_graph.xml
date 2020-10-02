@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/lights"
-        android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.Lights"
+        android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.LightsFragment"
         android:label="@string/lights_title"
         tools:layout="@layout/lights_fragment">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/lightInfo"
-        android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.LightInfo"
+        android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.LightInfoFragment"
         android:label="@string/lightInfo_title"
         tools:layout="@layout/light_info_fragment" />
     <fragment

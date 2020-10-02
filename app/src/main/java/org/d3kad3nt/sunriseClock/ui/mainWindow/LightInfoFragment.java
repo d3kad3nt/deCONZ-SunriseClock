@@ -14,12 +14,12 @@ import androidx.lifecycle.ViewModelProvider;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.ui.viewModel.LightInfoViewModel;
 
-public class LightInfo extends Fragment {
+public class LightInfoFragment extends Fragment {
 
     private LightInfoViewModel mViewModel;
 
-    public static LightInfo newInstance() {
-        return new LightInfo();
+    public static LightInfoFragment newInstance() {
+        return new LightInfoFragment();
     }
 
     @Override
@@ -41,8 +41,5 @@ public class LightInfo extends Fragment {
         Log.d("LightInfoFragment", "onViewCreated");
         super.onViewCreated(view,savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(LightInfoViewModel.class);
-        mViewModel.getLight().observe(getViewLifecycleOwner(),baseLightResource -> {
-            Log.d("LightInfoFragment", baseLightResource.getData().get(0).friendlyName);
-        });
     }
 }
