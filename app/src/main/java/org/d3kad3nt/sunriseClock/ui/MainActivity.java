@@ -3,6 +3,7 @@ package org.d3kad3nt.sunriseClock.ui;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
@@ -26,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         navController = Navigation.findNavController(this,R.id.main_activity_nav_fragment);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setOpenableLayout(binding.drawerLayout).build();
-
         setSupportActionBar(binding.toolbar);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
@@ -45,5 +45,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    public Toolbar getToolbar(){
+        return binding.toolbar;
     }
 }

@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,7 @@ import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
 import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.Resource;
 import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.Status;
 import org.d3kad3nt.sunriseClock.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.ui.MainActivity;
 import org.d3kad3nt.sunriseClock.ui.viewModel.LightsViewModel;
 
 import java.util.List;
@@ -50,6 +53,17 @@ public class LightsFragment extends Fragment {
                 }
             }
         });
+        addEnpointSelector();
         return binding.getRoot();
+    }
+
+    private void addEnpointSelector() {
+        Spinner endpointSpinner = new Spinner(getContext());
+        String[] endpoints = new String[]{"Deconz","MQTT","Apple"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,endpoints);
+        endpointSpinner.setAdapter(adapter);
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).getToolbar().addView(endpointSpinner);
+        }
     }
 }
