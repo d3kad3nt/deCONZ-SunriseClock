@@ -38,4 +38,5 @@ data class Resource<out T>(val status: Status, val data: T?, val message: String
             return Resource(LOADING, data, null)
         }
     }
+
 }
