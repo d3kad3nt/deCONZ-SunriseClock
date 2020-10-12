@@ -43,8 +43,6 @@ public class LightRepository {
     private LightRepository (Context context) {
         baseLightDao = AppDatabase.getInstance(context.getApplicationContext()).baseLightDao();
         endpointConfigDao = AppDatabase.getInstance(context.getApplicationContext()).endpointConfigDao();
-
-        endpointCache = new HashMap<>();
     }
 
     public static LightRepository getInstance(Context context) {
