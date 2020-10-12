@@ -53,4 +53,5 @@
     <string name="debug_settings_title">Debug</string>
     <string name="alarm_settings_title">Alarm</string>
     <string name="interface_settings_title">Oberfläche</string>
+    <string name="loading">Laden</string>
 </resources>
