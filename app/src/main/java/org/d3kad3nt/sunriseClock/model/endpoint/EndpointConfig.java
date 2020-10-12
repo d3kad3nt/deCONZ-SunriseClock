@@ -1,5 +1,6 @@
 package org.d3kad3nt.sunriseClock.model.endpoint;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -57,5 +58,11 @@ public class EndpointConfig {
 
     public JsonObject getJsonConfig() {
         return jsonConfig;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return Long.toString(id);
     }
 }

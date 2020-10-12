@@ -61,9 +61,7 @@ public class LightsFragment extends Fragment {
 
     private void addEndpointSelector() {
         Spinner endpointSpinner = new Spinner(getContext());
-        List<String> loading = new ArrayList<>();
-        loading.add(getString(R.string.loading));
-        EndpointSelectorAdapter adapter = new EndpointSelectorAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, loading);
+        EndpointSelectorAdapter adapter = new EndpointSelectorAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
         viewModel.getEndpoints().observe(getViewLifecycleOwner(), adapter::submitList);
         endpointSpinner.setAdapter(adapter);
         if (getActivity() != null && getActivity() instanceof MainActivity) {
