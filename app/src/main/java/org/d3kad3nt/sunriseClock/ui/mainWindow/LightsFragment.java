@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
 import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.Resource;
 import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.Status;
@@ -21,7 +20,6 @@ import org.d3kad3nt.sunriseClock.model.light.BaseLight;
 import org.d3kad3nt.sunriseClock.ui.MainActivity;
 import org.d3kad3nt.sunriseClock.ui.viewModel.LightsViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -64,6 +62,7 @@ public class LightsFragment extends Fragment {
         EndpointSelectorAdapter adapter = new EndpointSelectorAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
         viewModel.getEndpoints().observe(getViewLifecycleOwner(), adapter::submitList);
         endpointSpinner.setAdapter(adapter);
+        endpointSpinner.setOnItemSelectedListener(new EndpointSelectedListener(getContext()));
         if (getActivity() != null && getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).getToolbar().addView(endpointSpinner);
         }
