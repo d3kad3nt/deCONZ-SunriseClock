@@ -27,6 +27,7 @@ public class LightsFragment extends Fragment {
 
     private static final String TAG = "LightsFragment";
     private LightsViewModel viewModel;
+    private Spinner endpointSpinner;
 
     public static LightsFragment newInstance() {
         return new LightsFragment();
@@ -58,7 +59,7 @@ public class LightsFragment extends Fragment {
     }
 
     private void addEndpointSelector() {
-        Spinner endpointSpinner = new Spinner(getContext());
+        endpointSpinner = new Spinner(getContext());
         EndpointSelectorAdapter adapter = new EndpointSelectorAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
         viewModel.getEndpoints().observe(getViewLifecycleOwner(), adapter::submitList);
         endpointSpinner.setAdapter(adapter);
@@ -68,6 +69,14 @@ public class LightsFragment extends Fragment {
         endpointSpinner.setOnItemSelectedListener(new EndpointSelectedListener(getContext()));
         if (getActivity() != null && getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).getToolbar().addView(endpointSpinner);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (getActivity() != null && getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).getToolbar().removeView(endpointSpinner);
         }
     }
 }
