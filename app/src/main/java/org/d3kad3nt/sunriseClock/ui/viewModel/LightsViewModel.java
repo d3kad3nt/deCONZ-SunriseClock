@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.viewModel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -26,22 +25,26 @@ public class LightsViewModel extends AndroidViewModel {
     private final SettingsRepository settingsRepository = SettingsRepository.getInstance(getApplication().getApplicationContext());
     private final LiveData<Resource<List<BaseLight>>> lights;
     private final LiveData<List<EndpointConfig>> endpoints;
+    private final LiveData<EndpointConfig> selectedEndpoint;
 
     public LightsViewModel(@NonNull Application application) {
         super(application);
         //TODO use something better
         LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id",0);
-        lights = Transformations.switchMap(endpointID, input -> {
-            Log.d(TAG, "Switched endpointID to " + input);
-            return lightRepository.getLightsForEndpoint(input);
-        });
+        lights = Transformations.switchMap(endpointID, lightRepository::getLightsForEndpoint);
         endpoints = endpointRepository.getEndpointConfigs();
+        selectedEndpoint = Transformations.switchMap(endpointID, endpointRepository::getEndpointConfig);
     }
 
     public LiveData<Resource<List<BaseLight>>> getLights(){
         return lights;
     }
+
     public LiveData<List<EndpointConfig>> getEndpoints(){
         return endpoints;
+    }
+
+    public LiveData<EndpointConfig> getSelectedEndpoint() {
+        return selectedEndpoint;
     }
 }
