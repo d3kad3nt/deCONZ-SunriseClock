@@ -3,12 +3,14 @@ package org.d3kad3nt.sunriseClock.model;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import org.d3kad3nt.sunriseClock.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfig;
 import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfigDao;
 import org.d3kad3nt.sunriseClock.model.endpoint.builder.EndpointBuilder;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +39,12 @@ public class EndpointRepository {
     }
 
     public LiveData<List<EndpointConfig>> getEndpointConfigs(){
-        return endpointConfigDao.loadAll();
+        LiveData<List<EndpointConfig>> result = endpointConfigDao.loadAll();
+        if (result == null || result.getValue() == null){
+            return new MutableLiveData<>(Collections.emptyList());
+        }else {
+            return endpointConfigDao.loadAll();
+        }
     }
 
     public LiveData<EndpointConfig> getEndpointConfig(long id){
