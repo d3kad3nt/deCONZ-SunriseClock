@@ -80,8 +80,10 @@ public class LightsFragment extends Fragment {
         });
 
         viewModel.getSelectedEndpoint().observe(getViewLifecycleOwner(), endpointConfig -> {
-            endpointSpinner.setSelection(
-                    viewModel.getEndpoints().getValue().indexOf(endpointConfig));
+            viewModel.getEndpoints().observe(getViewLifecycleOwner(),endpointConfigs -> {
+                endpointSpinner.setSelection(
+                    endpointConfigs.indexOf(endpointConfig));
+            });
         });
     }
 
