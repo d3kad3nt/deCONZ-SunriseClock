@@ -70,7 +70,7 @@
         android:id="@+id/endpointInfo"
         android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.EndpointInfoFragment"
         android:label="@string/endpoint"
-        tools:layout="@layout/fragment_endpoint_info">
+        tools:layout="@layout/endpoint_info_fragment">
         <argument
             android:name="endpointID"
             app:argType="long" />

@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.d3kad3nt.sunriseClock.databinding.FragmentEndpointInfoBinding;
+import org.d3kad3nt.sunriseClock.databinding.EndpointInfoFragmentBinding;
 import org.d3kad3nt.sunriseClock.ui.viewModel.EndpointInfoViewModel;
 
 /**
@@ -29,7 +29,7 @@ public class EndpointInfoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        FragmentEndpointInfoBinding binding = FragmentEndpointInfoBinding.inflate(inflater, container, false);
+        EndpointInfoFragmentBinding binding = EndpointInfoFragmentBinding.inflate(inflater, container, false);
         EndpointInfoFragmentArgs args = EndpointInfoFragmentArgs.fromBundle(requireArguments());
         long endpointID = args.getEndpointID();
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointInfoViewModel.class);
