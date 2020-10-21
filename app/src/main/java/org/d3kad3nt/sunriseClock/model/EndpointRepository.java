@@ -2,8 +2,10 @@ package org.d3kad3nt.sunriseClock.model;
 
 import android.content.Context;
 
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfig;
@@ -40,11 +42,16 @@ public class EndpointRepository {
 
     public LiveData<List<EndpointConfig>> getEndpointConfigs(){
         LiveData<List<EndpointConfig>> result = endpointConfigDao.loadAll();
-        if (result == null || result.getValue() == null){
-            return new MutableLiveData<>(Collections.emptyList());
-        }else {
-            return endpointConfigDao.loadAll();
-        }
+        return Transformations.switchMap(result, new Function<List<EndpointConfig>, LiveData<List<EndpointConfig>>>() {
+            @Override
+            public LiveData<List<EndpointConfig>> apply(List<EndpointConfig> input) {
+                if (input == null) {
+                    return new MutableLiveData<>(Collections.emptyList());
+                } else {
+                    return new MutableLiveData<>(input);
+                }
+            }
+        });
     }
 
     public LiveData<EndpointConfig> getEndpointConfig(long id){
