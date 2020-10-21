@@ -57,4 +57,22 @@
         android:id="@+id/interfaceFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preferences.InterfaceFragment"
         android:label="@string/interface_settings_title" />
+    <fragment
+        android:id="@+id/endpoints"
+        android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.EndpointsFragment"
+        android:label="@string/endpoint_list"
+        tools:layout="@layout/endpoints_fragment">
+        <action
+            android:id="@+id/action_endpoints_to_endpointInfo"
+            app:destination="@id/endpointInfo" />
+    </fragment>
+    <fragment
+        android:id="@+id/endpointInfo"
+        android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.EndpointInfoFragment"
+        android:label="@string/endpoint"
+        tools:layout="@layout/fragment_endpoint_info">
+        <argument
+            android:name="endpointID"
+            app:argType="long" />
+    </fragment>
 </navigation>

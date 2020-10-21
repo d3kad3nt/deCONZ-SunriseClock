@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import org.d3kad3nt.sunriseClock.databinding.LightInfoFragmentBinding;
 import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.Status;
@@ -28,13 +27,8 @@ public class LightInfoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         LightInfoFragmentBinding binding = LightInfoFragmentBinding.inflate(inflater, container, false);
-        Object lightID_obj = getArguments().get("Light");
-        if (!(lightID_obj instanceof LightID)){
-            NavHostFragment.findNavController(this).navigateUp();
-            return binding.getRoot();
-        }
-        LightID lightID = (LightID)lightID_obj;
         LightInfoFragmentArgs args = LightInfoFragmentArgs.fromBundle(requireArguments());
+        LightID lightID = args.getLight();
         viewModel = new ViewModelProvider(requireActivity()).get(LightInfoViewModel.class);
         viewModel.getLight(lightID).observe(getViewLifecycleOwner(), baseLightResource -> {
             if (baseLightResource.getStatus().equals(Status.SUCCESS)) {

@@ -133,7 +133,7 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
                         testAlert.show();
                     }
                     endpointConfig.id = endpointConfigID;
-                    endpointConfigDao.delete(endpointConfig);
+                    //endpointConfigDao.delete(endpointConfig);
                 }
 
             }

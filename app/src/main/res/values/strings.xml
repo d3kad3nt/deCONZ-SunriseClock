@@ -64,4 +64,6 @@
     <string name="noEndpoint_title">No Endpoint available</string>
     <string name="noEndpoint_message">You have to add an Connection to your SmartHome Software. (Add Button under this text)</string>
     <string name="noLights_title">No Lights could be found</string>
+    <string name="endpoint">Endpoint</string>
+    <string name="endpoint_list">All Endpoints</string>
 </resources>
