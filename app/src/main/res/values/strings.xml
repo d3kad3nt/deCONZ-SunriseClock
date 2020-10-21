@@ -61,4 +61,7 @@
     <string name="debug_settings_title">Debug</string>
     <string name="interface_settings_title">Interface</string>
     <string name="loading">Loading</string>
+    <string name="noEndpoint_title">No Endpoint available</string>
+    <string name="noEndpoint_message">You have to add an Connection to your SmartHome Software. (Add Button under this text)</string>
+    <string name="noLights_title">No Lights could be found</string>
 </resources>

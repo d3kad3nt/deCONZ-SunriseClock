@@ -54,4 +54,7 @@
     <string name="alarm_settings_title">Alarm</string>
     <string name="interface_settings_title">Oberfläche</string>
     <string name="loading">Laden</string>
+    <string name="noEndpoint_title">Keine Verbindung eingerichtet</string>
+    <string name="noEndpoint_message">Du musst eine Verbindung zu deinem Smart Home erstellen. (Add Button under this text)</string>
+    <string name="noLights_title">Keine Lichter gefunden</string>
 </resources>
