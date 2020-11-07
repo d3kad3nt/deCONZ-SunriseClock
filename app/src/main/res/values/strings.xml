@@ -67,4 +67,5 @@
     <string name="endpoint">Endpoint</string>
     <string name="endpoint_list">All Endpoints</string>
     <string name="add">add</string>
+    <string name="endpoint_add">Add Endpoint</string>
 </resources>

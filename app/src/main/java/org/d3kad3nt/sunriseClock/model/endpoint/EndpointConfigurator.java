@@ -3,6 +3,7 @@ package org.d3kad3nt.sunriseClock.model.endpoint;
 import androidx.core.util.Pair;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EndpointConfigurator {
 
@@ -22,7 +23,13 @@ public interface EndpointConfigurator {
      * TODO possible Problem: You have to change the structure of the Endpoint at two points (here and getSettings())
      * @return
      */
-    List<Pair<String,List<Pair<String,SettingValue>>>> getData();
+    Map<String,SettingValue> getData();
+
+    void setSetting(String id, String value);
+
+    default List<Pair<String,List<Pair<String,SettingValue>>>> getFormattedData(){
+        return null;
+    }
 
     /**
      * This enum contains all possible types for Settings of endpoints.

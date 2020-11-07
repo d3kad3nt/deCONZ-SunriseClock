@@ -60,4 +60,5 @@
     <string name="endpoint">Endpoint</string>
     <string name="endpoint_list">Alle Endpoints</string>
     <string name="add">hinzufügen</string>
+    <string name="endpoint_add">Endpoint hinzufügen</string>
 </resources>
