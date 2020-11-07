@@ -59,4 +59,5 @@
     <string name="noLights_title">Keine Lichter gefunden</string>
     <string name="endpoint">Endpoint</string>
     <string name="endpoint_list">Alle Endpoints</string>
+    <string name="add">hinzufügen</string>
 </resources>

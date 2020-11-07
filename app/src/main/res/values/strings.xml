@@ -66,4 +66,5 @@
     <string name="noLights_title">No Lights could be found</string>
     <string name="endpoint">Endpoint</string>
     <string name="endpoint_list">All Endpoints</string>
+    <string name="add">add</string>
 </resources>
