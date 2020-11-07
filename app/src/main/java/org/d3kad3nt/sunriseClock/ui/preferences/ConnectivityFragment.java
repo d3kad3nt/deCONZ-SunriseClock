@@ -95,7 +95,7 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         cal.set(Calendar.DAY_OF_MONTH, 1);
         Date date = cal.getTime();
 
-        DeconzEndpoint deconzTest = new DeconzEndpoint(deconzUribuilder.build().toString(), Integer.parseInt(preferences.getString(PORT.toString(), "")), preferences.getString(API_KEY.toString(), ""));
+        DeconzEndpoint deconzTest = new DeconzEndpoint(deconzUribuilder.build().toString(), Integer.parseInt(preferences.getString(PORT.toString(), "8080")), preferences.getString(API_KEY.toString(), ""));
         Gson gson = new Gson();
 
         LightRepository repo = LightRepository.getInstance(getContext());
