@@ -16,8 +16,6 @@ import com.google.gson.JsonParser;
 
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.model.AppDatabase;
-import org.d3kad3nt.sunriseClock.model.EndpointRepository;
-import org.d3kad3nt.sunriseClock.model.LightEndpoint;
 import org.d3kad3nt.sunriseClock.model.LightRepository;
 import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfig;
 import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfigDao;
@@ -104,7 +102,7 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
 
         EndpointConfig endpointConfig = new EndpointConfig( EndpointType.DECONZ, date, new JsonParser().parse(gson.toJson(deconzTest, DeconzEndpoint.class)).getAsJsonObject());
         long endpointConfigID = endpointConfigDao.save(endpointConfig);
-        LightEndpoint lightEndpoint = EndpointRepository.getInstance(getContext()).getEndpoint(endpointConfigID);
+//        LightEndpoint lightEndpoint = EndpointRepository.getInstance(getContext()).getEndpoint(endpointConfigID);
 
         LiveData<Resource<List<BaseLight>>> lights = repo.getLightsForEndpoint(endpointConfigID);
         /*

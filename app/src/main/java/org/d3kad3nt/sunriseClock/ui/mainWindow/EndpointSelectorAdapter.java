@@ -5,14 +5,14 @@ import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 
-import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfig;
+import org.d3kad3nt.sunriseClock.model.endpoint.BaseEndpoint;
 
 import java.util.List;
 
 
-public class EndpointSelectorAdapter extends ArrayAdapter<EndpointConfig> {
+public class EndpointSelectorAdapter extends ArrayAdapter<BaseEndpoint> {
 
-    public EndpointSelectorAdapter(@NonNull Context context, int resource, @NonNull List<EndpointConfig> objects) {
+    public EndpointSelectorAdapter(@NonNull Context context, int resource, @NonNull List<BaseEndpoint> objects) {
         super(context, resource, objects);
     }
 
@@ -20,9 +20,9 @@ public class EndpointSelectorAdapter extends ArrayAdapter<EndpointConfig> {
         super(context, resource);
     }
 
-    public void submitList(List<EndpointConfig> configList){
+    public void submitList(List<BaseEndpoint> configList){
         clear();
-        for (EndpointConfig config: configList){
+        for (BaseEndpoint config: configList){
             add(config);
         }
     }

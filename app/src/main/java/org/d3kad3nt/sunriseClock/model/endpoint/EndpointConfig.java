@@ -57,7 +57,7 @@ public class EndpointConfig {
         return addedAt;
     }
 
-    public JsonObject getJsonConfig() {
+    public final JsonObject getJsonConfig() {
         return jsonConfig;
     }
 

@@ -2,6 +2,8 @@ package org.d3kad3nt.sunriseClock.model.endpoint;
 
 import org.d3kad3nt.sunriseClock.model.LightEndpoint;
 
+import java.util.Date;
+
 public abstract class BaseEndpoint implements LightEndpoint {
 
     EndpointConfig originalEndpointConfig;
@@ -19,6 +21,14 @@ public abstract class BaseEndpoint implements LightEndpoint {
 
     public void setOriginalEndpointConfig(EndpointConfig originalEndpointConfig) {
         this.originalEndpointConfig = originalEndpointConfig;
+    }
+
+    public long getId() {
+        return this.originalEndpointConfig.getId();
+    }
+
+    public Date getAddedAt(){
+        return this.originalEndpointConfig.getAddedAt();
     }
 
 }

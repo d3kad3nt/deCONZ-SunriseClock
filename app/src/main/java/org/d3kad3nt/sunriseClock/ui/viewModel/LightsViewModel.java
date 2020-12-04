@@ -3,6 +3,7 @@ package org.d3kad3nt.sunriseClock.ui.viewModel;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
@@ -10,7 +11,7 @@ import androidx.lifecycle.Transformations;
 import org.d3kad3nt.sunriseClock.model.EndpointRepository;
 import org.d3kad3nt.sunriseClock.model.LightRepository;
 import org.d3kad3nt.sunriseClock.model.SettingsRepository;
-import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfig;
+import org.d3kad3nt.sunriseClock.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.Resource;
 import org.d3kad3nt.sunriseClock.model.light.BaseLight;
 
@@ -24,27 +25,35 @@ public class LightsViewModel extends AndroidViewModel {
     private final EndpointRepository endpointRepository = EndpointRepository.getInstance(getApplication().getApplicationContext());
     private final SettingsRepository settingsRepository = SettingsRepository.getInstance(getApplication().getApplicationContext());
     private final LiveData<Resource<List<BaseLight>>> lights;
-    private final LiveData<List<EndpointConfig>> endpoints;
-    private final LiveData<EndpointConfig> selectedEndpoint;
+    private final LiveData<List<BaseEndpoint>> endpoints;
+    private final LiveData<BaseEndpoint> selectedEndpoint;
 
     public LightsViewModel(@NonNull Application application) {
         super(application);
         //TODO use something better
         LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id",0);
-        lights = Transformations.switchMap(endpointID, lightRepository::getLightsForEndpoint);
-        endpoints = endpointRepository.getEndpointConfigs();
-        selectedEndpoint = Transformations.switchMap(endpointID, endpointRepository::getEndpointConfig);
+        lights = Transformations.switchMap(endpointID, endpointId -> {
+            System.out.println(endpointId);
+            return lightRepository.getLightsForEndpoint(endpointId);
+        });
+        endpoints = endpointRepository.getAllEndpoints();
+        selectedEndpoint = Transformations.switchMap(endpointID, new Function<Long, LiveData<BaseEndpoint>>() {
+            @Override
+            public LiveData<BaseEndpoint> apply(Long input) {
+                return endpointRepository.getEndpoint(input);
+            }
+        });
     }
 
     public LiveData<Resource<List<BaseLight>>> getLights(){
         return lights;
     }
 
-    public LiveData<List<EndpointConfig>> getEndpoints(){
+    public LiveData<List<BaseEndpoint>> getEndpoints(){
         return endpoints;
     }
 
-    public LiveData<EndpointConfig> getSelectedEndpoint() {
+    public LiveData<BaseEndpoint> getSelectedEndpoint() {
         return selectedEndpoint;
     }
 }

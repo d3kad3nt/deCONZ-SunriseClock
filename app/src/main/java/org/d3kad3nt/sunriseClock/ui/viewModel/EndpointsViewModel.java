@@ -10,7 +10,7 @@ import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.model.EndpointRepository;
 import org.d3kad3nt.sunriseClock.model.SettingsRepository;
-import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfig;
+import org.d3kad3nt.sunriseClock.model.endpoint.BaseEndpoint;
 
 import java.util.List;
 
@@ -19,27 +19,27 @@ import me.ibrahimsn.library.LivePreference;
 public class EndpointsViewModel extends AndroidViewModel {
     private final EndpointRepository endpointRepository = EndpointRepository.getInstance(getApplication().getApplicationContext());
     private final SettingsRepository settingsRepository = SettingsRepository.getInstance(getApplication().getApplicationContext());
-    private final LiveData<List<EndpointConfig>> endpoints;
-    private final LiveData<EndpointConfig> selectedEndpoint;
+    private final LiveData<List<BaseEndpoint>> endpoints;
+    private final LiveData<BaseEndpoint> selectedEndpoint;
 
     public EndpointsViewModel(@NonNull Application application) {
         super(application);
         //TODO use something better
         LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id",0);
-        endpoints = endpointRepository.getEndpointConfigs();
-        selectedEndpoint = Transformations.switchMap(endpointID, new Function<Long, LiveData<EndpointConfig>>() {
+        endpoints = endpointRepository.getAllEndpoints();
+        selectedEndpoint = Transformations.switchMap(endpointID, new Function<Long, LiveData<BaseEndpoint>>() {
             @Override
-            public LiveData<EndpointConfig> apply(Long id) {
-                return endpointRepository.getEndpointConfig(id);
+            public LiveData<BaseEndpoint> apply(Long input) {
+                return endpointRepository.getEndpoint(input);
             }
         });
     }
 
-    public LiveData<List<EndpointConfig>> getEndpoints(){
+    public LiveData<List<BaseEndpoint>> getEndpoints(){
         return endpoints;
     }
 
-    public LiveData<EndpointConfig> getSelectedEndpoint() {
+    public LiveData<BaseEndpoint> getSelectedEndpoint() {
         return selectedEndpoint;
     }
 }

@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
-import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfig;
+import org.d3kad3nt.sunriseClock.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.Resource;
 import org.d3kad3nt.sunriseClock.model.endpoint.remoteApi.Status;
 import org.d3kad3nt.sunriseClock.model.light.BaseLight;
@@ -82,9 +82,12 @@ public class LightsFragment extends Fragment {
 
         viewModel.getSelectedEndpoint().observe(getViewLifecycleOwner(), endpointConfig -> {
 
-            Observer<? super List<EndpointConfig>> endpointSelector = endpointConfigs -> {
-                endpointSpinner.setSelection(
-                        endpointConfigs.indexOf(endpointConfig));
+            Observer<? super List<BaseEndpoint>> endpointSelector = new Observer<List<BaseEndpoint>>() {
+                @Override
+                public void onChanged(List<BaseEndpoint> endpointConfigs) {
+                    endpointSpinner.setSelection(
+                            endpointConfigs.indexOf(endpointConfig));
+                }
             };
             viewModel.getEndpoints().observe(getViewLifecycleOwner(),endpointSelector);
             viewModel.getEndpoints().removeObserver(endpointSelector);

@@ -11,6 +11,7 @@ import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfig;
 import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfigDao;
 import org.d3kad3nt.sunriseClock.model.endpoint.builder.EndpointBuilder;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ public class EndpointRepository {
 
     private static EndpointConfigDao endpointConfigDao;
 
+    private static Map<Long, LiveData<BaseEndpoint>> endpointLiveDateCache = new HashMap<>();
     private static Map<Long, BaseEndpoint> endpointCache = new HashMap<>();
 
     private static volatile EndpointRepository INSTANCE;
@@ -39,22 +41,21 @@ public class EndpointRepository {
         return INSTANCE;
     }
 
-    public LiveData<List<EndpointConfig>> getEndpointConfigs(){
-        LiveData<List<EndpointConfig>> result = endpointConfigDao.loadAll();
-        return Transformations.switchMap(result, input -> {
-            if (input == null) {
-                return new MutableLiveData<>(Collections.emptyList());
-            } else {
-                return new MutableLiveData<>(input);
-            }
-        });
+    public LiveData<BaseEndpoint> getEndpoint(long id){
+        if (!endpointLiveDateCache.containsKey(id)){
+            LiveData<BaseEndpoint> endpointTransformation = Transformations.switchMap(endpointConfigDao.loadLiveData(id), input -> {
+                if (input == null) {
+                    return null;
+                } else {
+                    return new MutableLiveData<>(createEndpoint(input));
+                }
+            });
+            endpointLiveDateCache.put(id,endpointTransformation);
+        }
+        return endpointLiveDateCache.get(id);
     }
 
-    public LiveData<EndpointConfig> getEndpointConfig(long id){
-        return endpointConfigDao.loadLiveData(id);
-    }
-
-    public BaseEndpoint getEndpoint(long id){
+    BaseEndpoint getSynchronEndpoint(long id){
         if (!endpointCache.containsKey(id)){
             EndpointConfig config = endpointConfigDao.load(id);
             endpointCache.put(id, createEndpoint(config));
@@ -62,11 +63,18 @@ public class EndpointRepository {
         return endpointCache.get(id);
     }
 
-    public BaseEndpoint getEndpoint(EndpointConfig config){
-        if (!endpointCache.containsKey(config.id)){
-            endpointCache.put(config.id, createEndpoint(config));
-        }
-        return endpointCache.get(config.id);
+    public LiveData<List<BaseEndpoint>> getAllEndpoints(){
+        return Transformations.switchMap(endpointConfigDao.loadAll(), input -> {
+            if (input == null) {
+                return new MutableLiveData<>(Collections.emptyList());
+            } else {
+                List<BaseEndpoint> endpoints = new ArrayList<>();
+                for (EndpointConfig config : input){
+                    endpoints.add(createEndpoint(config));
+                }
+                return new MutableLiveData<>(endpoints);
+            }
+        });
     }
 
     private BaseEndpoint createEndpoint(EndpointConfig config){

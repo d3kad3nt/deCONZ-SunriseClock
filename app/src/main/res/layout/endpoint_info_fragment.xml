@@ -4,7 +4,7 @@
     <data>
         <variable
             name="endpoint"
-            type="org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfig"/>
+            type="org.d3kad3nt.sunriseClock.model.endpoint.BaseEndpoint"/>
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
