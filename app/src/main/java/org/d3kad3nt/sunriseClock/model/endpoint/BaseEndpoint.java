@@ -1,5 +1,7 @@
 package org.d3kad3nt.sunriseClock.model.endpoint;
 
+import androidx.annotation.NonNull;
+
 import org.d3kad3nt.sunriseClock.model.LightEndpoint;
 
 import java.util.Date;
@@ -31,4 +33,9 @@ public abstract class BaseEndpoint implements LightEndpoint {
         return this.originalEndpointConfig.getAddedAt();
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return String.valueOf(originalEndpointConfig.getId());
+    }
 }
