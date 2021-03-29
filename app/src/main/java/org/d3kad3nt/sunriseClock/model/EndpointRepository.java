@@ -6,13 +6,18 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import org.d3kad3nt.sunriseClock.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfig;
 import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfigDao;
+import org.d3kad3nt.sunriseClock.model.endpoint.EndpointType;
 import org.d3kad3nt.sunriseClock.model.endpoint.builder.EndpointBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +88,18 @@ public class EndpointRepository {
         }
         EndpointBuilder builder = config.type.getBuilder();
         return builder.setConfig(config).build();
+    }
+
+    public BaseEndpoint createEndpoint(Map<String, String> config){
+        if (config == null){
+            throw new NullPointerException("The given config map was null.");
+        }
+        EndpointType type = EndpointType.valueOf(config.remove("type"));
+        Gson gson = new Gson();
+        JsonObject jsonConfig = gson.toJsonTree(config).getAsJsonObject();
+        EndpointConfig endpointConfig = new EndpointConfig(type, new Date() ,jsonConfig);
+        endpointConfigDao.save(endpointConfig);
+        return type.getBuilder().setConfig(endpointConfig).build();
     }
 
 }

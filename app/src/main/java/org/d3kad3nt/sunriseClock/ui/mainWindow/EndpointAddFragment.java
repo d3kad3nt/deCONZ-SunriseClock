@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddDeconzFragmentBinding;
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddFragmentBinding;
@@ -62,6 +63,9 @@ public class EndpointAddFragment extends Fragment {
                         }
                     }
                 }
+                if (viewModel.createEndpoint(settings)){
+                    Navigation.findNavController(v).navigateUp();
+                };
             }
         });
     }
