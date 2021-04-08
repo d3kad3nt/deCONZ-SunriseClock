@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.model.light;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class LightID implements Serializable {
 
@@ -21,5 +22,19 @@ public class LightID implements Serializable {
 
     public String getEndpointLightID() {
         return endpointLightID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LightID lightID = (LightID) o;
+        return endpointID == lightID.endpointID &&
+                Objects.equals(endpointLightID, lightID.endpointLightID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(endpointID, endpointLightID);
     }
 }
