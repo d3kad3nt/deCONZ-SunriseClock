@@ -33,7 +33,6 @@ public class LightsViewModel extends AndroidViewModel {
         //TODO use something better
         LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id",0);
         lights = Transformations.switchMap(endpointID, endpointId -> {
-            System.out.println(endpointId);
             return lightRepository.getLightsForEndpoint(endpointId);
         });
         endpoints = endpointRepository.getAllEndpoints();
