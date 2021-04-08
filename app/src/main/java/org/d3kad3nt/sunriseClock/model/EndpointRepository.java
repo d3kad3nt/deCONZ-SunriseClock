@@ -14,6 +14,8 @@ import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfig;
 import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfigDao;
 import org.d3kad3nt.sunriseClock.model.endpoint.EndpointType;
 import org.d3kad3nt.sunriseClock.model.endpoint.builder.EndpointBuilder;
+import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
+import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -81,15 +83,17 @@ public class EndpointRepository {
         return builder.setConfig(config).build();
     }
 
-    public BaseEndpoint createEndpoint(Map<String, String> config){
-        if (config == null){
+    public BaseEndpoint createEndpoint(Map<String, String> config) {
+        if (config == null) {
             throw new NullPointerException("The given config map was null.");
         }
         EndpointType type = EndpointType.valueOf(config.remove("type"));
         Gson gson = new Gson();
         JsonObject jsonConfig = gson.toJsonTree(config).getAsJsonObject();
-        EndpointConfig endpointConfig = new EndpointConfig(type, new Date() ,jsonConfig);
-        endpointConfigDao.save(endpointConfig);
+        EndpointConfig endpointConfig = new EndpointConfig(type, new Date(), jsonConfig);
+        ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
+            endpointConfigDao.save(endpointConfig);
+        });
         return type.getBuilder().setConfig(endpointConfig).build();
     }
 
