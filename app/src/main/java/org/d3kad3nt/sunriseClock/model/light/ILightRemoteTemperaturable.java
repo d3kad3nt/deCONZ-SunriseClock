@@ -4,5 +4,4 @@ public interface ILightRemoteTemperaturable extends ICapability  {
 
     int getColorTemperature();
 
-    void requestSetColorTemperature(int colorTemperature);
 }

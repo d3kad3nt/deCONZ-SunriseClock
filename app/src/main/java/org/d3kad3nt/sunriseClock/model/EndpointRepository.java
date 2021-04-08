@@ -26,8 +26,7 @@ public class EndpointRepository {
 
     private static EndpointConfigDao endpointConfigDao;
 
-    private static Map<Long, LiveData<BaseEndpoint>> endpointLiveDateCache = new HashMap<>();
-    private static Map<Long, BaseEndpoint> endpointCache = new HashMap<>();
+    private static final Map<Long, LiveData<BaseEndpoint>> endpointLiveDataCache = new HashMap<>();
 
     private static volatile EndpointRepository INSTANCE;
 
@@ -47,25 +46,17 @@ public class EndpointRepository {
     }
 
     public LiveData<BaseEndpoint> getEndpoint(long id){
-        if (!endpointLiveDateCache.containsKey(id)){
+        if (!endpointLiveDataCache.containsKey(id)) {
             LiveData<BaseEndpoint> endpointTransformation = Transformations.switchMap(endpointConfigDao.loadLiveData(id), input -> {
                 if (input == null) {
-                    return null;
+                    return new MutableLiveData<>();
                 } else {
                     return new MutableLiveData<>(createEndpoint(input));
                 }
             });
-            endpointLiveDateCache.put(id,endpointTransformation);
+            endpointLiveDataCache.put(id, endpointTransformation);
         }
-        return endpointLiveDateCache.get(id);
-    }
-
-    BaseEndpoint getSynchronEndpoint(long id){
-        if (!endpointCache.containsKey(id)){
-            EndpointConfig config = endpointConfigDao.load(id);
-            endpointCache.put(id, createEndpoint(config));
-        }
-        return endpointCache.get(id);
+        return endpointLiveDataCache.get(id);
     }
 
     public LiveData<List<BaseEndpoint>> getAllEndpoints(){

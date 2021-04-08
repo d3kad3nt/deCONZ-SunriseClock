@@ -4,5 +4,4 @@ public interface ILightRemoteSwitchable extends ICapability  {
 
     boolean isOn();
 
-    void requestSetOn(boolean on);
 }

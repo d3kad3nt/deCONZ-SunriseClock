@@ -62,37 +62,28 @@ public class LightRepository {
     //TODO: return Light interface instead of raw BaseLight
     public LiveData<Resource<List<BaseLight>>> getLightsForEndpoint(long endpointId) {
         try {
-            endpointRepo.getSynchronEndpoint(endpointId);
+            endpointRepo.getEndpoint(endpointId);
         }catch (NullPointerException e){
             Resource<List<BaseLight>> resource = new Resource<>(Status.ERROR, null, "Endpoint doesn't exist");
             return new MutableLiveData<>(resource);
         }
         return new NetworkBoundResource<List<BaseLight>, List<BaseLight>>() {
 
-            BaseEndpoint endpoint = endpointRepo.getSynchronEndpoint(endpointId);
+            final LiveData<BaseEndpoint> endpoint = endpointRepo.getEndpoint(endpointId);
 
             @NotNull
             @Override
             protected LiveData<ApiResponse<List<BaseLight>>> createCall() {
-                return endpoint.getLights();
+                return Transformations.switchMap(endpoint, input -> {
+                    return input.getLights();
+                });
             }
 
             @NotNull
             @Override
             protected LiveData<List<BaseLight>> loadFromDb() {
-                LiveData<List<BaseLight>> livedata =  baseLightDao.loadAllForEndpoint(endpointId);
-
-                // Transform LiveData so that lights have non-null endpoint.
-
-                livedata = Transformations.map(livedata, baseLights -> {
-                    for (BaseLight baseLight : baseLights) {
-                        baseLight.endpoint = endpointRepo.getSynchronEndpoint(baseLight.getEndpointId());
-                    }
-                    return baseLights;
-                });
-
                 //TODO: return (LiveData<Light>) (LiveData<? extends Light>) baseLight;
-                return livedata;
+                return baseLightDao.loadAllForEndpoint(endpointId);
             }
 
             @Override
@@ -118,27 +109,21 @@ public class LightRepository {
     //TODO: return Light interface instead of raw BaseLight
     public LiveData<Resource<BaseLight>> getLight(long endpointId, String endpointLightId) {
         return new NetworkBoundResource<BaseLight, BaseLight>() {
-            BaseEndpoint endpoint = endpointRepo.getSynchronEndpoint(endpointId);
+            final LiveData<BaseEndpoint> endpoint = endpointRepo.getEndpoint(endpointId);
 
             @NotNull
             @Override
             protected LiveData<ApiResponse<BaseLight>> createCall() {
-                return endpoint.getLight(endpointLightId);
+                return Transformations.switchMap(endpoint, input -> {
+                    return input.getLight(endpointLightId);
+                });
             }
 
             @NotNull
             @Override
             protected LiveData<BaseLight> loadFromDb() {
-                LiveData<BaseLight> livedata =  baseLightDao.load(endpointId, endpointLightId);
-
-                // Transform LiveData so that lights have non-null endpoint.
-                livedata = Transformations.map(livedata, baseLight -> {
-                    baseLight.endpoint = endpointRepo.getSynchronEndpoint(baseLight.getEndpointId());
-                    return baseLight;
-                });
-
                 //TODO: return (LiveData<Light>) (LiveData<? extends Light>) baseLight;
-                return livedata;
+                return baseLightDao.load(endpointId, endpointLightId);
             }
 
             @Override

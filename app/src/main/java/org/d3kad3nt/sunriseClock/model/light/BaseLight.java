@@ -7,7 +7,6 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
 
-import org.d3kad3nt.sunriseClock.model.LightEndpoint;
 import org.d3kad3nt.sunriseClock.model.endpoint.EndpointConfig;
 
 
@@ -72,8 +71,6 @@ public class BaseLight implements Light {
     private int color; //TODO: Create contract for allowed values.
 
     @Ignore
-    public transient LightEndpoint endpoint;
-    @Ignore
     private transient LightID lightID;
 
     public BaseLight(long endpointId, @NonNull String endpointLightId, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
@@ -108,20 +105,20 @@ public class BaseLight implements Light {
         this.endpointLightId = endpointLightId;
     }
 
-    public LightEndpoint getEndpoint(){
-        return this.endpoint;
-    }
+//    public LightEndpoint getEndpoint(){
+//        return this.endpoint;
+//    }
 
     public boolean isOn() {
         return this.on;
     }
 
-    @Override
-    public void requestSetOn(boolean on) {
-        endpoint.requestSetOn(this,on);
-    }
+//    @Override
+//    public void requestSetOn(boolean on) {
+//        endpoint.requestSetOn(this,on);
+//    }
 
-    public void setOn(boolean on){
+    public void setOn(boolean on) {
         this.on = on;
     }
 
@@ -129,12 +126,12 @@ public class BaseLight implements Light {
         return this.brightness;
     }
 
-    @Override
-    public void requestSetBrightness(int brightness) {
-        endpoint.requestSetBrightness(this,brightness);
-    }
+//    @Override
+//    public void requestSetBrightness(int brightness) {
+//        endpoint.requestSetBrightness(this,brightness);
+//    }
 
-    public void setBrightness(int brightness){
+    public void setBrightness(int brightness) {
         this.brightness = brightness;
     }
 
@@ -142,10 +139,10 @@ public class BaseLight implements Light {
         return this.colorTemperature;
     }
 
-    @Override
-    public void requestSetColorTemperature(int colorTemperature) {
-        endpoint.requestSetColorTemperature(this, colorTemperature);
-    }
+//    @Override
+//    public void requestSetColorTemperature(int colorTemperature) {
+//        endpoint.requestSetColorTemperature(this, colorTemperature);
+//    }
 
     public void setColorTemperature(int colorTemperature) {
         this.colorTemperature = colorTemperature;
@@ -155,10 +152,10 @@ public class BaseLight implements Light {
         return this.color;
     }
 
-    @Override
-    public void requestSetColor(int color) {
-        endpoint.requestSetColor(this, color);
-    }
+//    @Override
+//    public void requestSetColor(int color) {
+//        endpoint.requestSetColor(this, color);
+//    }
 
     public void setColor(int color) {
         this.color = color;
@@ -168,7 +165,7 @@ public class BaseLight implements Light {
         return this.endpointId;
     }
 
-    public void setEndpointId(long endpointId){
+    public void setEndpointId(long endpointId) {
         this.endpointId = endpointId;
     }
 

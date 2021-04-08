@@ -42,7 +42,6 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase buildDatabase(Context context) {
         return Room.databaseBuilder(context, AppDatabase.class, DB_NAME)
-                .allowMainThreadQueries() //TODO: Only for testing purposes. Could lock the main thread, therefore not for production!
                 .build();
     }
 

@@ -4,5 +4,4 @@ public interface ILightRemoteDimmable extends ICapability {
 
     int getBrightness();
 
-    void requestSetBrightness(int brightness);
 }
