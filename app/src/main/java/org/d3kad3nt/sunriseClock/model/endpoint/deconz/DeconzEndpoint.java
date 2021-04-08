@@ -39,15 +39,15 @@ public class DeconzEndpoint extends BaseEndpoint {
     /* Path to the deconz server (Phoscon Webapp), eg. 'deconz.example.org' */
     //TODO: Change back to Uri class and write custom TypeAdapter
     @Expose
-    private String baseUrl;
+    private final String baseUrl;
 
     /* Port of the deconz server (Phoscon Webapp), eg. '80' */
     @Expose
-    private int port;
+    private final int port;
 
     /* API key for communicating with deconz API. */
     @Expose
-    private String apiKey;
+    private final String apiKey;
 
     private transient IServices retrofit;
 
@@ -69,7 +69,6 @@ public class DeconzEndpoint extends BaseEndpoint {
                 .appendPath("api")
                 .appendEncodedPath(apiKey + "/")
                 .build();
-
         //Gson has to be instructed to use our custom type adapter for a list of light.
         Type baseLightType = new TypeToken<BaseLight>() {}.getType();
         Type baseLightListType = new TypeToken<List<BaseLight>>() {}.getType();
@@ -137,26 +136,6 @@ public class DeconzEndpoint extends BaseEndpoint {
                 .create(IServices.class);
 
         return this;
-    }
-
-    @Override
-    public void requestSetOn(BaseLight light, boolean value) {
-        //TODO
-    }
-
-    @Override
-    public void requestSetColor(BaseLight light, int color) {
-        //TODO
-    }
-
-    @Override
-    public void requestSetBrightness(BaseLight light, int brightness) {
-        //TODO
-    }
-
-    @Override
-    public void requestSetColorTemperature(BaseLight light, int colortemp) {
-        //TODO
     }
 
     @Override
