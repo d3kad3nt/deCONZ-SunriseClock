@@ -36,6 +36,6 @@ public abstract class BaseEndpoint implements LightEndpoint {
     @NonNull
     @Override
     public String toString() {
-        return String.valueOf(originalEndpointConfig.getId());
+        return originalEndpointConfig.toString();
     }
 }

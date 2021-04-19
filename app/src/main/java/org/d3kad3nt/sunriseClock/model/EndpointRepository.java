@@ -88,9 +88,10 @@ public class EndpointRepository {
             throw new NullPointerException("The given config map was null.");
         }
         EndpointType type = EndpointType.valueOf(config.remove("type"));
+        String name = config.remove("name");
         Gson gson = new Gson();
         JsonObject jsonConfig = gson.toJsonTree(config).getAsJsonObject();
-        EndpointConfig endpointConfig = new EndpointConfig(type, new Date(), jsonConfig);
+        EndpointConfig endpointConfig = new EndpointConfig(type, name, new Date(), jsonConfig);
         ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
             endpointConfigDao.save(endpointConfig);
         });

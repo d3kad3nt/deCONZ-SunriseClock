@@ -32,20 +32,25 @@ public class EndpointConfig {
     // Class LocalDateTime is timezone-sensitive, but is not supported until API level 26.
     @TypeConverters(DateTypeConverter.class)
     @ColumnInfo(name = "date_added")
-    private Date addedAt;
+    private final Date addedAt;
 
     @TypeConverters(JsonTypeConverter.class)
     @ColumnInfo(name = "config")
-    private JsonObject jsonConfig;
+    private final JsonObject jsonConfig;
 
-    public EndpointConfig(EndpointType type, Date addedAt, JsonObject jsonConfig) {
+    @SuppressWarnings("NotNullFieldNotInitialized")
+    @ColumnInfo(name = "name", defaultValue = "Unnamed Endpoint")
+    @NonNull
+    private String name;
+
+    public EndpointConfig(EndpointType type, String name, Date addedAt, JsonObject jsonConfig){
         this.type = type;
-
+        this.name = name;
         this.addedAt = addedAt;
         this.jsonConfig = jsonConfig;
     }
 
-    public long getId() {
+    public long getId(){
         return id;
     }
 
@@ -53,22 +58,30 @@ public class EndpointConfig {
         return type;
     }
 
-    public Date getAddedAt() {
+    public Date getAddedAt(){
         return addedAt;
     }
 
-    public final JsonObject getJsonConfig() {
+    public final JsonObject getJsonConfig(){
         return jsonConfig;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 
     @NonNull
     @Override
-    public String toString() {
-        return Long.toString(id);
+    public String toString(){
+        return name;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o){
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EndpointConfig that = (EndpointConfig) o;
