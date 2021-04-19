@@ -35,13 +35,12 @@ import static org.d3kad3nt.sunriseClock.utils.SettingKeys.IP;
 import static org.d3kad3nt.sunriseClock.utils.SettingKeys.PORT;
 import static org.d3kad3nt.sunriseClock.utils.SettingKeys.TEST_CONNECTION;
 
-public class ConnectivityFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class ConnectivityFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     private static final String TAG = "ConnectivityFragment";
-    private static int observer = 0;
 
     @Override
-    public void onResume() {
+    public void onResume(){
         super.onResume();
         // Register the listener whenever a key changes
         getPreferenceScreen().getSharedPreferences()
@@ -49,157 +48,21 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
     }
 
     @Override
-    public void onPause() {
+    public void onPause(){
         super.onPause();
         // Unregister the listener whenever a key changes
         getPreferenceScreen().getSharedPreferences()
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
 
-
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey){
         Log.i("sunriseClock", "Settings");
         setPreferencesFromResource(R.xml.preferences_connectivity, rootKey);
-
-        findPreference("pref_test_connection").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Log.d(TAG, "Click on testConnection registered.");
-                testConnection();
-                return true;
-            }
-        });
-
-        //Manually update the preferences summary on creation of this fragment.
-        //This is used instead of a custom SimpleSummaryProvider. This method is easier for
-        //updating the summary from different dialogs (eg. AlertDialog).
-        updatePrefSummary(findPreference("pref_test_connection").getSharedPreferences(), TEST_CONNECTION.toString());
     }
 
-    private void testConnection() {
-
-        final SharedPreferences preferences = findPreference("pref_test_connection").getSharedPreferences();
-
-        final Uri.Builder deconzUribuilder = new Uri.Builder();
-        deconzUribuilder.scheme("http")
-                .encodedAuthority(preferences.getString(IP.toString(), ""));
-
-        //An endpoint with the correct ID has to be created before saving a BaseLight into the database.
-        //Otherwise the foreign key constraint would fail.
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, 1988);
-        cal.set(Calendar.MONTH, Calendar.JANUARY);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        Date date = cal.getTime();
-
-        DeconzEndpoint deconzTest = new DeconzEndpoint(deconzUribuilder.build().toString(), Integer.parseInt(preferences.getString(PORT.toString(), "8080")), preferences.getString(API_KEY.toString(), ""));
-        Gson gson = new Gson();
-
-        LightRepository repo = LightRepository.getInstance(getContext());
-        // TODO: DAOs should not be accessed directly. Only for testing purposes. Repository should be used at all times!
-        EndpointConfigDao endpointConfigDao = AppDatabase.getInstance(this.getContext()).endpointConfigDao();
-
-        EndpointConfig endpointConfig = new EndpointConfig( EndpointType.DECONZ, date, new JsonParser().parse(gson.toJson(deconzTest, DeconzEndpoint.class)).getAsJsonObject());
-        long endpointConfigID = endpointConfigDao.save(endpointConfig);
-//        LightEndpoint lightEndpoint = EndpointRepository.getInstance(getContext()).getEndpoint(endpointConfigID);
-
-        LiveData<Resource<List<BaseLight>>> lights = repo.getLightsForEndpoint(endpointConfigID);
-        /*
-         * If the button is clicked multiple times the old listeners are not removed and activate still on the changes of the data in the database.
-         * The amount of calls to the old listeners varies because they are in different threads.
-         * The status of old requests doesn't change, because the requests aren't reused.
-         * The current listener is always in the last batch of calls.
-         */
-        lights.observe(this, new Observer<Resource<List<BaseLight>>>() {
-            int nr = observer++;
-
-            @Override
-            public void onChanged(Resource<List<BaseLight>> observedApiresponse) {
-
-                Log.d(TAG, "getLightsForEndpoint, Nr: " + nr + " Status: " + observedApiresponse.getStatus().toString());
-                if (observedApiresponse.getStatus() == Status.SUCCESS) {
-                    List<BaseLight> tmpLights = observedApiresponse.getData();
-
-                    for (BaseLight tmpLight : tmpLights) {
-                        Log.d(TAG, "getLightsForEndpoint, One attribute updated of light name (or initial async query returned): " + String.valueOf(tmpLight.friendlyName));
-
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ConnectivityFragment.this.requireContext());
-                        alertDialogBuilder.setTitle("Light Test")
-                                .setMessage("Friendly Name of test light: " + tmpLight.friendlyName);
-                        final AlertDialog testAlert = alertDialogBuilder.create();
-                        testAlert.show();
-                    }
-                    endpointConfig.id = endpointConfigID;
-                    //endpointConfigDao.delete(endpointConfig);
-                }
-
-            }
-
-        });
-
-//        LiveData<Resource<BaseLight>> light = repo.getLight(1, "1");
-//        light.observe(this, observedApiResponse -> {
-//            Log.d(TAG, "getSingleLight, Status: " + observedApiResponse.getStatus().toString());
-//
-//            if (observedApiResponse.getStatus() == Status.SUCCESS) {
-//                Log.d(TAG,"getSingleLight, One attribute updated of light name (or initial async query returned): " + String.valueOf(observedApiResponse.getData().friendlyName));
-//            }
-//        });
-
-    }
-
-
-    /**
-     * Updates the summary of a preference.
-     */
-    private void updatePrefSummary(SharedPreferences sharedPreferences, String key) {
-        String lastConnect = sharedPreferences.getString(key, "");
-        Log.d(TAG, "updatePrefSummary with value: " + lastConnect);
-        if (Objects.equals(lastConnect, "")) {
-            findPreference(key).setSummary(getResources().getString(R.string.connection_test_summary_neverconnected));
-        } else {
-            findPreference(key).setSummary(getResources().getString(R.string.connection_test_summary_lastconnected) + ": " + lastConnect);
-        }
-    }
-
-    /**
-     * This is automatically called if a SharedPreference changes.
-     */
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key){
         Log.d(TAG, key + " changed.");
-        //Only handle summary changes for preferences without SimpleSummaryProvider.
-        if (key.equals("pref_test_connection")) {
-            updatePrefSummary(sharedPreferences, key);
-        }
     }
-
-//    /**
-//     * Example for a callback in an inner class. This is used to 'remove'/hide some callbacks.
-//     * This particular example is not that useful, though.
-//     */
-//    abstract class CustomGetLightsCallback implements GetLightsCallback {
-//
-//        @Override
-//        public abstract void onSuccess(Response<List<Light>> response);
-//
-//        @Override
-//        public abstract void onForbidden(Error error);
-//
-//        @Override
-//        public void onEverytime() {
-//            //Demo: Nothing should happen here.
-//        }
-//
-//        @Override
-//        public abstract void onNetworkFailure(Call<List<Light>> call, Throwable throwable);
-//
-//        @Override
-//        public abstract void onInvalidResponseObject(Call<List<Light>> call, Throwable throwable);
-//
-//        @Override
-//        public abstract void onInvalidErrorObject();
-//    }
-
 }
