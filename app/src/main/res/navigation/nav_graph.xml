@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/lights"
-        android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.LightsFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.light.LightsFragment"
         android:label="@string/lights_title"
         tools:layout="@layout/lights_fragment">
         <action
@@ -16,16 +16,16 @@
     </fragment>
     <fragment
         android:id="@+id/lightInfo"
-        android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.LightInfoFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.light.LightInfoFragment"
         android:label="@string/lightInfo_title"
         tools:layout="@layout/light_info_fragment" >
         <argument
             android:name="Light"
-            app:argType="org.d3kad3nt.sunriseClock.model.light.LightID" />
+            app:argType="org.d3kad3nt.sunriseClock.data.model.light.LightID" />
     </fragment>
     <fragment
         android:id="@+id/mainSettingsFragment"
-        android:name="org.d3kad3nt.sunriseClock.ui.preferences.MainSettingsFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preference.MainSettingsFragment"
         android:label="@string/preferences_title">
         <action
             android:id="@+id/action_mainSettingsFragment_to_connectivityFragment"
@@ -42,24 +42,24 @@
     </fragment>
     <fragment
         android:id="@+id/connectivityFragment"
-        android:name="org.d3kad3nt.sunriseClock.ui.preferences.ConnectivityFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preference.ConnectivityFragment"
         android:label="@string/conectivity_settings_title" />
     <action android:id="@+id/action_global_mainSettingsFragment" app:destination="@id/mainSettingsFragment"/>
     <fragment
         android:id="@+id/alarmFragment"
-        android:name="org.d3kad3nt.sunriseClock.ui.preferences.AlarmFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preference.AlarmFragment"
         android:label="@string/alarm_settings_title" />
     <fragment
         android:id="@+id/debugFragment"
-        android:name="org.d3kad3nt.sunriseClock.ui.preferences.DebugFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preference.DebugFragment"
         android:label="@string/debug_settings_title" />
     <fragment
         android:id="@+id/interfaceFragment"
-        android:name="org.d3kad3nt.sunriseClock.ui.preferences.InterfaceFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preference.InterfaceFragment"
         android:label="@string/interface_settings_title" />
     <fragment
         android:id="@+id/endpoints"
-        android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.EndpointsFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment"
         android:label="@string/endpoint_list"
         tools:layout="@layout/endpoints_fragment">
         <action
@@ -71,7 +71,7 @@
     </fragment>
     <fragment
         android:id="@+id/endpointInfo"
-        android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.EndpointInfoFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointInfoFragment"
         android:label="@string/endpoint"
         tools:layout="@layout/endpoint_info_fragment">
         <argument
@@ -80,7 +80,7 @@
     </fragment>
     <fragment
         android:id="@+id/endpointAddFragment"
-        android:name="org.d3kad3nt.sunriseClock.ui.mainWindow.EndpointAddFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointAddFragment"
         android:label="Add Endpoint"
         tools:layout="@layout/endpoint_add_fragment" />
 </navigation>

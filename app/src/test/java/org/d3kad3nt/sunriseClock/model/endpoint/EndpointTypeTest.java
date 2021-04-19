@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.model.endpoint;
 
-import org.d3kad3nt.sunriseClock.model.endpoint.builder.DeconzEndpointBuilder;
+import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
+import org.d3kad3nt.sunriseClock.data.remote.deconz.DeconzEndpointBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
 

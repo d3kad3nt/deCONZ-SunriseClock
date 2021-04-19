@@ -33,7 +33,7 @@ One of the most common “solutions” to dealing with orientation changes is to
          http://code.hootsuite.com/orientation-changes-on-android/
         -->
         <receiver
-            android:name=".AlarmReceiver"
+            android:name=".data.receiver.AlarmReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

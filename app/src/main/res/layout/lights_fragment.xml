@@ -7,7 +7,7 @@
         <import type="android.view.View"/>
         <variable
             name="lightsState"
-            type="org.d3kad3nt.sunriseClock.ui.mainWindow.LightsState"/>
+            type="org.d3kad3nt.sunriseClock.ui.light.LightsState"/>
     </data>
 
 

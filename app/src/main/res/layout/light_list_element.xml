@@ -4,7 +4,7 @@
     <data>
         <variable
             name="light"
-            type="org.d3kad3nt.sunriseClock.model.light.BaseLight"/>
+            type="org.d3kad3nt.sunriseClock.data.model.light.BaseLight"/>
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener"/>
