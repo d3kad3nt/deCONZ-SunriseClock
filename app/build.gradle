@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: "androidx.navigation.safeargs"
 
 android {
-    compileSdkVersion 30
+    compileSdk 30
     defaultConfig {
         applicationId "org.d3kad3nt.sunriseClock"
         minSdkVersion 21
@@ -27,7 +27,6 @@ android {
         sourceCompatibility = "1.8"
         targetCompatibility = 1.8
     }
-    buildToolsVersion = '30.0.2'
 }
 
 dependencies {
