@@ -17,21 +17,13 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--
-One of the most common “solutions” to dealing with orientation changes is to not deal
-        with them. But for now this fixes crashes in settings when changing device orientation.
-         Furthermore, we have no state in settings that need to be persisted between device
-         orientation changes. I will probably (have to) look into this again..
-         Leaving this here as a recommendation for a good tutorial on this topic:
-         http://code.hootsuite.com/orientation-changes-on-android/
-        -->
         <receiver
             android:name=".data.receiver.AlarmReceiver"
             android:enabled="true"
