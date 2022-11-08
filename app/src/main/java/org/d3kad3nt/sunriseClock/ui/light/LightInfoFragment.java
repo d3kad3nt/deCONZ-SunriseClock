@@ -34,6 +34,11 @@ public class LightInfoFragment extends Fragment {
                 binding.setLight(baseLightResource.getData());
             }
         });
+        binding.switchOnState.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            if (binding.getLight() != null){
+                viewModel.setLightOnState(binding.getLight(), isChecked);
+            }
+        }));
         return binding.getRoot();
     }
 }
