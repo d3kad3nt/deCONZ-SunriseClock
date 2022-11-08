@@ -25,8 +25,8 @@ public class EndpointAddFragment extends Fragment {
 
     private EndpointAddViewModel viewModel;
 
-    public static EndpointInfoFragment newInstance() {
-        return new EndpointInfoFragment();
+    public static EndpointAddFragment newInstance() {
+        return new EndpointAddFragment();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class EndpointAddFragment extends Fragment {
                 }
                 if (viewModel.createEndpoint(settings)){
                     Navigation.findNavController(v).navigateUp();
-                };
+                }
             }
         });
     }
