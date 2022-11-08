@@ -1,4 +1,4 @@
-package org.d3kad3nt.sunriseClock.ui.endpoint.endpointInfo;
+package org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail;
 
 import android.app.Application;
 
@@ -12,10 +12,10 @@ import org.d3kad3nt.sunriseClock.data.model.light.ILightUI;
 import org.d3kad3nt.sunriseClock.data.model.light.LightUI;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 
-public class EndpointInfoViewModel extends AndroidViewModel {
+public class EndpointDetailViewModel extends AndroidViewModel {
     private final EndpointRepository endpointRepository = EndpointRepository.getInstance(getApplication().getApplicationContext());
 
-    public EndpointInfoViewModel(@NonNull Application application) {
+    public EndpointDetailViewModel(@NonNull Application application) {
         super(application);
     }
 

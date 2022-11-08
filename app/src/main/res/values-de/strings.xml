@@ -47,7 +47,7 @@
     <string name="navigation_drawer_header_content_description">SunriseClock Logo</string>
     <string name="navigation_drawer_header_title">SunriseClock</string>
     <string name="lights_title">Alle Lichter</string>
-    <string name="lightInfo_title">Infos zum Licht</string>
+    <string name="lightDetail_title">Infos zum Licht</string>
     <string name="preferences_title">Einstellungen</string>
     <string name="conectivity_settings_title">Verbindungseinstellungen</string>
     <string name="debug_settings_title">Debug</string>

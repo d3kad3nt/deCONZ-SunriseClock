@@ -1,4 +1,4 @@
-package org.d3kad3nt.sunriseClock.ui.light;
+package org.d3kad3nt.sunriseClock.ui.light.lightDetail;
 
 import android.app.Application;
 import android.util.Log;
@@ -13,13 +13,13 @@ import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
 import org.d3kad3nt.sunriseClock.data.model.light.LightID;
 import org.d3kad3nt.sunriseClock.util.Empty;
 
-public class LightInfoViewModel extends AndroidViewModel {
+public class LightDetailViewModel extends AndroidViewModel {
 
-    private final static String TAG = "LightInfoViewModel";
+    private final static String TAG = "LightDetailViewModel";
 
     private final LightRepository lightRepository = LightRepository.getInstance(getApplication().getApplicationContext());
 
-    public LightInfoViewModel(@NonNull Application application) {
+    public LightDetailViewModel(@NonNull Application application) {
         super(application);
         //TODO use something better
     }

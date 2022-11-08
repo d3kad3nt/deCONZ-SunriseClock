@@ -38,7 +38,7 @@ public class LightsListAdapter extends ListAdapter<BaseLight, LightsListAdapter.
 
     private View.OnClickListener createOnClickListener(LightID lightID) {
         return v -> Navigation.findNavController(v).navigate(
-                LightsFragmentDirections.actionLightsToLightInfo(lightID));
+                LightsFragmentDirections.actionLightsToLightDetail(lightID));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
