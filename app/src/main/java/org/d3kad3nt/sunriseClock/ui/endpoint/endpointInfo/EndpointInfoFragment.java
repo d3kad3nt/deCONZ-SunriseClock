@@ -1,4 +1,4 @@
-package org.d3kad3nt.sunriseClock.ui.endpoint;
+package org.d3kad3nt.sunriseClock.ui.endpoint.endpointInfo;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

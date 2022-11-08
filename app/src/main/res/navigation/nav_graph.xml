@@ -71,7 +71,7 @@
     </fragment>
     <fragment
         android:id="@+id/endpointInfo"
-        android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointInfoFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.endpoint.endpointInfo.EndpointInfoFragment"
         android:label="@string/endpoint"
         tools:layout="@layout/endpoint_info_fragment">
         <argument
