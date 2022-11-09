@@ -3,8 +3,8 @@
 
     <data>
         <variable
-            name="endpoint"
-            type="org.d3kad3nt.sunriseClock.data.model.light.ILightUI"/>
+            name="viewModel"
+            type="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailViewModel"/>
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -14,6 +14,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/list_light_name"
-            android:text="@{endpoint.stringRepresentation}"/>
+            android:text="@{viewModel.endpointConfig.stringRepresentation}"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

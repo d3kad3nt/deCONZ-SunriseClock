@@ -13,13 +13,17 @@ import org.d3kad3nt.sunriseClock.data.model.light.LightUI;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 
 public class EndpointDetailViewModel extends AndroidViewModel {
+    private final static String TAG = "EndpointDetailViewModel";
     private final EndpointRepository endpointRepository = EndpointRepository.getInstance(getApplication().getApplicationContext());
 
-    public EndpointDetailViewModel(@NonNull Application application) {
+    public LiveData<ILightUI> endpointConfig;
+
+    public EndpointDetailViewModel(@NonNull Application application, long endpointId) {
         super(application);
+        endpointConfig = getEndpoint(endpointId);
     }
 
-    public LiveData<ILightUI> getEndpoint(long endpointID){
+    private LiveData<ILightUI> getEndpoint(long endpointID){
         return Transformations.map(endpointRepository.getEndpoint(endpointID), (BaseEndpoint input) ->  {
                 return LightUI.from(input);
         });

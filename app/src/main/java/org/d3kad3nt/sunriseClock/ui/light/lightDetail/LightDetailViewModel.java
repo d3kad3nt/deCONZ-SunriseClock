@@ -14,22 +14,26 @@ import org.d3kad3nt.sunriseClock.data.model.light.LightID;
 import org.d3kad3nt.sunriseClock.util.Empty;
 
 public class LightDetailViewModel extends AndroidViewModel {
-
     private final static String TAG = "LightDetailViewModel";
-
     private final LightRepository lightRepository = LightRepository.getInstance(getApplication().getApplicationContext());
 
-    public LightDetailViewModel(@NonNull Application application) {
+    public LiveData<Resource<BaseLight>> light;
+
+    public LightDetailViewModel(@NonNull Application application, LightID lightId) {
         super(application);
-        //TODO use something better
+        //Todo: Implement something to represent the state of the request inside UI (if (baseLightResource.getStatus().equals(Status.SUCCESS))...)
+        //Todo: Data binding in XML has built-in null-safety so viewModel.light.data.friendlyName inside XML works for now (but should be changed?)
+        //Todo: Use custom model for UI
+        light = getLight(lightId);
     }
 
-    public LiveData<Resource<BaseLight>> getLight(LightID lightID){
+    private LiveData<Resource<BaseLight>> getLight(LightID lightID){
         return lightRepository.getLight(lightID);
     }
 
-    public LiveData<Resource<Empty>> setLightOnState(BaseLight light, boolean newState){
+    public LiveData<Resource<Empty>> setLightOnState(boolean newState){
         Log.d(TAG, "Set Light State");
-        return lightRepository.setOnState(light, newState);
+        //Todo: this might be null, repository should work with IDs only (instead of fully fledged objects)
+        return lightRepository.setOnState(light.getValue().getData(), newState);
     }
 }

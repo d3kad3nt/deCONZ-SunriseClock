@@ -14,8 +14,11 @@ import org.d3kad3nt.sunriseClock.databinding.LightDetailFragmentBinding;
 import org.d3kad3nt.sunriseClock.data.remote.common.Status;
 import org.d3kad3nt.sunriseClock.data.model.light.LightID;
 
+import java.util.Objects;
+
 public class LightDetailFragment extends Fragment {
 
+    private LightDetailFragmentBinding binding;
     private LightDetailViewModel viewModel;
 
     public static LightDetailFragment newInstance() {
@@ -23,22 +26,24 @@ public class LightDetailFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        LightDetailFragmentBinding binding = LightDetailFragmentBinding.inflate(inflater, container, false);
-        LightDetailFragmentArgs args = LightDetailFragmentArgs.fromBundle(requireArguments());
-        LightID lightID = args.getLight();
-        viewModel = new ViewModelProvider(requireActivity()).get(LightDetailViewModel.class);
-        viewModel.getLight(lightID).observe(getViewLifecycleOwner(), baseLightResource -> {
-            if (baseLightResource.getStatus().equals(Status.SUCCESS)) {
-                binding.setLight(baseLightResource.getData());
-            }
-        });
-        binding.switchOnState.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-            if (binding.getLight() != null){
-                viewModel.setLightOnState(binding.getLight(), isChecked);
-            }
-        }));
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        LightID lightID = LightDetailFragmentArgs.fromBundle(requireArguments()).getLight(); // id from navigation
+        // Use custom factory to initialize viewModel with light id (instead of using new ViewModelProvider(this).get(LightDetailViewModel.class))
+        viewModel = new ViewModelProvider(this, new LightDetailViewModelFactory(requireActivity().getApplication(), lightID)).get(LightDetailViewModel.class);
+        binding = LightDetailFragmentBinding.inflate(inflater, container, false);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        binding.setViewModel(viewModel);
+        // Specify the fragment view as the lifecycle owner of the binding. This is used so that the binding can observe LiveData updates.
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
