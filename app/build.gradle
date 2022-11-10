@@ -27,6 +27,7 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+    namespace 'org.d3kad3nt.sunriseClock'
 }
 
 dependencies {
