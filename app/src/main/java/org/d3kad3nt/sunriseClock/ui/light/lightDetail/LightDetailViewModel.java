@@ -6,11 +6,13 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
 
-import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
-import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
 import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
 import org.d3kad3nt.sunriseClock.data.model.light.LightID;
+import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
+import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
+import org.d3kad3nt.sunriseClock.ui.util.LivedataTransformations;
 import org.d3kad3nt.sunriseClock.util.Empty;
 
 public class LightDetailViewModel extends AndroidViewModel {
@@ -18,6 +20,7 @@ public class LightDetailViewModel extends AndroidViewModel {
     private final LightRepository lightRepository = LightRepository.getInstance(getApplication().getApplicationContext());
 
     public LiveData<Resource<BaseLight>> light;
+    public LiveData<Integer> loadingIndicatorVisibility;
 
     public LightDetailViewModel(@NonNull Application application, LightID lightId) {
         super(application);
@@ -25,15 +28,16 @@ public class LightDetailViewModel extends AndroidViewModel {
         //Todo: Data binding in XML has built-in null-safety so viewModel.light.data.friendlyName inside XML works for now (but should be changed?)
         //Todo: Use custom model for UI
         light = getLight(lightId);
-    }
-
-    private LiveData<Resource<BaseLight>> getLight(LightID lightID){
-        return lightRepository.getLight(lightID);
+        loadingIndicatorVisibility = Transformations.map(light, (Resource<BaseLight> input) -> LivedataTransformations.visibleWhenLoading(input));
     }
 
     public LiveData<Resource<Empty>> setLightOnState(boolean newState){
         Log.d(TAG, "Set Light State");
         //Todo: this might be null, repository should work with IDs only (instead of fully fledged objects)
         return lightRepository.setOnState(light.getValue().getData(), newState);
+    }
+
+    private LiveData<Resource<BaseLight>> getLight(LightID lightID){
+        return lightRepository.getLight(lightID);
     }
 }
