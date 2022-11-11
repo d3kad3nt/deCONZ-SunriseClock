@@ -15,6 +15,7 @@ import org.d3kad3nt.sunriseClock.data.model.light.LightID;
 import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.ui.util.LivedataTransformations;
+import org.d3kad3nt.sunriseClock.ui.util.VisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.Empty;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 
@@ -24,7 +25,7 @@ public class LightDetailViewModel extends AndroidViewModel {
 
     public LiveData<Resource<BaseLight>> light;
     public LiveData<Integer> loadingIndicatorVisibility;
-    public MediatorLiveData<Integer> loadingIndicatorChangeLightOnState;
+    public VisibilityLiveData loadingIndicatorChangeLightOnState;
     public MediatorLiveData<Integer> switchLightOnStateVisibility;
 
     public LiveData<Integer> getLoadingIndicatorChangeLightOnState() {
@@ -38,24 +39,15 @@ public class LightDetailViewModel extends AndroidViewModel {
         //Todo: Use custom model for UI
         light = getLight(lightId);
         loadingIndicatorVisibility = Transformations.map(light, (Resource<BaseLight> input) -> LivedataTransformations.visibleWhenLoading(input));
-        loadingIndicatorChangeLightOnState = new MediatorLiveData<>();
-        loadingIndicatorChangeLightOnState.addSource(
-                LivedataTransformations.goneStateLiveData, integer -> {
-                    loadingIndicatorChangeLightOnState.setValue(integer);
-                });
+        loadingIndicatorChangeLightOnState = new VisibilityLiveData(View.GONE);
+        loadingIndicatorChangeLightOnState.setLoadingVisibility(View.VISIBLE);
+        loadingIndicatorChangeLightOnState.setSuccessVisibility(View.GONE);
     }
 
     public void setLightOnState(boolean newState){
         //Todo: this might be null, repository should work with IDs only (instead of fully fledged objects)
         LiveData<Resource<Empty>> state = lightRepository.setOnState(light.getValue().getData(), newState);
-        loadingIndicatorChangeLightOnState.removeSource(LivedataTransformations.goneStateLiveData);
-        loadingIndicatorChangeLightOnState.addSource(state, new Observer<Resource<Empty>>() {
-            @Override
-            public void onChanged(Resource<Empty> emptyResource) {
-                loadingIndicatorChangeLightOnState.setValue(
-                        LivedataTransformations.changeStateWhenLoading(emptyResource, View.VISIBLE, View.GONE));
-            }
-        });
+        loadingIndicatorChangeLightOnState.setVisibilityProvider(state);
     }
 
     private LiveData<Resource<BaseLight>> getLight(LightID lightID){
