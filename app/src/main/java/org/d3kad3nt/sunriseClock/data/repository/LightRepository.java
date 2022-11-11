@@ -145,20 +145,20 @@ public class LightRepository {
         }.asLiveData();
     }
 
-    public LiveData<Resource<Empty>> setOnState(BaseLight light, boolean newState){
-        LiveData<BaseEndpoint> endpoint = endpointRepo.getEndpoint(light.getEndpointId());
+    public LiveData<Resource<Empty>> setOnState(LightID light, boolean newState){
+        LiveData<BaseEndpoint> endpoint = endpointRepo.getEndpoint(light.getEndpointID());
         return new NetworkUpdateResource<ResponseBody, BaseLight>(endpoint) {
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
-                return baseEndpoint.setOnState(light.getEndpointLightId(), newState);
+                return baseEndpoint.setOnState(light.getEndpointLightID(), newState);
             }
 
             @NotNull
             @Override
             protected LiveData<Resource<BaseLight>> updateResource() {
-                return getLight(light.getUUID());
+                return getLight(light);
             }
         }.asLiveData();
     }
