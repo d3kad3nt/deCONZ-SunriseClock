@@ -22,7 +22,7 @@ public class VisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Inte
 
 
 
-    public <T> void setVisibilityProvider(LiveData<Resource<T>> liveData){
+    public <T> VisibilityLiveData setVisibilityProvider(LiveData<Resource<T>> liveData){
         this.removeSource(this.initialVisibilityLivedata);
         VisibilityLiveData visibilityLivedata = this;
         this.addSource(liveData, new Observer<Resource<T>>() {
@@ -41,29 +41,33 @@ public class VisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Inte
                 }
             }
         });
+        return this;
     }
 
     public Integer getErrorVisibility() {
         return errorVisibility;
     }
 
-    public void setErrorVisibility(Integer errorVisibility) {
+    public VisibilityLiveData setErrorVisibility(Integer errorVisibility) {
         this.errorVisibility = errorVisibility;
+        return this;
     }
 
     public Integer getSuccessVisibility() {
         return successVisibility;
     }
 
-    public void setSuccessVisibility(Integer successVisibility) {
+    public VisibilityLiveData setSuccessVisibility(Integer successVisibility) {
         this.successVisibility = successVisibility;
+        return this;
     }
 
     public Integer getLoadingVisibility() {
         return loadingVisibility;
     }
 
-    public void setLoadingVisibility(Integer loadingVisibility) {
+    public VisibilityLiveData setLoadingVisibility(Integer loadingVisibility) {
         this.loadingVisibility = loadingVisibility;
+        return this;
     }
 }
