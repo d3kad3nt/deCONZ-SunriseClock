@@ -6,18 +6,13 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
 import org.d3kad3nt.sunriseClock.data.model.light.LightID;
 import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
-import org.d3kad3nt.sunriseClock.ui.util.LivedataTransformations;
 import org.d3kad3nt.sunriseClock.ui.util.VisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.Empty;
-import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 
 public class LightDetailViewModel extends AndroidViewModel {
     private final static String TAG = "LightDetailViewModel";
