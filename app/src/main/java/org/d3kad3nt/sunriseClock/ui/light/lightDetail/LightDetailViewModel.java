@@ -24,11 +24,11 @@ public class LightDetailViewModel extends AndroidViewModel {
     private final LightRepository lightRepository = LightRepository.getInstance(getApplication().getApplicationContext());
 
     public LiveData<Resource<BaseLight>> light;
-    public LiveData<Integer> loadingIndicatorVisibility;
+    public VisibilityLiveData loadingIndicatorVisibility;
     public VisibilityLiveData loadingIndicatorChangeLightOnState;
-    public MediatorLiveData<Integer> switchLightOnStateVisibility;
+    public VisibilityLiveData switchLightOnStateVisibility;
 
-    public LiveData<Integer> getLoadingIndicatorChangeLightOnState() {
+    public VisibilityLiveData getLoadingIndicatorChangeLightOnState() {
         return loadingIndicatorChangeLightOnState;
     }
 
@@ -38,7 +38,13 @@ public class LightDetailViewModel extends AndroidViewModel {
         //Todo: Data binding in XML has built-in null-safety so viewModel.light.data.friendlyName inside XML works for now (but should be changed?)
         //Todo: Use custom model for UI
         light = getLight(lightId);
-        loadingIndicatorVisibility = Transformations.map(light, (Resource<BaseLight> input) -> LivedataTransformations.visibleWhenLoading(input));
+
+        loadingIndicatorVisibility = new VisibilityLiveData(View.VISIBLE)
+                .setLoadingVisibility(View.VISIBLE)
+                .setSuccessVisibility(View.INVISIBLE)
+                .setErrorVisibility(View.INVISIBLE)
+                .setVisibilityProvider(light);
+
         loadingIndicatorChangeLightOnState = new VisibilityLiveData(View.GONE);
         loadingIndicatorChangeLightOnState.setLoadingVisibility(View.VISIBLE);
         loadingIndicatorChangeLightOnState.setSuccessVisibility(View.GONE);
