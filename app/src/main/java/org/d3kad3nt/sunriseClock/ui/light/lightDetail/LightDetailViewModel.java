@@ -28,10 +28,6 @@ public class LightDetailViewModel extends AndroidViewModel {
     public VisibilityLiveData loadingIndicatorChangeLightOnState;
     public VisibilityLiveData switchLightOnStateVisibility;
 
-    public VisibilityLiveData getLoadingIndicatorChangeLightOnState() {
-        return loadingIndicatorChangeLightOnState;
-    }
-
     public LightDetailViewModel(@NonNull Application application, LightID lightId) {
         super(application);
         //Todo: Implement something to represent the state of the request inside UI (if (baseLightResource.getStatus().equals(Status.SUCCESS))...)
