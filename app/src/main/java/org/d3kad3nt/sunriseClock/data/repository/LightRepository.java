@@ -1,35 +1,31 @@
 package org.d3kad3nt.sunriseClock.data.repository;
 
 import android.content.Context;
-import android.util.Log;
 
-import androidx.arch.core.util.Function;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
-import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
-import org.d3kad3nt.sunriseClock.data.model.endpoint.LightEndpoint;
-import org.d3kad3nt.sunriseClock.data.remote.common.ApiEmptyResponse;
-import org.d3kad3nt.sunriseClock.data.remote.common.ApiErrorResponse;
-import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
-import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
-import org.d3kad3nt.sunriseClock.data.remote.common.NetworkBoundResource;
-import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
-import org.d3kad3nt.sunriseClock.data.remote.common.Status;
-import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
 import org.d3kad3nt.sunriseClock.data.local.BaseLightDao;
+import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
+import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
 import org.d3kad3nt.sunriseClock.data.model.light.ICapability;
 import org.d3kad3nt.sunriseClock.data.model.light.Light;
 import org.d3kad3nt.sunriseClock.data.model.light.LightID;
+import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
+import org.d3kad3nt.sunriseClock.data.remote.common.NetworkBoundResource;
+import org.d3kad3nt.sunriseClock.data.remote.common.NetworkUpdateResource;
+import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
+import org.d3kad3nt.sunriseClock.data.remote.common.Status;
 import org.d3kad3nt.sunriseClock.util.Empty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import okhttp3.ResponseBody;
 
 /**
  * Repository module for handling data operations (network or local database).
@@ -151,43 +147,20 @@ public class LightRepository {
 
     public LiveData<Resource<Empty>> setOnState(BaseLight light, boolean newState){
         LiveData<BaseEndpoint> endpoint = endpointRepo.getEndpoint(light.getEndpointId());
-        //TODO: Flatten Transformations, e.g. with MediatorLiveData
-        return Transformations.switchMap(endpoint, new Function<BaseEndpoint, LiveData<Resource<Empty>>>() {
-            @Override
-            public LiveData<Resource<Empty>> apply(BaseEndpoint input) {
-                if (input == null){
-                    return new MutableLiveData<>(new Resource<>(Status.LOADING, Empty.getInstance(), ""));
-                }
-                LiveData<Resource<Empty>>responseSetState = toResource(input.setOnState(light.getEndpointLightId(), newState));
-                return Transformations.switchMap(responseSetState, new Function<Resource<Empty>, LiveData<Resource<Empty>>>() {
-                    @Override
-                    public LiveData<Resource<Empty>> apply(Resource<Empty> input) {
-                        if (input.getStatus().equals(Status.SUCCESS)){
-                            return Transformations.map(getLight(light.getUUID()), new Function<Resource<BaseLight>, Resource<Empty>>() {
-                                @Override
-                                public Resource<Empty> apply(Resource<BaseLight> input) {
-                                    return new Resource<>(input.getStatus(), Empty.getInstance(), input.getMessage());
-                                }
-                            });
-                        }
-                        return new MutableLiveData<>(input);                    }
-                });
-            }
-        });
-    }
+        return new NetworkUpdateResource<ResponseBody, BaseLight>(endpoint) {
 
-    private <T> LiveData<Resource<Empty>> toResource(LiveData<ApiResponse<T>> response){
-        return Transformations.switchMap(response, input -> {
-            if (input == null){
-                return new MutableLiveData<>(new Resource<>(Status.LOADING, Empty.getInstance(), ""));
-            }else{
-                if (input instanceof ApiEmptyResponse || input instanceof ApiSuccessResponse){
-                    return new MutableLiveData<>(new Resource<>(Status.SUCCESS, Empty.getInstance(), ""));
-                }else{
-                    return new MutableLiveData<>(new Resource<>(Status.ERROR, Empty.getInstance(), ""));
-                }
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
+                return baseEndpoint.setOnState(light.getEndpointLightId(), newState);
             }
-        });
+
+            @NotNull
+            @Override
+            protected LiveData<Resource<BaseLight>> updateResource() {
+                return getLight(light.getUUID());
+            }
+        }.asLiveData();
     }
 
 }
