@@ -156,10 +156,8 @@ public class LightRepository {
             @Override
             public LiveData<Resource<Empty>> apply(BaseEndpoint input) {
                 if (input == null){
-                    Log.d(TAG, "Endpoint Loading");
                     return new MutableLiveData<>(new Resource<>(Status.LOADING, Empty.getInstance(), ""));
                 }
-                Log.d(TAG, "Got Endpoint");
                 LiveData<Resource<Empty>>responseSetState = toResource(input.setOnState(light.getEndpointLightId(), newState));
                 return Transformations.switchMap(responseSetState, new Function<Resource<Empty>, LiveData<Resource<Empty>>>() {
                     @Override

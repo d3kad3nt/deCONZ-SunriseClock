@@ -26,10 +26,19 @@
             android:layout_height="wrap_content"
             android:text="@{viewModel.light.data.friendlyName}"/>
 
+        <ProgressBar
+            android:id="@+id/switch_on_state_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="@{viewModel.loadingIndicatorChangeLightOnState}"/>
+
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch_on_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="@{viewModel.switchLightOnStateVisibility}"
+            android:checked="@{viewModel.light.data.on}"
             android:onCheckedChanged="@{(switch, checked) -> viewModel.setLightOnState(checked)}"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
