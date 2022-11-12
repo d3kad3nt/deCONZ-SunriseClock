@@ -9,10 +9,10 @@ import androidx.lifecycle.LiveData;
 
 import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
 import org.d3kad3nt.sunriseClock.data.model.light.LightID;
+import org.d3kad3nt.sunriseClock.data.remote.common.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.ui.util.VisibilityLiveData;
-import org.d3kad3nt.sunriseClock.util.Empty;
 
 public class LightDetailViewModel extends AndroidViewModel {
     private final static String TAG = "LightDetailViewModel";
@@ -45,7 +45,7 @@ public class LightDetailViewModel extends AndroidViewModel {
 
     public void setLightOnState(boolean newState){
         //Todo: this might be null, repository should work with IDs only (instead of fully fledged objects)
-        LiveData<Resource<Empty>> state = lightRepository.setOnState(lightID, newState);
+        LiveData<EmptyResource> state = lightRepository.setOnState(lightID, newState);
         loadingIndicatorChangeLightOnState.setVisibilityProvider(state);
     }
 

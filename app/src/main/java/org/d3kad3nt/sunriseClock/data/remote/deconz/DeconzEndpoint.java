@@ -5,27 +5,19 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
-import org.d3kad3nt.sunriseClock.data.remote.common.ApiEmptyResponse;
-import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
-import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
-import org.d3kad3nt.sunriseClock.data.remote.common.Status;
+import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.BaseLightListTypeAdapter;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.BaseLightTypeAdapter;
-import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
-import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
-import org.d3kad3nt.sunriseClock.util.Empty;
 import org.json.JSONException;
 import org.json.JSONObject;
 

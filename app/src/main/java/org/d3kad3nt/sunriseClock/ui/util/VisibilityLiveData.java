@@ -22,7 +22,7 @@ public class VisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Inte
 
 
 
-    public <T> VisibilityLiveData setVisibilityProvider(LiveData<Resource<T>> liveData){
+    public <T> VisibilityLiveData setVisibilityProvider(LiveData<? extends Resource<T>> liveData){
         this.removeSource(this.initialVisibilityLivedata);
         VisibilityLiveData visibilityLivedata = this;
         this.addSource(liveData, new Observer<Resource<T>>() {

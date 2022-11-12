@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package org.d3kad3nt.sunriseClock.data.remote.common
-
-import org.d3kad3nt.sunriseClock.data.remote.common.Status.*
+package org.d3kad3nt.sunriseClock.data.remote.common;
 
 /**
  * A generic class that holds a value with its loading status.
@@ -24,19 +22,38 @@ import org.d3kad3nt.sunriseClock.data.remote.common.Status.*
  *
  * @param <T>
  */
-data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
-    companion object {
-        fun <T> success(data: T?): Resource<T> {
-            return Resource(SUCCESS, data, null)
-        }
+public class Resource<T>{
+    private final Status status;
+    private final T data;
+    private final String message;
 
-        fun <T> error(msg: String, data: T?): Resource<T> {
-            return Resource(ERROR, data, msg)
-        }
-
-        fun <T> loading(data: T?): Resource<T> {
-            return Resource(LOADING, data, null)
-        }
+    protected Resource(Status status, T data, String message) {
+        this.status = status;
+        this.data = data;
+        this.message = message;
     }
 
+    public static <T> Resource<T> success(T data) {
+        return new Resource<>(Status.SUCCESS, data, null);
+    }
+
+    public static <T> Resource<T> error(String msg, T data) {
+        return new Resource<>(Status.ERROR, data, msg);
+    }
+
+    public static <T> Resource<T> loading(T data)  {
+        return new Resource<>(Status.LOADING, data, null);
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

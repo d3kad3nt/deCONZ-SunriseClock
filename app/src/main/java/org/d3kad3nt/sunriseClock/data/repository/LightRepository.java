@@ -15,11 +15,10 @@ import org.d3kad3nt.sunriseClock.data.model.light.ICapability;
 import org.d3kad3nt.sunriseClock.data.model.light.Light;
 import org.d3kad3nt.sunriseClock.data.model.light.LightID;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
+import org.d3kad3nt.sunriseClock.data.remote.common.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.remote.common.NetworkBoundResource;
 import org.d3kad3nt.sunriseClock.data.remote.common.NetworkUpdateResource;
 import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
-import org.d3kad3nt.sunriseClock.data.remote.common.Status;
-import org.d3kad3nt.sunriseClock.util.Empty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,7 +69,7 @@ public class LightRepository {
         try {
             endpointRepo.getEndpoint(endpointId);
         }catch (NullPointerException e){
-            Resource<List<BaseLight>> resource = new Resource<>(Status.ERROR, null, "Endpoint doesn't exist");
+            Resource<List<BaseLight>> resource = Resource.error("Endpoint doesn't exist",null);
             return new MutableLiveData<>(resource);
         }
         return new NetworkBoundResource<List<BaseLight>, List<BaseLight>>() {
@@ -145,7 +144,7 @@ public class LightRepository {
         }.asLiveData();
     }
 
-    public LiveData<Resource<Empty>> setOnState(LightID light, boolean newState){
+    public LiveData<EmptyResource> setOnState(LightID light, boolean newState){
         LiveData<BaseEndpoint> endpoint = endpointRepo.getEndpoint(light.getEndpointID());
         return new NetworkUpdateResource<ResponseBody, BaseLight>(endpoint) {
 
