@@ -1,21 +1,22 @@
 package org.d3kad3nt.sunriseClock.data.remote.common;
 
+import androidx.annotation.MainThread;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class NetworkUpdateResource<UpdateType, ResourceType> {
+public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends MediatorLiveData<EmptyResource> {
 
     private final LiveData<BaseEndpoint> endpointLiveData;
 
-    private final MediatorLiveData<EmptyResource> resultLiveData;
     private LiveData<ApiResponse<UpdateType>> networkResponseLivedata;
 
     public NetworkUpdateResource(LiveData<BaseEndpoint> endpointLiveData){
         this.endpointLiveData = endpointLiveData;
-        this.resultLiveData = new MediatorLiveData<>();
+        setValue(EmptyResource.loading(""));
+        addSource(endpointLiveData, baseEndpoint -> endpointLiveDataObserver(baseEndpoint) );
     }
 
     @NotNull
@@ -24,35 +25,30 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> {
     @NotNull
     protected abstract LiveData<Resource<ResourceType>> updateResource();
 
-    public LiveData<EmptyResource> asLiveData(){
-        resultLiveData.addSource(endpointLiveData, baseEndpoint -> endpointLiveDataObserver(baseEndpoint) );
-        return resultLiveData;
-    }
-
     private void endpointLiveDataObserver(BaseEndpoint baseEndpoint){
         if (baseEndpoint == null){
-            resultLiveData.setValue(EmptyResource.loading("Endpoints loads"));
+            updateValue(EmptyResource.loading("Endpoints loads"));
         }else{
             networkResponseLivedata = this.sendNetworkRequest(baseEndpoint);
-            resultLiveData.addSource(networkResponseLivedata,response -> networkResponseObserver(response) );
-            resultLiveData.removeSource(endpointLiveData);
+            addSource(networkResponseLivedata,response -> networkResponseObserver(response) );
+            removeSource(endpointLiveData);
         }
     }
 
     private void networkResponseObserver(ApiResponse<UpdateType> response){
         EmptyResource resource = toResource(response);
         if (resource.getStatus() != Status.SUCCESS) {
-            resultLiveData.setValue(resource);
+            updateValue(resource);
         }else {
             LiveData<Resource<ResourceType>> updateResponseLivedata =updateResource();
-            resultLiveData.addSource(updateResponseLivedata, updateResponse -> resourceUpdateObserver(updateResponse) );
-            resultLiveData.removeSource(networkResponseLivedata);
+            addSource(updateResponseLivedata, updateResponse -> resourceUpdateObserver(updateResponse) );
+            removeSource(networkResponseLivedata);
         }
     }
 
     private void resourceUpdateObserver(Resource<ResourceType> response){
         EmptyResource resource = EmptyResource.fromResource(response);
-        resultLiveData.setValue(resource);
+        updateValue(resource);
     }
 
     private <T> EmptyResource toResource(ApiResponse<T> response){
@@ -64,6 +60,13 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> {
             }else{
                 return EmptyResource.error( "");
             }
+        }
+    }
+
+    @MainThread
+    private void updateValue(EmptyResource newValue ) {
+        if (getValue() != newValue) {
+            setValue(newValue);
         }
     }
 

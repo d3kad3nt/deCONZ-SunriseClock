@@ -31,43 +31,40 @@ import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator
  * @param <ResultType>
  * @param <RequestType>
  */
-abstract class NetworkBoundResource<ResultType, RequestType>
-@MainThread constructor() {
+abstract class NetworkBoundResource<ResultType, RequestType> @MainThread constructor() : MediatorLiveData<Resource<ResultType>>()
+{
 
-    private val result = MediatorLiveData<Resource<ResultType>>()
-
-    init {
-        result.value = Resource.loading(null)
-        @Suppress("LeakingThis")
-        val dbSource = loadFromDb()
-        result.addSource(dbSource) { data ->
-            result.removeSource(dbSource)
-            if (shouldFetch(data)) {
-                fetchFromNetwork(dbSource)
-            } else {
-                result.addSource(dbSource) { newData ->
-                    setValue(Resource.success(newData))
-                }
-            }
+    @MainThread
+    private fun updateValue(newValue: Resource<ResultType>) {
+        if (this.value != newValue) {
+            this.value = newValue
         }
     }
 
-    @MainThread
-    private fun setValue(newValue: Resource<ResultType>) {
-        if (result.value != newValue) {
-            result.value = newValue
-        }
+    init {
+        this.value = Resource.loading(null)
+        val dbSource = loadFromDb()
+        addSource(dbSource, fun(data: ResultType) {
+            removeSource(dbSource)
+            if (shouldFetch(data)) {
+                fetchFromNetwork(dbSource)
+            } else {
+                addSource(dbSource) { newData ->
+                    updateValue(Resource.success(newData))
+                }
+            }
+        })
     }
 
     private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
         val apiResponse = createCall()
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
-        result.addSource(dbSource) { newData ->
-            setValue(Resource.loading(newData))
+        addSource(dbSource) { newData ->
+            updateValue(Resource.loading(newData))
         }
-        result.addSource(apiResponse) { response ->
-            result.removeSource(apiResponse)
-            result.removeSource(dbSource)
+        addSource(apiResponse) { response ->
+            removeSource(apiResponse)
+            removeSource(dbSource)
             when (response) {
                 is ApiSuccessResponse -> {
                     ServiceLocator.getExecutor(ExecutorType.IO).execute {
@@ -76,8 +73,8 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                             // we specially request a new live data,
                             // otherwise we will get immediately last cached value,
                             // which may not be updated with latest results received from network.
-                            result.addSource(loadFromDb()) { newData ->
-                                setValue(Resource.success(newData))
+                            addSource(loadFromDb()) { newData ->
+                                updateValue(Resource.success(newData))
                             }
                         }
                     }
@@ -85,15 +82,15 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                 is ApiEmptyResponse -> {
                     ServiceLocator.getExecutor(ExecutorType.MainThread).execute {
                         // reload from disk whatever we had
-                        result.addSource(loadFromDb()) { newData ->
-                            setValue(Resource.success(newData))
+                        addSource(loadFromDb()) { newData ->
+                            updateValue(Resource.success(newData))
                         }
                     }
                 }
                 is ApiErrorResponse -> {
                     onFetchFailed()
-                    result.addSource(dbSource) { newData ->
-                        setValue(Resource.error(response.errorMessage, newData))
+                    addSource(dbSource) { newData ->
+                        updateValue(Resource.error(response.errorMessage, newData))
                     }
                 }
             }
@@ -102,7 +99,6 @@ abstract class NetworkBoundResource<ResultType, RequestType>
 
     protected open fun onFetchFailed() {}
 
-    fun asLiveData() = result as LiveData<Resource<ResultType>>
 
     @WorkerThread
     protected open fun processResponse(response: ApiSuccessResponse<RequestType>) = response.body //TODO: Ugly, tailored for retrofit

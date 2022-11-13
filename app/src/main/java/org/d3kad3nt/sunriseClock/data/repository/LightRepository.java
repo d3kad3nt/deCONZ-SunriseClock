@@ -103,7 +103,7 @@ public class LightRepository {
                     baseLightDao.upsert(light);
                 }
             }
-        }.asLiveData();
+        };
     }
 
     public LiveData<Resource<BaseLight>> getLight(LightID lightID) {
@@ -141,7 +141,7 @@ public class LightRepository {
             protected void saveCallResult(BaseLight item) {
                 baseLightDao.upsert(item);
             }
-        }.asLiveData();
+        };
     }
 
     public LiveData<EmptyResource> setOnState(LightID light, boolean newState){
@@ -159,7 +159,7 @@ public class LightRepository {
             protected LiveData<Resource<BaseLight>> updateResource() {
                 return getLight(light);
             }
-        }.asLiveData();
+        };
     }
 
 }
