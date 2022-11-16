@@ -21,7 +21,7 @@
         tools:layout="@layout/light_detail_fragment" >
         <argument
             android:name="Light"
-            app:argType="org.d3kad3nt.sunriseClock.data.model.light.LightID" />
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/mainSettingsFragment"

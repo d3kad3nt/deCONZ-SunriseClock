@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.BaseLightDao;
@@ -13,7 +12,6 @@ import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
 import org.d3kad3nt.sunriseClock.data.model.light.ICapability;
 import org.d3kad3nt.sunriseClock.data.model.light.Light;
-import org.d3kad3nt.sunriseClock.data.model.light.LightID;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.remote.common.NetworkBoundResource;
@@ -74,14 +72,16 @@ public class LightRepository {
         }
         return new NetworkBoundResource<List<BaseLight>, List<BaseLight>>() {
 
-            final LiveData<BaseEndpoint> endpoint = endpointRepo.getEndpoint(endpointId);
+            @NonNull
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getEndpoint(endpointId);
+            }
 
             @NotNull
             @Override
             protected LiveData<ApiResponse<List<BaseLight>>> createCall() {
-                return Transformations.switchMap(endpoint, input -> {
-                    return input.getLights();
-                });
+                return getEndpoint().getLights();
             }
 
             @NotNull
@@ -106,29 +106,34 @@ public class LightRepository {
         };
     }
 
-    public LiveData<Resource<BaseLight>> getLight(LightID lightID) {
-        return getLight(lightID.getEndpointID(), lightID.getEndpointLightID());
-    }
-
-
     //TODO: return Light interface instead of raw BaseLight
-    public LiveData<Resource<BaseLight>> getLight(long endpointId, String endpointLightId) {
+    public LiveData<Resource<BaseLight>> getLight(long lightId) {
         return new NetworkBoundResource<BaseLight, BaseLight>() {
-            final LiveData<BaseEndpoint> endpoint = endpointRepo.getEndpoint(endpointId);
+
+            @androidx.annotation.Nullable
+            @Override
+            protected LiveData<BaseLight> loadResource() {
+                return baseLightDao.load(lightId);
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getEndpoint(getResource().getEndpointId());
+            }
 
             @NotNull
             @Override
             protected LiveData<ApiResponse<BaseLight>> createCall() {
-                return Transformations.switchMap(endpoint, input -> {
-                    return input.getLight(endpointLightId);
-                });
+                return getEndpoint().getLight(getResource().getEndpointLightId());
             }
 
             @NotNull
             @Override
             protected LiveData<BaseLight> loadFromDb() {
                 //TODO: return (LiveData<Light>) (LiveData<? extends Light>) baseLight;
-                return baseLightDao.load(endpointId, endpointLightId);
+                BaseLight light = getResource();
+                return baseLightDao.load(light.getEndpointId(), light.getEndpointLightId());
             }
 
             @Override
@@ -144,20 +149,30 @@ public class LightRepository {
         };
     }
 
-    public LiveData<EmptyResource> setOnState(LightID light, boolean newState){
-        LiveData<BaseEndpoint> endpoint = endpointRepo.getEndpoint(light.getEndpointID());
-        return new NetworkUpdateResource<ResponseBody, BaseLight>(endpoint) {
+    public LiveData<EmptyResource> setOnState(long lightId, boolean newState){
+
+        return new NetworkUpdateResource<ResponseBody, BaseLight>() {
+
+            @Override
+            protected LiveData<BaseLight> loadResourceFromDB() {
+                return baseLightDao.load(lightId);
+            }
+
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getEndpoint(resource.getEndpointId());
+            }
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
-                return baseEndpoint.setOnState(light.getEndpointLightID(), newState);
+                return baseEndpoint.setOnState(resource.getEndpointLightId(), newState);
             }
 
             @NotNull
             @Override
             protected LiveData<Resource<BaseLight>> updateResource() {
-                return getLight(light);
+                return getLight(lightId);
             }
         };
     }

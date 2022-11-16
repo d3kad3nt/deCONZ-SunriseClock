@@ -20,6 +20,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint
 import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType
 import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator
 
@@ -34,6 +35,9 @@ import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator
 abstract class NetworkBoundResource<ResultType, RequestType> @MainThread constructor() : MediatorLiveData<Resource<ResultType>>()
 {
 
+    protected var endpoint: BaseEndpoint? = null
+    protected var resource: ResultType? = null
+
     @MainThread
     private fun updateValue(newValue: Resource<ResultType>) {
         if (this.value != newValue) {
@@ -43,17 +47,47 @@ abstract class NetworkBoundResource<ResultType, RequestType> @MainThread constru
 
     init {
         this.value = Resource.loading(null)
-        val dbSource = loadFromDb()
-        addSource(dbSource, fun(data: ResultType) {
-            removeSource(dbSource)
-            if (shouldFetch(data)) {
-                fetchFromNetwork(dbSource)
-            } else {
-                addSource(dbSource) { newData ->
-                    updateValue(Resource.success(newData))
-                }
+
+        val resourceLiveData =  loadResource()
+        if (resourceLiveData != null){
+            addSource(resourceLiveData) { resource ->resourceLiveDataObserver(resource, resourceLiveData) }
+        }else{
+            val endpointLiveData = loadEndpoint()
+            addSource(endpointLiveData){ endpoint -> endpointLiveDataObserver(endpoint, endpointLiveData)}
+        }
+    }
+
+    private fun resourceLiveDataObserver(resource: ResultType?, resourceLiveData: LiveData<ResultType>){
+        if (resource == null){
+            updateValue(Resource.loading(null))
+        }else{
+            this.resource = resource
+            val endpointLiveData = loadEndpoint()
+            addSource(endpointLiveData){ endpoint -> endpointLiveDataObserver(endpoint, endpointLiveData)}
+            removeSource(resourceLiveData)
+        }
+    }
+
+    private fun endpointLiveDataObserver(endpoint: BaseEndpoint?, endpointLiveData: LiveData<BaseEndpoint>){
+        if (endpoint == null){
+            updateValue(Resource.loading(null))
+        }else{
+            this.endpoint = endpoint
+            val dbSource = loadFromDb()
+            addSource(dbSource) { t: ResultType -> dbSourceObserver(t, dbSource) }
+            removeSource(endpointLiveData)
+        }
+    }
+
+    private fun dbSourceObserver(data: ResultType, dbSourceLiveData: LiveData<ResultType>){
+        removeSource(dbSourceLiveData)
+        if (shouldFetch(data)) {
+            fetchFromNetwork(dbSourceLiveData)
+        } else {
+            addSource(dbSourceLiveData) { newData ->
+                updateValue(Resource.success(newData))
             }
-        })
+        }
     }
 
     private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
@@ -108,6 +142,14 @@ abstract class NetworkBoundResource<ResultType, RequestType> @MainThread constru
 
     @MainThread
     protected abstract fun shouldFetch(data: ResultType?): Boolean
+
+    @MainThread
+    protected open fun loadResource(): LiveData<ResultType>?{
+        return null
+    }
+
+    @MainThread
+    protected abstract fun loadEndpoint(): LiveData<BaseEndpoint>
 
     @MainThread
     protected abstract fun loadFromDb(): LiveData<ResultType>

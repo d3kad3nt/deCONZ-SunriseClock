@@ -6,15 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.d3kad3nt.sunriseClock.data.model.light.LightID;
-
 public class LightDetailViewModelFactory implements ViewModelProvider.Factory {
     private final Application mApplication;
-    private final LightID mParam;
+    private final long mId;
 
-    public LightDetailViewModelFactory(Application application, LightID lightId) {
+    public LightDetailViewModelFactory(Application application, long lightId) {
         mApplication = application;
-        mParam = lightId;
+        mId = lightId;
     }
 
     @NonNull
@@ -23,7 +21,7 @@ public class LightDetailViewModelFactory implements ViewModelProvider.Factory {
         if (modelClass.equals(LightDetailViewModel.class)){
             //This Cast is checked with the previous if statement.
             //noinspection unchecked
-            return (T) new LightDetailViewModel(mApplication, mParam);
+            return (T) new LightDetailViewModel(mApplication, mId);
         }else{
             throw new UnsupportedOperationException("This Factory can only create LightDetailViewModel instances");
         }

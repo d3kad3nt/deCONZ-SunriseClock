@@ -9,15 +9,15 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends MediatorLiveData<EmptyResource> {
 
-
     protected ResourceType resource;
 
-    public NetworkUpdateResource(LiveData<BaseEndpoint> endpointLiveData) {
+    public NetworkUpdateResource() {
         setValue(EmptyResource.loading(""));
         LiveData<ResourceType> resourceLoad = loadResourceFromDB();
         if (resourceLoad != null){
-            addSource(resourceLoad, resource -> resourceLoadObserver(resource, resourceLoad, endpointLiveData));
+            addSource(resourceLoad, resource -> resourceLoadObserver(resource, resourceLoad));
         }else {
+            LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
             addSource(endpointLiveData, baseEndpoint -> endpointLiveDataObserver(baseEndpoint, endpointLiveData));
         }
     }
@@ -26,17 +26,20 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends Me
         return null;
     }
 
+    protected abstract LiveData<BaseEndpoint> loadEndpoint();
+
     @NotNull
     protected abstract LiveData<ApiResponse<UpdateType>> sendNetworkRequest(BaseEndpoint baseEndpoint);
 
     @NotNull
     protected abstract LiveData<Resource<ResourceType>> updateResource();
 
-    private void resourceLoadObserver(ResourceType resource, LiveData<ResourceType> resourceLiveData, LiveData<BaseEndpoint> endpointLiveData){
+    private void resourceLoadObserver(ResourceType resource, LiveData<ResourceType> resourceLiveData){
         if (resource == null) {
             updateValue(EmptyResource.loading("Resource loads"));
         }else{
             this.resource = resource;
+            LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
             addSource(endpointLiveData, endpoint -> endpointLiveDataObserver(endpoint, endpointLiveData));
             removeSource(resourceLiveData);
         }

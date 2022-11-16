@@ -11,9 +11,8 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.d3kad3nt.sunriseClock.databinding.LightListElementBinding;
 import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
-import org.d3kad3nt.sunriseClock.data.model.light.LightID;
+import org.d3kad3nt.sunriseClock.databinding.LightListElementBinding;
 
 
 public class LightsListAdapter extends ListAdapter<BaseLight, LightsListAdapter.ViewHolder> {
@@ -32,11 +31,11 @@ public class LightsListAdapter extends ListAdapter<BaseLight, LightsListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BaseLight light = getItem(position);
-        holder.bind(createOnClickListener(light.getUUID()), light);
+        holder.bind(createOnClickListener(light.getLightId()), light);
         holder.itemView.setTag(light);
     }
 
-    private View.OnClickListener createOnClickListener(LightID lightID) {
+    private View.OnClickListener createOnClickListener(long lightID) {
         return v -> Navigation.findNavController(v).navigate(
                 LightsFragmentDirections.actionLightsToLightDetail(lightID));
     }
@@ -61,7 +60,7 @@ public class LightsListAdapter extends ListAdapter<BaseLight, LightsListAdapter.
         @Override
         public boolean areItemsTheSame(@NonNull BaseLight oldItem, @NonNull BaseLight newItem) {
             //TODO: use real UUID
-            return oldItem.getUUID().equals(newItem.getUUID());
+            return oldItem.getLightId() == newItem.getLightId();
         }
 
         @SuppressLint("DiffUtilEquals")

@@ -33,6 +33,9 @@ public interface BaseLightDao {
     @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE endpointId = :endpointId AND endpointLightId = :endpointLightId")
     LiveData<BaseLight> load(long endpointId, String endpointLightId);
 
+    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE lightId = :lightId")
+    LiveData<BaseLight> load(long lightId);
+
     @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE endpointId = :endpointId")
     LiveData<List<BaseLight>> loadAllForEndpoint(long endpointId);
 
