@@ -91,7 +91,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends  Med
     }
 
     private void fetchFromNetwork(LiveData<ResultType> dbSource ) {
-        LiveData<ApiResponse<RequestType>> apiResponse = createCall();
+        LiveData<ApiResponse<RequestType>> apiResponse = loadFromNetwork();
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
         addSource(dbSource, newData ->{
             updateValue(Resource.loading(newData));
@@ -154,5 +154,5 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends  Med
     protected abstract LiveData<ResultType> loadFromDb();
 
     @MainThread
-    protected abstract LiveData<ApiResponse<RequestType>> createCall();
+    protected abstract LiveData<ApiResponse<RequestType>> loadFromNetwork();
 }

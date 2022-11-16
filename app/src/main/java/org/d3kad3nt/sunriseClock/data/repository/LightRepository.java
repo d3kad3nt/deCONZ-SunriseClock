@@ -80,7 +80,7 @@ public class LightRepository {
 
             @NotNull
             @Override
-            protected LiveData<ApiResponse<List<BaseLight>>> createCall() {
+            protected LiveData<ApiResponse<List<BaseLight>>> loadFromNetwork() {
                 return endpoint.getLights();
             }
 
@@ -118,7 +118,7 @@ public class LightRepository {
 
             @NotNull
             @Override
-            protected LiveData<ApiResponse<BaseLight>> createCall() {
+            protected LiveData<ApiResponse<BaseLight>> loadFromNetwork() {
                 return endpoint.getLight(resource.getEndpointLightId());
             }
 
@@ -147,7 +147,7 @@ public class LightRepository {
         return new NetworkUpdateResource<ResponseBody, BaseLight>() {
 
             @Override
-            protected LiveData<BaseLight> loadResourceFromDB() {
+            protected LiveData<BaseLight> loadFromDB() {
                 return baseLightDao.load(lightId);
             }
 

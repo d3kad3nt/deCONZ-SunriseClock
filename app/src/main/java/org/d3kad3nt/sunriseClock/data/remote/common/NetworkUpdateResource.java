@@ -13,7 +13,7 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends Me
 
     public NetworkUpdateResource() {
         setValue(EmptyResource.loading(""));
-        LiveData<ResourceType> resourceLoad = loadResourceFromDB();
+        LiveData<ResourceType> resourceLoad = loadFromDB();
         if (resourceLoad != null){
             addSource(resourceLoad, resource -> resourceLoadObserver(resource, resourceLoad));
         }else {
@@ -22,7 +22,7 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends Me
         }
     }
 
-    protected LiveData<ResourceType> loadResourceFromDB() {
+    protected LiveData<ResourceType> loadFromDB() {
         return null;
     }
 
