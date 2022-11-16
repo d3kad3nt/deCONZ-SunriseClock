@@ -81,7 +81,7 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<ApiResponse<List<BaseLight>>> createCall() {
-                return getEndpoint().getLights();
+                return endpoint.getLights();
             }
 
             @NotNull
@@ -110,30 +110,23 @@ public class LightRepository {
     public LiveData<Resource<BaseLight>> getLight(long lightId) {
         return new NetworkBoundResource<BaseLight, BaseLight>() {
 
-            @androidx.annotation.Nullable
-            @Override
-            protected LiveData<BaseLight> loadResource() {
-                return baseLightDao.load(lightId);
-            }
-
             @NonNull
             @Override
             protected LiveData<BaseEndpoint> loadEndpoint() {
-                return endpointRepo.getEndpoint(getResource().getEndpointId());
+                return endpointRepo.getEndpoint(resource.getEndpointId());
             }
 
             @NotNull
             @Override
             protected LiveData<ApiResponse<BaseLight>> createCall() {
-                return getEndpoint().getLight(getResource().getEndpointLightId());
+                return endpoint.getLight(resource.getEndpointLightId());
             }
 
             @NotNull
             @Override
             protected LiveData<BaseLight> loadFromDb() {
                 //TODO: return (LiveData<Light>) (LiveData<? extends Light>) baseLight;
-                BaseLight light = getResource();
-                return baseLightDao.load(light.getEndpointId(), light.getEndpointLightId());
+                return baseLightDao.load(resource.getEndpointId(), resource.getEndpointLightId());
             }
 
             @Override
