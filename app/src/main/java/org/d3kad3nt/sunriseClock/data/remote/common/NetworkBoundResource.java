@@ -35,8 +35,9 @@ import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
  */
 public abstract class NetworkBoundResource<ResultType, RequestType> extends  MediatorLiveData<Resource<ResultType>>{
 
+    private final LiveData<ResultType> dbSource;
     protected BaseEndpoint endpoint = null;
-    protected ResultType resource = null;
+    protected ResultType dbObject = null;
 
     @MainThread
     private void updateValue(Resource<ResultType> newValue) {
@@ -48,23 +49,18 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends  Med
     public NetworkBoundResource() {
         this.setValue( Resource.loading(null));
 
-        LiveData<ResultType> resourceLiveData = loadResource();
-        if (resourceLiveData != null){
-            addSource(resourceLiveData,  resource ->{resourceLiveDataObserver(resource, resourceLiveData);});
-        }else{
-            LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
-            addSource(endpointLiveData, endpoint -> {endpointLiveDataObserver(endpoint, endpointLiveData);});
-        }
+        dbSource = loadFromDb();
+        addSource(dbSource, dbObject -> {dbSourceObserver(dbObject, dbSource);});
     }
 
-    private void resourceLiveDataObserver(ResultType resource,LiveData<ResultType> resourceLiveData){
-        if (resource == null){
+    private void dbSourceObserver(ResultType data, LiveData<ResultType> dbSourceLiveData){
+        removeSource(dbSourceLiveData);
+        if (data == null){
             updateValue(Resource.loading(null));
         }else{
-            this.resource = resource;
+            dbObject = data;
             LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
-            addSource(endpointLiveData,endpoint -> {endpointLiveDataObserver(endpoint, endpointLiveData);});
-            removeSource(resourceLiveData);
+            addSource(endpointLiveData, baseEndpoint -> endpointLiveDataObserver(baseEndpoint, endpointLiveData));
         }
     }
 
@@ -73,20 +69,14 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends  Med
             updateValue(Resource.loading(null));
         }else{
             this.endpoint = endpoint;
-            LiveData<ResultType> dbSource = loadFromDb();
-            addSource(dbSource, (ResultType result ) -> {dbSourceObserver(result, dbSource); });
+            if (shouldFetch(dbObject)) {
+                fetchFromNetwork(dbSource);
+            } else {
+                addSource(dbSource, newData ->{
+                    updateValue(Resource.success(newData));
+                });
+            }
             removeSource(endpointLiveData);
-        }
-    }
-
-    private void dbSourceObserver(ResultType data, LiveData<ResultType> dbSourceLiveData){
-        removeSource(dbSourceLiveData);
-        if (shouldFetch(data)) {
-            fetchFromNetwork(dbSourceLiveData);
-        } else {
-            addSource(dbSourceLiveData, newData ->{
-                updateValue(Resource.success(newData));
-            });
         }
     }
 

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends MediatorLiveData<EmptyResource> {
 
-    protected ResourceType resource;
+    protected ResourceType dbObject;
 
     public NetworkUpdateResource() {
         setValue(EmptyResource.loading(""));
@@ -38,7 +38,7 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends Me
         if (resource == null) {
             updateValue(EmptyResource.loading("Resource loads"));
         }else{
-            this.resource = resource;
+            this.dbObject = resource;
             LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
             addSource(endpointLiveData, endpoint -> endpointLiveDataObserver(endpoint, endpointLiveData));
             removeSource(resourceLiveData);

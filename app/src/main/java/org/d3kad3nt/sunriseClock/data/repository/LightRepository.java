@@ -113,20 +113,20 @@ public class LightRepository {
             @NonNull
             @Override
             protected LiveData<BaseEndpoint> loadEndpoint() {
-                return endpointRepo.getEndpoint(resource.getEndpointId());
+                return endpointRepo.getEndpoint(dbObject.getEndpointId());
             }
 
             @NotNull
             @Override
             protected LiveData<ApiResponse<BaseLight>> loadFromNetwork() {
-                return endpoint.getLight(resource.getEndpointLightId());
+                return endpoint.getLight(dbObject.getEndpointLightId());
             }
 
             @NotNull
             @Override
             protected LiveData<BaseLight> loadFromDb() {
                 //TODO: return (LiveData<Light>) (LiveData<? extends Light>) baseLight;
-                return baseLightDao.load(resource.getEndpointId(), resource.getEndpointLightId());
+                return baseLightDao.load(lightId);
             }
 
             @Override
@@ -153,13 +153,13 @@ public class LightRepository {
 
             @Override
             protected LiveData<BaseEndpoint> loadEndpoint() {
-                return endpointRepo.getEndpoint(resource.getEndpointId());
+                return endpointRepo.getEndpoint(dbObject.getEndpointId());
             }
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
-                return baseEndpoint.setOnState(resource.getEndpointLightId(), newState);
+                return baseEndpoint.setOnState(dbObject.getEndpointLightId(), newState);
             }
 
             @NotNull
