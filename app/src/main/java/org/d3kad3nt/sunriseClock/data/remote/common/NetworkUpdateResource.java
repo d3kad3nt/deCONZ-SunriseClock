@@ -9,14 +9,21 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends MediatorLiveData<EmptyResource> {
 
-    private final LiveData<BaseEndpoint> endpointLiveData;
 
-    private LiveData<ApiResponse<UpdateType>> networkResponseLivedata;
+    protected ResourceType resource;
 
-    public NetworkUpdateResource(LiveData<BaseEndpoint> endpointLiveData){
-        this.endpointLiveData = endpointLiveData;
+    public NetworkUpdateResource(LiveData<BaseEndpoint> endpointLiveData) {
         setValue(EmptyResource.loading(""));
-        addSource(endpointLiveData, baseEndpoint -> endpointLiveDataObserver(baseEndpoint) );
+        LiveData<ResourceType> resourceLoad = loadResourceFromDB();
+        if (resourceLoad != null){
+            addSource(resourceLoad, resource -> resourceLoadObserver(resource, resourceLoad, endpointLiveData));
+        }else {
+            addSource(endpointLiveData, baseEndpoint -> endpointLiveDataObserver(baseEndpoint, endpointLiveData));
+        }
+    }
+
+    protected LiveData<ResourceType> loadResourceFromDB() {
+        return null;
     }
 
     @NotNull
@@ -25,17 +32,27 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends Me
     @NotNull
     protected abstract LiveData<Resource<ResourceType>> updateResource();
 
-    private void endpointLiveDataObserver(BaseEndpoint baseEndpoint){
-        if (baseEndpoint == null){
-            updateValue(EmptyResource.loading("Endpoints loads"));
+    private void resourceLoadObserver(ResourceType resource, LiveData<ResourceType> resourceLiveData, LiveData<BaseEndpoint> endpointLiveData){
+        if (resource == null) {
+            updateValue(EmptyResource.loading("Resource loads"));
         }else{
-            networkResponseLivedata = this.sendNetworkRequest(baseEndpoint);
-            addSource(networkResponseLivedata,response -> networkResponseObserver(response) );
+            this.resource = resource;
+            addSource(endpointLiveData, endpoint -> endpointLiveDataObserver(endpoint, endpointLiveData));
+            removeSource(resourceLiveData);
+        }
+    }
+
+    private void endpointLiveDataObserver(BaseEndpoint baseEndpoint, LiveData<BaseEndpoint> endpointLiveData) {
+        if (baseEndpoint == null) {
+            updateValue(EmptyResource.loading("Endpoints loads"));
+        } else {
+            LiveData<ApiResponse<UpdateType>> networkResponseLivedata = this.sendNetworkRequest(baseEndpoint);
+            addSource(networkResponseLivedata, response -> networkResponseObserver(response, networkResponseLivedata));
             removeSource(endpointLiveData);
         }
     }
 
-    private void networkResponseObserver(ApiResponse<UpdateType> response){
+    private void networkResponseObserver(ApiResponse<UpdateType> response, LiveData<ApiResponse<UpdateType>> networkResponseLivedata) {
         EmptyResource resource = toResource(response);
         if (resource.getStatus() != Status.SUCCESS) {
             updateValue(resource);
