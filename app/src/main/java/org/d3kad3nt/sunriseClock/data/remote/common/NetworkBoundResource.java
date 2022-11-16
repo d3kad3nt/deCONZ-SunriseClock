@@ -102,7 +102,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends  Med
             Class<? extends ApiResponse> aClass = response.getClass();
             if (ApiSuccessResponse.class.equals(aClass)) {
                 ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
-                    saveCallResult(processResponse((ApiSuccessResponse<RequestType>) response));
+                    saveNetworkResponseToDb(processResponse((ApiSuccessResponse<RequestType>) response));
                     ServiceLocator.getExecutor(ExecutorType.MainThread).execute(() -> {
                         // we specially request a new live data,
                         // otherwise we will get immediately last cached value,
@@ -137,7 +137,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends  Med
     }
 
     @WorkerThread
-    protected abstract void saveCallResult(RequestType item );
+    protected abstract void saveNetworkResponseToDb(RequestType item );
 
     @MainThread
     protected abstract boolean shouldFetch(ResultType data);

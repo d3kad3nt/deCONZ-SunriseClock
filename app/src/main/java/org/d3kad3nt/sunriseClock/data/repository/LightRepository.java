@@ -98,7 +98,7 @@ public class LightRepository {
             }
 
             @Override
-            protected void saveCallResult(List<BaseLight> items) {
+            protected void saveNetworkResponseToDb(List<BaseLight> items) {
                 for (BaseLight light : items) {
                     baseLightDao.upsert(light);
                 }
@@ -136,7 +136,7 @@ public class LightRepository {
             }
 
             @Override
-            protected void saveCallResult(BaseLight item) {
+            protected void saveNetworkResponseToDb(BaseLight item) {
                 baseLightDao.upsert(item);
             }
         };
