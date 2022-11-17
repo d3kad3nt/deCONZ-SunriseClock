@@ -54,13 +54,20 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends  Med
     }
 
     private void dbSourceObserver(ResultType data, LiveData<ResultType> dbSourceLiveData){
-        removeSource(dbSourceLiveData);
         if (data == null){
             updateValue(Resource.loading(null));
         }else{
             dbObject = data;
-            LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
-            addSource(endpointLiveData, baseEndpoint -> endpointLiveDataObserver(baseEndpoint, endpointLiveData));
+            if (shouldFetch(dbObject)){
+                LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
+                addSource(endpointLiveData, baseEndpoint -> endpointLiveDataObserver(baseEndpoint, endpointLiveData));
+            }else{
+                addSource(dbSource, newData ->{
+                    updateValue(Resource.success(newData));
+                });
+            }
+            removeSource(dbSourceLiveData);
+
         }
     }
 
@@ -69,13 +76,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends  Med
             updateValue(Resource.loading(null));
         }else{
             this.endpoint = endpoint;
-            if (shouldFetch(dbObject)) {
-                fetchFromNetwork(dbSource);
-            } else {
-                addSource(dbSource, newData ->{
-                    updateValue(Resource.success(newData));
-                });
-            }
+            fetchFromNetwork(dbSource);
             removeSource(endpointLiveData);
         }
     }

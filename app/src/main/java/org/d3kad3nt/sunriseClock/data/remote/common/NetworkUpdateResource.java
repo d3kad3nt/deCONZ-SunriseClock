@@ -14,17 +14,10 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends Me
     public NetworkUpdateResource() {
         setValue(EmptyResource.loading(""));
         LiveData<ResourceType> resourceLoad = loadFromDB();
-        if (resourceLoad != null){
-            addSource(resourceLoad, resource -> resourceLoadObserver(resource, resourceLoad));
-        }else {
-            LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
-            addSource(endpointLiveData, baseEndpoint -> endpointLiveDataObserver(baseEndpoint, endpointLiveData));
-        }
+        addSource(resourceLoad, resource -> dbObjectLoadObserver(resource, resourceLoad));
     }
 
-    protected LiveData<ResourceType> loadFromDB() {
-        return null;
-    }
+    protected abstract LiveData<ResourceType> loadFromDB();
 
     protected abstract LiveData<BaseEndpoint> loadEndpoint();
 
@@ -32,9 +25,9 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends Me
     protected abstract LiveData<ApiResponse<UpdateType>> sendNetworkRequest(BaseEndpoint baseEndpoint);
 
     @NotNull
-    protected abstract LiveData<Resource<ResourceType>> updateResource();
+    protected abstract LiveData<Resource<ResourceType>> loadUpdatedVersion();
 
-    private void resourceLoadObserver(ResourceType resource, LiveData<ResourceType> resourceLiveData){
+    private void dbObjectLoadObserver(ResourceType resource, LiveData<ResourceType> resourceLiveData){
         if (resource == null) {
             updateValue(EmptyResource.loading("Resource loads"));
         }else{
@@ -60,7 +53,7 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends Me
         if (resource.getStatus() != Status.SUCCESS) {
             updateValue(resource);
         }else {
-            LiveData<Resource<ResourceType>> updateResponseLivedata =updateResource();
+            LiveData<Resource<ResourceType>> updateResponseLivedata = loadUpdatedVersion();
             addSource(updateResponseLivedata, updateResponse -> resourceUpdateObserver(updateResponse) );
             removeSource(networkResponseLivedata);
         }

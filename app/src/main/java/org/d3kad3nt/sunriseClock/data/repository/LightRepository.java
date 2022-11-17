@@ -164,7 +164,7 @@ public class LightRepository {
 
             @NotNull
             @Override
-            protected LiveData<Resource<BaseLight>> updateResource() {
+            protected LiveData<Resource<BaseLight>> loadUpdatedVersion() {
                 return getLight(lightId);
             }
         };
