@@ -1,13 +1,12 @@
 package org.d3kad3nt.sunriseClock.data.remote.common;
 
-import androidx.annotation.MainThread;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
+import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends MediatorLiveData<EmptyResource> {
+public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends ExtendedMediatorLiveData<EmptyResource> {
 
     protected ResourceType dbObject;
 
@@ -73,13 +72,6 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends Me
             }else{
                 return EmptyResource.error( "");
             }
-        }
-    }
-
-    @MainThread
-    private void updateValue(EmptyResource newValue ) {
-        if (getValue() != newValue) {
-            setValue(newValue);
         }
     }
 

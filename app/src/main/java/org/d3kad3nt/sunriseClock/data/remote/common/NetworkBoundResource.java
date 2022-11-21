@@ -19,11 +19,11 @@ package org.d3kad3nt.sunriseClock.data.remote.common;
 import androidx.annotation.MainThread;
 import androidx.annotation.WorkerThread;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
+import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
 
 /**
  * A generic class that can provide a resource backed by both the sqlite database and the network.
@@ -33,18 +33,11 @@ import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
  * @param <ResultType>
  * @param <RequestType>
  */
-public abstract class NetworkBoundResource<ResultType, RequestType> extends  MediatorLiveData<Resource<ResultType>>{
+public abstract class NetworkBoundResource<ResultType, RequestType> extends ExtendedMediatorLiveData<Resource<ResultType>> {
 
     private final LiveData<ResultType> dbSource;
     protected BaseEndpoint endpoint = null;
     protected ResultType dbObject = null;
-
-    @MainThread
-    private void updateValue(Resource<ResultType> newValue) {
-        if (this.getValue() != newValue) {
-            this.setValue(newValue);
-        }
-    }
 
     public NetworkBoundResource() {
         this.setValue( Resource.loading(null));
