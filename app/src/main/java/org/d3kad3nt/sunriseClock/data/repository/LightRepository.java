@@ -52,10 +52,6 @@ public class LightRepository {
         return INSTANCE;
     }
 
-    private void refreshLight(int endpointId, String endpointLightId){
-        //TODO: implement, still needed? (as getLight could be called to update light)
-    }
-
     //TODO: return Light interface instead of raw BaseLight
     public LiveData<Resource<List<BaseLight>>> getLightsForEndpoint(long endpointId) {
         try {
