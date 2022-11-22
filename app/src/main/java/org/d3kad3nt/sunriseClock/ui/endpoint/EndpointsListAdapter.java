@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.d3kad3nt.sunriseClock.data.model.endpoint.UIEndpoint;
 import org.d3kad3nt.sunriseClock.databinding.EndpointListElementBinding;
-import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 
 
-public class EndpointsListAdapter extends ListAdapter<BaseEndpoint, EndpointsListAdapter.ViewHolder> {
+public class EndpointsListAdapter extends ListAdapter<UIEndpoint, EndpointsListAdapter.ViewHolder> {
 
     public EndpointsListAdapter() {
         super(new EndpointDiffCallback());
@@ -30,9 +30,9 @@ public class EndpointsListAdapter extends ListAdapter<BaseEndpoint, EndpointsLis
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        BaseEndpoint light = getItem(position);
-        holder.bind(createOnClickListener(light.getId()), light);
-        holder.itemView.setTag(light);
+        UIEndpoint endpoint = getItem(position);
+        holder.bind(createOnClickListener(endpoint.getId()), endpoint);
+        holder.itemView.setTag(endpoint);
     }
 
     private View.OnClickListener createOnClickListener(long endpointID) {
@@ -48,24 +48,24 @@ public class EndpointsListAdapter extends ListAdapter<BaseEndpoint, EndpointsLis
             this.binding = binding;
         }
 
-        void bind(View.OnClickListener listener, BaseEndpoint item) {
+        void bind(View.OnClickListener listener, UIEndpoint item) {
             binding.setClickListener(listener);
             binding.setEndpoint(item);
             binding.executePendingBindings();
         }
     }
 
-    static class EndpointDiffCallback extends DiffUtil.ItemCallback<BaseEndpoint> {
+    static class EndpointDiffCallback extends DiffUtil.ItemCallback<UIEndpoint> {
 
         @Override
-        public boolean areItemsTheSame(@NonNull BaseEndpoint oldItem, @NonNull BaseEndpoint newItem) {
+        public boolean areItemsTheSame(@NonNull UIEndpoint oldItem, @NonNull UIEndpoint newItem) {
             //TODO: use real UUID
             return oldItem.getId() == newItem.getId();
         }
 
         @SuppressLint("DiffUtilEquals")
         @Override
-        public boolean areContentsTheSame(@NonNull BaseEndpoint oldItem, @NonNull BaseEndpoint newItem) {
+        public boolean areContentsTheSame(@NonNull UIEndpoint oldItem, @NonNull UIEndpoint newItem) {
             return oldItem == newItem;
         }
     }

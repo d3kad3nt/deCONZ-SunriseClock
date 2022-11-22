@@ -4,8 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.AdapterView;
 
+import org.d3kad3nt.sunriseClock.data.model.endpoint.UIEndpoint;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
-import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 
 public class EndpointSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
 
@@ -17,7 +17,7 @@ public class EndpointSelectedListener implements android.widget.AdapterView.OnIt
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        BaseEndpoint selected = (BaseEndpoint) parent.getItemAtPosition(position);
+        UIEndpoint selected = (UIEndpoint) parent.getItemAtPosition(position);
         SettingsRepository settingsRepository = SettingsRepository.getInstance(context);
         settingsRepository.setSetting("endpoint_id",selected.getId());
     }

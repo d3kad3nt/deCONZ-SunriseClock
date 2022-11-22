@@ -75,7 +75,7 @@ public class LightRepository {
             @NonNull
             @Override
             protected LiveData<BaseEndpoint> loadEndpoint() {
-                return endpointRepo.getEndpoint(endpointId);
+                return endpointRepo.getRepoEndpoint(endpointId);
             }
 
             @NotNull
@@ -113,7 +113,7 @@ public class LightRepository {
             @NonNull
             @Override
             protected LiveData<BaseEndpoint> loadEndpoint() {
-                return endpointRepo.getEndpoint(dbObject.getEndpointId());
+                return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
             }
 
             @NotNull
@@ -153,7 +153,7 @@ public class LightRepository {
 
             @Override
             protected LiveData<BaseEndpoint> loadEndpoint() {
-                return endpointRepo.getEndpoint(dbObject.getEndpointId());
+                return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
             }
 
             @NonNull

@@ -10,10 +10,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
+import org.d3kad3nt.sunriseClock.data.local.EndpointConfigDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
-import org.d3kad3nt.sunriseClock.data.local.EndpointConfigDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
+import org.d3kad3nt.sunriseClock.data.model.endpoint.UIEndpoint;
 import org.d3kad3nt.sunriseClock.data.remote.common.EndpointBuilder;
 import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
@@ -48,9 +49,9 @@ public class EndpointRepository {
         return INSTANCE;
     }
 
-    public LiveData<BaseEndpoint> getEndpoint(long id){
+    LiveData<BaseEndpoint> getRepoEndpoint(long id){
         if (!endpointLiveDataCache.containsKey(id)) {
-            LiveData<BaseEndpoint> endpointTransformation = Transformations.switchMap(endpointConfigDao.loadLiveData(id), input -> {
+            LiveData<BaseEndpoint> endpointTransformation = Transformations.switchMap(endpointConfigDao.load(id), input -> {
                 if (input == null) {
                     return new MutableLiveData<>();
                 } else {
@@ -62,16 +63,22 @@ public class EndpointRepository {
         return endpointLiveDataCache.get(id);
     }
 
-    public LiveData<List<BaseEndpoint>> getAllEndpoints(){
+    public LiveData<UIEndpoint> getEndpoint(long id){
+        return Transformations.map(endpointConfigDao.load(id), endpointConfig ->
+            UIEndpoint.from(endpointConfig)
+         );
+    }
+
+    public LiveData<List<UIEndpoint>> getAllEndpoints(){
         return Transformations.switchMap(endpointConfigDao.loadAll(), input -> {
             if (input == null) {
                 return new MutableLiveData<>(Collections.emptyList());
             } else {
-                List<BaseEndpoint> endpoints = new ArrayList<>();
+                List<UIEndpoint> list = new ArrayList<>();
                 for (EndpointConfig config : input){
-                    endpoints.add(createEndpoint(config));
+                    list.add(UIEndpoint.from(config));
                 }
-                return new MutableLiveData<>(endpoints);
+                return new MutableLiveData<>(list);
             }
         });
     }
@@ -84,7 +91,7 @@ public class EndpointRepository {
         return builder.setConfig(config).build();
     }
 
-    public BaseEndpoint createEndpoint(Map<String, String> config) {
+    public UIEndpoint createEndpoint(Map<String, String> config) {
         if (config == null) {
             throw new NullPointerException("The given config map was null.");
         }
@@ -96,7 +103,8 @@ public class EndpointRepository {
         ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
             endpointConfigDao.save(endpointConfig);
         });
-        return type.getBuilder().setConfig(endpointConfig).build();
+        type.getBuilder().setConfig(endpointConfig).build();
+        return UIEndpoint.from(endpointConfig);
     }
 
 }

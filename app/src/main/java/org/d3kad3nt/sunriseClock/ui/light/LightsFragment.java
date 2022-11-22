@@ -15,11 +15,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import org.d3kad3nt.sunriseClock.R;
-import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
-import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
+import org.d3kad3nt.sunriseClock.data.model.endpoint.UIEndpoint;
+import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
 import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
 import org.d3kad3nt.sunriseClock.data.remote.common.Status;
-import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
 import org.d3kad3nt.sunriseClock.ui.MainActivity;
 
 import java.util.List;
@@ -69,7 +69,7 @@ public class LightsFragment extends Fragment {
         endpointSpinner.setOnItemSelectedListener(new EndpointSelectedListener(getContext()));
 
         viewModel.getEndpoints().observe(getViewLifecycleOwner(), configList -> {
-            adapter.submitList(configList);
+            adapter.submitCollection(configList);
             if (!configList.isEmpty()){
                 addToToolbar(endpointSpinner);
                 lightsState.clearError();
@@ -81,9 +81,9 @@ public class LightsFragment extends Fragment {
 
         viewModel.getSelectedEndpoint().observe(getViewLifecycleOwner(), endpointConfig -> {
 
-            Observer<? super List<BaseEndpoint>> endpointSelector = new Observer<List<BaseEndpoint>>() {
+            Observer<? super List<UIEndpoint>> endpointSelector = new Observer<List<UIEndpoint>>() {
                 @Override
-                public void onChanged(List<BaseEndpoint> endpointConfigs) {
+                public void onChanged(List<UIEndpoint> endpointConfigs) {
                     endpointSpinner.setSelection(
                             endpointConfigs.indexOf(endpointConfig));
                 }

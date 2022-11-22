@@ -14,10 +14,7 @@ import java.util.List;
 public interface EndpointConfigDao {
 
     @Query("SELECT * FROM " + EndpointConfig.TABLENAME + " WHERE endpointId = :id")
-    EndpointConfig load(long id);
-
-    @Query("SELECT * FROM " + EndpointConfig.TABLENAME + " WHERE endpointId = :id")
-    LiveData<EndpointConfig> loadLiveData(long id);
+    LiveData<EndpointConfig> load(long id);
 
     @Query("SELECT * FROM " + EndpointConfig.TABLENAME)
     LiveData<List<EndpointConfig>> loadAll();

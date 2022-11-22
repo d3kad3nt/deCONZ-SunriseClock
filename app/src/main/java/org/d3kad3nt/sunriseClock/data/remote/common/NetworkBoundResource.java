@@ -51,6 +51,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends Exte
             updateValue(Resource.loading(null));
         }else{
             dbObject = data;
+            removeSource(dbSourceLiveData);
             if (shouldFetch(dbObject)){
                 LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
                 addSource(endpointLiveData, baseEndpoint -> endpointLiveDataObserver(baseEndpoint, endpointLiveData));
@@ -59,8 +60,6 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends Exte
                     updateValue(Resource.success(newData));
                 });
             }
-            removeSource(dbSourceLiveData);
-
         }
     }
 

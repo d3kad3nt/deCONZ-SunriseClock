@@ -1,20 +1,36 @@
 package org.d3kad3nt.sunriseClock.data.model.endpoint;
 
+import androidx.annotation.NonNull;
+
 import org.d3kad3nt.sunriseClock.data.model.light.ILightUI;
+import org.jetbrains.annotations.Contract;
 
 public class UIEndpoint implements ILightUI {
     private final String stringRepresentation;
+    private final long id;
 
-    public UIEndpoint(String stringRepresentation) {
+    UIEndpoint(@NonNull String stringRepresentation, long id) {
         this.stringRepresentation = stringRepresentation;
+        this.id = id;
     }
 
-    public static UIEndpoint from(BaseEndpoint baseEndpoint){
-        return new UIEndpoint(baseEndpoint.toString());
+    @NonNull
+    @Contract("_ -> new")
+    public static UIEndpoint from(EndpointConfig baseEndpoint){
+        return new UIEndpoint(baseEndpoint.toString(), baseEndpoint.getId());
     }
 
     @Override
     public String getStringRepresentation() {
-        return this.stringRepresentation;
+        return stringRepresentation;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return stringRepresentation;
     }
 }
