@@ -10,8 +10,6 @@ import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.BaseLightDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
-import org.d3kad3nt.sunriseClock.data.model.light.ICapability;
-import org.d3kad3nt.sunriseClock.data.model.light.Light;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.remote.common.NetworkBoundResource;
@@ -56,10 +54,6 @@ public class LightRepository {
 
     private void refreshLight(int endpointId, String endpointLightId){
         //TODO: implement, still needed? (as getLight could be called to update light)
-    }
-
-    public LiveData<List<Light>> getLightByCapability(Class<? extends ICapability>... capabilities ){
-        return (LiveData<List<Light>>)(LiveData<? extends List<? extends Light>>) baseLightDao.loadWithCap(capabilities);
     }
 
     //TODO: return Light interface instead of raw BaseLight
