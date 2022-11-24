@@ -42,7 +42,6 @@ public class LightDetailViewModel extends AndroidViewModel {
     }
 
     public void setLightOnState(boolean newState){
-        //Todo: this might be null, repository should work with IDs only (instead of fully fledged objects)
         LiveData<EmptyResource> state = lightRepository.setOnState(lightID, newState);
         loadingIndicatorChangeLightOnState.setVisibilityProvider(state);
     }
