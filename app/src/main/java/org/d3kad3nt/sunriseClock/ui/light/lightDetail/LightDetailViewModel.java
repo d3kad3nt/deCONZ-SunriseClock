@@ -34,16 +34,12 @@ public class LightDetailViewModel extends AndroidViewModel {
                 .setLoadingVisibility(View.VISIBLE)
                 .setSuccessVisibility(View.INVISIBLE)
                 .setErrorVisibility(View.INVISIBLE)
-                .setVisibilityProvider(light);
-
-        loadingIndicatorChangeLightOnState = new VisibilityLiveData(View.GONE);
-        loadingIndicatorChangeLightOnState.setLoadingVisibility(View.VISIBLE);
-        loadingIndicatorChangeLightOnState.setSuccessVisibility(View.GONE);
+                .addVisibilityProvider(light);
     }
 
     public void setLightOnState(boolean newState){
         LiveData<EmptyResource> state = lightRepository.setOnState(lightID, newState);
-        loadingIndicatorChangeLightOnState.setVisibilityProvider(state);
+        loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 
     private LiveData<Resource<Light>> getLight(long lightID){

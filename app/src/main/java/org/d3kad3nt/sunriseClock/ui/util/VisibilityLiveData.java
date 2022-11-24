@@ -8,6 +8,9 @@ import androidx.lifecycle.Observer;
 
 import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class VisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Integer> {
 
     private final LiveData<Integer> initialVisibilityLivedata;
@@ -15,14 +18,16 @@ public class VisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Inte
     private Integer successVisibility = View.VISIBLE;
     private Integer errorVisibility = View.VISIBLE;
 
+    //This uses a raw instance of Resource because the real type is only known in addVisibilityProvider
+    @SuppressWarnings("rawtypes")
+    private final Set<LiveData<? extends Resource>> loading = new HashSet<>();
+
     public VisibilityLiveData(Integer initialVisibility){
         initialVisibilityLivedata = new MutableLiveData<>(initialVisibility);
         this.addSource(initialVisibilityLivedata, integer -> this.setValue(integer));
     }
 
-
-
-    public <T> VisibilityLiveData setVisibilityProvider(LiveData<? extends Resource<T>> liveData){
+    public <T> VisibilityLiveData addVisibilityProvider(LiveData<? extends Resource<T>> liveData){
         this.removeSource(this.initialVisibilityLivedata);
         VisibilityLiveData visibilityLivedata = this;
         this.addSource(liveData, new Observer<Resource<T>>() {
@@ -30,13 +35,19 @@ public class VisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Inte
             public void onChanged(Resource<T> resource) {
                 switch (resource.getStatus()){
                     case LOADING:
+                        loading.add(liveData);
                         visibilityLivedata.setValue(loadingVisibility);
                         break;
                     case SUCCESS:
-                        visibilityLivedata.setValue(successVisibility);
+                        loading.remove(liveData);
+                        if (loading.isEmpty()) {
+                            visibilityLivedata.setValue(successVisibility);
+                        }
+                        visibilityLivedata.removeSource(liveData);
                         break;
                     case ERROR:
                         visibilityLivedata.setValue(errorVisibility);
+                        visibilityLivedata.removeSource(liveData);
                         break;
                 }
             }
