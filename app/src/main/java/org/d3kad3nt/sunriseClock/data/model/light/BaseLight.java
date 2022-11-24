@@ -43,7 +43,7 @@ public class BaseLight implements Light{
     private String endpointLightId;
 
     @ColumnInfo(name = "friendlyName")
-    public String friendlyName = "";
+    private String friendlyName = "";
 
     @ColumnInfo(name = "isSwitchable")
     public boolean switchable = false;
@@ -99,6 +99,15 @@ public class BaseLight implements Light{
 
     public void setEndpointLightId(@NonNull String endpointLightId) {
         this.endpointLightId = endpointLightId;
+    }
+
+    public void setFriendlyName(String friendlyName) {
+        this.friendlyName = friendlyName;
+    }
+
+    @Override
+    public String getFriendlyName() {
+        return friendlyName;
     }
 
     public boolean isOn() {

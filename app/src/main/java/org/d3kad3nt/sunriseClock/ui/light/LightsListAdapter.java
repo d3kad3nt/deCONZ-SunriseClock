@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.data.model.light.Light;
 import org.d3kad3nt.sunriseClock.databinding.LightListElementBinding;
 
 
-public class LightsListAdapter extends ListAdapter<BaseLight, LightsListAdapter.ViewHolder> {
+public class LightsListAdapter extends ListAdapter<Light, LightsListAdapter.ViewHolder> {
 
     public LightsListAdapter() {
         super(new LightDiffCallback());
@@ -30,7 +30,7 @@ public class LightsListAdapter extends ListAdapter<BaseLight, LightsListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        BaseLight light = getItem(position);
+        Light light = getItem(position);
         holder.bind(createOnClickListener(light.getLightId()), light);
         holder.itemView.setTag(light);
     }
@@ -41,31 +41,31 @@ public class LightsListAdapter extends ListAdapter<BaseLight, LightsListAdapter.
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private LightListElementBinding binding;
+        private final LightListElementBinding binding;
 
         ViewHolder(@NonNull LightListElementBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
-        void bind(View.OnClickListener listener, BaseLight item) {
+        void bind(View.OnClickListener listener, Light item) {
             binding.setClickListener(listener);
             binding.setLight(item);
             binding.executePendingBindings();
         }
     }
 
-    static class LightDiffCallback extends DiffUtil.ItemCallback<BaseLight> {
+    static class LightDiffCallback extends DiffUtil.ItemCallback<Light> {
 
         @Override
-        public boolean areItemsTheSame(@NonNull BaseLight oldItem, @NonNull BaseLight newItem) {
+        public boolean areItemsTheSame(@NonNull Light oldItem, @NonNull Light newItem) {
             //TODO: use real UUID
             return oldItem.getLightId() == newItem.getLightId();
         }
 
         @SuppressLint("DiffUtilEquals")
         @Override
-        public boolean areContentsTheSame(@NonNull BaseLight oldItem, @NonNull BaseLight newItem) {
+        public boolean areContentsTheSame(@NonNull Light oldItem, @NonNull Light newItem) {
             return oldItem == newItem;
         }
     }

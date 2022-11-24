@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
-import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.data.model.light.Light;
 import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
 import org.d3kad3nt.sunriseClock.data.remote.common.Status;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
@@ -45,15 +45,15 @@ public class LightsFragment extends Fragment {
         adapter = new LightsListAdapter();
         binding.recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(requireActivity()).get(LightsViewModel.class);
-        viewModel.getLights().observe(getViewLifecycleOwner(), new Observer<Resource<List<BaseLight>>>() {
+        viewModel.getLights().observe(getViewLifecycleOwner(), new Observer<Resource<List<Light>>>() {
             @Override
-            public void onChanged(Resource<List<BaseLight>> baseLightResource) {
-                Log.d(TAG, baseLightResource.getStatus().toString());
-                if (baseLightResource.getStatus().equals(Status.SUCCESS) && baseLightResource.getData() != null) {
+            public void onChanged(Resource<List<Light>> listResource) {
+                Log.d(TAG, listResource.getStatus().toString());
+                if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
                     lightsState.clearError();
-                    adapter.submitList(baseLightResource.getData());
-                } else if (baseLightResource.getStatus().equals(Status.ERROR)) {
-                    lightsState.setError(getResources().getString(R.string.noLights_title),baseLightResource.getMessage());
+                    adapter.submitList(listResource.getData());
+                } else if (listResource.getStatus().equals(Status.ERROR)) {
+                    lightsState.setError(getResources().getString(R.string.noLights_title),listResource.getMessage());
                 }
             }
         });

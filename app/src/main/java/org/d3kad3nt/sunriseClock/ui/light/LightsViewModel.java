@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
-import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.data.model.light.Light;
 import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
@@ -24,7 +24,7 @@ public class LightsViewModel extends AndroidViewModel {
     private final LightRepository lightRepository = LightRepository.getInstance(getApplication().getApplicationContext());
     private final EndpointRepository endpointRepository = EndpointRepository.getInstance(getApplication().getApplicationContext());
     private final SettingsRepository settingsRepository = SettingsRepository.getInstance(getApplication().getApplicationContext());
-    private final LiveData<Resource<List<BaseLight>>> lights;
+    private final LiveData<Resource<List<Light>>> lights;
     private final LiveData<List<IEndpointUI>> endpoints;
     private final LiveData<IEndpointUI> selectedEndpoint;
 
@@ -44,7 +44,7 @@ public class LightsViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<Resource<List<BaseLight>>> getLights(){
+    public LiveData<Resource<List<Light>>> getLights(){
         return lights;
     }
 

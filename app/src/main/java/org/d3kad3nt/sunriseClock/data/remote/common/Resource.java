@@ -27,7 +27,7 @@ public class Resource<T>{
     private final T data;
     private final String message;
 
-    protected Resource(Status status, T data, String message) {
+    public Resource(Status status, T data, String message) {
         this.status = status;
         this.data = data;
         this.message = message;

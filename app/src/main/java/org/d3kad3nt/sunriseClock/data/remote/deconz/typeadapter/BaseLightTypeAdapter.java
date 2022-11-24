@@ -8,8 +8,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.d3kad3nt.sunriseClock.data.remote.deconz.IServices;
 import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.data.remote.deconz.IServices;
 
 import java.lang.reflect.Type;
 
@@ -17,7 +17,7 @@ public class BaseLightTypeAdapter implements JsonDeserializer<BaseLight> {
 
     private static final String TAG = "BaseLightTypeAdapter";
 
-    private long endpointId;
+    private final long endpointId;
 
     /**
      * Custom type adapter for usage with Gson.
@@ -49,7 +49,7 @@ public class BaseLightTypeAdapter implements JsonDeserializer<BaseLight> {
         }
 
         if (rawJson.has("name")) {
-            deserializedLight.friendlyName = rawJson.get("name").getAsString();
+            deserializedLight.setFriendlyName( rawJson.get("name").getAsString());
         }
 
         if (rawJsonState.has("on")) {

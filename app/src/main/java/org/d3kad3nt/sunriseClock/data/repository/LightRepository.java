@@ -5,11 +5,13 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.BaseLightDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.data.model.light.Light;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.remote.common.NetworkBoundResource;
@@ -18,6 +20,7 @@ import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -52,15 +55,14 @@ public class LightRepository {
         return INSTANCE;
     }
 
-    //TODO: return Light interface instead of raw BaseLight
-    public LiveData<Resource<List<BaseLight>>> getLightsForEndpoint(long endpointId) {
+    public LiveData<Resource<List<Light>>> getLightsForEndpoint(long endpointId) {
         try {
             endpointRepo.getEndpoint(endpointId);
         }catch (NullPointerException e){
-            Resource<List<BaseLight>> resource = Resource.error("Endpoint doesn't exist",null);
+            Resource<List<Light>> resource = Resource.error("Endpoint doesn't exist",null);
             return new MutableLiveData<>(resource);
         }
-        return new NetworkBoundResource<List<BaseLight>, List<BaseLight>>() {
+        return new NetworkBoundResource<List<Light>, List<BaseLight>>() {
 
             @NonNull
             @Override
@@ -76,13 +78,14 @@ public class LightRepository {
 
             @NotNull
             @Override
-            protected LiveData<List<BaseLight>> loadFromDb() {
-                //TODO: return (LiveData<Light>) (LiveData<? extends Light>) baseLight;
-                return baseLightDao.loadAllForEndpoint(endpointId);
+            protected LiveData<List<Light>> loadFromDb() {
+                return Transformations.map(baseLightDao.loadAllForEndpoint(endpointId), input ->
+                        new ArrayList<>(input)
+                );
             }
 
             @Override
-            protected boolean shouldFetch(@Nullable List<BaseLight> data) {
+            protected boolean shouldFetch(@Nullable List<Light> data) {
                 //TODO
                 return true;
             }
@@ -96,8 +99,7 @@ public class LightRepository {
         };
     }
 
-    //TODO: return Light interface instead of raw BaseLight
-    public LiveData<Resource<BaseLight>> getLight(long lightId) {
+    private LiveData<Resource<BaseLight>> getBaseLight(long lightId) {
         return new NetworkBoundResource<BaseLight, BaseLight>() {
 
             @NonNull
@@ -132,6 +134,12 @@ public class LightRepository {
         };
     }
 
+    public LiveData<Resource<Light>> getLight(long id){
+        return Transformations.map(getBaseLight(id), input ->{
+            return new Resource<>(input.getStatus(),(Light)input.getData(), input.getMessage());
+        });
+    }
+
     public LiveData<EmptyResource> setOnState(long lightId, boolean newState){
 
         return new NetworkUpdateResource<ResponseBody, BaseLight>() {
@@ -155,7 +163,7 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<Resource<BaseLight>> loadUpdatedVersion() {
-                return getLight(lightId);
+                return getBaseLight(lightId);
             }
         };
     }

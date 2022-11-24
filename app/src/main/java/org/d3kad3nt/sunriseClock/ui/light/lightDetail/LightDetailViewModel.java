@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.data.model.light.Light;
 import org.d3kad3nt.sunriseClock.data.remote.common.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
@@ -18,7 +18,7 @@ public class LightDetailViewModel extends AndroidViewModel {
     private final LightRepository lightRepository = LightRepository.getInstance(getApplication().getApplicationContext());
     private final long lightID;
 
-    public LiveData<Resource<BaseLight>> light;
+    public LiveData<Resource<Light>> light;
     public VisibilityLiveData loadingIndicatorVisibility;
     public VisibilityLiveData loadingIndicatorChangeLightOnState;
     public VisibilityLiveData switchLightOnStateVisibility;
@@ -48,7 +48,7 @@ public class LightDetailViewModel extends AndroidViewModel {
         loadingIndicatorChangeLightOnState.setVisibilityProvider(state);
     }
 
-    private LiveData<Resource<BaseLight>> getLight(long lightID){
+    private LiveData<Resource<Light>> getLight(long lightID){
         return lightRepository.getLight(lightID);
     }
 }
