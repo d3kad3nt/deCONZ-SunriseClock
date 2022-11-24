@@ -21,7 +21,6 @@ public class LightDetailViewModel extends AndroidViewModel {
     public LiveData<Resource<Light>> light;
     public VisibilityLiveData loadingIndicatorVisibility;
     public VisibilityLiveData loadingIndicatorChangeLightOnState;
-    public VisibilityLiveData switchLightOnStateVisibility;
 
     public LightDetailViewModel(@NonNull Application application, long lightId) {
         super(application);
