@@ -4,7 +4,7 @@
     <data>
         <variable
             name="endpoint"
-            type="org.d3kad3nt.sunriseClock.data.model.endpoint.UIEndpoint"/>
+            type="org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI"/>
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener"/>

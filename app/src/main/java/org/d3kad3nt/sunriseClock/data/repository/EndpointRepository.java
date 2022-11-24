@@ -14,6 +14,7 @@ import org.d3kad3nt.sunriseClock.data.local.EndpointConfigDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
+import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.UIEndpoint;
 import org.d3kad3nt.sunriseClock.data.remote.common.EndpointBuilder;
 import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
@@ -63,18 +64,18 @@ public class EndpointRepository {
         return endpointLiveDataCache.get(id);
     }
 
-    public LiveData<UIEndpoint> getEndpoint(long id){
+    public LiveData<IEndpointUI> getEndpoint(long id){
         return Transformations.map(endpointConfigDao.load(id), endpointConfig ->
             UIEndpoint.from(endpointConfig)
          );
     }
 
-    public LiveData<List<UIEndpoint>> getAllEndpoints(){
+    public LiveData<List<IEndpointUI>> getAllEndpoints(){
         return Transformations.switchMap(endpointConfigDao.loadAll(), input -> {
             if (input == null) {
                 return new MutableLiveData<>(Collections.emptyList());
             } else {
-                List<UIEndpoint> list = new ArrayList<>();
+                List<IEndpointUI> list = new ArrayList<>();
                 for (EndpointConfig config : input){
                     list.add(UIEndpoint.from(config));
                 }
@@ -91,7 +92,7 @@ public class EndpointRepository {
         return builder.setConfig(config).build();
     }
 
-    public UIEndpoint createEndpoint(Map<String, String> config) {
+    public IEndpointUI createEndpoint(Map<String, String> config) {
         if (config == null) {
             throw new NullPointerException("The given config map was null.");
         }

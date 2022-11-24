@@ -8,7 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
-import org.d3kad3nt.sunriseClock.data.model.endpoint.UIEndpoint;
+import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
 import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
@@ -25,8 +25,8 @@ public class LightsViewModel extends AndroidViewModel {
     private final EndpointRepository endpointRepository = EndpointRepository.getInstance(getApplication().getApplicationContext());
     private final SettingsRepository settingsRepository = SettingsRepository.getInstance(getApplication().getApplicationContext());
     private final LiveData<Resource<List<BaseLight>>> lights;
-    private final LiveData<List<UIEndpoint>> endpoints;
-    private final LiveData<UIEndpoint> selectedEndpoint;
+    private final LiveData<List<IEndpointUI>> endpoints;
+    private final LiveData<IEndpointUI> selectedEndpoint;
 
     public LightsViewModel(@NonNull Application application) {
         super(application);
@@ -36,9 +36,9 @@ public class LightsViewModel extends AndroidViewModel {
             return lightRepository.getLightsForEndpoint(endpointId);
         });
         endpoints = endpointRepository.getAllEndpoints();
-        selectedEndpoint = Transformations.switchMap(endpointID, new Function<Long, LiveData<UIEndpoint>>() {
+        selectedEndpoint = Transformations.switchMap(endpointID, new Function<Long, LiveData<IEndpointUI>>() {
             @Override
-            public LiveData<UIEndpoint> apply(Long input) {
+            public LiveData<IEndpointUI> apply(Long input) {
                 return endpointRepository.getEndpoint(input);
             }
         });
@@ -48,11 +48,11 @@ public class LightsViewModel extends AndroidViewModel {
         return lights;
     }
 
-    public LiveData<List<UIEndpoint>> getEndpoints(){
+    public LiveData<List<IEndpointUI>> getEndpoints(){
         return endpoints;
     }
 
-    public LiveData<UIEndpoint> getSelectedEndpoint() {
+    public LiveData<IEndpointUI> getSelectedEndpoint() {
         return selectedEndpoint;
     }
 }

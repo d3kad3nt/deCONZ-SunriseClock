@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import org.d3kad3nt.sunriseClock.data.model.endpoint.UIEndpoint;
+import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.databinding.EndpointsFragmentBinding;
 
 import java.util.List;
@@ -41,9 +41,9 @@ public class EndpointsFragment extends Fragment {
         adapter = new EndpointsListAdapter();
         binding.recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointsViewModel.class);
-        viewModel.getEndpoints().observe(getViewLifecycleOwner(), new Observer<List<UIEndpoint>>() {
+        viewModel.getEndpoints().observe(getViewLifecycleOwner(), new Observer<List<IEndpointUI>>() {
             @Override
-            public void onChanged(List<UIEndpoint> endpointConfigList) {
+            public void onChanged(List<IEndpointUI> endpointConfigList) {
                 if (!endpointConfigList.isEmpty()) {
                     adapter.submitList(endpointConfigList);
                 } else { 

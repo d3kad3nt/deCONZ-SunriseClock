@@ -2,10 +2,9 @@ package org.d3kad3nt.sunriseClock.data.model.endpoint;
 
 import androidx.annotation.NonNull;
 
-import org.d3kad3nt.sunriseClock.data.model.light.ILightUI;
 import org.jetbrains.annotations.Contract;
 
-public class UIEndpoint implements ILightUI {
+public class UIEndpoint implements IEndpointUI {
     private final String stringRepresentation;
     private final long id;
 
@@ -16,7 +15,7 @@ public class UIEndpoint implements ILightUI {
 
     @NonNull
     @Contract("_ -> new")
-    public static UIEndpoint from(EndpointConfig baseEndpoint){
+    public static UIEndpoint from(@NonNull EndpointConfig baseEndpoint){
         return new UIEndpoint(baseEndpoint.toString(), baseEndpoint.getId());
     }
 
@@ -25,10 +24,12 @@ public class UIEndpoint implements ILightUI {
         return stringRepresentation;
     }
 
+    @Override
     public long getId() {
         return id;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return stringRepresentation;
