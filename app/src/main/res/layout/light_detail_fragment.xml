@@ -18,19 +18,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="@{viewModel.loadingIndicatorVisibility}"/>
+            android:visibility="@{viewModel.loadingIndicatorVisibility}" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/list_light_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.light.data.friendlyName}"/>
+            android:text="@{viewModel.light.data.friendlyName}" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/switch_on_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="@{viewModel.light.data.on}"
-            android:onCheckedChanged="@{(switch, checked) -> viewModel.setLightOnState(checked)}"/>
+            android:onCheckedChanged="@{(switch, checked) -> viewModel.setLightOnState(checked)}" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="@{viewModel.light.data.brightness}"
+            android:onProgressChanged="@{(seekBar, progress, changedFromUser ) -> viewModel.setLightBrightness(progress, changedFromUser)}"/>
+
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

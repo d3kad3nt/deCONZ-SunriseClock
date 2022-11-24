@@ -157,10 +157,19 @@ public class DeconzEndpoint extends BaseEndpoint {
     }
 
     @Override
-    public LiveData<ApiResponse<ResponseBody>> setOnState(String id, boolean newState) {
+    public LiveData<ApiResponse<ResponseBody>> setOnState(String endpointLightId, boolean newState) {
         JsonObject requestBody = new JsonObject();
         requestBody.add("on", new JsonPrimitive(newState));
-        return this.retrofit.updateLightState(id, requestBody );
+        return this.retrofit.updateLightState(endpointLightId, requestBody );
+    }
+
+    @Override
+    public LiveData<ApiResponse<ResponseBody>> setBrightness(String endpointLightId, double brightness) {
+        JsonObject requestBody = new JsonObject();
+        //Deconz takes values from 0 to 255 for the brightness
+        long deconzBrigtness = Math.round(brightness * 255);
+        requestBody.add("bri", new JsonPrimitive(deconzBrigtness));
+        return this.retrofit.updateLightState(endpointLightId, requestBody );
     }
 
 }

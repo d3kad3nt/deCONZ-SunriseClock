@@ -59,7 +59,8 @@ public class BaseLightTypeAdapter implements JsonDeserializer<BaseLight> {
 
         if (rawJsonState.has("bri")) {
             deserializedLight.dimmable = true;
-            deserializedLight.setBrightness(rawJsonState.get("bri").getAsInt());
+            //Deconz returns a value between 0 and 255 and baseLight uses a value between 0 and 1
+            deserializedLight.setBrightness(rawJsonState.get("bri").getAsInt()/255);
         }
 
         if (rawJsonState.has("colormode")) {

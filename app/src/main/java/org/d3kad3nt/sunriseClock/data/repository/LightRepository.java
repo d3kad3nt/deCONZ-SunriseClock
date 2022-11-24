@@ -168,4 +168,32 @@ public class LightRepository {
         };
     }
 
+    public LiveData<EmptyResource> setBrightness(long lightId, double brightness){
+
+        return new NetworkUpdateResource<ResponseBody, BaseLight>() {
+
+            @Override
+            protected LiveData<BaseLight> loadFromDB() {
+                return baseLightDao.load(lightId);
+            }
+
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
+                return baseEndpoint.setBrightness(dbObject.getEndpointLightId(), brightness);
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<Resource<BaseLight>> loadUpdatedVersion() {
+                return getBaseLight(lightId);
+            }
+        };
+    }
+
 }
