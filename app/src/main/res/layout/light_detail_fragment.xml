@@ -13,20 +13,20 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ProgressBar
+        <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/list_light_loading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="@{viewModel.loadingIndicatorVisibility}"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/list_light_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.light.data.friendlyName}"/>
 
-        <androidx.appcompat.widget.SwitchCompat
+        <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/switch_on_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
