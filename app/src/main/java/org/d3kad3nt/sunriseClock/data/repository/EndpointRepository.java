@@ -65,9 +65,13 @@ public class EndpointRepository {
     }
 
     public LiveData<IEndpointUI> getEndpoint(long id){
-        return Transformations.map(endpointConfigDao.load(id), endpointConfig ->
-            UIEndpoint.from(endpointConfig)
-         );
+        return Transformations.map(endpointConfigDao.load(id), endpointConfig -> {
+            if (endpointConfig == null){
+                return null;
+            } else {
+                return UIEndpoint.from(endpointConfig);
+            }
+        });
     }
 
     public LiveData<List<IEndpointUI>> getAllEndpoints(){
