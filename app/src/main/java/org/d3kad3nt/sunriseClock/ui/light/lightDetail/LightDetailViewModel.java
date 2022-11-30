@@ -11,8 +11,10 @@ import androidx.lifecycle.LiveData;
 import org.d3kad3nt.sunriseClock.data.model.light.Light;
 import org.d3kad3nt.sunriseClock.data.remote.common.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
+import org.d3kad3nt.sunriseClock.data.remote.common.Status;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.ui.util.VisibilityLiveData;
+import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 
 public class LightDetailViewModel extends AndroidViewModel {
     private final static String TAG = "LightDetailViewModel";
@@ -39,8 +41,14 @@ public class LightDetailViewModel extends AndroidViewModel {
     }
 
     public void setLightOnState(boolean newState){
-        LiveData<EmptyResource> state = lightRepository.setOnState(lightID, newState);
-        loadingIndicatorVisibility.addVisibilityProvider(state);
+        LiveDataUtil.observeOnce(light, lightResource -> {
+           if (lightResource == null || lightResource.getStatus() == Status.LOADING){
+               return;
+           }
+            LiveData<EmptyResource> state = lightRepository.setOnState(lightID, newState);
+            loadingIndicatorVisibility.addVisibilityProvider(state);
+
+        });
     }
 
     public void setLightBrightness(int brightness, boolean changedByUser){
