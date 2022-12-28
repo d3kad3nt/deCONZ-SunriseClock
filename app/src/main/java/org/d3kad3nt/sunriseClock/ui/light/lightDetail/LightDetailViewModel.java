@@ -56,6 +56,7 @@ public class LightDetailViewModel extends AndroidViewModel {
         if (! changedByUser){
             return;
         }
+        // Todo: double?
         double brightnessPercent =((double) brightness)/100;
         LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightnessPercent);
         loadingIndicatorVisibility.addVisibilityProvider(state);

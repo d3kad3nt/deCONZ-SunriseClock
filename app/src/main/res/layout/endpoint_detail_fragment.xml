@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -7,13 +9,18 @@
             type="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailViewModel"/>
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
+        android:layout_height="wrap_content"
+        tools:context="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailFragment">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/list_endpoint_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/list_light_name"
-            android:text="@{viewModel.endpointConfig.stringRepresentation}"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            android:text="@{viewModel.endpointConfig.stringRepresentation}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@sample/sample.json/endpoints/name" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -7,40 +9,52 @@
             type="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailViewModel"/>
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/linearLayoutCompat"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        tools:context="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment">
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/list_light_loading"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="@{viewModel.loadingIndicatorVisibility}" />
+            android:visibility="@{viewModel.loadingIndicatorVisibility}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/list_light_name" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/list_light_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.light.data.friendlyName}" />
+            android:layout_marginBottom="1dp"
+            android:text="@{viewModel.light.data.friendlyName}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/list_light_loading"
+            app:layout_constraintBottom_toTopOf="@+id/switch_on_state"
+            tools:text="@sample/sample.json/lights/name" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/switch_on_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="@{viewModel.light.data.on}"
-            android:onCheckedChanged="@{(switch, checked) -> viewModel.setLightOnState(checked)}" />
+            android:onCheckedChanged="@{(switch, checked) -> viewModel.setLightOnState(checked)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/list_light_name"
+            app:layout_constraintBottom_toTopOf="@+id/slider" />
 
-        <SeekBar
-            android:id="@+id/seekBar"
+        <!--Todo: Change to material slider (slider does not support onProgressChanged, therefore custom databinding adapter for setLightBrightness has to be written)-->
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/slider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switch_on_state"
             android:max="100"
             android:progress="@{viewModel.light.data.brightness}"
-            android:onProgressChanged="@{(seekBar, progress, changedFromUser ) -> viewModel.setLightBrightness(progress, changedFromUser)}"/>
-
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            android:onProgressChanged="@{(seekBar, progress, changedFromUser ) -> viewModel.setLightBrightness(progress, changedFromUser)}" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
