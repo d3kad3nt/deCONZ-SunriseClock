@@ -58,7 +58,7 @@ public class LightRepository {
     public LiveData<Resource<List<Light>>> getLightsForEndpoint(long endpointId) {
         try {
             endpointRepo.getEndpoint(endpointId);
-        }catch (NullPointerException e){
+        }catch (NullPointerException e) {
             Resource<List<Light>> resource = Resource.error("Endpoint doesn't exist",null);
             return new MutableLiveData<>(resource);
         }
@@ -129,18 +129,21 @@ public class LightRepository {
 
             @Override
             protected void saveNetworkResponseToDb(BaseLight item) {
+                // The primary key lightId is not known to the remote endpoint, but it is known to us.
+                // Set the lightId to enable direct update/insert via primary key (instead of endpointId and endpointLightId) through Room.
+                item.lightId = lightId;
                 baseLightDao.upsert(item);
             }
         };
     }
 
-    public LiveData<Resource<Light>> getLight(long id){
-        return Transformations.map(getBaseLight(id), input ->{
-            return new Resource<>(input.getStatus(),(Light)input.getData(), input.getMessage());
+    public LiveData<Resource<Light>> getLight(long id) {
+        return Transformations.map(getBaseLight(id), input -> {
+            return new Resource<>(input.getStatus(), input.getData(), input.getMessage());
         });
     }
 
-    public LiveData<EmptyResource> setOnState(long lightId, boolean newState){
+    public LiveData<EmptyResource> setOnState(long lightId, boolean newState) {
 
         return new NetworkUpdateResource<ResponseBody, BaseLight>() {
 
@@ -168,7 +171,7 @@ public class LightRepository {
         };
     }
 
-    public LiveData<EmptyResource> setBrightness(long lightId, double brightness){
+    public LiveData<EmptyResource> setBrightness(long lightId, double brightness) {
 
         return new NetworkUpdateResource<ResponseBody, BaseLight>() {
 
