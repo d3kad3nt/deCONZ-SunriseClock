@@ -1,5 +1,12 @@
 package org.d3kad3nt.sunriseClock.data.receiver;
 
+import static org.d3kad3nt.sunriseClock.util.SettingKeys.ACTIVATED_LIGHTS;
+import static org.d3kad3nt.sunriseClock.util.SettingKeys.ALARM_ACTIVE;
+import static org.d3kad3nt.sunriseClock.util.SettingKeys.API_KEY;
+import static org.d3kad3nt.sunriseClock.util.SettingKeys.IP;
+import static org.d3kad3nt.sunriseClock.util.SettingKeys.PORT;
+import static org.d3kad3nt.sunriseClock.util.SettingKeys.TOAST_ACTIVE;
+
 import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,26 +18,12 @@ import android.widget.Toast;
 
 import androidx.preference.PreferenceManager;
 
-import org.d3kad3nt.sunriseClock.old_network.schedules.DeconzRequestSchedulesHelper;
-import org.d3kad3nt.sunriseClock.old_network.utils.response.custDeserializer.model.Success;
-import org.d3kad3nt.sunriseClock.old_network.utils.response.genericCallback.SimplifiedCallback;
 import org.d3kad3nt.sunriseClock.util.ISO8601;
 
 import java.lang.ref.WeakReference;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-
-import retrofit2.Response;
-
-import static org.d3kad3nt.sunriseClock.util.SettingKeys.ACTIVATED_LIGHTS;
-import static org.d3kad3nt.sunriseClock.util.SettingKeys.ALARM_ACTIVE;
-import static org.d3kad3nt.sunriseClock.util.SettingKeys.ALARM_TIME;
-import static org.d3kad3nt.sunriseClock.util.SettingKeys.API_KEY;
-import static org.d3kad3nt.sunriseClock.util.SettingKeys.IP;
-import static org.d3kad3nt.sunriseClock.util.SettingKeys.PORT;
-import static org.d3kad3nt.sunriseClock.util.SettingKeys.TOAST_ACTIVE;
 
 public class SchedulingTask extends AsyncTask<Void, Void, String> {
 
@@ -69,23 +62,24 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
                 .encodedAuthority(preferences.getString(IP.toString(), "") + ":" + preferences.getString(PORT.toString(), ""));
         String apiKey = preferences.getString(API_KEY.toString(), "");
         Set<String> lightIds = preferences.getStringSet(ACTIVATED_LIGHTS.toString(), new HashSet<String>());
-        for (String lightId : lightIds) {
-            DeconzRequestSchedulesHelper deconz = new DeconzRequestSchedulesHelper(builder.build(), apiKey);
-            deconz.schedulePowerOn(new SimplifiedCallback<Success>() {
-                @Override
-                public void onSuccess(Response<Success> response) {
-                    Success success = response.body();
-                    Log.i(TAG, "Successfully created schedule with id: " + Objects.requireNonNull(success).getId());
-                    preferences.edit().putLong(ALARM_TIME.toString(), alarmTime).apply();
-                }
-
-                @Override
-                public void onError() {
-                    //TODO
-                }
-            }, lightId, schedulingTime);
-        }
-
+        //20221229: Legacy network code removed, this broadcast receiver is kept for reference purposes only.
+        // Todo: Use the new app architecture (repository, MVVM).
+//        for (String lightId : lightIds) {
+//            DeconzRequestSchedulesHelper deconz = new DeconzRequestSchedulesHelper(builder.build(), apiKey);
+//            deconz.schedulePowerOn(new SimplifiedCallback<Success>() {
+//                @Override
+//                public void onSuccess(Response<Success> response) {
+//                    Success success = response.body();
+//                    Log.i(TAG, "Successfully created schedule with id: " + Objects.requireNonNull(success).getId());
+//                    preferences.edit().putLong(ALARM_TIME.toString(), alarmTime).apply();
+//                }
+//
+//                @Override
+//                public void onError() {
+//                    //TODO
+//                }
+//            }, lightId, schedulingTime);
+//        }
 
         return "TODO" + schedulingTime;
     }
