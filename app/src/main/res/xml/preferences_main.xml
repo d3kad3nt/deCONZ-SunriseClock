@@ -2,22 +2,22 @@
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Preference
-        app:fragment="org.asdfgamer.sunriseClock.preferences.ConnectivityFragment"
+        app:fragment="org.d3kad3nt.sunriseClock.ui.preferences.ConnectivityFragment"
         app:title="@string/network"
         app:key="pref_connectivity_category" />
 
     <Preference
-        app:fragment="org.asdfgamer.sunriseClock.preferences.AlarmFragment"
+        app:fragment="org.d3kad3nt.sunriseClock.ui.preferences.AlarmFragment"
         app:title="@string/alarm"
         app:key="pref_alarm_category" />
 
     <Preference
-        app:fragment="org.asdfgamer.sunriseClock.preferences.InterfaceFragment"
+        app:fragment="org.d3kad3nt.sunriseClock.ui.preferences.InterfaceFragment"
         app:title="@string/ui_interface"
         app:key="pref_interface_category" />
 
     <Preference
-        app:fragment="org.asdfgamer.sunriseClock.preferences.DebugFragment"
+        app:fragment="org.d3kad3nt.sunriseClock.ui.preferences.DebugFragment"
         app:title="@string/debug"
         app:key="pref_debug_category" />
 

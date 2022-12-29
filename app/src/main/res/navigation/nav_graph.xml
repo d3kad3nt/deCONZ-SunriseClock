@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/lights">
+
+    <fragment
+        android:id="@+id/lights"
+        android:name="org.d3kad3nt.sunriseClock.ui.light.LightsFragment"
+        android:label="@string/lights_title"
+        tools:layout="@layout/lights_fragment">
+        <action
+            android:id="@+id/action_lights_to_lightDetail"
+            app:destination="@id/lightDetail" />
+    </fragment>
+    <fragment
+        android:id="@+id/lightDetail"
+        android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment"
+        android:label="@string/lightDetail_title"
+        tools:layout="@layout/light_detail_fragment" >
+        <argument
+            android:name="Light"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainSettingsFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preference.MainSettingsFragment"
+        android:label="@string/preferences_title">
+        <action
+            android:id="@+id/action_mainSettingsFragment_to_connectivityFragment"
+            app:destination="@id/connectivityFragment" />
+        <action
+            android:id="@+id/action_mainSettingsFragment_to_alarmFragment"
+            app:destination="@id/alarmFragment" />
+        <action
+            android:id="@+id/action_mainSettingsFragment_to_interfaceFragment"
+            app:destination="@id/interfaceFragment" />
+        <action
+            android:id="@+id/action_mainSettingsFragment_to_debugFragment"
+            app:destination="@id/debugFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/connectivityFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preference.ConnectivityFragment"
+        android:label="@string/conectivity_settings_title" />
+    <action android:id="@+id/action_global_mainSettingsFragment" app:destination="@id/mainSettingsFragment"/>
+    <fragment
+        android:id="@+id/alarmFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preference.AlarmFragment"
+        android:label="@string/alarm_settings_title" />
+    <fragment
+        android:id="@+id/debugFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preference.DebugFragment"
+        android:label="@string/debug_settings_title" />
+    <fragment
+        android:id="@+id/interfaceFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.preference.InterfaceFragment"
+        android:label="@string/interface_settings_title" />
+    <fragment
+        android:id="@+id/endpoints"
+        android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment"
+        android:label="@string/endpoint_list"
+        tools:layout="@layout/endpoints_fragment">
+        <action
+            android:id="@+id/action_endpoints_to_endpointDetail"
+            app:destination="@id/endpointDetail" />
+        <action
+            android:id="@+id/action_endpoints_to_endpointAddFragment"
+            app:destination="@id/endpointAddFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/endpointDetail"
+        android:name="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailFragment"
+        android:label="@string/endpoint"
+        tools:layout="@layout/endpoint_detail_fragment">
+        <argument
+            android:name="endpointID"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/endpointAddFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointAddFragment"
+        android:label="Add Endpoint"
+        tools:layout="@layout/endpoint_add_fragment" />
+</navigation>
