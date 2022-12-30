@@ -20,7 +20,7 @@ import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
                 parentColumns = "endpointId",
                 childColumns = "endpointId",
                 onDelete = ForeignKey.CASCADE))
-public class BaseLight implements Light{
+public class BaseLight implements Light {
 
     @PrimaryKey(autoGenerate = true)
     public long lightId;
@@ -149,6 +149,4 @@ public class BaseLight implements Light{
     public void setEndpointId(long endpointId) {
         this.endpointId = endpointId;
     }
-
-
 }
