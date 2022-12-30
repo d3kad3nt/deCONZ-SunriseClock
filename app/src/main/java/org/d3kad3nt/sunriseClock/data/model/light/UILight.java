@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.Contract;
 
-public class UILight implements Light {
+public class UILight {
 
     private final String name;
     private final long id;
@@ -16,32 +16,26 @@ public class UILight implements Light {
         this.on = on;
     }
 
-    @Override
     public int getColor() {
         return 0;
     }
 
-    @Override
     public int getBrightness() {
         return 0;
     }
 
-    @Override
     public boolean isOn() {
         return on;
     }
 
-    @Override
     public int getColorTemperature() {
         return 0;
     }
 
-    @Override
     public long getLightId() {
         return id;
     }
 
-    @Override
     public String getFriendlyName() {
         return name;
     }

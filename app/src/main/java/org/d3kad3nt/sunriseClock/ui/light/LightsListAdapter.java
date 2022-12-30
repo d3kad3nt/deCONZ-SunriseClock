@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.d3kad3nt.sunriseClock.data.model.light.Light;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.databinding.LightListElementBinding;
 
@@ -31,7 +30,7 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Light light = getItem(position);
+        UILight light = getItem(position);
         holder.bind(createOnClickListener(light.getLightId()), light);
         holder.itemView.setTag(light);
     }
@@ -49,7 +48,7 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
             this.binding = binding;
         }
 
-        void bind(View.OnClickListener listener, Light item) {
+        void bind(View.OnClickListener listener, UILight item) {
             binding.setClickListener(listener);
             binding.setLight(item);
             binding.executePendingBindings();
