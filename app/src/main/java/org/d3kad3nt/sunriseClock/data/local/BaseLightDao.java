@@ -11,7 +11,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 import org.d3kad3nt.sunriseClock.data.model.light.ICapability;
 
 import java.util.List;
@@ -24,41 +24,41 @@ public interface BaseLightDao {
     /**
      * Insert the light into the database. If there is a conflict on insert, the light is not inserted and a special value is returned.
      *
-     * @param obj The BaseLight object with the endpointId and endpointLightId set.
+     * @param obj The DbLight object with the endpointId and endpointLightId set.
      * @return -1 for rows that are not inserted (will ignore the row if there is a conflict), else the row id for the newly inserted item.
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE) // An Insert DAO method that returns the inserted rows ids will return -1 for rows that are not inserted since this strategy will ignore the row if there is a conflict.
-    long save(BaseLight obj);
+    long save(DbLight obj);
 
     /**
      * Use lightId primary key for SQL update.
      * Room uses the primary key to match passed entity instances to rows in the database. If there is no row with the same primary key, Room makes no changes.
      *
-     * @param obj The BaseLight object with the primary key set.
+     * @param obj The DbLight object with the primary key set.
      * @return Number of rows that were updated successfully.
      */
     @Update()
-    int updateUsingPrimaryKey(BaseLight obj);
+    int updateUsingPrimaryKey(DbLight obj);
 
     /**
      * Use endpointId and endpointLightId for (manual) SQL update statement.
      *
      * @return Number of rows that were updated successfully.
      */
-    @Query("UPDATE " + BaseLight.TABLENAME + " SET friendlyName = :friendlyName, isSwitchable = :switchable, 'on' = :on, isDimmable  = :dimmable, brightness = :brightness, isTemperaturable = :temperaturable, colorTemperature = :colorTemperature, isColorable = :colorable, color = :color WHERE endpointId = :endpointId AND endpointLightId = :endpointLightId")
+    @Query("UPDATE " + DbLight.TABLENAME + " SET friendlyName = :friendlyName, isSwitchable = :switchable, 'on' = :on, isDimmable  = :dimmable, brightness = :brightness, isTemperaturable = :temperaturable, colorTemperature = :colorTemperature, isColorable = :colorable, color = :color WHERE endpointId = :endpointId AND endpointLightId = :endpointLightId")
     int updateUsingEndpointIdAndEndpointLightId(long endpointId, String endpointLightId, String friendlyName, boolean switchable, boolean on, boolean dimmable, int brightness, boolean temperaturable, int colorTemperature, boolean colorable, int color);
 
     @Delete()
-    void delete(BaseLight obj);
+    void delete(DbLight obj);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE endpointId = :endpointId AND endpointLightId = :endpointLightId")
-    LiveData<BaseLight> load(long endpointId, String endpointLightId);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE endpointId = :endpointId AND endpointLightId = :endpointLightId")
+    LiveData<DbLight> load(long endpointId, String endpointLightId);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE lightId = :lightId")
-    LiveData<BaseLight> load(long lightId);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE lightId = :lightId")
+    LiveData<DbLight> load(long lightId);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE endpointId = :endpointId")
-    LiveData<List<BaseLight>> loadAllForEndpoint(long endpointId);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE endpointId = :endpointId")
+    LiveData<List<DbLight>> loadAllForEndpoint(long endpointId);
 
     /**
      * Insert light object into the database (create) or update existing light object.
@@ -66,14 +66,14 @@ public interface BaseLightDao {
      * Case 2: Update if lightId (primary key) is given in the light object. A light with this lightId must already exist inside the database.
      * Case 3: Update if endpointId and endpointLightId are given in the light object. A light with this endpointId and endpointLightId must already exist inside the database.
      *
-     * @param obj The BaseLight object with the lightId OR (endpointId and endpointLightId) set.
+     * @param obj The DbLight object with the lightId OR (endpointId and endpointLightId) set.
      */
     @Transaction
-    default void upsert(BaseLight obj) {
+    default void upsert(DbLight obj) {
         // Case 1
         long rowId = save(obj);
         if (rowId != -1L) {
-            Log.d(TAG, "Inserted BaseLight (row id: " + rowId + ") with endpointId " + obj.getEndpointId() + " and endpointLightId: " + obj.getEndpointLightId());
+            Log.d(TAG, "Inserted DbLight (row id: " + rowId + ") with endpointId " + obj.getEndpointId() + " and endpointLightId: " + obj.getEndpointLightId());
             return;
         }
 
@@ -82,7 +82,7 @@ public interface BaseLightDao {
         if (obj.getLightId() != 0L) {
             int rowsUpdated = updateUsingPrimaryKey(obj);
             if (rowsUpdated >= 1) {
-                Log.d(TAG, rowsUpdated + " rows updated by room. Updated BaseLight with lightId: " + obj.getLightId());
+                Log.d(TAG, rowsUpdated + " rows updated by room. Updated DbLight with lightId: " + obj.getLightId());
             }
             else if (rowsUpdated == 0) {
                 Log.w(TAG, "0 rows updated by room. This could mean that the primary key (lightId: " + obj.getLightId() + ") could not be found in the database table.");
@@ -93,59 +93,59 @@ public interface BaseLightDao {
         // Rhe lightId primary key is autogenerated by room, therefore it is not known to the remote endpoint.
         else if (obj.getEndpointId() != 0L && !(obj.getEndpointLightId().equals(""))) {
             int rowsUpdated = updateUsingEndpointIdAndEndpointLightId(obj.getEndpointId(), obj.getEndpointLightId(), obj.getFriendlyName(), obj.switchable, obj.isOn(), obj.dimmable, obj.getBrightness(), obj.temperaturable, obj.getColorTemperature(), obj.colorable, obj.getColor());
-            Log.d(TAG, rowsUpdated + " rows updated by room. Updated BaseLight with endpointId: " + obj.getEndpointId() + " and endpointLightId: " + obj.getEndpointLightId());
+            Log.d(TAG, rowsUpdated + " rows updated by room. Updated DbLight with endpointId: " + obj.getEndpointId() + " and endpointLightId: " + obj.getEndpointLightId());
         }
         else {
             Log.w(TAG, "Neither lightId nor (endpointId and endpointLightId) were set. No update could be performed by room!");
         }
     }
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable AND isDimmable = :dimmable AND isTemperaturable = :temperaturable AND isColorable = :colorable")
-    LiveData<List<BaseLight>> loadWithCap(boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isSwitchable = :switchable AND isDimmable = :dimmable AND isTemperaturable = :temperaturable AND isColorable = :colorable")
+    LiveData<List<DbLight>> loadWithCap(boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable AND isDimmable = :dimmable AND isTemperaturable = :temperaturable ")
-    LiveData<List<BaseLight>> loadWithCapSwitchDimmTemp(boolean switchable, boolean dimmable, boolean temperaturable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isSwitchable = :switchable AND isDimmable = :dimmable AND isTemperaturable = :temperaturable ")
+    LiveData<List<DbLight>> loadWithCapSwitchDimmTemp(boolean switchable, boolean dimmable, boolean temperaturable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable AND isDimmable = :dimmable AND isColorable = :colorable")
-    LiveData<List<BaseLight>> loadWithCapSwitchDimmColor(boolean switchable, boolean dimmable,  boolean colorable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isSwitchable = :switchable AND isDimmable = :dimmable AND isColorable = :colorable")
+    LiveData<List<DbLight>> loadWithCapSwitchDimmColor(boolean switchable, boolean dimmable, boolean colorable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable  AND isTemperaturable = :temperaturable AND isColorable = :colorable")
-    LiveData<List<BaseLight>> loadWithCapSwitchTempColor(boolean switchable, boolean temperaturable, boolean colorable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isSwitchable = :switchable  AND isTemperaturable = :temperaturable AND isColorable = :colorable")
+    LiveData<List<DbLight>> loadWithCapSwitchTempColor(boolean switchable, boolean temperaturable, boolean colorable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable AND isDimmable = :dimmable")
-    LiveData<List<BaseLight>> loadWithCapSwitchDimm(boolean switchable, boolean dimmable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isSwitchable = :switchable AND isDimmable = :dimmable")
+    LiveData<List<DbLight>> loadWithCapSwitchDimm(boolean switchable, boolean dimmable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable AND isTemperaturable = :temperaturable")
-    LiveData<List<BaseLight>> loadWithCapSwitchTemp(boolean switchable, boolean temperaturable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isSwitchable = :switchable AND isTemperaturable = :temperaturable")
+    LiveData<List<DbLight>> loadWithCapSwitchTemp(boolean switchable, boolean temperaturable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable AND isColorable = :colorable")
-    LiveData<List<BaseLight>> loadWithCapSwitchColor(boolean switchable, boolean colorable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isSwitchable = :switchable AND isColorable = :colorable")
+    LiveData<List<DbLight>> loadWithCapSwitchColor(boolean switchable, boolean colorable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isSwitchable = :switchable")
-    LiveData<List<BaseLight>> loadWithCapSwitch(boolean switchable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isSwitchable = :switchable")
+    LiveData<List<DbLight>> loadWithCapSwitch(boolean switchable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isDimmable = :dimmable AND isTemperaturable = :temperaturable AND isColorable = :colorable")
-    LiveData<List<BaseLight>> loadWithCapDimmTempColor(boolean dimmable, boolean temperaturable, boolean colorable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isDimmable = :dimmable AND isTemperaturable = :temperaturable AND isColorable = :colorable")
+    LiveData<List<DbLight>> loadWithCapDimmTempColor(boolean dimmable, boolean temperaturable, boolean colorable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isDimmable = :dimmable AND isColorable = :colorable")
-    LiveData<List<BaseLight>> loadWithCapDimmColor(boolean dimmable,  boolean colorable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isDimmable = :dimmable AND isColorable = :colorable")
+    LiveData<List<DbLight>> loadWithCapDimmColor(boolean dimmable, boolean colorable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isDimmable = :dimmable  AND isTemperaturable = :temperaturable")
-    LiveData<List<BaseLight>> loadWithCapDimmTemp(boolean dimmable, boolean temperaturable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isDimmable = :dimmable  AND isTemperaturable = :temperaturable")
+    LiveData<List<DbLight>> loadWithCapDimmTemp(boolean dimmable, boolean temperaturable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isDimmable = :dimmable ")
-    LiveData<List<BaseLight>> loadWithCapDimm(boolean dimmable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isDimmable = :dimmable ")
+    LiveData<List<DbLight>> loadWithCapDimm(boolean dimmable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isTemperaturable = :temperaturable AND isColorable = :colorable")
-    LiveData<List<BaseLight>> loadWithCapTempColor(boolean temperaturable, boolean colorable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isTemperaturable = :temperaturable AND isColorable = :colorable")
+    LiveData<List<DbLight>> loadWithCapTempColor(boolean temperaturable, boolean colorable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE isTemperaturable = :temperaturable")
-    LiveData<List<BaseLight>> loadWithCapTemp(boolean temperaturable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE isTemperaturable = :temperaturable")
+    LiveData<List<DbLight>> loadWithCapTemp(boolean temperaturable);
 
-    @Query("SELECT * FROM " + BaseLight.TABLENAME + " WHERE  isColorable = :colorable")
-    LiveData<List<BaseLight>> loadWithCapColor(boolean colorable);
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE  isColorable = :colorable")
+    LiveData<List<DbLight>> loadWithCapColor(boolean colorable);
 
-    default LiveData<List<BaseLight>> loadWithCap(Class<? extends ICapability>... capabilities ) {
+    default LiveData<List<DbLight>> loadWithCap(Class<? extends ICapability>... capabilities ) {
         boolean switchable = false;
         boolean dimmable = false;
         boolean temperaturable = false;

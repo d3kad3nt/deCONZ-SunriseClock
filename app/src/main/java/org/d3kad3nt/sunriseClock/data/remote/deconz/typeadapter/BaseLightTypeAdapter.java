@@ -8,12 +8,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.IServices;
 
 import java.lang.reflect.Type;
 
-public class BaseLightTypeAdapter implements JsonDeserializer<BaseLight> {
+public class BaseLightTypeAdapter implements JsonDeserializer<DbLight> {
 
     private static final String TAG = "BaseLightTypeAdapter";
 
@@ -24,16 +24,16 @@ public class BaseLightTypeAdapter implements JsonDeserializer<BaseLight> {
      *
      * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is
      *                   not part of the JSON response, therefore it has to be set manually for a
-     *                   specific BaseLight when deserializing it.
+     *                   specific DbLight when deserializing it.
      */
     public BaseLightTypeAdapter(long endpointId) {
         this.endpointId = endpointId;
     }
 
     @Override
-    public BaseLight deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public DbLight deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 
-        BaseLight deserializedLight = new BaseLight(this.endpointId);
+        DbLight deserializedLight = new DbLight(this.endpointId);
 
         Log.d(TAG, "Parsing JSON for single light: " + json.toString());
 

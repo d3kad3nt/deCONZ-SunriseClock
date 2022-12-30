@@ -48,8 +48,8 @@ public class UILight implements Light {
 
     @NonNull
     @Contract("_ -> new")
-    public static UILight from(@NonNull BaseLight baseLight) {
+    public static UILight from(@NonNull DbLight dbLight) {
         //Todo: Logic to convert db light to UI light
-        return new UILight(baseLight.getFriendlyName(), baseLight.getLightId(), baseLight.isOn());
+        return new UILight(dbLight.getFriendlyName(), dbLight.getLightId(), dbLight.isOn());
     }
 }

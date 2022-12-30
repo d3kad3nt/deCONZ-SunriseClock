@@ -10,13 +10,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseLightListTypeAdapter implements JsonDeserializer<List<BaseLight>> {
+public class BaseLightListTypeAdapter implements JsonDeserializer<List<DbLight>> {
 
     private static final String TAG = "BaseLightListTypeAdapt.";
 
@@ -29,20 +29,20 @@ public class BaseLightListTypeAdapter implements JsonDeserializer<List<BaseLight
      *
      * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is
      *                   not part of the JSON response, therefore it has to be set manually for a
-     *                   specific BaseLight when deserializing it.
+     *                   specific DbLight when deserializing it.
      */
     public BaseLightListTypeAdapter(long endpointId) {
         this.endpointId = endpointId;
 
         this.gson = new GsonBuilder()
-                .registerTypeAdapter(BaseLight.class, new BaseLightTypeAdapter(endpointId))
+                .registerTypeAdapter(DbLight.class, new BaseLightTypeAdapter(endpointId))
                 .create();
     }
 
     @Override
-    public List<BaseLight> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public List<DbLight> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject rawJson = json.getAsJsonObject();
-        List<BaseLight> lights = new ArrayList<>();
+        List<DbLight> lights = new ArrayList<>();
 
         Log.d(TAG, "Parsing JSON for list of lights: " + rawJson.toString());
 
@@ -50,9 +50,9 @@ public class BaseLightListTypeAdapter implements JsonDeserializer<List<BaseLight
             JsonElement jsonLight = rawJson.get(lightId);
 
             // Returns a single light by calling the already existing Gson typeadapter.
-            BaseLight light = gson.fromJson(jsonLight.getAsJsonObject(), BaseLight.class);
+            DbLight light = gson.fromJson(jsonLight.getAsJsonObject(), DbLight.class);
 
-            // Postprocessing: Manipulate returned BaseLight to include all required
+            // Postprocessing: Manipulate returned DbLight to include all required
             // (non-automatically deserialized) fields.
             light.setEndpointLightId(lightId);
             light.setEndpointId(this.endpointId);

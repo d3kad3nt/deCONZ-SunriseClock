@@ -10,7 +10,7 @@ import androidx.lifecycle.Transformations;
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.BaseLightDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
-import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
@@ -61,7 +61,7 @@ public class LightRepository {
             Resource<List<UILight>> resource = Resource.error("Endpoint doesn't exist",null);
             return new MutableLiveData<>(resource);
         }
-        return new NetworkBoundResource<List<UILight>, List<BaseLight>, List<BaseLight>>() {
+        return new NetworkBoundResource<List<UILight>, List<DbLight>, List<DbLight>>() {
 
             @NonNull
             @Override
@@ -71,41 +71,41 @@ public class LightRepository {
 
             @NotNull
             @Override
-            protected LiveData<ApiResponse<List<BaseLight>>> loadFromNetwork() {
+            protected LiveData<ApiResponse<List<DbLight>>> loadFromNetwork() {
                 return endpoint.getLights();
             }
 
             @Override
-            protected List<UILight> convertDbTypeToResultType(List<BaseLight> items) {
+            protected List<UILight> convertDbTypeToResultType(List<DbLight> items) {
                 List<UILight> lights = new ArrayList<>();
-                for (BaseLight light : items) {
+                for (DbLight light : items) {
                     lights.add(UILight.from(light));
                 }
                 return lights;
             }
 
             @Override
-            protected List<BaseLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<BaseLight>> response) {
+            protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<DbLight>> response) {
                 return response.getBody();
             }
 
             @NotNull
             @Override
-            protected LiveData<List<BaseLight>> loadFromDb() {
+            protected LiveData<List<DbLight>> loadFromDb() {
                 return Transformations.map(baseLightDao.loadAllForEndpoint(endpointId), input -> {
                     return new ArrayList<>(input);
                 });
             }
 
             @Override
-            protected boolean shouldFetch(@Nullable List<BaseLight> data) {
+            protected boolean shouldFetch(@Nullable List<DbLight> data) {
                 //TODO
                 return true;
             }
 
             @Override
-            protected void saveNetworkResponseToDb(List<BaseLight> items) {
-                for (BaseLight light : items) {
+            protected void saveNetworkResponseToDb(List<DbLight> items) {
+                for (DbLight light : items) {
                     baseLightDao.upsert(light);
                 }
             }
@@ -113,7 +113,7 @@ public class LightRepository {
     }
 
     public LiveData<Resource<UILight>> getBaseLight(long lightId) {
-        return new NetworkBoundResource<UILight, BaseLight, BaseLight>() {
+        return new NetworkBoundResource<UILight, DbLight, DbLight>() {
 
             @NonNull
             @Override
@@ -123,34 +123,34 @@ public class LightRepository {
 
             @NotNull
             @Override
-            protected LiveData<ApiResponse<BaseLight>> loadFromNetwork() {
+            protected LiveData<ApiResponse<DbLight>> loadFromNetwork() {
                 return endpoint.getLight(dbObject.getEndpointLightId());
             }
 
             @Override
-            protected UILight convertDbTypeToResultType(BaseLight item) {
+            protected UILight convertDbTypeToResultType(DbLight item) {
                 return UILight.from(item);
             }
 
             @Override
-            protected BaseLight convertRemoteTypeToDbType(ApiSuccessResponse<BaseLight> response) {
+            protected DbLight convertRemoteTypeToDbType(ApiSuccessResponse<DbLight> response) {
                 return response.getBody();
             }
 
             @NotNull
             @Override
-            protected LiveData<BaseLight> loadFromDb() {
+            protected LiveData<DbLight> loadFromDb() {
                 return baseLightDao.load(lightId);
             }
 
             @Override
-            protected boolean shouldFetch(@Nullable BaseLight data) {
+            protected boolean shouldFetch(@Nullable DbLight data) {
                 //TODO
                 return true;
             }
 
             @Override
-            protected void saveNetworkResponseToDb(BaseLight item) {
+            protected void saveNetworkResponseToDb(DbLight item) {
                 // The primary key lightId is not known to the remote endpoint, but it is known to us.
                 // Set the lightId to enable direct update/insert via primary key (instead of endpointId and endpointLightId) through Room.
                 item.lightId = lightId;
@@ -161,10 +161,10 @@ public class LightRepository {
 
     public LiveData<EmptyResource> setOnState(long lightId, boolean newState) {
 
-        return new NetworkUpdateResource<UILight, ResponseBody, BaseLight>() {
+        return new NetworkUpdateResource<UILight, ResponseBody, DbLight>() {
 
             @Override
-            protected LiveData<BaseLight> loadFromDB() {
+            protected LiveData<DbLight> loadFromDB() {
                 return baseLightDao.load(lightId);
             }
 
@@ -189,10 +189,10 @@ public class LightRepository {
 
     public LiveData<EmptyResource> setBrightness(long lightId, double brightness) {
 
-        return new NetworkUpdateResource<UILight, ResponseBody, BaseLight>() {
+        return new NetworkUpdateResource<UILight, ResponseBody, DbLight>() {
 
             @Override
-            protected LiveData<BaseLight> loadFromDB() {
+            protected LiveData<DbLight> loadFromDB() {
                 return baseLightDao.load(lightId);
             }
 

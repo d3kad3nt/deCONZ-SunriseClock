@@ -14,7 +14,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
-import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
+import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.BaseLightListTypeAdapter;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.BaseLightTypeAdapter;
@@ -71,8 +71,8 @@ public class DeconzEndpoint extends BaseEndpoint {
                 .appendEncodedPath(apiKey + "/")
                 .build();
         //Gson has to be instructed to use our custom type adapter for a list of light.
-        Type baseLightType = new TypeToken<BaseLight>() {}.getType();
-        Type baseLightListType = new TypeToken<List<BaseLight>>() {}.getType();
+        Type baseLightType = new TypeToken<DbLight>() {}.getType();
+        Type baseLightListType = new TypeToken<List<DbLight>>() {}.getType();
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(baseLightType, new BaseLightTypeAdapter(super.getOriginalEndpointConfig().getId()))
@@ -128,7 +128,7 @@ public class DeconzEndpoint extends BaseEndpoint {
                 .baseUrl(fullApiUrl.toString())
                 // Set custom OkHttpClient for additional logging possibilities (interception).
                 .client(httpClient)
-                // Set custom GSON deserializer, eg. for parsing JSON into BaseLight objects.
+                // Set custom GSON deserializer, eg. for parsing JSON into DbLight objects.
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 // Allow retrofit to return observable LiveData<ApiResponse> objects.
                 .addCallAdapterFactory(new LiveDataCallAdapterFactory())
@@ -140,13 +140,13 @@ public class DeconzEndpoint extends BaseEndpoint {
     }
 
     @Override
-    public LiveData<ApiResponse<List<BaseLight>>> getLights() {
+    public LiveData<ApiResponse<List<DbLight>>> getLights() {
         Log.d(TAG, "Requesting all lights from endpoint: " + this.baseUrl);
         return this.retrofit.getLights();
     }
 
     @Override
-    public LiveData<ApiResponse<BaseLight>> getLight(String id) {
+    public LiveData<ApiResponse<DbLight>> getLight(String id) {
         Log.d(TAG, "Requesting single light with id " + id + " from endpoint: " + this.baseUrl);
 
         // Workaround: Deconz endpoint does not return the id of a light when requesting a single

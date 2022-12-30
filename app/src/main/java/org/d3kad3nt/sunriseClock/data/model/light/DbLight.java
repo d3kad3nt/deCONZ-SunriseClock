@@ -11,16 +11,16 @@ import androidx.room.PrimaryKey;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
 
 
-@Entity(tableName = BaseLight.TABLENAME,
+@Entity(tableName = DbLight.TABLENAME,
         indices = {@Index( value = {"endpointId", "endpointLightId"}, unique = true)},
-        // A BaseLight is always bound to a single endpoint. It cannot exist without one:
-        // Therefore Room is instructed to delete this BaseLight if the endpoint gets deleted.
+        // A DbLight is always bound to a single endpoint. It cannot exist without one:
+        // Therefore Room is instructed to delete this DbLight if the endpoint gets deleted.
         foreignKeys =
         @ForeignKey(entity = EndpointConfig.class,
                 parentColumns = "endpointId",
                 childColumns = "endpointId",
                 onDelete = ForeignKey.CASCADE))
-public class BaseLight implements Light {
+public class DbLight implements Light {
 
     @PrimaryKey(autoGenerate = true)
     public long lightId;
@@ -28,15 +28,15 @@ public class BaseLight implements Light {
     public static final String TABLENAME = "light";
 
     /**
-     * Foreign key of the remote endpoint that this BaseLight belongs to.
+     * Foreign key of the remote endpoint that this DbLight belongs to.
      * Only one endpoint light id (specific for that endpoint!) can exist for a single endpoint.
      */
     @ColumnInfo(name = "endpointId")
     private long endpointId;
 
     /**
-     * Id for this BaseLight inside (!) the remote endpoint. This field helps the remote endpoint
-     * to identify the correct BaseLight.
+     * Id for this DbLight inside (!) the remote endpoint. This field helps the remote endpoint
+     * to identify the correct DbLight.
      */
     @NonNull
     @ColumnInfo(name = "endpointLightId")
@@ -65,7 +65,7 @@ public class BaseLight implements Light {
     @ColumnInfo(name = "color")
     private int color; //TODO: Create contract for allowed values.
 
-    public BaseLight(long endpointId, @NonNull String endpointLightId, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
+    public DbLight(long endpointId, @NonNull String endpointLightId, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
         this.endpointId = endpointId;
         this.endpointLightId = endpointLightId;
 
@@ -78,13 +78,13 @@ public class BaseLight implements Light {
     }
 
     @Ignore
-    public BaseLight(long endpointId, @NonNull String endpointLightId) {
+    public DbLight(long endpointId, @NonNull String endpointLightId) {
         this.endpointId = endpointId;
         this.endpointLightId = endpointLightId;
     }
 
     @Ignore
-    public BaseLight(long endpointId) {
+    public DbLight(long endpointId) {
         this.endpointId = endpointId;
     }
 
