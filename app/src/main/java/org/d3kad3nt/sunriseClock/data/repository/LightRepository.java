@@ -12,11 +12,9 @@ import org.d3kad3nt.sunriseClock.data.local.BaseLightDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
 import org.d3kad3nt.sunriseClock.data.model.light.Light;
+import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
+import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
-import org.d3kad3nt.sunriseClock.data.remote.common.EmptyResource;
-import org.d3kad3nt.sunriseClock.data.remote.common.NetworkBoundResource;
-import org.d3kad3nt.sunriseClock.data.remote.common.NetworkUpdateResource;
-import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

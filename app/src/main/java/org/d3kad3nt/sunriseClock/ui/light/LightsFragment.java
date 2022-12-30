@@ -17,8 +17,8 @@ import androidx.lifecycle.ViewModelProvider;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.model.light.Light;
-import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
-import org.d3kad3nt.sunriseClock.data.remote.common.Status;
+import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
+import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
 import org.d3kad3nt.sunriseClock.ui.MainActivity;
 

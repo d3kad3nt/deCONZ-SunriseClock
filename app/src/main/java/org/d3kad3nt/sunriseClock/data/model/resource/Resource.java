@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.d3kad3nt.sunriseClock.data.remote.common;
+package org.d3kad3nt.sunriseClock.data.model.resource;
 
 /**
  * A generic class that holds a value with its loading status.

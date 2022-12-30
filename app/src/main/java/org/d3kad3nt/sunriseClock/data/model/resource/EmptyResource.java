@@ -1,4 +1,4 @@
-package org.d3kad3nt.sunriseClock.data.remote.common;
+package org.d3kad3nt.sunriseClock.data.model.resource;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,15 +10,15 @@ public class EmptyResource extends Resource<Empty> {
         super(status, Empty.getInstance(), message);
     }
 
-    static EmptyResource success(@Nullable String message){
+    public static EmptyResource success(@Nullable String message){
         return new EmptyResource(Status.SUCCESS, message);
     }
 
-    static EmptyResource error(String message){
+    public static EmptyResource error(String message){
         return new EmptyResource(Status.ERROR, message);
     }
 
-    static EmptyResource loading(String message){
+    public static EmptyResource loading(String message){
         return new EmptyResource(Status.LOADING, message);
     }
 

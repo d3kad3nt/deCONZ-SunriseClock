@@ -9,9 +9,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import org.d3kad3nt.sunriseClock.data.model.light.Light;
-import org.d3kad3nt.sunriseClock.data.remote.common.EmptyResource;
-import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
-import org.d3kad3nt.sunriseClock.data.remote.common.Status;
+import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
+import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
+import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.ui.util.VisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;

@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package org.d3kad3nt.sunriseClock.data.remote.common;
+package org.d3kad3nt.sunriseClock.data.repository;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.WorkerThread;
 import androidx.lifecycle.LiveData;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
+import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
+import org.d3kad3nt.sunriseClock.data.remote.common.ApiEmptyResponse;
+import org.d3kad3nt.sunriseClock.data.remote.common.ApiErrorResponse;
+import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
+import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
 import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
 import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;

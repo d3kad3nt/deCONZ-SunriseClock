@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import org.d3kad3nt.sunriseClock.data.remote.common.Resource;
+import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 
 import java.util.HashSet;
 import java.util.Set;
