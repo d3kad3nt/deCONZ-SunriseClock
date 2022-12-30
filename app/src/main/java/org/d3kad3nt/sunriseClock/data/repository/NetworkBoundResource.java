@@ -45,43 +45,45 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends Exte
     protected ResultType dbObject = null;
 
     public NetworkBoundResource() {
-        this.setValue( Resource.loading(null));
+        this.setValue(Resource.loading(null));
 
         dbSource = loadFromDb();
-        addSource(dbSource, dbObject -> {dbSourceObserver(dbObject, dbSource);});
+        this.addSource(dbSource, dbObject -> {
+            dbSourceObserver(dbObject, dbSource);
+        });
     }
 
-    private void dbSourceObserver(ResultType data, LiveData<ResultType> dbSourceLiveData){
-        if (data == null){
+    private void dbSourceObserver(ResultType data, LiveData<ResultType> dbSourceLiveData) {
+        if (data == null) {
             updateValue(Resource.loading(null));
-        }else{
+        } else {
             dbObject = data;
             removeSource(dbSourceLiveData);
-            if (shouldFetch(dbObject)){
+            if (shouldFetch(dbObject)) {
                 LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
                 addSource(endpointLiveData, baseEndpoint -> endpointLiveDataObserver(baseEndpoint, endpointLiveData));
-            }else{
-                addSource(dbSource, newData ->{
+            } else {
+                addSource(dbSource, newData -> {
                     updateValue(Resource.success(newData));
                 });
             }
         }
     }
 
-    private void endpointLiveDataObserver( BaseEndpoint endpoint, LiveData<BaseEndpoint> endpointLiveData){
-        if (endpoint == null){
+    private void endpointLiveDataObserver( BaseEndpoint endpoint, LiveData<BaseEndpoint> endpointLiveData) {
+        if (endpoint == null) {
             updateValue(Resource.loading(null));
-        }else{
+        } else {
             this.endpoint = endpoint;
             fetchFromNetwork(dbSource);
             removeSource(endpointLiveData);
         }
     }
 
-    private void fetchFromNetwork(LiveData<ResultType> dbSource ) {
+    private void fetchFromNetwork(LiveData<ResultType> dbSource) {
         LiveData<ApiResponse<RequestType>> apiResponse = loadFromNetwork();
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
-        addSource(dbSource, newData ->{
+        addSource(dbSource, newData -> {
             updateValue(Resource.loading(newData));
         });
         addSource(apiResponse, response -> {
@@ -119,21 +121,16 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends Exte
     protected void onFetchFailed() {}
 
     @WorkerThread
-    protected RequestType processResponse(ApiSuccessResponse<RequestType> response ){
+    protected RequestType processResponse(ApiSuccessResponse<RequestType> response) {
         //TODO: Ugly, tailored for retrofit
         return response.getBody();
     }
 
     @WorkerThread
-    protected abstract void saveNetworkResponseToDb(RequestType item );
+    protected abstract void saveNetworkResponseToDb(RequestType item);
 
     @MainThread
     protected abstract boolean shouldFetch(ResultType data);
-
-    @MainThread
-    protected LiveData<ResultType> loadResource(){
-        return null;
-    }
 
     @MainThread
     protected abstract LiveData<BaseEndpoint> loadEndpoint();
