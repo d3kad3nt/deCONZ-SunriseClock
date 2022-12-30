@@ -12,29 +12,29 @@ import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
 import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends ExtendedMediatorLiveData<EmptyResource> {
+public abstract class NetworkUpdateResource<ResultType, RemoteType, DbType> extends ExtendedMediatorLiveData<EmptyResource> {
 
-    protected ResourceType dbObject;
+    protected DbType dbObject;
 
     public NetworkUpdateResource() {
         setValue(EmptyResource.loading(""));
-        LiveData<ResourceType> resourceLoad = loadFromDB();
+        LiveData<DbType> resourceLoad = loadFromDB();
         addSource(resourceLoad, resource -> {
             dbObjectLoadObserver(resource, resourceLoad);
         });
     }
 
-    protected abstract LiveData<ResourceType> loadFromDB();
+    protected abstract LiveData<DbType> loadFromDB();
 
     protected abstract LiveData<BaseEndpoint> loadEndpoint();
 
     @NotNull
-    protected abstract LiveData<ApiResponse<UpdateType>> sendNetworkRequest(BaseEndpoint baseEndpoint);
+    protected abstract LiveData<ApiResponse<RemoteType>> sendNetworkRequest(BaseEndpoint baseEndpoint);
 
     @NotNull
-    protected abstract LiveData<Resource<ResourceType>> loadUpdatedVersion();
+    protected abstract LiveData<Resource<ResultType>> loadUpdatedVersion();
 
-    private void dbObjectLoadObserver(ResourceType resource, LiveData<ResourceType> resourceLiveData) {
+    private void dbObjectLoadObserver(DbType resource, LiveData<DbType> resourceLiveData) {
         if (resource == null) {
             updateValue(EmptyResource.loading("Resource loads"));
         } else {
@@ -51,7 +51,7 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends Ex
         if (baseEndpoint == null) {
             updateValue(EmptyResource.loading("Endpoints loads"));
         } else {
-            LiveData<ApiResponse<UpdateType>> networkResponseLivedata = this.sendNetworkRequest(baseEndpoint);
+            LiveData<ApiResponse<RemoteType>> networkResponseLivedata = this.sendNetworkRequest(baseEndpoint);
             addSource(networkResponseLivedata, response -> {
                 networkResponseObserver(response, networkResponseLivedata);
             });
@@ -59,12 +59,12 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends Ex
         }
     }
 
-    private void networkResponseObserver(ApiResponse<UpdateType> response, LiveData<ApiResponse<UpdateType>> networkResponseLivedata) {
+    private void networkResponseObserver(ApiResponse<RemoteType> response, LiveData<ApiResponse<RemoteType>> networkResponseLivedata) {
         EmptyResource resource = toResource(response);
         if (resource.getStatus() != Status.SUCCESS) {
             updateValue(resource);
         } else {
-            LiveData<Resource<ResourceType>> updateResponseLivedata = loadUpdatedVersion();
+            LiveData<Resource<ResultType>> updateResponseLivedata = loadUpdatedVersion();
             addSource(updateResponseLivedata, updateResponse -> {
                 resourceUpdateObserver(updateResponse);
             });
@@ -72,7 +72,7 @@ public abstract class NetworkUpdateResource<UpdateType, ResourceType> extends Ex
         }
     }
 
-    private void resourceUpdateObserver(Resource<ResourceType> response) {
+    private void resourceUpdateObserver(Resource<?> response) {
         EmptyResource resource = EmptyResource.fromResource(response);
         updateValue(resource);
     }

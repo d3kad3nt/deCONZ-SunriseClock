@@ -161,7 +161,7 @@ public class LightRepository {
 
     public LiveData<EmptyResource> setOnState(long lightId, boolean newState) {
 
-        return new NetworkUpdateResource<ResponseBody, BaseLight>() {
+        return new NetworkUpdateResource<UILight, ResponseBody, BaseLight>() {
 
             @Override
             protected LiveData<BaseLight> loadFromDB() {
@@ -181,16 +181,15 @@ public class LightRepository {
 
             @NotNull
             @Override
-            protected LiveData<Resource<BaseLight>> loadUpdatedVersion() {
-                return null;
-                //return getBaseLight(lightId);
+            protected LiveData<Resource<UILight>> loadUpdatedVersion() {
+                return getBaseLight(lightId);
             }
         };
     }
 
     public LiveData<EmptyResource> setBrightness(long lightId, double brightness) {
 
-        return new NetworkUpdateResource<ResponseBody, BaseLight>() {
+        return new NetworkUpdateResource<UILight, ResponseBody, BaseLight>() {
 
             @Override
             protected LiveData<BaseLight> loadFromDB() {
@@ -210,9 +209,8 @@ public class LightRepository {
 
             @NotNull
             @Override
-            protected LiveData<Resource<BaseLight>> loadUpdatedVersion() {
-                return null;
-                //return getBaseLight(lightId);
+            protected LiveData<Resource<UILight>> loadUpdatedVersion() {
+                return getBaseLight(lightId);
             }
         };
     }

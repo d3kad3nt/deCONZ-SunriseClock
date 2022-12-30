@@ -8,10 +8,12 @@ public class UILight implements Light {
 
     private final String name;
     private final long id;
+    private final boolean on;
 
-    public UILight(String name, long id) {
+    public UILight(String name, long id, boolean on) {
         this.name = name;
         this.id = id;
+        this.on = on;
     }
 
     @Override
@@ -26,7 +28,7 @@ public class UILight implements Light {
 
     @Override
     public boolean isOn() {
-        return false;
+        return on;
     }
 
     @Override
@@ -36,18 +38,18 @@ public class UILight implements Light {
 
     @Override
     public long getLightId() {
-        return this.id;
+        return id;
     }
 
     @Override
     public String getFriendlyName() {
-        return this.name;
+        return name;
     }
 
     @NonNull
     @Contract("_ -> new")
     public static UILight from(@NonNull BaseLight baseLight) {
         //Todo: Logic to convert db light to UI light
-        return new UILight(baseLight.getFriendlyName(), baseLight.getLightId());
+        return new UILight(baseLight.getFriendlyName(), baseLight.getLightId(), baseLight.isOn());
     }
 }
