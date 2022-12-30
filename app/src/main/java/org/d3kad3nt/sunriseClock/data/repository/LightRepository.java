@@ -11,7 +11,7 @@ import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.BaseLightDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
-import org.d3kad3nt.sunriseClock.data.model.light.Light;
+import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
@@ -54,14 +54,14 @@ public class LightRepository {
         return INSTANCE;
     }
 
-    public LiveData<Resource<List<Light>>> getLightsForEndpoint(long endpointId) {
+    public LiveData<Resource<List<UILight>>> getLightsForEndpoint(long endpointId) {
         try {
             endpointRepo.getEndpoint(endpointId);
         }catch (NullPointerException e) {
-            Resource<List<Light>> resource = Resource.error("Endpoint doesn't exist",null);
+            Resource<List<UILight>> resource = Resource.error("Endpoint doesn't exist",null);
             return new MutableLiveData<>(resource);
         }
-        return new NetworkBoundResource<List<Light>, List<BaseLight>, List<BaseLight>>() {
+        return new NetworkBoundResource<List<UILight>, List<BaseLight>, List<BaseLight>>() {
 
             @NonNull
             @Override
@@ -76,10 +76,10 @@ public class LightRepository {
             }
 
             @Override
-            protected List<Light> convertDbTypeToResultType(List<BaseLight> items) {
-                List<Light> lights = new ArrayList<>();
+            protected List<UILight> convertDbTypeToResultType(List<BaseLight> items) {
+                List<UILight> lights = new ArrayList<>();
                 for (BaseLight light : items) {
-                    lights.add((Light)light);
+                    lights.add(UILight.from(light));
                 }
                 return lights;
             }
@@ -112,8 +112,8 @@ public class LightRepository {
         };
     }
 
-    private LiveData<Resource<BaseLight>> getBaseLight(long lightId) {
-        return new NetworkBoundResource<BaseLight, BaseLight, BaseLight>() {
+    public LiveData<Resource<UILight>> getBaseLight(long lightId) {
+        return new NetworkBoundResource<UILight, BaseLight, BaseLight>() {
 
             @NonNull
             @Override
@@ -128,8 +128,8 @@ public class LightRepository {
             }
 
             @Override
-            protected BaseLight convertDbTypeToResultType(BaseLight item) {
-                return item;
+            protected UILight convertDbTypeToResultType(BaseLight item) {
+                return UILight.from(item);
             }
 
             @Override
@@ -140,7 +140,6 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<BaseLight> loadFromDb() {
-                //TODO: return (LiveData<Light>) (LiveData<? extends Light>) baseLight;
                 return baseLightDao.load(lightId);
             }
 
@@ -158,12 +157,6 @@ public class LightRepository {
                 baseLightDao.upsert(item);
             }
         };
-    }
-
-    public LiveData<Resource<Light>> getLight(long id) {
-        return Transformations.map(getBaseLight(id), input -> {
-            return new Resource<>(input.getStatus(), input.getData(), input.getMessage());
-        });
     }
 
     public LiveData<EmptyResource> setOnState(long lightId, boolean newState) {
@@ -189,7 +182,8 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<Resource<BaseLight>> loadUpdatedVersion() {
-                return getBaseLight(lightId);
+                return null;
+                //return getBaseLight(lightId);
             }
         };
     }
@@ -217,7 +211,8 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<Resource<BaseLight>> loadUpdatedVersion() {
-                return getBaseLight(lightId);
+                return null;
+                //return getBaseLight(lightId);
             }
         };
     }

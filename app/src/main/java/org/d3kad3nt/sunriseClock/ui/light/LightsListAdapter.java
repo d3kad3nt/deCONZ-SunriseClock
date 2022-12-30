@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.d3kad3nt.sunriseClock.data.model.light.Light;
+import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.databinding.LightListElementBinding;
 
 
-public class LightsListAdapter extends ListAdapter<Light, LightsListAdapter.ViewHolder> {
+public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.ViewHolder> {
 
     public LightsListAdapter() {
         super(new LightDiffCallback());
@@ -55,17 +56,17 @@ public class LightsListAdapter extends ListAdapter<Light, LightsListAdapter.View
         }
     }
 
-    static class LightDiffCallback extends DiffUtil.ItemCallback<Light> {
+    static class LightDiffCallback extends DiffUtil.ItemCallback<UILight> {
 
         @Override
-        public boolean areItemsTheSame(@NonNull Light oldItem, @NonNull Light newItem) {
+        public boolean areItemsTheSame(@NonNull UILight oldItem, @NonNull UILight newItem) {
             //TODO: use real UUID
             return oldItem.getLightId() == newItem.getLightId();
         }
 
         @SuppressLint("DiffUtilEquals")
         @Override
-        public boolean areContentsTheSame(@NonNull Light oldItem, @NonNull Light newItem) {
+        public boolean areContentsTheSame(@NonNull UILight oldItem, @NonNull UILight newItem) {
             return oldItem == newItem;
         }
     }
