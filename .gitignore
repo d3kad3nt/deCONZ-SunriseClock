@@ -37,6 +37,11 @@ captures/
 #This contains user data
 .idea/workspace.xml
 .idea/libraries
+.idea/usage.statistics.xml
+.idea/dictionaries
+.idea/shelf
+.idea/modules.xml
+*.iws
 
 # Keystore files
 # Uncomment the following line if you do not want to check your keystore files in.
