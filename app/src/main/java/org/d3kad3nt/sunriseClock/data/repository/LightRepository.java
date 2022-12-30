@@ -15,6 +15,7 @@ import org.d3kad3nt.sunriseClock.data.model.light.Light;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
+import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,7 +61,7 @@ public class LightRepository {
             Resource<List<Light>> resource = Resource.error("Endpoint doesn't exist",null);
             return new MutableLiveData<>(resource);
         }
-        return new NetworkBoundResource<List<Light>, List<BaseLight>>() {
+        return new NetworkBoundResource<List<Light>, List<BaseLight>, List<BaseLight>>() {
 
             @NonNull
             @Override
@@ -74,16 +75,30 @@ public class LightRepository {
                 return endpoint.getLights();
             }
 
-            @NotNull
             @Override
-            protected LiveData<List<Light>> loadFromDb() {
-                return Transformations.map(baseLightDao.loadAllForEndpoint(endpointId), input ->
-                        new ArrayList<>(input)
-                );
+            protected List<Light> convertDbTypeToResultType(List<BaseLight> items) {
+                List<Light> lights = new ArrayList<>();
+                for (BaseLight light : items) {
+                    lights.add((Light)light);
+                }
+                return lights;
             }
 
             @Override
-            protected boolean shouldFetch(@Nullable List<Light> data) {
+            protected List<BaseLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<BaseLight>> response) {
+                return response.getBody();
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<List<BaseLight>> loadFromDb() {
+                return Transformations.map(baseLightDao.loadAllForEndpoint(endpointId), input -> {
+                    return new ArrayList<>(input);
+                });
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<BaseLight> data) {
                 //TODO
                 return true;
             }
@@ -98,7 +113,7 @@ public class LightRepository {
     }
 
     private LiveData<Resource<BaseLight>> getBaseLight(long lightId) {
-        return new NetworkBoundResource<BaseLight, BaseLight>() {
+        return new NetworkBoundResource<BaseLight, BaseLight, BaseLight>() {
 
             @NonNull
             @Override
@@ -110,6 +125,16 @@ public class LightRepository {
             @Override
             protected LiveData<ApiResponse<BaseLight>> loadFromNetwork() {
                 return endpoint.getLight(dbObject.getEndpointLightId());
+            }
+
+            @Override
+            protected BaseLight convertDbTypeToResultType(BaseLight item) {
+                return item;
+            }
+
+            @Override
+            protected BaseLight convertRemoteTypeToDbType(ApiSuccessResponse<BaseLight> response) {
+                return response.getBody();
             }
 
             @NotNull
@@ -196,5 +221,4 @@ public class LightRepository {
             }
         };
     }
-
 }
