@@ -25,7 +25,7 @@ import java.util.List;
         exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase{
 
-    public abstract BaseLightDao baseLightDao();
+    public abstract DbLightDao dbLightDao();
 
     public abstract EndpointConfigDao endpointConfigDao();
 

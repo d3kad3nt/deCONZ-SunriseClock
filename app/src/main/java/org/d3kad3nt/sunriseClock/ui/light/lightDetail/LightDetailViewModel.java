@@ -26,9 +26,8 @@ public class LightDetailViewModel extends AndroidViewModel {
 
     public LightDetailViewModel(@NonNull Application application, long lightId) {
         super(application);
-        //Todo: Implement something to represent the state of the request inside UI (if (baseLightResource.getStatus().equals(Status.SUCCESS))...)
+        //Todo: Implement something to represent the state of the request inside UI (if (lightResource.getStatus().equals(Status.SUCCESS))...)
         //Todo: Data binding in XML has built-in null-safety so viewModel.light.data.friendlyName inside XML works for now (but should be changed?)
-        //Todo: Use custom model for UI
         this.lightID = lightId;
         light = getLight(lightId);
 
@@ -62,6 +61,6 @@ public class LightDetailViewModel extends AndroidViewModel {
     }
 
     private LiveData<Resource<UILight>> getLight(long lightID){
-        return lightRepository.getBaseLight(lightID);
+        return lightRepository.getLight(lightID);
     }
 }

@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
-import org.d3kad3nt.sunriseClock.data.local.BaseLightDao;
+import org.d3kad3nt.sunriseClock.data.local.DbLightDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
@@ -29,7 +29,7 @@ import okhttp3.ResponseBody;
  */
 public class LightRepository {
 
-    private static BaseLightDao baseLightDao;
+    private static DbLightDao dbLightDao;
     private final static String TAG = "LightRepository";
     private static volatile LightRepository INSTANCE;
     private final EndpointRepository endpointRepo;
@@ -39,7 +39,7 @@ public class LightRepository {
      * TODO: Dependency Injection, optional
      */
     private LightRepository (Context context) {
-        baseLightDao = AppDatabase.getInstance(context.getApplicationContext()).baseLightDao();
+        dbLightDao = AppDatabase.getInstance(context.getApplicationContext()).dbLightDao();
         endpointRepo = EndpointRepository.getInstance(context);
     }
 
@@ -92,7 +92,7 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<List<DbLight>> loadFromDb() {
-                return Transformations.map(baseLightDao.loadAllForEndpoint(endpointId), input -> {
+                return Transformations.map(dbLightDao.loadAllForEndpoint(endpointId), input -> {
                     return new ArrayList<>(input);
                 });
             }
@@ -106,13 +106,13 @@ public class LightRepository {
             @Override
             protected void saveNetworkResponseToDb(List<DbLight> items) {
                 for (DbLight light : items) {
-                    baseLightDao.upsert(light);
+                    dbLightDao.upsert(light);
                 }
             }
         };
     }
 
-    public LiveData<Resource<UILight>> getBaseLight(long lightId) {
+    public LiveData<Resource<UILight>> getLight(long lightId) {
         return new NetworkBoundResource<UILight, DbLight, DbLight>() {
 
             @NonNull
@@ -140,7 +140,7 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<DbLight> loadFromDb() {
-                return baseLightDao.load(lightId);
+                return dbLightDao.load(lightId);
             }
 
             @Override
@@ -154,7 +154,7 @@ public class LightRepository {
                 // The primary key lightId is not known to the remote endpoint, but it is known to us.
                 // Set the lightId to enable direct update/insert via primary key (instead of endpointId and endpointLightId) through Room.
                 item.lightId = lightId;
-                baseLightDao.upsert(item);
+                dbLightDao.upsert(item);
             }
         };
     }
@@ -165,7 +165,7 @@ public class LightRepository {
 
             @Override
             protected LiveData<DbLight> loadFromDB() {
-                return baseLightDao.load(lightId);
+                return dbLightDao.load(lightId);
             }
 
             @Override
@@ -182,7 +182,7 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<Resource<UILight>> loadUpdatedVersion() {
-                return getBaseLight(lightId);
+                return getLight(lightId);
             }
         };
     }
@@ -193,7 +193,7 @@ public class LightRepository {
 
             @Override
             protected LiveData<DbLight> loadFromDB() {
-                return baseLightDao.load(lightId);
+                return dbLightDao.load(lightId);
             }
 
             @Override
@@ -210,7 +210,7 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<Resource<UILight>> loadUpdatedVersion() {
-                return getBaseLight(lightId);
+                return getLight(lightId);
             }
         };
     }

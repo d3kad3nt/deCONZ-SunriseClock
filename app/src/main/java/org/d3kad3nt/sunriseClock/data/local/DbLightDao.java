@@ -16,9 +16,9 @@ import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 import java.util.List;
 
 @Dao
-public interface BaseLightDao {
+public interface DbLightDao {
 
-    String TAG = "BaseLightDao";
+    String TAG = "DbLightDao";
 
     /**
      * Insert the light into the database. If there is a conflict on insert, the light is not inserted and a special value is returned.
