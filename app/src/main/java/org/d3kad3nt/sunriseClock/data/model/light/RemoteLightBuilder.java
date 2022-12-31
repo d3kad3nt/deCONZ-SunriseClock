@@ -56,9 +56,9 @@ public class RemoteLightBuilder {
         if (endpointType == null) {
             throw new RuntimeException("RemoteLightBuilder cannot build this light without an endpoint type! Check remote light parsing logic.");
         }
-        return new RemoteLight(this.endpointType, this.endpointId, this.endpointLightId, this.name, this.isSwitchable, this.isOn, this.isDimmable, this.brightness, this.isTemperaturable, this.colorTemperature, this.isColorable, this.color);
+        return new RemoteLight(endpointType, endpointId, endpointLightId, name, isSwitchable, isOn, isDimmable, brightness, isTemperaturable, colorTemperature, isColorable, color);
     }
-    
+
     public RemoteLightBuilder setEndpointType(EndpointType endpointType) {
         this.endpointType = endpointType;
         return this;
