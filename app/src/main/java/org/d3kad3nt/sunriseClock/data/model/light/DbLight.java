@@ -67,7 +67,7 @@ public class DbLight {
     private final int color; //TODO: Create contract for allowed values.
 
     // Has to be public for Room to be able to create an object from the database's data
-    public DbLight(long endpointId, String endpointLightId, String name, boolean isSwitchable, boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature, boolean isColorable, int color) {
+    public DbLight(long endpointId, @NonNull String endpointLightId, @NonNull String name, boolean isSwitchable, boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature, boolean isColorable, int color) {
         this.endpointId = endpointId;
         this.endpointLightId = endpointLightId;
         this.name = name;
@@ -89,10 +89,12 @@ public class DbLight {
         return endpointId;
     }
 
+    @NonNull
     public String getEndpointLightId() {
         return endpointLightId;
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
