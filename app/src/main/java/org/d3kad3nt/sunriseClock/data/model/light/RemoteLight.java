@@ -1,6 +1,12 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
+import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
+
 public class RemoteLight {
+    private static final String TAG = "RemoteLight";
+
+    private final EndpointType endpointType;
+
     private final long endpointId;
     private final String endpointLightId;
 
@@ -18,7 +24,8 @@ public class RemoteLight {
     private final boolean isColorable;
     private final int color;
 
-    RemoteLight(long endpointId, String endpointLightId, String name, boolean isSwitchable, boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature, boolean isColorable, int color) {
+    RemoteLight(EndpointType endpointType, long endpointId, String endpointLightId, String name, boolean isSwitchable, boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature, boolean isColorable, int color) {
+        this.endpointType = endpointType;
         this.endpointId = endpointId;
         this.endpointLightId = endpointLightId;
         this.name = name;
@@ -30,6 +37,10 @@ public class RemoteLight {
         this.colorTemperature = colorTemperature;
         this.isColorable = isColorable;
         this.color = color;
+    }
+
+    public EndpointType getEndpointType() {
+        return endpointType;
     }
 
     public long getEndpointId() {

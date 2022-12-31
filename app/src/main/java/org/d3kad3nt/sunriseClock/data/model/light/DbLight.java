@@ -9,6 +9,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
+import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 import org.jetbrains.annotations.Contract;
 
 
@@ -142,6 +143,11 @@ public class DbLight {
     @Contract("_ -> new")
     public static DbLight from(@NonNull RemoteLight remoteLight) {
         //Todo: Logic to convert remote light to db light
-        return new DbLight(remoteLight.getEndpointId(), remoteLight.getEndpointLightId(), remoteLight.getName(), remoteLight.getIsSwitchable(), remoteLight.getIsOn(), remoteLight.getIsDimmable(), remoteLight.getBrightness(), remoteLight.getIsTemperaturable(), remoteLight.getColorTemperature(), remoteLight.getIsColorable(), remoteLight.getColor());
+        if (remoteLight.getEndpointType() == EndpointType.DECONZ) {
+            return new DbLight(remoteLight.getEndpointId(), remoteLight.getEndpointLightId(), remoteLight.getName(), remoteLight.getIsSwitchable(), remoteLight.getIsOn(), remoteLight.getIsDimmable(), remoteLight.getBrightness(), remoteLight.getIsTemperaturable(), remoteLight.getColorTemperature(), remoteLight.getIsColorable(), remoteLight.getColor());
+        }
+        else {
+            return null;
+        }
     }
 }

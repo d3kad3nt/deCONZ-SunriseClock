@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLightBuilder;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.IServices;
@@ -35,6 +36,7 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
     public RemoteLight deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 
         RemoteLightBuilder remoteLightBuilder = new RemoteLightBuilder()
+                .setEndpointType(EndpointType.DECONZ)
                 .setEndpointId(this.endpointId);
 
         Log.d(TAG, "Parsing JSON for single light: " + json.toString());

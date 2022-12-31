@@ -1,7 +1,11 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
+import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
+
 public class RemoteLightBuilder {
     private static final String TAG = "RemoteLightBuilder";
+
+    private EndpointType endpointType;
 
     private long endpointId;
     private String endpointLightId;
@@ -25,6 +29,7 @@ public class RemoteLightBuilder {
     }
 
     public RemoteLightBuilder(RemoteLight light) {
+        this.endpointType = light.getEndpointType();
         this.endpointId = light.getEndpointId();
         this.endpointLightId = light.getEndpointLightId();
         this.name = light.getName();
@@ -40,7 +45,11 @@ public class RemoteLightBuilder {
 
     public RemoteLight build() {
         //Todo: Check if endpointId and endpointLightId are set, problem: RemoteLightListTypeAdapter has to set these values after the single light was parsed by GSON
-        return new RemoteLight(this.endpointId, this.endpointLightId, this.name, this.isSwitchable, this.isOn, this.isDimmable, this.brightness, this.isTemperaturable, this.colorTemperature, this.isColorable, this.color);
+        return new RemoteLight(this.endpointType, this.endpointId, this.endpointLightId, this.name, this.isSwitchable, this.isOn, this.isDimmable, this.brightness, this.isTemperaturable, this.colorTemperature, this.isColorable, this.color);
+    }
+
+    public EndpointType getEndpointType() {
+        return endpointType;
     }
 
     public long getEndpointId() {
@@ -85,6 +94,11 @@ public class RemoteLightBuilder {
 
     public int getColor() {
         return color;
+    }
+
+    public RemoteLightBuilder setEndpointType(EndpointType endpointType) {
+        this.endpointType = endpointType;
+        return this;
     }
 
     public RemoteLightBuilder setEndpointId(long endpointId){
