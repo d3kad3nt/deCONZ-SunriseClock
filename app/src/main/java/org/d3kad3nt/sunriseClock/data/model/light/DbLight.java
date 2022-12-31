@@ -12,53 +12,56 @@ import org.jetbrains.annotations.Contract;
 
 
 @Entity(tableName = DbLight.TABLENAME,
-        indices = {@Index( value = {"endpointId", "endpointLightId"}, unique = true)},
+        indices = {@Index( value = {"endpoint_id", "endpoint_light_id"}, unique = true)},
         // A DbLight is always bound to a single endpoint. It cannot exist without one:
         // Therefore Room is instructed to delete this DbLight if the endpoint gets deleted.
         foreignKeys =
         @ForeignKey(entity = EndpointConfig.class,
                 parentColumns = "endpointId",
-                childColumns = "endpointId",
+                childColumns = "endpoint_id",
                 onDelete = ForeignKey.CASCADE))
 public class DbLight {
 
     public static final String TABLENAME = "light";
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "light_id")
     private long lightId;
 
     /**
      * Foreign key of the remote endpoint that this DbLight belongs to.
      * Only one endpoint light id (specific for that endpoint!) can exist for a single endpoint.
      */
-    @ColumnInfo(name = "endpointId")
+    @ColumnInfo(name = "endpoint_id")
     private final long endpointId;
     /**
      * Id for this DbLight inside (!) the remote endpoint. This field helps the remote endpoint
      * to identify the correct DbLight.
      */
-    @ColumnInfo(name = "endpointLightId")
+    @ColumnInfo(name = "endpoint_light_id")
+    @NonNull // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string)
     private final String endpointLightId;
 
-    @ColumnInfo(name = "friendlyName")
+    @ColumnInfo(name = "name")
+    @NonNull // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string)
     private final String name;
 
-    @ColumnInfo(name = "isSwitchable")
+    @ColumnInfo(name = "is_switchable")
     private final boolean isSwitchable;
-    @ColumnInfo(name = "on")
+    @ColumnInfo(name = "is_on")
     private final boolean isOn;
 
-    @ColumnInfo(name = "isDimmable")
+    @ColumnInfo(name = "is_dimmable")
     private final boolean isDimmable;
     @ColumnInfo(name = "brightness")
     private final int brightness; //TODO: Create contract for allowed values.
 
-    @ColumnInfo(name = "isTemperaturable")
+    @ColumnInfo(name = "is_temperaturable")
     private final boolean isTemperaturable;
-    @ColumnInfo(name = "colorTemperature")
+    @ColumnInfo(name = "colortemperature")
     private final int colorTemperature; //TODO: Create contract for allowed values.
 
-    @ColumnInfo(name = "isColorable")
+    @ColumnInfo(name = "is_colorable")
     private final boolean isColorable;
     @ColumnInfo(name = "color")
     private final int color; //TODO: Create contract for allowed values.
