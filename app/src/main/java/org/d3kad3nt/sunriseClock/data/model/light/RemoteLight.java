@@ -1,6 +1,9 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
+import androidx.annotation.NonNull;
+
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
+import org.jetbrains.annotations.Contract;
 
 public class RemoteLight {
     private static final String TAG = "RemoteLight";
@@ -67,6 +70,11 @@ public class RemoteLight {
         return isDimmable;
     }
 
+    /**
+     * When endpointType is DECONZ: The current brightness of the light, where 0 is the lowest brightness or off and 255 is the highest brightness. Depending on the light type 0 might not mean visible off but minimum brightness.
+     *
+     * @return Brightness of the light, value range and meaning of the value depend on the endpoint this light originated from.
+     */
     public int getBrightness() {
         return brightness;
     }
@@ -85,5 +93,29 @@ public class RemoteLight {
 
     public int getColor() {
         return color;
+    }
+
+    @NonNull
+    @Contract("_ -> new")
+    static DbLight toDbLight(RemoteLight remoteLight) {
+        DbLightBuilder dbLightBuilder = new DbLightBuilder();
+        //Logic to convert remote light to db light depending on the endpoint type this light originated from.
+        switch(remoteLight.getEndpointType()) {
+            case DECONZ:
+                return dbLightBuilder.setEndpointId(remoteLight.getEndpointId())
+                        .setEndpointLightId(remoteLight.getEndpointLightId())
+                        .setName(remoteLight.getName())
+                        .setIsSwitchable(remoteLight.getIsSwitchable())
+                        .setIsOn(remoteLight.getIsOn())
+                        .setIsDimmable(remoteLight.getIsDimmable())
+                        .setBrightness(Math.round(((float)remoteLight.getBrightness()/255)*100))
+                        .setIsTemperaturable(remoteLight.getIsTemperaturable())
+                        .setColorTemperature(remoteLight.getColorTemperature()) //Todo: Implement conversion
+                        .setIsColorable(remoteLight.getIsColorable())
+                        .setColor(remoteLight.getColor()) //Todo: Implement conversion
+                        .build();
+            default:
+                throw new IllegalArgumentException("RemoteLight toDbLight cannot handle this endpoint type. Endpoint type id was " + remoteLight.getEndpointType().getId());
+        }
     }
 }
