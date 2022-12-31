@@ -9,7 +9,6 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
-import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 import org.jetbrains.annotations.Contract;
 
 
@@ -69,7 +68,7 @@ public class DbLight {
     @ColumnInfo(name = "color")
     private final int color; //TODO: Create contract for allowed values.
 
-    // Has to be public for Room to be able to create an object from the database's data
+    // Has to be public for Room to be able to create an object from the database's data, but should not be otherwise accessed
     public DbLight(long endpointId, @NonNull String endpointLightId, @NonNull String name, boolean isSwitchable, boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature, boolean isColorable, int color) {
         this.endpointId = endpointId;
         this.endpointLightId = endpointLightId;
@@ -142,12 +141,12 @@ public class DbLight {
     @NonNull
     @Contract("_ -> new")
     public static DbLight from(@NonNull RemoteLight remoteLight) {
-        //Todo: Logic to convert remote light to db light
-        if (remoteLight.getEndpointType() == EndpointType.DECONZ) {
-            return new DbLight(remoteLight.getEndpointId(), remoteLight.getEndpointLightId(), remoteLight.getName(), remoteLight.getIsSwitchable(), remoteLight.getIsOn(), remoteLight.getIsDimmable(), remoteLight.getBrightness(), remoteLight.getIsTemperaturable(), remoteLight.getColorTemperature(), remoteLight.getIsColorable(), remoteLight.getColor());
-        }
-        else {
-            return null;
+        //Logic to convert remote light to db light depending on the endpoint type this light originated from
+        switch(remoteLight.getEndpointType()) {
+            case DECONZ:
+                return new DbLight(remoteLight.getEndpointId(), remoteLight.getEndpointLightId(), remoteLight.getName(), remoteLight.getIsSwitchable(), remoteLight.getIsOn(), remoteLight.getIsDimmable(), remoteLight.getBrightness(), remoteLight.getIsTemperaturable(), remoteLight.getColorTemperature(), remoteLight.getIsColorable(), remoteLight.getColor());
+            default:
+                throw new IllegalArgumentException("DbLight from(RemoteLight) cannot handle this endpoint type. Endpoint type id was " + remoteLight.getEndpointType().getId());
         }
     }
 }
