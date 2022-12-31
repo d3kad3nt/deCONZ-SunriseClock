@@ -65,16 +65,21 @@ public class DbLight {
     /**
      * Create a new object that represents a light in the app's Room database. This constructor has to be public for Room to be able to create an object. This should not be otherwise accessed!
      */
-    public DbLight(long endpointId, @NonNull String endpointLightId, @NonNull String name, boolean isSwitchable, boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature, boolean isColorable, int color) {
-        this.endpointId = endpointId;
-        //if (endpointId == 0L) {
-        //    this.endpointId = endpointId;
-        //}
-        //else {
-        //    throw new IllegalArgumentException("The given endpointId cannot be 0!");
-        //}
+    public DbLight(long endpointId, String endpointLightId, String name, boolean isSwitchable, boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature, boolean isColorable, int color) {
+        if (endpointId != 0L) {
+            this.endpointId = endpointId;
+        }
+        else {
+            throw new IllegalArgumentException("The given endpointId cannot be 0!");
+        }
 
-        this.endpointLightId = endpointLightId;
+        if (endpointLightId != null && !endpointLightId.isEmpty()) {
+            this.endpointLightId = endpointLightId;
+        }
+        else {
+            throw new IllegalArgumentException("The given endpointLightId cannot be null or empty!");
+        }
+
         this.name = name;
         this.isSwitchable = isSwitchable;
         this.isOn = isOn;
