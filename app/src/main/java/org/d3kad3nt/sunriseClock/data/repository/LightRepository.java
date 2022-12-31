@@ -158,7 +158,7 @@ public class LightRepository {
             protected void saveResponseToDb(DbLight item) {
                 // The primary key lightId is not known to the remote endpoint, but it is known to us.
                 // Set the lightId to enable direct update/insert via primary key (instead of endpointId and endpointLightId) through Room.
-                //item.lightId = lightId;
+                item.setLightId(lightId);
                 dbLightDao.upsert(item);
             }
         };
