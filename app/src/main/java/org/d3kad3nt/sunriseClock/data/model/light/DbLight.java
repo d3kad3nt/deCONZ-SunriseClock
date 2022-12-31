@@ -30,16 +30,9 @@ public class DbLight {
     @ColumnInfo(name = "light_id")
     private long lightId;
 
-    /**
-     * Foreign key of the remote endpoint that this DbLight belongs to.
-     * Only one endpoint light id (specific for that endpoint!) can exist for a single endpoint.
-     */
     @ColumnInfo(name = "endpoint_id")
     private final long endpointId;
-    /**
-     * Id for this DbLight inside (!) the remote endpoint. This field helps the remote endpoint
-     * to identify the correct DbLight.
-     */
+
     @ColumnInfo(name = "endpoint_light_id")
     @NonNull // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string)
     private final String endpointLightId;
@@ -87,10 +80,16 @@ public class DbLight {
         return lightId;
     }
 
+    /**
+     * @return Foreign key of the remote endpoint that this object belongs to. Only one endpoint light id (specific for that endpoint!) can exist for a single endpoint.
+     */
     public long getEndpointId() {
         return endpointId;
     }
 
+    /**
+     * @return Id for this DbLight inside (!) the remote endpoint. This field helps the remote endpoint to identify the correct DbLight.
+     */
     @NonNull
     public String getEndpointLightId() {
         return endpointLightId;
