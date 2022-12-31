@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Contract;
                 onDelete = ForeignKey.CASCADE))
 public class DbLight {
 
-    public static final String TABLENAME = "DbLight";
+    public static final String TABLENAME = "light";
 
     @PrimaryKey(autoGenerate = true)
     private long lightId;
