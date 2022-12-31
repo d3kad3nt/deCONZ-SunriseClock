@@ -24,10 +24,18 @@ public class RemoteLightBuilder {
     private boolean isColorable = false;
     private int color = 0;
 
+    /**
+     * Builder for constructing RemoteLights.
+     */
     public RemoteLightBuilder() {
 
     }
 
+    /**
+     * Builder for constructing RemoteLights, based on an already existing light object.
+     *
+     * @param light The starting point for a light to be modified by builder methods.
+     */
     public RemoteLightBuilder(RemoteLight light) {
         this.endpointType = light.getEndpointType();
         this.endpointId = light.getEndpointId();
