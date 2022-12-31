@@ -12,6 +12,7 @@ import com.google.gson.JsonParseException;
 
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLightBuilder;
+import org.d3kad3nt.sunriseClock.data.remote.deconz.IServices;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -44,17 +45,15 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
         Log.d(TAG, "Parsing JSON for list of lights: " + rawJson.toString());
 
         for (String lightId : rawJson.keySet()) {
-            JsonElement jsonLight = rawJson.get(lightId);
+            JsonObject jsonLight = rawJson.get(lightId).getAsJsonObject();
+
+            // Preprocessing: Manipulate returned json to include the light id.
+            // This enables the existing Gson typeadapter (RemoteLightTypeAdapter) to work for requests for both single and multiple light(s).
+            jsonLight.addProperty(IServices.endpointLightIdHeader, lightId);
 
             // Returns a single light by calling the already existing Gson typeadapter.
-            RemoteLight light = gson.fromJson(jsonLight.getAsJsonObject(), RemoteLight.class);
-
-            // Postprocessing: Manipulate returned light to include all required (non-automatically deserialized) fields.
-            RemoteLight modifiedLight = new RemoteLightBuilder(light)
-                    .setEndpointLightId(lightId)
-                    .build();
-
-            lights.add(modifiedLight);
+            RemoteLight light = gson.fromJson(jsonLight, RemoteLight.class);
+            lights.add(light);
         }
         return lights;
     }

@@ -48,6 +48,8 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
         // light. The Gson deserializer is automatically called and cannot access the id inside of
         // the original request. A okHttp interceptor is used to modify the JSON response from the
         // Deconz endpoint and adds this light id.
+        // When requesting a list of RemoteLights, the endpointLightId is manually added to the json, too.
+        // This enables the existing Gson typeadapter (RemoteLightTypeAdapter) to work for requests for both single and multiple light(s).
         if (rawJson.has(IServices.endpointLightIdHeader)) {
             remoteLightBuilder = remoteLightBuilder.setEndpointLightId(rawJson.get(IServices.endpointLightIdHeader).getAsString());
         }

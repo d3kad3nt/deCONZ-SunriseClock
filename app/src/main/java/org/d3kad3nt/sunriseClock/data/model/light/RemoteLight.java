@@ -1,5 +1,7 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
@@ -29,17 +31,39 @@ public class RemoteLight {
 
     RemoteLight(EndpointType endpointType, long endpointId, String endpointLightId, String name, boolean isSwitchable, boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature, boolean isColorable, int color) {
         this.endpointType = endpointType;
-        this.endpointId = endpointId;
-        this.endpointLightId = endpointLightId;
+
+        if (endpointId != 0L) {
+            this.endpointId = endpointId;
+        }
+        else {
+            Log.e(TAG, "The given endpointId cannot be 0!");
+            throw new IllegalArgumentException("The given endpointId cannot be 0!");
+        }
+
+        if (endpointLightId != null && !endpointLightId.isEmpty()) {
+            this.endpointLightId = endpointLightId;
+        }
+        else {
+            Log.e(TAG, "The given endpointLightId string cannot be null or empty!");
+            throw new IllegalArgumentException("The given endpointLightId string cannot be null or empty!");
+        }
+
         this.name = name;
         this.isSwitchable = isSwitchable;
         this.isOn = isOn;
         this.isDimmable = isDimmable;
-        this.brightness = brightness;
+
+        if (brightness >= endpointType.getMinBrightness() && brightness <= endpointType.getMaxBrightness()) {
+            this.brightness = brightness;
+        }
+        else {
+            throw new IllegalArgumentException("The given brightness of a light (endpoint type " + endpointType.name() + ") must be between " + endpointType.getMinBrightness() + " and " + endpointType.getMaxBrightness() + "!");
+        }
+
         this.isTemperaturable = isTemperaturable;
-        this.colorTemperature = colorTemperature;
+        this.colorTemperature = colorTemperature; //Todo: Define which values are allowed for each endpoint type
         this.isColorable = isColorable;
-        this.color = color;
+        this.color = color; //Todo: Define which values are allowed for each endpoint type
     }
 
     public EndpointType getEndpointType() {
@@ -100,22 +124,18 @@ public class RemoteLight {
     static DbLight toDbLight(RemoteLight remoteLight) {
         DbLightBuilder dbLightBuilder = new DbLightBuilder();
         //Logic to convert remote light to db light depending on the endpoint type this light originated from.
-        switch(remoteLight.getEndpointType()) {
-            case DECONZ:
-                return dbLightBuilder.setEndpointId(remoteLight.getEndpointId())
-                        .setEndpointLightId(remoteLight.getEndpointLightId())
-                        .setName(remoteLight.getName())
-                        .setIsSwitchable(remoteLight.getIsSwitchable())
-                        .setIsOn(remoteLight.getIsOn())
-                        .setIsDimmable(remoteLight.getIsDimmable())
-                        .setBrightness(Math.round(((float)remoteLight.getBrightness()/255)*100))
-                        .setIsTemperaturable(remoteLight.getIsTemperaturable())
-                        .setColorTemperature(remoteLight.getColorTemperature()) //Todo: Implement conversion
-                        .setIsColorable(remoteLight.getIsColorable())
-                        .setColor(remoteLight.getColor()) //Todo: Implement conversion
-                        .build();
-            default:
-                throw new IllegalArgumentException("RemoteLight toDbLight cannot handle this endpoint type. Endpoint type id was " + remoteLight.getEndpointType().getId());
+        return dbLightBuilder.setEndpointId(remoteLight.getEndpointId())
+                .setEndpointLightId(remoteLight.getEndpointLightId())
+                .setName(remoteLight.getName())
+                .setIsSwitchable(remoteLight.getIsSwitchable())
+                .setIsOn(remoteLight.getIsOn())
+                .setIsDimmable(remoteLight.getIsDimmable())
+                // Convert brightness via linear conversion (copied from https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio)
+                .setBrightness((((remoteLight.getBrightness() - remoteLight.getEndpointType().getMinBrightness()) * (DbLight.BRIGHTNESS_MAX - DbLight.BRIGHTNESS_MIN)) / (remoteLight.getEndpointType().getMaxBrightness() - remoteLight.getEndpointType().getMinBrightness())) + DbLight.BRIGHTNESS_MIN)
+                .setIsTemperaturable(remoteLight.getIsTemperaturable())
+                .setColorTemperature(remoteLight.getColorTemperature()) //Todo: Implement conversion
+                .setIsColorable(remoteLight.getIsColorable())
+                .setColor(remoteLight.getColor()) //Todo: Implement conversion
+                .build();
         }
     }
-}

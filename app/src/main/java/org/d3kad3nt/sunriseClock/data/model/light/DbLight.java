@@ -11,7 +11,6 @@ import androidx.room.PrimaryKey;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
 import org.jetbrains.annotations.Contract;
 
-
 @Entity(tableName = DbLight.TABLENAME,
         indices = {@Index( value = {"endpoint_id", "endpoint_light_id"}, unique = true)},
         // A DbLight is always bound to a single endpoint. It cannot exist without one:
@@ -25,6 +24,11 @@ public class DbLight {
 
     @Ignore
     public static final String TABLENAME = "light";
+
+    @Ignore
+    static final int BRIGHTNESS_MIN = 0;
+    @Ignore
+    static final int BRIGHTNESS_MAX = 100;
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "light_id")
@@ -77,7 +81,7 @@ public class DbLight {
             this.endpointLightId = endpointLightId;
         }
         else {
-            throw new IllegalArgumentException("The given endpointLightId cannot be null or empty!");
+            throw new IllegalArgumentException("The given endpointLightId string cannot be null or empty!");
         }
 
         this.name = name;
@@ -85,7 +89,7 @@ public class DbLight {
         this.isOn = isOn;
         this.isDimmable = isDimmable;
 
-        if (brightness >= 0 && brightness <= 100) {
+        if (brightness >= BRIGHTNESS_MIN && brightness <= BRIGHTNESS_MAX) {
             this.brightness = brightness;
         }
         else {
