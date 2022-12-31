@@ -92,7 +92,7 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType> exten
             Class<? extends ApiResponse> aClass = response.getClass();
             if (ApiSuccessResponse.class.equals(aClass)) {
                 ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
-                    saveNetworkResponseToDb(convertRemoteTypeToDbType((ApiSuccessResponse<RemoteType>) response));
+                    saveResponseToDb(convertRemoteTypeToDbType((ApiSuccessResponse<RemoteType>) response));
                     ServiceLocator.getExecutor(ExecutorType.MainThread).execute(() -> {
                         // we specially request a new live data,
                         // otherwise we will get immediately last cached value,
@@ -121,7 +121,7 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType> exten
     protected void onFetchFailed() {}
 
     @WorkerThread
-    protected abstract void saveNetworkResponseToDb(RemoteType item);
+    protected abstract void saveResponseToDb(DbType item);
 
     @MainThread
     protected abstract boolean shouldFetch(DbType data);
@@ -137,5 +137,5 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType> exten
 
     protected abstract ResultType convertDbTypeToResultType(DbType item);
 
-    protected abstract RemoteType convertRemoteTypeToDbType(ApiSuccessResponse<RemoteType> response);
+    protected abstract DbType convertRemoteTypeToDbType(ApiSuccessResponse<RemoteType> response);
 }

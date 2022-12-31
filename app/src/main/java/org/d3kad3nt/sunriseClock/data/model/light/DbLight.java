@@ -4,11 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
+import org.jetbrains.annotations.Contract;
 
 
 @Entity(tableName = DbLight.TABLENAME,
@@ -22,130 +22,119 @@ import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
                 onDelete = ForeignKey.CASCADE))
 public class DbLight {
 
-    @PrimaryKey(autoGenerate = true)
-    public long lightId;
+    public static final String TABLENAME = "DbLight";
 
-    public static final String TABLENAME = "light";
+    @PrimaryKey(autoGenerate = true)
+    private long lightId;
 
     /**
      * Foreign key of the remote endpoint that this DbLight belongs to.
      * Only one endpoint light id (specific for that endpoint!) can exist for a single endpoint.
      */
     @ColumnInfo(name = "endpointId")
-    private long endpointId;
-
+    private final long endpointId;
     /**
      * Id for this DbLight inside (!) the remote endpoint. This field helps the remote endpoint
      * to identify the correct DbLight.
      */
-    @NonNull
     @ColumnInfo(name = "endpointLightId")
-    private String endpointLightId;
+    private final String endpointLightId;
 
     @ColumnInfo(name = "friendlyName")
-    private String friendlyName = "";
+    private final String name;
 
     @ColumnInfo(name = "isSwitchable")
-    public boolean switchable = false;
+    private final boolean isSwitchable;
     @ColumnInfo(name = "on")
-    protected boolean on;
+    private final boolean isOn;
 
     @ColumnInfo(name = "isDimmable")
-    public boolean dimmable = false;
+    private final boolean isDimmable;
     @ColumnInfo(name = "brightness")
-    private int brightness; //TODO: Create contract for allowed values.
+    private final int brightness; //TODO: Create contract for allowed values.
 
     @ColumnInfo(name = "isTemperaturable")
-    public boolean temperaturable = false;
+    private final boolean isTemperaturable;
     @ColumnInfo(name = "colorTemperature")
-    private int colorTemperature; //TODO: Create contract for allowed values.
+    private final int colorTemperature; //TODO: Create contract for allowed values.
 
     @ColumnInfo(name = "isColorable")
-    public boolean colorable = false;
+    private final boolean isColorable;
     @ColumnInfo(name = "color")
-    private int color; //TODO: Create contract for allowed values.
+    private final int color; //TODO: Create contract for allowed values.
 
-    public DbLight(long endpointId, @NonNull String endpointLightId, String friendlyName, boolean switchable, boolean dimmable, boolean temperaturable, boolean colorable) {
+    // Has to be public for Room to be able to create an object from the database's data
+    public DbLight(long endpointId, String endpointLightId, String name, boolean isSwitchable, boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature, boolean isColorable, int color) {
         this.endpointId = endpointId;
         this.endpointLightId = endpointLightId;
-
-        this.friendlyName = friendlyName;
-
-        this.switchable = switchable;
-        this.dimmable = dimmable;
-        this.temperaturable = temperaturable;
-        this.colorable = colorable;
-    }
-
-    @Ignore
-    public DbLight(long endpointId, @NonNull String endpointLightId) {
-        this.endpointId = endpointId;
-        this.endpointLightId = endpointLightId;
-    }
-
-    @Ignore
-    public DbLight(long endpointId) {
-        this.endpointId = endpointId;
+        this.name = name;
+        this.isSwitchable = isSwitchable;
+        this.isOn = isOn;
+        this.isDimmable = isDimmable;
+        this.brightness = brightness;
+        this.isTemperaturable = isTemperaturable;
+        this.colorTemperature = colorTemperature;
+        this.isColorable = isColorable;
+        this.color = color;
     }
 
     public long getLightId(){
         return lightId;
     }
 
-    @NonNull
+    public long getEndpointId() {
+        return endpointId;
+    }
+
     public String getEndpointLightId() {
         return endpointLightId;
     }
 
-    public void setEndpointLightId(@NonNull String endpointLightId) {
-        this.endpointLightId = endpointLightId;
+    public String getName() {
+        return name;
     }
 
-    public void setFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
+    public boolean getIsSwitchable() {
+        return isSwitchable;
     }
 
-    public String getFriendlyName() {
-        return friendlyName;
+    public boolean getIsOn() {
+        return isOn;
     }
 
-    public boolean isOn() {
-        return this.on;
-    }
-
-    public void setOn(boolean on) {
-        this.on = on;
+    public boolean getIsDimmable() {
+        return isDimmable;
     }
 
     public int getBrightness() {
-        return this.brightness;
+        return brightness;
     }
 
-    public void setBrightness(int brightness) {
-        this.brightness = brightness;
+    public boolean getIsTemperaturable() {
+        return isTemperaturable;
     }
 
     public int getColorTemperature() {
-        return this.colorTemperature;
+        return colorTemperature;
     }
 
-    public void setColorTemperature(int colorTemperature) {
-        this.colorTemperature = colorTemperature;
+    public boolean getIsColorable() {
+        return isColorable;
     }
 
     public int getColor() {
-        return this.color;
+        return color;
     }
 
-    public void setColor(int color) {
-        this.color = color;
+    // Has to be public for Room to be able to set the (auto-generated) primary key
+    public void setLightId(long lightId) {
+        this.lightId = lightId;
     }
 
-    public long getEndpointId() {
-        return this.endpointId;
-    }
-
-    public void setEndpointId(long endpointId) {
-        this.endpointId = endpointId;
+    @NonNull
+    @Contract("_ -> new")
+    public static DbLight from(@NonNull RemoteLight remoteLight) {
+        //Todo: Logic to convert remote light to db light
+        return new DbLight(remoteLight.getEndpointId(), remoteLight.getEndpointLightId(), remoteLight.getName(), remoteLight.getIsSwitchable(), remoteLight.getIsOn(), remoteLight.getIsDimmable(), remoteLight.getBrightness(), remoteLight.getIsTemperaturable(), remoteLight.getColorTemperature(), remoteLight.getIsColorable(), remoteLight.getColor());
     }
 }

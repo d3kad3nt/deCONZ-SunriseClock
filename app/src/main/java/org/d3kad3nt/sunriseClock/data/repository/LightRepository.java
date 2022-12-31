@@ -11,6 +11,7 @@ import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.DbLightDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
+import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
@@ -61,7 +62,7 @@ public class LightRepository {
             Resource<List<UILight>> resource = Resource.error("Endpoint doesn't exist",null);
             return new MutableLiveData<>(resource);
         }
-        return new NetworkBoundResource<List<UILight>, List<DbLight>, List<DbLight>>() {
+        return new NetworkBoundResource<List<UILight>, List<RemoteLight>, List<DbLight>>() {
 
             @NonNull
             @Override
@@ -71,7 +72,7 @@ public class LightRepository {
 
             @NotNull
             @Override
-            protected LiveData<ApiResponse<List<DbLight>>> loadFromNetwork() {
+            protected LiveData<ApiResponse<List<RemoteLight>>> loadFromNetwork() {
                 return endpoint.getLights();
             }
 
@@ -85,8 +86,12 @@ public class LightRepository {
             }
 
             @Override
-            protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<DbLight>> response) {
-                return response.getBody();
+            protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteLight>> response) {
+                List<DbLight> lights = new ArrayList<>();
+                for (RemoteLight light : response.getBody()) {
+                    lights.add(DbLight.from(light));
+                }
+                return lights;
             }
 
             @NotNull
@@ -104,7 +109,7 @@ public class LightRepository {
             }
 
             @Override
-            protected void saveNetworkResponseToDb(List<DbLight> items) {
+            protected void saveResponseToDb(List<DbLight> items) {
                 for (DbLight light : items) {
                     dbLightDao.upsert(light);
                 }
@@ -113,7 +118,7 @@ public class LightRepository {
     }
 
     public LiveData<Resource<UILight>> getLight(long lightId) {
-        return new NetworkBoundResource<UILight, DbLight, DbLight>() {
+        return new NetworkBoundResource<UILight, RemoteLight, DbLight>() {
 
             @NonNull
             @Override
@@ -123,7 +128,7 @@ public class LightRepository {
 
             @NotNull
             @Override
-            protected LiveData<ApiResponse<DbLight>> loadFromNetwork() {
+            protected LiveData<ApiResponse<RemoteLight>> loadFromNetwork() {
                 return endpoint.getLight(dbObject.getEndpointLightId());
             }
 
@@ -133,8 +138,8 @@ public class LightRepository {
             }
 
             @Override
-            protected DbLight convertRemoteTypeToDbType(ApiSuccessResponse<DbLight> response) {
-                return response.getBody();
+            protected DbLight convertRemoteTypeToDbType(ApiSuccessResponse<RemoteLight> response) {
+                return DbLight.from(response.getBody());
             }
 
             @NotNull
@@ -150,10 +155,10 @@ public class LightRepository {
             }
 
             @Override
-            protected void saveNetworkResponseToDb(DbLight item) {
+            protected void saveResponseToDb(DbLight item) {
                 // The primary key lightId is not known to the remote endpoint, but it is known to us.
                 // Set the lightId to enable direct update/insert via primary key (instead of endpointId and endpointLightId) through Room.
-                item.lightId = lightId;
+                //item.lightId = lightId;
                 dbLightDao.upsert(item);
             }
         };

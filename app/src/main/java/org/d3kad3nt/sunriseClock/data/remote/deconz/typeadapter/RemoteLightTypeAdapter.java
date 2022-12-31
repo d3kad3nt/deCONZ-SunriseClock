@@ -8,14 +8,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
+import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
+import org.d3kad3nt.sunriseClock.data.model.light.RemoteLightBuilder;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.IServices;
 
 import java.lang.reflect.Type;
 
-public class BaseLightTypeAdapter implements JsonDeserializer<DbLight> {
+public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
 
-    private static final String TAG = "BaseLightTypeAdapter";
+    private static final String TAG = "RemoteLightTypeAdapter";
 
     private final long endpointId;
 
@@ -26,14 +27,15 @@ public class BaseLightTypeAdapter implements JsonDeserializer<DbLight> {
      *                   not part of the JSON response, therefore it has to be set manually for a
      *                   specific DbLight when deserializing it.
      */
-    public BaseLightTypeAdapter(long endpointId) {
+    public RemoteLightTypeAdapter(long endpointId) {
         this.endpointId = endpointId;
     }
 
     @Override
-    public DbLight deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public RemoteLight deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 
-        DbLight deserializedLight = new DbLight(this.endpointId);
+        RemoteLightBuilder remoteLightBuilder = new RemoteLightBuilder()
+                .setEndpointId(this.endpointId);
 
         Log.d(TAG, "Parsing JSON for single light: " + json.toString());
 
@@ -45,38 +47,36 @@ public class BaseLightTypeAdapter implements JsonDeserializer<DbLight> {
         // the original request. A okHttp interceptor is used to modify the JSON response from the
         // Deconz endpoint and adds this light id.
         if (rawJson.has(IServices.endpointLightIdHeader)) {
-            deserializedLight.setEndpointLightId(rawJson.get(IServices.endpointLightIdHeader).getAsString());
+            remoteLightBuilder = remoteLightBuilder.setEndpointLightId(rawJson.get(IServices.endpointLightIdHeader).getAsString());
         }
 
         if (rawJson.has("name")) {
-            deserializedLight.setFriendlyName( rawJson.get("name").getAsString());
+            remoteLightBuilder = remoteLightBuilder.setName(rawJson.get("name").getAsString());
         }
 
         if (rawJsonState.has("on")) {
-            deserializedLight.switchable = true;
-            deserializedLight.setOn(rawJsonState.get("on").getAsBoolean());
+            remoteLightBuilder = remoteLightBuilder.setIsSwitchable(true)
+                    .setIsOn(rawJsonState.get("on").getAsBoolean());
         }
 
         if (rawJsonState.has("bri")) {
-            deserializedLight.dimmable = true;
-            //Deconz returns a value between 0 and 255 and baseLight uses a value between 0 and 1
-            deserializedLight.setBrightness(rawJsonState.get("bri").getAsInt()/255);
+            remoteLightBuilder = remoteLightBuilder.setIsDimmable(true)
+                    .setBrightness(rawJsonState.get("bri").getAsInt());
         }
 
         if (rawJsonState.has("colormode")) {
             switch (rawJsonState.get("colormode").getAsString()) {
                 case "ct":
-                    deserializedLight.temperaturable = true;
-                    deserializedLight.setColorTemperature(rawJsonState.get("ct").getAsInt());
+                    remoteLightBuilder = remoteLightBuilder.setIsTemperaturable(true)
+                                    .setColorTemperature(rawJsonState.get("ct").getAsInt());
                 case "xy":
-                    deserializedLight.colorable = true;
-                    //TODO: deserializedLight.setColor();
+                    remoteLightBuilder = remoteLightBuilder.setIsColorable(true);
+                    //TODO: .setColor();
                 case "hs":
-                    deserializedLight.colorable = true;
-                    //TODO: deserializedLight.setColor();
+                    remoteLightBuilder = remoteLightBuilder.setIsColorable(true);
+                    //TODO: .setColor();
             }
         }
-
-        return deserializedLight;
+        return remoteLightBuilder.build();
     }
 }

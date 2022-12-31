@@ -14,10 +14,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
-import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
+import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
-import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.BaseLightListTypeAdapter;
-import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.BaseLightTypeAdapter;
+import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.RemoteLightListTypeAdapter;
+import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.RemoteLightTypeAdapter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -71,12 +71,12 @@ public class DeconzEndpoint extends BaseEndpoint {
                 .appendEncodedPath(apiKey + "/")
                 .build();
         //Gson has to be instructed to use our custom type adapter for a list of light.
-        Type baseLightType = new TypeToken<DbLight>() {}.getType();
-        Type baseLightListType = new TypeToken<List<DbLight>>() {}.getType();
+        Type remoteLightType = new TypeToken<RemoteLight>() {}.getType();
+        Type remoteLightListType = new TypeToken<List<RemoteLight>>() {}.getType();
 
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(baseLightType, new BaseLightTypeAdapter(super.getOriginalEndpointConfig().getId()))
-                .registerTypeAdapter(baseLightListType, new BaseLightListTypeAdapter(super.getOriginalEndpointConfig().getId()))
+                .registerTypeAdapter(remoteLightType, new RemoteLightTypeAdapter(super.getOriginalEndpointConfig().getId()))
+                .registerTypeAdapter(remoteLightListType, new RemoteLightListTypeAdapter(super.getOriginalEndpointConfig().getId()))
                 .create();
 
         // Debugging HTTP interceptor for underlying okHttp library.
@@ -140,13 +140,13 @@ public class DeconzEndpoint extends BaseEndpoint {
     }
 
     @Override
-    public LiveData<ApiResponse<List<DbLight>>> getLights() {
+    public LiveData<ApiResponse<List<RemoteLight>>> getLights() {
         Log.d(TAG, "Requesting all lights from endpoint: " + this.baseUrl);
         return this.retrofit.getLights();
     }
 
     @Override
-    public LiveData<ApiResponse<DbLight>> getLight(String id) {
+    public LiveData<ApiResponse<RemoteLight>> getLight(String id) {
         Log.d(TAG, "Requesting single light with id " + id + " from endpoint: " + this.baseUrl);
 
         // Workaround: Deconz endpoint does not return the id of a light when requesting a single

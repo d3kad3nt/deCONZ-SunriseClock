@@ -10,19 +10,20 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
+import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
+import org.d3kad3nt.sunriseClock.data.model.light.RemoteLightBuilder;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseLightListTypeAdapter implements JsonDeserializer<List<DbLight>> {
+public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteLight>> {
 
-    private static final String TAG = "BaseLightListTypeAdapt.";
+    private static final String TAG = "RemoteLightListTypeAda.";
 
-    private long endpointId;
+    private final long endpointId;
 
-    private Gson gson;
+    private final Gson gson;
 
     /**
      * Custom type adapter for usage with Gson.
@@ -31,18 +32,18 @@ public class BaseLightListTypeAdapter implements JsonDeserializer<List<DbLight>>
      *                   not part of the JSON response, therefore it has to be set manually for a
      *                   specific DbLight when deserializing it.
      */
-    public BaseLightListTypeAdapter(long endpointId) {
+    public RemoteLightListTypeAdapter(long endpointId) {
         this.endpointId = endpointId;
 
         this.gson = new GsonBuilder()
-                .registerTypeAdapter(DbLight.class, new BaseLightTypeAdapter(endpointId))
+                .registerTypeAdapter(RemoteLight.class, new RemoteLightTypeAdapter(endpointId))
                 .create();
     }
 
     @Override
-    public List<DbLight> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public List<RemoteLight> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject rawJson = json.getAsJsonObject();
-        List<DbLight> lights = new ArrayList<>();
+        List<RemoteLight> lights = new ArrayList<>();
 
         Log.d(TAG, "Parsing JSON for list of lights: " + rawJson.toString());
 
@@ -50,16 +51,16 @@ public class BaseLightListTypeAdapter implements JsonDeserializer<List<DbLight>>
             JsonElement jsonLight = rawJson.get(lightId);
 
             // Returns a single light by calling the already existing Gson typeadapter.
-            DbLight light = gson.fromJson(jsonLight.getAsJsonObject(), DbLight.class);
+            RemoteLight light = gson.fromJson(jsonLight.getAsJsonObject(), RemoteLight.class);
 
-            // Postprocessing: Manipulate returned DbLight to include all required
-            // (non-automatically deserialized) fields.
-            light.setEndpointLightId(lightId);
-            light.setEndpointId(this.endpointId);
+            // Postprocessing: Manipulate returned light to include all required (non-automatically deserialized) fields.
+            RemoteLight modifiedLight = new RemoteLightBuilder(light)
+                    .setEndpointLightId(lightId)
+                    .setEndpointId(this.endpointId)
+                    .build();
 
-            lights.add(light);
+            lights.add(modifiedLight);
         }
-
         return lights;
     }
 }

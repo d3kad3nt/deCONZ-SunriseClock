@@ -44,6 +44,6 @@ public class UILight {
     @Contract("_ -> new")
     public static UILight from(@NonNull DbLight dbLight) {
         //Todo: Logic to convert db light to UI light
-        return new UILight(dbLight.getFriendlyName(), dbLight.getLightId(), dbLight.isOn());
+        return new UILight(dbLight.getName(), dbLight.getLightId(), dbLight.getIsOn());
     }
 }
