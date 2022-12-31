@@ -21,8 +21,6 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
 
     private static final String TAG = "RemoteLightListTypeAda.";
 
-    private final long endpointId;
-
     private final Gson gson;
 
     /**
@@ -30,11 +28,9 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
      *
      * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is
      *                   not part of the JSON response, therefore it has to be set manually for a
-     *                   specific DbLight when deserializing it.
+     *                   specific RemoteLight when deserializing it.
      */
     public RemoteLightListTypeAdapter(long endpointId) {
-        this.endpointId = endpointId;
-
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(RemoteLight.class, new RemoteLightTypeAdapter(endpointId))
                 .create();
@@ -56,7 +52,6 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
             // Postprocessing: Manipulate returned light to include all required (non-automatically deserialized) fields.
             RemoteLight modifiedLight = new RemoteLightBuilder(light)
                     .setEndpointLightId(lightId)
-                    .setEndpointId(this.endpointId)
                     .build();
 
             lights.add(modifiedLight);
