@@ -122,9 +122,10 @@ public class RemoteLight {
     @NonNull
     @Contract("_ -> new")
     static DbLight toDbLight(RemoteLight remoteLight) {
+        Log.d(TAG, "Converting RemoteLight to DbLight...");
         DbLightBuilder dbLightBuilder = new DbLightBuilder();
         //Logic to convert remote light to db light depending on the endpoint type this light originated from.
-        return dbLightBuilder.setEndpointId(remoteLight.getEndpointId())
+         DbLight dbLight = dbLightBuilder.setEndpointId(remoteLight.getEndpointId())
                 .setEndpointLightId(remoteLight.getEndpointLightId())
                 .setName(remoteLight.getName())
                 .setIsSwitchable(remoteLight.getIsSwitchable())
@@ -137,5 +138,7 @@ public class RemoteLight {
                 .setIsColorable(remoteLight.getIsColorable())
                 .setColor(remoteLight.getColor()) //Todo: Implement conversion
                 .build();
+        Log.d(TAG, "Converted RemoteLight with endpointId " + remoteLight.getEndpointId() + " and endpointLightId " + remoteLight.getEndpointLightId() + " to DbLight.");
+        return dbLight;
         }
     }
