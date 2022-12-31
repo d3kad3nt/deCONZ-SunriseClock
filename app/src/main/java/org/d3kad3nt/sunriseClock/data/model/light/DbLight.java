@@ -1,5 +1,7 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -21,6 +23,9 @@ import org.jetbrains.annotations.Contract;
                 childColumns = "endpoint_id",
                 onDelete = ForeignKey.CASCADE))
 public class DbLight {
+
+    @Ignore
+    private static final String TAG = "DbLight";
 
     @Ignore
     public static final String TABLENAME = "light";
@@ -74,6 +79,7 @@ public class DbLight {
             this.endpointId = endpointId;
         }
         else {
+            Log.e(TAG, "The given endpointId cannot be 0!");
             throw new IllegalArgumentException("The given endpointId cannot be 0!");
         }
 
@@ -81,6 +87,7 @@ public class DbLight {
             this.endpointLightId = endpointLightId;
         }
         else {
+            Log.e(TAG, "The given endpointLightId string cannot be null or empty!");
             throw new IllegalArgumentException("The given endpointLightId string cannot be null or empty!");
         }
 
