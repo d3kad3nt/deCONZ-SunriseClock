@@ -58,55 +58,7 @@ public class RemoteLightBuilder {
         }
         return new RemoteLight(this.endpointType, this.endpointId, this.endpointLightId, this.name, this.isSwitchable, this.isOn, this.isDimmable, this.brightness, this.isTemperaturable, this.colorTemperature, this.isColorable, this.color);
     }
-
-    public EndpointType getEndpointType() {
-        return endpointType;
-    }
-
-    public long getEndpointId() {
-        return endpointId;
-    }
-
-    public String getEndpointLightId() {
-        return endpointLightId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public boolean getIsSwitchable() {
-        return isSwitchable;
-    }
-
-    public boolean getIsOn() {
-        return isOn;
-    }
-
-    public boolean getIsDimmable() {
-        return isDimmable;
-    }
-
-    public int getBrightness() {
-        return brightness;
-    }
-
-    public boolean getIsTemperaturable() {
-        return isTemperaturable;
-    }
-
-    public int getColorTemperature() {
-        return colorTemperature;
-    }
-
-    public boolean getIsColorable() {
-        return isColorable;
-    }
-
-    public int getColor() {
-        return color;
-    }
-
+    
     public RemoteLightBuilder setEndpointType(EndpointType endpointType) {
         this.endpointType = endpointType;
         return this;
