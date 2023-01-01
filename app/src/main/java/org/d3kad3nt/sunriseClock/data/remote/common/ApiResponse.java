@@ -18,7 +18,7 @@ import retrofit2.Response;
  */
 public abstract class ApiResponse <T> {
 
-    public static ApiResponse create(Throwable error) {
+    public static <T> ApiResponse<T> create(Throwable error) {
         if (error.getMessage() != null) {
             return new ApiErrorResponse<>(error.getMessage());
         }

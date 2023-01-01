@@ -39,7 +39,7 @@ class LiveDataCallAdapter <T> implements CallAdapter<T, LiveData<ApiResponse<T>>
     @Override
     public LiveData<ApiResponse<T>> adapt(@NonNull Call<T> call) {
         return new LiveData<ApiResponse<T>>() {
-            AtomicBoolean started = new AtomicBoolean(false);
+            final AtomicBoolean started = new AtomicBoolean(false);
 
             @Override
             protected void onActive() {
