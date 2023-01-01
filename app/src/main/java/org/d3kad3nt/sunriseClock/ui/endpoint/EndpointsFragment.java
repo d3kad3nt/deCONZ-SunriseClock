@@ -19,24 +19,22 @@ import org.d3kad3nt.sunriseClock.databinding.EndpointsFragmentBinding;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link EndpointsFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * A simple {@link Fragment} subclass. Use the {@link EndpointsFragment#newInstance} factory method
+ * to create an instance of this fragment.
  */
 public class EndpointsFragment extends Fragment {
 
     private static final String TAG = "EndpointsFragment";
     private EndpointsViewModel viewModel;
 
-    private  EndpointsListAdapter adapter;
+    private EndpointsListAdapter adapter;
 
     public static EndpointsFragment newInstance() {
         return new EndpointsFragment();
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         EndpointsFragmentBinding binding = EndpointsFragmentBinding.inflate(inflater, container, false);
         adapter = new EndpointsListAdapter();
         binding.recyclerView.setAdapter(adapter);
@@ -46,8 +44,9 @@ public class EndpointsFragment extends Fragment {
             public void onChanged(List<IEndpointUI> endpointConfigList) {
                 if (!endpointConfigList.isEmpty()) {
                     adapter.submitList(endpointConfigList);
-                } else { 
-                    Log.d(TAG,"No Endpoints found");
+                }
+                else {
+                    Log.d(TAG, "No Endpoints found");
                 }
             }
         });
@@ -59,8 +58,7 @@ public class EndpointsFragment extends Fragment {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(
-                        EndpointsFragmentDirections.actionEndpointsToEndpointAddFragment());
+                Navigation.findNavController(v).navigate(EndpointsFragmentDirections.actionEndpointsToEndpointAddFragment());
             }
         });
     }

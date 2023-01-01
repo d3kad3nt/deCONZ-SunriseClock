@@ -30,16 +30,17 @@ import okhttp3.ResponseBody;
  */
 public class LightRepository {
 
-    private static DbLightDao dbLightDao;
     private final static String TAG = "LightRepository";
+    private static DbLightDao dbLightDao;
     private static volatile LightRepository INSTANCE;
     private final EndpointRepository endpointRepo;
 
     /**
-     * Using singleton pattern as of now. With dependency injection (Dagger, ...) this class could be mocked when unit testing.
+     * Using singleton pattern as of now. With dependency injection (Dagger, ...) this class could
+     * be mocked when unit testing.
      * TODO: Dependency Injection, optional
      */
-    private LightRepository (Context context) {
+    private LightRepository(Context context) {
         dbLightDao = AppDatabase.getInstance(context.getApplicationContext()).dbLightDao();
         endpointRepo = EndpointRepository.getInstance(context);
     }
@@ -58,16 +59,38 @@ public class LightRepository {
     public LiveData<Resource<List<UILight>>> getLightsForEndpoint(long endpointId) {
         try {
             endpointRepo.getEndpoint(endpointId);
-        }catch (NullPointerException e) {
-            Resource<List<UILight>> resource = Resource.error("Endpoint doesn't exist",null);
+        }
+        catch (NullPointerException e) {
+            Resource<List<UILight>> resource = Resource.error("Endpoint doesn't exist", null);
             return new MutableLiveData<>(resource);
         }
         return new NetworkBoundResource<List<UILight>, List<RemoteLight>, List<DbLight>>() {
+
+            @Override
+            protected void saveResponseToDb(List<DbLight> items) {
+                for (DbLight light : items) {
+                    dbLightDao.upsert(light);
+                }
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<DbLight> data) {
+                //TODO
+                return true;
+            }
 
             @NonNull
             @Override
             protected LiveData<BaseEndpoint> loadEndpoint() {
                 return endpointRepo.getRepoEndpoint(endpointId);
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<List<DbLight>> loadFromDb() {
+                return Transformations.map(dbLightDao.loadAllForEndpoint(endpointId), input -> {
+                    return new ArrayList<>(input);
+                });
             }
 
             @NotNull
@@ -93,37 +116,36 @@ public class LightRepository {
                 }
                 return lights;
             }
-
-            @NotNull
-            @Override
-            protected LiveData<List<DbLight>> loadFromDb() {
-                return Transformations.map(dbLightDao.loadAllForEndpoint(endpointId), input -> {
-                    return new ArrayList<>(input);
-                });
-            }
-
-            @Override
-            protected boolean shouldFetch(@Nullable List<DbLight> data) {
-                //TODO
-                return true;
-            }
-
-            @Override
-            protected void saveResponseToDb(List<DbLight> items) {
-                for (DbLight light : items) {
-                    dbLightDao.upsert(light);
-                }
-            }
         };
     }
 
     public LiveData<Resource<UILight>> getLight(long lightId) {
         return new NetworkBoundResource<UILight, RemoteLight, DbLight>() {
 
+            @Override
+            protected void saveResponseToDb(DbLight item) {
+                // The primary key lightId is not known to the remote endpoint, but it is known to us.
+                // Set the lightId to enable direct update/insert via primary key (instead of endpointId and endpointLightId) through Room.
+                item.setLightId(lightId);
+                dbLightDao.upsert(item);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable DbLight data) {
+                //TODO
+                return true;
+            }
+
             @NonNull
             @Override
             protected LiveData<BaseEndpoint> loadEndpoint() {
                 return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<DbLight> loadFromDb() {
+                return dbLightDao.load(lightId);
             }
 
             @NotNull
@@ -140,26 +162,6 @@ public class LightRepository {
             @Override
             protected DbLight convertRemoteTypeToDbType(ApiSuccessResponse<RemoteLight> response) {
                 return DbLight.from(response.getBody());
-            }
-
-            @NotNull
-            @Override
-            protected LiveData<DbLight> loadFromDb() {
-                return dbLightDao.load(lightId);
-            }
-
-            @Override
-            protected boolean shouldFetch(@Nullable DbLight data) {
-                //TODO
-                return true;
-            }
-
-            @Override
-            protected void saveResponseToDb(DbLight item) {
-                // The primary key lightId is not known to the remote endpoint, but it is known to us.
-                // Set the lightId to enable direct update/insert via primary key (instead of endpointId and endpointLightId) through Room.
-                item.setLightId(lightId);
-                dbLightDao.upsert(item);
             }
         };
     }

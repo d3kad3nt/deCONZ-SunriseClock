@@ -10,40 +10,46 @@ import retrofit2.Response;
 
 //TODO: to use this class the subclasses have to be moved to new files because they have to be public.
 
-public abstract class JApiResponse<T> {
+public abstract class JApiResponse <T> {
 
-    public static <T> JApiResponse<T> create(Throwable error){
-        if (error.getMessage() != null){
+    public static <T> JApiResponse<T> create(Throwable error) {
+        if (error.getMessage() != null) {
             return new JApiErrorResponse<>(error.getMessage());
-        }else {
+        }
+        else {
             return new JApiErrorResponse<>("unknown error");
         }
     }
 
-    public static <T> JApiResponse<T> create(final Response<T> response){
-        if (response.isSuccessful()){
+    public static <T> JApiResponse<T> create(final Response<T> response) {
+        if (response.isSuccessful()) {
             final T body = response.body();
-            if ( body == null || response.code() == 204){
+            if (body == null || response.code() == 204) {
                 return new JApiEmptyResponse<>();
-            }else{
+            }
+            else {
                 return new JApiSuccessResponse<>(body);
             }
-        }else{
+        }
+        else {
             String msg = null;
-            if (response.errorBody() != null){
+            if (response.errorBody() != null) {
                 try {
                     msg = response.errorBody().string();
-                } catch (IOException ignored) {}
+                }
+                catch (IOException ignored) {
+                }
             }
             final String errorMsg;
-            if ((msg == null) || msg.isEmpty()){
-                if (response.message().isEmpty())
-                {
+            if ((msg == null) || msg.isEmpty()) {
+                if (response.message().isEmpty()) {
                     errorMsg = "unknown error";
-                }else{
+                }
+                else {
                     errorMsg = response.message();
                 }
-            }else {
+            }
+            else {
                 errorMsg = msg;
             }
             return new JApiErrorResponse<>(errorMsg);
@@ -52,13 +58,14 @@ public abstract class JApiResponse<T> {
     }
 }
 
-class JApiEmptyResponse<T> extends JApiResponse<T>{}
+class JApiEmptyResponse <T> extends JApiResponse<T> {
+}
 
-class JApiErrorResponse<T> extends JApiResponse<T>{
+class JApiErrorResponse <T> extends JApiResponse<T> {
 
     private final String errorMessage;
 
-    public JApiErrorResponse(String errorMessage){
+    public JApiErrorResponse(String errorMessage) {
         this.errorMessage = errorMessage;
     }
 
@@ -67,7 +74,7 @@ class JApiErrorResponse<T> extends JApiResponse<T>{
     }
 }
 
-class JApiSuccessResponse<T> extends JApiResponse<T> {
+class JApiSuccessResponse <T> extends JApiResponse<T> {
     private final T body;
 
     public JApiSuccessResponse(T body) {

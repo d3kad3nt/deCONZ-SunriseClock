@@ -11,8 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import org.d3kad3nt.sunriseClock.databinding.EndpointDetailFragmentBinding;
-import org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailViewModel;
-import org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailViewModelFactory;
 
 public class EndpointDetailFragment extends Fragment {
 

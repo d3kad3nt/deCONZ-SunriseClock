@@ -18,7 +18,7 @@
         android:id="@+id/lightDetail"
         android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment"
         android:label="@string/lightDetail_title"
-        tools:layout="@layout/light_detail_fragment" >
+        tools:layout="@layout/light_detail_fragment">
         <argument
             android:name="Light"
             app:argType="long" />
@@ -44,7 +44,9 @@
         android:id="@+id/connectivityFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preference.ConnectivityFragment"
         android:label="@string/conectivity_settings_title" />
-    <action android:id="@+id/action_global_mainSettingsFragment" app:destination="@id/mainSettingsFragment"/>
+    <action
+        android:id="@+id/action_global_mainSettingsFragment"
+        app:destination="@id/mainSettingsFragment" />
     <fragment
         android:id="@+id/alarmFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preference.AlarmFragment"

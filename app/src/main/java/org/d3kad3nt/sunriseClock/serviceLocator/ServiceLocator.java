@@ -8,20 +8,21 @@ import java.util.concurrent.Executors;
 
 public class ServiceLocator {
 
-    private static EnumCache<ExecutorType,Executor> executors = new EnumCache<>();
+    private static final EnumCache<ExecutorType, Executor> executors = new EnumCache<>();
 
     static {
-        executors.addInstance(ExecutorType.IO,Executors.newSingleThreadExecutor());
+        executors.addInstance(ExecutorType.IO, Executors.newSingleThreadExecutor());
         executors.addInstance(ExecutorType.Network, Executors.newFixedThreadPool(3));
         executors.addInstance(ExecutorType.MainThread, new MainThreadExecutor());
     }
 
-    public static Executor getExecutor(ExecutorType type){
+    public static Executor getExecutor(ExecutorType type) {
         return executors.getInstance(type);
     }
 
-    private static class MainThreadExecutor implements Executor{
-        private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+    private static class MainThreadExecutor implements Executor {
+        private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+
         @Override
         public void execute(Runnable command) {
             mainThreadHandler.post(command);

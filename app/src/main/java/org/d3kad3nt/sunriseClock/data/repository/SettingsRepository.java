@@ -17,12 +17,12 @@ public class SettingsRepository {
     private final SharedPreferences preferences;
 
 
-    private SettingsRepository(Context context){
+    private SettingsRepository(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         liveSharedPreferences = new LiveSharedPreferences(preferences);
     }
 
-    public static SettingsRepository getInstance(Context context){
+    public static SettingsRepository getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (LightRepository.class) {
                 if (INSTANCE == null) {
@@ -33,28 +33,28 @@ public class SettingsRepository {
         return INSTANCE;
     }
 
-    public LivePreference<Boolean> getBooleanSetting(String id){
-        if (!preferences.contains(id)){
+    public LivePreference<Boolean> getBooleanSetting(String id) {
+        if (!preferences.contains(id)) {
             Log.i(TAG, "The Setting " + id + " doesn't exist yet.");
-        };
-        return liveSharedPreferences.getBoolean(id,false);
+        }
+        return liveSharedPreferences.getBoolean(id, false);
     }
 
     public LivePreference<Integer> getIntegerSetting(String id, int defaultValue) {
-        if (!preferences.contains(id)){
+        if (!preferences.contains(id)) {
             Log.i(TAG, "The Setting " + id + " doesn't exist yet.");
-        };
-        return liveSharedPreferences.getInt(id,defaultValue);
+        }
+        return liveSharedPreferences.getInt(id, defaultValue);
     }
 
     public LivePreference<Long> getLongSetting(String id, long defaultValue) {
-        if (!preferences.contains(id)){
+        if (!preferences.contains(id)) {
             Log.i(TAG, "The Setting " + id + " doesn't exist yet.");
-        };
-        return liveSharedPreferences.getLong(id,defaultValue);
+        }
+        return liveSharedPreferences.getLong(id, defaultValue);
     }
 
     public void setSetting(String id, long value) {
-        preferences.edit().putLong(id,value).apply();
+        preferences.edit().putLong(id, value).apply();
     }
 }

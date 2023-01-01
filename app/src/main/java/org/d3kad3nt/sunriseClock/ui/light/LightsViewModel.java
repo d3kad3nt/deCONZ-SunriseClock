@@ -31,7 +31,7 @@ public class LightsViewModel extends AndroidViewModel {
     public LightsViewModel(@NonNull Application application) {
         super(application);
         //TODO use something better
-        LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id",0);
+        LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id", 0);
         lights = Transformations.switchMap(endpointID, endpointId -> {
             return lightRepository.getLightsForEndpoint(endpointId);
         });
@@ -44,11 +44,11 @@ public class LightsViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<Resource<List<UILight>>> getLights(){
+    public LiveData<Resource<List<UILight>>> getLights() {
         return lights;
     }
 
-    public LiveData<List<IEndpointUI>> getEndpoints(){
+    public LiveData<List<IEndpointUI>> getEndpoints() {
         return endpoints;
     }
 

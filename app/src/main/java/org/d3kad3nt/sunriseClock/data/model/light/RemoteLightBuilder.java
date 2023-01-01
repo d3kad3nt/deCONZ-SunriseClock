@@ -64,57 +64,57 @@ public class RemoteLightBuilder {
         return this;
     }
 
-    public RemoteLightBuilder setEndpointId(long endpointId){
+    public RemoteLightBuilder setEndpointId(long endpointId) {
         this.endpointId = endpointId;
         return this;
     }
 
-    public RemoteLightBuilder setEndpointLightId(String endpointLightId){
+    public RemoteLightBuilder setEndpointLightId(String endpointLightId) {
         this.endpointLightId = endpointLightId;
         return this;
     }
 
-    public RemoteLightBuilder setName(String name){
+    public RemoteLightBuilder setName(String name) {
         this.name = name;
         return this;
     }
 
-    public RemoteLightBuilder setIsSwitchable(boolean isSwitchable){
+    public RemoteLightBuilder setIsSwitchable(boolean isSwitchable) {
         this.isSwitchable = isSwitchable;
         return this;
     }
 
-    public RemoteLightBuilder setIsOn(boolean isOn){
+    public RemoteLightBuilder setIsOn(boolean isOn) {
         this.isOn = isOn;
         return this;
     }
 
-    public RemoteLightBuilder setIsDimmable(boolean isDimmable){
+    public RemoteLightBuilder setIsDimmable(boolean isDimmable) {
         this.isDimmable = isDimmable;
         return this;
     }
 
-    public RemoteLightBuilder setBrightness(int brightness){
+    public RemoteLightBuilder setBrightness(int brightness) {
         this.brightness = brightness;
         return this;
     }
 
-    public RemoteLightBuilder setIsTemperaturable(boolean isTemperaturable){
+    public RemoteLightBuilder setIsTemperaturable(boolean isTemperaturable) {
         this.isTemperaturable = isTemperaturable;
         return this;
     }
 
-    public RemoteLightBuilder setColorTemperature(int colorTemperature){
+    public RemoteLightBuilder setColorTemperature(int colorTemperature) {
         this.colorTemperature = colorTemperature;
         return this;
     }
 
-    public RemoteLightBuilder setIsColorable(boolean isColorable){
+    public RemoteLightBuilder setIsColorable(boolean isColorable) {
         this.isColorable = isColorable;
         return this;
     }
 
-    public RemoteLightBuilder setColor(int color){
+    public RemoteLightBuilder setColor(int color) {
         this.color = color;
         return this;
     }

@@ -31,36 +31,32 @@ public class LightDetailViewModel extends AndroidViewModel {
         this.lightID = lightId;
         light = getLight(lightId);
 
-        loadingIndicatorVisibility = new VisibilityLiveData(View.VISIBLE)
-                .setLoadingVisibility(View.VISIBLE)
-                .setSuccessVisibility(View.INVISIBLE)
-                .setErrorVisibility(View.INVISIBLE)
-                .addVisibilityProvider(light);
+        loadingIndicatorVisibility = new VisibilityLiveData(View.VISIBLE).setLoadingVisibility(View.VISIBLE).setSuccessVisibility(View.INVISIBLE).setErrorVisibility(View.INVISIBLE).addVisibilityProvider(light);
     }
 
-    public void setLightOnState(boolean newState){
+    public void setLightOnState(boolean newState) {
         LiveDataUtil.observeOnce(light, lightResource -> {
-           if (lightResource == null || lightResource.getStatus() == Status.LOADING){
-               return;
-           }
+            if (lightResource == null || lightResource.getStatus() == Status.LOADING) {
+                return;
+            }
             LiveData<EmptyResource> state = lightRepository.setOnState(lightID, newState);
             loadingIndicatorVisibility.addVisibilityProvider(state);
 
         });
     }
 
-    public void setLightBrightness(int brightness, boolean changedByUser){
+    public void setLightBrightness(int brightness, boolean changedByUser) {
         Log.d(TAG, "Bright: " + brightness + " " + changedByUser);
-        if (! changedByUser){
+        if (!changedByUser) {
             return;
         }
         // Todo: double?
-        double brightnessPercent =((double) brightness)/100;
+        double brightnessPercent = ((double) brightness) / 100;
         LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightnessPercent);
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 
-    private LiveData<Resource<UILight>> getLight(long lightID){
+    private LiveData<Resource<UILight>> getLight(long lightID) {
         return lightRepository.getLight(lightID);
     }
 }

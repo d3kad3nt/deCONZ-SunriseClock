@@ -21,46 +21,12 @@ public interface DbLightDao {
     String TAG = "DbLightDao";
 
     /**
-     * Insert the light into the database. If there is a conflict on insert, the light is not inserted and a special value is returned.
-     *
-     * @param obj The DbLight object with the endpointId and endpointLightId set.
-     * @return -1 for rows that are not inserted (will ignore the row if there is a conflict), else the row id for the newly inserted item.
-     */
-    @Insert(onConflict = OnConflictStrategy.IGNORE) // An Insert DAO method that returns the inserted rows ids will return -1 for rows that are not inserted since this strategy will ignore the row if there is a conflict.
-    long save(DbLight obj);
-
-    /**
-     * Use lightId primary key for SQL update.
-     * Room uses the primary key to match passed entity instances to rows in the database. If there is no row with the same primary key, Room makes no changes.
-     *
-     * @param obj The DbLight object with the primary key set.
-     * @return Number of rows that were updated successfully.
-     */
-    @Update()
-    int updateUsingPrimaryKey(DbLight obj);
-
-    /**
-     * Use endpointId and endpointLightId for (manual) SQL update statement.
-     *
-     * @return Number of rows that were updated successfully.
-     */
-    @Query("UPDATE " + DbLight.TABLENAME + " SET name = :friendlyName, is_switchable = :switchable, is_on = :on, is_dimmable  = :dimmable, brightness = :brightness, is_temperaturable = :temperaturable, colortemperature = :colorTemperature, is_colorable = :colorable, color = :color WHERE endpoint_id = :endpointId AND endpoint_light_id = :endpointLightId")
-    int updateUsingEndpointIdAndEndpointLightId(long endpointId, String endpointLightId, String friendlyName, boolean switchable, boolean on, boolean dimmable, int brightness, boolean temperaturable, int colorTemperature, boolean colorable, int color);
-
-    @Delete()
-    void delete(DbLight obj);
-
-    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE light_id = :lightId")
-    LiveData<DbLight> load(long lightId);
-
-    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE endpoint_id = :endpointId")
-    LiveData<List<DbLight>> loadAllForEndpoint(long endpointId);
-
-    /**
-     * Insert light object into the database (create) or update existing light object.
-     * Case 1: Insert if neither lightId (primary key) nor (endpointId and endpointLightId) are found inside the database.
-     * Case 2: Update if lightId (primary key) is given in the light object. A light with this lightId must already exist inside the database.
-     * Case 3: Update if endpointId and endpointLightId are given in the light object. A light with this endpointId and endpointLightId must already exist inside the database.
+     * Insert light object into the database (create) or update existing light object. Case 1:
+     * Insert if neither lightId (primary key) nor (endpointId and endpointLightId) are found inside
+     * the database. Case 2: Update if lightId (primary key) is given in the light object. A light
+     * with this lightId must already exist inside the database. Case 3: Update if endpointId and
+     * endpointLightId are given in the light object. A light with this endpointId and
+     * endpointLightId must already exist inside the database.
      *
      * @param obj The DbLight object with the lightId OR (endpointId and endpointLightId) set.
      */
@@ -95,4 +61,44 @@ public interface DbLightDao {
             Log.w(TAG, "Neither lightId nor (endpointId and endpointLightId) were set. No update could be performed by room!");
         }
     }
+
+    /**
+     * Insert the light into the database. If there is a conflict on insert, the light is not
+     * inserted and a special value is returned.
+     *
+     * @param obj The DbLight object with the endpointId and endpointLightId set.
+     * @return -1 for rows that are not inserted (will ignore the row if there is a conflict), else
+     * the row id for the newly inserted item.
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    // An Insert DAO method that returns the inserted rows ids will return -1 for rows that are not inserted since this strategy will ignore the row if there is a conflict.
+    long save(DbLight obj);
+
+    /**
+     * Use lightId primary key for SQL update. Room uses the primary key to match passed entity
+     * instances to rows in the database. If there is no row with the same primary key, Room makes
+     * no changes.
+     *
+     * @param obj The DbLight object with the primary key set.
+     * @return Number of rows that were updated successfully.
+     */
+    @Update()
+    int updateUsingPrimaryKey(DbLight obj);
+
+    /**
+     * Use endpointId and endpointLightId for (manual) SQL update statement.
+     *
+     * @return Number of rows that were updated successfully.
+     */
+    @Query("UPDATE " + DbLight.TABLENAME + " SET name = :friendlyName, is_switchable = :switchable, is_on = :on, is_dimmable  = :dimmable, brightness = :brightness, is_temperaturable = :temperaturable, colortemperature = :colorTemperature, is_colorable = :colorable, color = :color WHERE endpoint_id = :endpointId AND endpoint_light_id = :endpointLightId")
+    int updateUsingEndpointIdAndEndpointLightId(long endpointId, String endpointLightId, String friendlyName, boolean switchable, boolean on, boolean dimmable, int brightness, boolean temperaturable, int colorTemperature, boolean colorable, int color);
+
+    @Delete()
+    void delete(DbLight obj);
+
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE light_id = :lightId")
+    LiveData<DbLight> load(long lightId);
+
+    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE endpoint_id = :endpointId")
+    LiveData<List<DbLight>> loadAllForEndpoint(long endpointId);
 }

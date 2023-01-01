@@ -18,11 +18,12 @@ public class LightDetailViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.equals(LightDetailViewModel.class)){
+        if (modelClass.equals(LightDetailViewModel.class)) {
             //This Cast is checked with the previous if statement.
             //noinspection unchecked
             return (T) new LightDetailViewModel(mApplication, mId);
-        }else{
+        }
+        else {
             throw new UnsupportedOperationException("This Factory can only create LightDetailViewModel instances");
         }
     }

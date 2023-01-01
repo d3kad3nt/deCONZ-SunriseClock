@@ -15,7 +15,7 @@ public class UIEndpoint implements IEndpointUI {
 
     @NonNull
     @Contract("_ -> new")
-    public static UIEndpoint from(@NonNull EndpointConfig baseEndpoint){
+    public static UIEndpoint from(@NonNull EndpointConfig baseEndpoint) {
         return new UIEndpoint(baseEndpoint.toString(), baseEndpoint.getId());
     }
 

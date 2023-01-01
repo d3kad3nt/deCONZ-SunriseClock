@@ -10,15 +10,15 @@ public class EmptyResource extends Resource<Empty> {
         super(status, Empty.getInstance(), message);
     }
 
-    public static EmptyResource success(@Nullable String message){
+    public static EmptyResource success(@Nullable String message) {
         return new EmptyResource(Status.SUCCESS, message);
     }
 
-    public static EmptyResource error(String message){
+    public static EmptyResource error(String message) {
         return new EmptyResource(Status.ERROR, message);
     }
 
-    public static EmptyResource loading(String message){
+    public static EmptyResource loading(String message) {
         return new EmptyResource(Status.LOADING, message);
     }
 

@@ -25,7 +25,7 @@ public class EndpointsViewModel extends AndroidViewModel {
     public EndpointsViewModel(@NonNull Application application) {
         super(application);
         //TODO use something better
-        LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id",0);
+        LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id", 0);
         endpoints = endpointRepository.getAllEndpoints();
         selectedEndpoint = Transformations.switchMap(endpointID, new Function<Long, LiveData<IEndpointUI>>() {
             @Override
@@ -35,7 +35,7 @@ public class EndpointsViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<List<IEndpointUI>> getEndpoints(){
+    public LiveData<List<IEndpointUI>> getEndpoints() {
         return endpoints;
     }
 

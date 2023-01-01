@@ -14,7 +14,8 @@
             android:layout_height="wrap_content"
             android:hint="Name"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayoutSpecificEndpoint">
-            <com.google.android.material.textfield.TextInputEditText
+
+        <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/endpointName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

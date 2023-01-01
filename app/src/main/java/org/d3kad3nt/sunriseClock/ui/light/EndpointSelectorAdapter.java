@@ -21,9 +21,9 @@ public class EndpointSelectorAdapter extends ArrayAdapter<IEndpointUI> {
         super(context, resource);
     }
 
-    public void submitCollection(Collection<IEndpointUI> configList){
+    public void submitCollection(Collection<IEndpointUI> configList) {
         clear();
-        for (IEndpointUI config: configList){
+        for (IEndpointUI config : configList) {
             add(config);
         }
     }

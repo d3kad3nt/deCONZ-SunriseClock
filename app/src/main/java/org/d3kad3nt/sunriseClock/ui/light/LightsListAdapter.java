@@ -26,8 +26,7 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LightListElementBinding.inflate(
-                LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(LightListElementBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
@@ -38,8 +37,7 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
     }
 
     private View.OnClickListener createOnClickListener(long lightID) {
-        return v -> Navigation.findNavController(v).navigate(
-                LightsFragmentDirections.actionLightsToLightDetail(lightID));
+        return v -> Navigation.findNavController(v).navigate(LightsFragmentDirections.actionLightsToLightDetail(lightID));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -60,7 +58,8 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
     static class LightDiffCallback extends DiffUtil.ItemCallback<UILight> {
 
         /**
-         * Used to determine structural changes between old and new list (additions/removals/position changes).
+         * Used to determine structural changes between old and new list
+         * (additions/removals/position changes).
          */
         @Override
         public boolean areItemsTheSame(@NonNull UILight oldItem, @NonNull UILight newItem) {
@@ -68,7 +67,8 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         }
 
         /**
-         * Determines if the particular item was updated. Only called when {@link LightsListAdapter.LightDiffCallback#areItemsTheSame} returned true.
+         * Determines if the particular item was updated. Only called when {@link
+         * LightsListAdapter.LightDiffCallback#areItemsTheSame} returned true.
          */
         @Override
         public boolean areContentsTheSame(@NonNull UILight oldItem, @NonNull UILight newItem) {

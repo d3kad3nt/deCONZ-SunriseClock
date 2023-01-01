@@ -20,7 +20,7 @@ public class EndpointDetailViewModel extends AndroidViewModel {
         endpointConfig = getEndpoint(endpointId);
     }
 
-    private LiveData<IEndpointUI> getEndpoint(long endpointID){
+    private LiveData<IEndpointUI> getEndpoint(long endpointID) {
         return endpointRepository.getEndpoint(endpointID);
     }
 }

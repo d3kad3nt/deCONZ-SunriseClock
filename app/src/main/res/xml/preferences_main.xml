@@ -3,22 +3,22 @@
 
     <Preference
         app:fragment="org.d3kad3nt.sunriseClock.ui.preferences.ConnectivityFragment"
-        app:title="@string/network"
-        app:key="pref_connectivity_category" />
+        app:key="pref_connectivity_category"
+        app:title="@string/network" />
 
     <Preference
         app:fragment="org.d3kad3nt.sunriseClock.ui.preferences.AlarmFragment"
-        app:title="@string/alarm"
-        app:key="pref_alarm_category" />
+        app:key="pref_alarm_category"
+        app:title="@string/alarm" />
 
     <Preference
         app:fragment="org.d3kad3nt.sunriseClock.ui.preferences.InterfaceFragment"
-        app:title="@string/ui_interface"
-        app:key="pref_interface_category" />
+        app:key="pref_interface_category"
+        app:title="@string/ui_interface" />
 
     <Preference
         app:fragment="org.d3kad3nt.sunriseClock.ui.preferences.DebugFragment"
-        app:title="@string/debug"
-        app:key="pref_debug_category" />
+        app:key="pref_debug_category"
+        app:title="@string/debug" />
 
 </androidx.preference.PreferenceScreen>

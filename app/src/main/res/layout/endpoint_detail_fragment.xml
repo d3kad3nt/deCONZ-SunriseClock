@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailViewModel"/>
+            type="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,8 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.endpointConfig.stringRepresentation}"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="@sample/sample.json/endpoints/name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

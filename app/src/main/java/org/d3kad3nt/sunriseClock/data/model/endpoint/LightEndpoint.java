@@ -11,7 +11,10 @@ import okhttp3.ResponseBody;
 
 public interface LightEndpoint {
     LiveData<ApiResponse<List<RemoteLight>>> getLights();
+
     LiveData<ApiResponse<RemoteLight>> getLight(String id);
+
     LiveData<ApiResponse<ResponseBody>> setOnState(String id, boolean newState);
+
     LiveData<ApiResponse<ResponseBody>> setBrightness(String endpointLightId, double brightness);
 }

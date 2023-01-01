@@ -30,13 +30,12 @@ public class EndpointAddFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         EndpointAddFragmentBinding binding = EndpointAddFragmentBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointAddViewModel.class);
         //TODO select endpoint type
-        EndpointAddDeconzFragmentBinding deconzBinding = EndpointAddDeconzFragmentBinding.inflate(inflater,binding.constraintLayoutSpecificEndpoint,true);
-        addCreateEndpointListener(binding,deconzBinding);
+        EndpointAddDeconzFragmentBinding deconzBinding = EndpointAddDeconzFragmentBinding.inflate(inflater, binding.constraintLayoutSpecificEndpoint, true);
+        addCreateEndpointListener(binding, deconzBinding);
         return binding.getRoot();
     }
 
@@ -46,14 +45,14 @@ public class EndpointAddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Map<String, String> settings = new HashMap<>();
-                settings.put("name",binding.endpointName.getText().toString());
-                settings.put("type",specificBinding.getRoot().getTag().toString());
+                settings.put("name", binding.endpointName.getText().toString());
+                settings.put("type", specificBinding.getRoot().getTag().toString());
                 ViewGroup rootLinearLayout = (ViewGroup) specificBinding.getRoot();
                 TextInputEditText[] input = {rootLinearLayout.findViewWithTag("baseUrl"), rootLinearLayout.findViewWithTag("port"), rootLinearLayout.findViewWithTag("apiKey")};
                 for (TextInputEditText i : input) {
                     settings.put(i.getTag().toString(), i.getText().toString());
                 }
-                if (viewModel.createEndpoint(settings)){
+                if (viewModel.createEndpoint(settings)) {
                     Navigation.findNavController(v).navigateUp();
                 }
             }

@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private String TAG = "AlarmReceiver";
+    private final String TAG = "AlarmReceiver";
 
     private Context context;
 
@@ -53,7 +53,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     /**
-     * Checks whether WiFi is enabled and device is connected to to a specific BSSID (from settings).
+     * Checks whether WiFi is enabled and device is connected to to a specific BSSID (from
+     * settings).
      *
      * @return True for device states matching the prerequisites.
      */
@@ -65,7 +66,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.d(TAG, "Currently connected to BSSID: " + bssid);
             //TODO: Only execute if in defined wifi connection (TODO: settings element).
             return true;
-        } else {
+        }
+        else {
             Log.d(TAG, "WiFi is not enabled.");
             return false;
         }

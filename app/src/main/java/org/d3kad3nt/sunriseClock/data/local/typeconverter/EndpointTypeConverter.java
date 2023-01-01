@@ -10,7 +10,7 @@ public class EndpointTypeConverter {
     public static EndpointType toType(int type) {
 
         for (EndpointType t : EndpointType.values()) {
-            if(t.getId() == type){
+            if (t.getId() == type) {
                 return t;
             }
         }

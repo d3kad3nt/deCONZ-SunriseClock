@@ -27,10 +27,9 @@ import java.util.List;
 public class LightsFragment extends Fragment {
 
     private static final String TAG = "LightsFragment";
+    private final LightsState lightsState = new LightsState();
     private LightsViewModel viewModel;
     private Spinner endpointSpinner;
-    private final LightsState lightsState = new LightsState();
-
     private LightsListAdapter adapter;
 
     public static LightsFragment newInstance() {
@@ -38,8 +37,7 @@ public class LightsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         LightsFragmentBinding binding = LightsFragmentBinding.inflate(inflater, container, false);
         binding.setLightsState(lightsState);
         adapter = new LightsListAdapter();
@@ -52,8 +50,9 @@ public class LightsFragment extends Fragment {
                 if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
                     lightsState.clearError();
                     adapter.submitList(listResource.getData());
-                } else if (listResource.getStatus().equals(Status.ERROR)) {
-                    lightsState.setError(getResources().getString(R.string.noLights_title),listResource.getMessage());
+                }
+                else if (listResource.getStatus().equals(Status.ERROR)) {
+                    lightsState.setError(getResources().getString(R.string.noLights_title), listResource.getMessage());
                 }
             }
         });
@@ -61,21 +60,27 @@ public class LightsFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        removeFromToolbar(endpointSpinner);
+    }
+
     private void addEndpointSelector() {
-        endpointSpinner  = new Spinner(getContext());
-        EndpointSelectorAdapter adapter = new EndpointSelectorAdapter(getContext(),
-                android.R.layout.simple_spinner_dropdown_item);
+        endpointSpinner = new Spinner(getContext());
+        EndpointSelectorAdapter adapter = new EndpointSelectorAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
         endpointSpinner.setAdapter(adapter);
         endpointSpinner.setOnItemSelectedListener(new EndpointSelectedListener(getContext()));
 
         viewModel.getEndpoints().observe(getViewLifecycleOwner(), configList -> {
             adapter.submitCollection(configList);
-            if (!configList.isEmpty()){
+            if (!configList.isEmpty()) {
                 addToToolbar(endpointSpinner);
                 lightsState.clearError();
-            }else{
+            }
+            else {
                 removeFromToolbar(endpointSpinner);
-                lightsState.setError(getResources().getString(R.string.noEndpoint_title),getResources().getString(R.string.noEndpoint_message));
+                lightsState.setError(getResources().getString(R.string.noEndpoint_title), getResources().getString(R.string.noEndpoint_message));
             }
         });
 
@@ -84,11 +89,10 @@ public class LightsFragment extends Fragment {
             Observer<? super List<IEndpointUI>> endpointSelector = new Observer<List<IEndpointUI>>() {
                 @Override
                 public void onChanged(List<IEndpointUI> endpointConfigs) {
-                    endpointSpinner.setSelection(
-                            endpointConfigs.indexOf(endpointConfig));
+                    endpointSpinner.setSelection(endpointConfigs.indexOf(endpointConfig));
                 }
             };
-            viewModel.getEndpoints().observe(getViewLifecycleOwner(),endpointSelector);
+            viewModel.getEndpoints().observe(getViewLifecycleOwner(), endpointSelector);
             viewModel.getEndpoints().removeObserver(endpointSelector);
 
         });
@@ -107,11 +111,5 @@ public class LightsFragment extends Fragment {
                 toolbar.addView(view);
             }
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        removeFromToolbar(endpointSpinner);
     }
 }

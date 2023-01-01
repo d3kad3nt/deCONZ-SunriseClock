@@ -3,9 +3,9 @@
 
 
     <SwitchPreferenceCompat
+        app:defaultValue="true"
         app:key="pref_schedule_set_toast"
-        app:title="@string/schedule_toast"
-        app:defaultValue="true"/>
+        app:title="@string/schedule_toast" />
 
     <SwitchPreferenceCompat
         app:key="pref_boot"

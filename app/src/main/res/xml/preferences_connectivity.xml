@@ -5,13 +5,13 @@
         app:title="@string/network_category">
         <SwitchPreferenceCompat
             app:key="pref_onlyWlan"
-            app:title="@string/onlyWLAN"
-            app:summary="@string/onlyWLAN_summary" />
+            app:summary="@string/onlyWLAN_summary"
+            app:title="@string/onlyWLAN" />
         <EditTextPreference
+            app:dependency="pref_onlyWlan"
             app:key="pref_allowedWlan"
-            app:title="@string/allowedWLAN"
             app:summary="@string/allowedWLAN_summary"
-            app:dependency="pref_onlyWlan"/>
+            app:title="@string/allowedWLAN" />
         <!-- Change allowed WLAN to List and add button to add current WLAN -->
     </PreferenceCategory>
 

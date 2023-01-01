@@ -8,13 +8,6 @@ public abstract class BaseEndpoint implements LightEndpoint {
 
     EndpointConfig originalEndpointConfig;
 
-    /**
-     * Must be used to initialize the specific endpoint implementation after its (primitive) fields
-     * have been populated by eg. Gson. After initialization the endpoint must be ready to perform
-     * remote (network) operations.
-     */
-    public abstract BaseEndpoint init();
-
     public EndpointConfig getOriginalEndpointConfig() {
         return originalEndpointConfig;
     }
@@ -27,7 +20,7 @@ public abstract class BaseEndpoint implements LightEndpoint {
         return this.originalEndpointConfig.getId();
     }
 
-    public Date getAddedAt(){
+    public Date getAddedAt() {
         return this.originalEndpointConfig.getAddedAt();
     }
 
@@ -36,4 +29,11 @@ public abstract class BaseEndpoint implements LightEndpoint {
     public String toString() {
         return originalEndpointConfig.toString();
     }
+
+    /**
+     * Must be used to initialize the specific endpoint implementation after its (primitive) fields
+     * have been populated by eg. Gson. After initialization the endpoint must be ready to perform
+     * remote (network) operations.
+     */
+    public abstract BaseEndpoint init();
 }

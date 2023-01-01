@@ -64,64 +64,57 @@ public class DeconzEndpoint extends BaseEndpoint {
     public DeconzEndpoint init() {
 
         //TODO: De-Uglify
-        Uri fullApiUrl = Uri.parse(baseUrl.concat(":" + port))
-                .buildUpon()
-                .scheme("http")
-                .appendPath("api")
-                .appendEncodedPath(apiKey + "/")
-                .build();
+        Uri fullApiUrl = Uri.parse(baseUrl.concat(":" + port)).buildUpon().scheme("http").appendPath("api").appendEncodedPath(apiKey + "/").build();
         //Gson has to be instructed to use our custom type adapter for a list of light.
-        Type remoteLightType = new TypeToken<RemoteLight>() {}.getType();
-        Type remoteLightListType = new TypeToken<List<RemoteLight>>() {}.getType();
+        Type remoteLightType = new TypeToken<RemoteLight>() {
+        }.getType();
+        Type remoteLightListType = new TypeToken<List<RemoteLight>>() {
+        }.getType();
 
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(remoteLightType, new RemoteLightTypeAdapter(super.getOriginalEndpointConfig().getId()))
-                .registerTypeAdapter(remoteLightListType, new RemoteLightListTypeAdapter(super.getOriginalEndpointConfig().getId()))
-                .create();
+        Gson gson = new GsonBuilder().registerTypeAdapter(remoteLightType, new RemoteLightTypeAdapter(super.getOriginalEndpointConfig().getId())).registerTypeAdapter(remoteLightListType, new RemoteLightListTypeAdapter(super.getOriginalEndpointConfig().getId())).create();
 
         // Debugging HTTP interceptor for underlying okHttp library.
-        this.httpClient = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @NonNull
-                    @Override
-                    public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
-                        Request request = chain.request();
-                        okhttp3.Response response = chain.proceed(request);
-                        Log.d(TAG, "HTTP interceptor: Intercepted request to: " + response.request().url().toString() + " led to HTTP code: " + response.code());
+        this.httpClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @NonNull
+            @Override
+            public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
+                Request request = chain.request();
+                okhttp3.Response response = chain.proceed(request);
+                Log.d(TAG, "HTTP interceptor: Intercepted request to: " + response.request().url() + " led to HTTP code: " + response.code());
 
-                        if (response.code() >= 200 && response.code() <= 399 && response.body() != null) {
+                if (response.code() >= 200 && response.code() <= 399 && response.body() != null) {
 
-                            // Workaround: Deconz endpoint does not return the id of a light when requesting a single
-                            // light. The Gson deserializer is automatically called and cannot access the id inside of
-                            // the original request. A okHttp interceptor is used to modify the JSON response from the
-                            // Deconz endpoint and adds this light id.
-                            if (request.header(IServices.endpointLightIdHeader) != null) {
-                                Log.d(TAG, "HTTP interceptor: Try to set light id in JSON response as workaround.");
+                    // Workaround: Deconz endpoint does not return the id of a light when requesting a single
+                    // light. The Gson deserializer is automatically called and cannot access the id inside of
+                    // the original request. A okHttp interceptor is used to modify the JSON response from the
+                    // Deconz endpoint and adds this light id.
+                    if (request.header(IServices.endpointLightIdHeader) != null) {
+                        Log.d(TAG, "HTTP interceptor: Try to set light id in JSON response as workaround.");
 
-                                assert response.body() != null;
-                                String stringJson = response.body().string();
-                                JSONObject jsonObject = null;
+                        assert response.body() != null;
+                        String stringJson = response.body().string();
+                        JSONObject jsonObject = null;
 
-                                try {
-                                    jsonObject = new JSONObject(stringJson);
-                                    jsonObject.put(IServices.endpointLightIdHeader, request.header(IServices.endpointLightIdHeader));
+                        try {
+                            jsonObject = new JSONObject(stringJson);
+                            jsonObject.put(IServices.endpointLightIdHeader, request.header(IServices.endpointLightIdHeader));
 
-                                    MediaType contentType = response.body().contentType();
-                                    ResponseBody body = ResponseBody.create(contentType, String.valueOf(jsonObject));
+                            MediaType contentType = response.body().contentType();
+                            ResponseBody body = ResponseBody.create(contentType, String.valueOf(jsonObject));
 
-                                    return response.newBuilder().body(body).build();
+                            return response.newBuilder().body(body).build();
 
-                                } catch (JSONException ignored) {
+                        }
+                        catch (JSONException ignored) {
 
-                                }
-
-                            }
                         }
 
-                        return response;
                     }
-                })
-                .build();
+                }
+
+                return response;
+            }
+        }).build();
 
         this.retrofit = new Retrofit.Builder()
                 // Set base URL for all requests to this deconz endpoint.
@@ -131,8 +124,7 @@ public class DeconzEndpoint extends BaseEndpoint {
                 // Set custom GSON deserializer, eg. for parsing JSON into DbLight objects.
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 // Allow retrofit to return observable LiveData<ApiResponse> objects.
-                .addCallAdapterFactory(new LiveDataCallAdapterFactory())
-                .build()
+                .addCallAdapterFactory(new LiveDataCallAdapterFactory()).build()
                 // Implement methods to access REST endpoints / URLs.
                 .create(IServices.class);
 
@@ -160,7 +152,7 @@ public class DeconzEndpoint extends BaseEndpoint {
     public LiveData<ApiResponse<ResponseBody>> setOnState(String endpointLightId, boolean newState) {
         JsonObject requestBody = new JsonObject();
         requestBody.add("on", new JsonPrimitive(newState));
-        return this.retrofit.updateLightState(endpointLightId, requestBody );
+        return this.retrofit.updateLightState(endpointLightId, requestBody);
     }
 
     @Override
@@ -169,7 +161,7 @@ public class DeconzEndpoint extends BaseEndpoint {
         //Deconz takes values from 0 to 255 for the brightness
         long deconzBrigtness = Math.round(brightness * 255);
         requestBody.add("bri", new JsonPrimitive(deconzBrigtness));
-        return this.retrofit.updateLightState(endpointLightId, requestBody );
+        return this.retrofit.updateLightState(endpointLightId, requestBody);
     }
 
 }

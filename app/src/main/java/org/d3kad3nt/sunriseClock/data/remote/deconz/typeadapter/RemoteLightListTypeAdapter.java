@@ -11,7 +11,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
-import org.d3kad3nt.sunriseClock.data.model.light.RemoteLightBuilder;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.IServices;
 
 import java.lang.reflect.Type;
@@ -27,14 +26,12 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
     /**
      * Custom type adapter for usage with Gson.
      *
-     * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is
-     *                   not part of the JSON response, therefore it has to be set manually for a
+     * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is not
+     *                   part of the JSON response, therefore it has to be set manually for a
      *                   specific RemoteLight when deserializing it.
      */
     public RemoteLightListTypeAdapter(long endpointId) {
-        this.gson = new GsonBuilder()
-                .registerTypeAdapter(RemoteLight.class, new RemoteLightTypeAdapter(endpointId))
-                .create();
+        this.gson = new GsonBuilder().registerTypeAdapter(RemoteLight.class, new RemoteLightTypeAdapter(endpointId)).create();
     }
 
     @Override
