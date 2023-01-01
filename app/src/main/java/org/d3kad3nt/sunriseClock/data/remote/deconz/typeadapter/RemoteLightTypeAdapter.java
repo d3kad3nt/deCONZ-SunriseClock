@@ -60,19 +60,22 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
 
         if (rawJsonState.has("on")) {
             remoteLightBuilder = remoteLightBuilder.setIsSwitchable(true)
-                                                   .setIsOn(rawJsonState.get("on").getAsBoolean());
+                                                   .setIsOn(rawJsonState.get("on")
+                                                                        .getAsBoolean());
         }
 
         if (rawJsonState.has("bri")) {
             remoteLightBuilder = remoteLightBuilder.setIsDimmable(true)
-                                                   .setBrightness(rawJsonState.get("bri").getAsInt());
+                                                   .setBrightness(rawJsonState.get("bri")
+                                                                              .getAsInt());
         }
 
         if (rawJsonState.has("colormode")) {
             switch (rawJsonState.get("colormode").getAsString()) {
                 case "ct":
                     remoteLightBuilder = remoteLightBuilder.setIsTemperaturable(true)
-                                                           .setColorTemperature(rawJsonState.get("ct").getAsInt());
+                                                           .setColorTemperature(rawJsonState.get("ct")
+                                                                                            .getAsInt());
                 case "xy":
                     remoteLightBuilder = remoteLightBuilder.setIsColorable(true);
                     //TODO: .setColor();

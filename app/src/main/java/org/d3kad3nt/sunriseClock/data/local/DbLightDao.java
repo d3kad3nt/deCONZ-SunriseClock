@@ -97,11 +97,13 @@ public interface DbLightDao {
      *
      * @return Number of rows that were updated successfully.
      */
-    @Query("UPDATE " + DbLight.TABLENAME + " SET name = :friendlyName, is_switchable = :switchable, is_on = :on, " + "is_dimmable  = :dimmable, brightness = :brightness, is_temperaturable = :temperaturable, " + "colortemperature = :colorTemperature, is_colorable = :colorable, color = :color WHERE endpoint_id = " + ":endpointId AND endpoint_light_id = :endpointLightId")
+    @Query("UPDATE " + DbLight.TABLENAME + " SET name = :friendlyName, is_switchable = :switchable, is_on = :on, " +
+           "is_dimmable  = :dimmable, brightness = :brightness, is_temperaturable = :temperaturable, " +
+           "colortemperature = :colorTemperature, is_colorable = :colorable, color = :color WHERE endpoint_id = " +
+           ":endpointId AND endpoint_light_id = :endpointLightId")
     int updateUsingEndpointIdAndEndpointLightId(long endpointId, String endpointLightId, String friendlyName,
-                                                boolean switchable, boolean on, boolean dimmable, int brightness,
-                                                boolean temperaturable, int colorTemperature, boolean colorable,
-                                                int color);
+            boolean switchable, boolean on, boolean dimmable, int brightness, boolean temperaturable,
+            int colorTemperature, boolean colorable, int color);
 
     @Delete()
     void delete(DbLight obj);

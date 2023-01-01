@@ -52,12 +52,11 @@ public abstract class NetworkUpdateResource <ResultType, RemoteType, DbType> ext
     }
 
     private void networkResponseObserver(ApiResponse<RemoteType> response,
-                                         LiveData<ApiResponse<RemoteType>> networkResponseLivedata) {
+            LiveData<ApiResponse<RemoteType>> networkResponseLivedata) {
         EmptyResource resource = toResource(response);
         if (resource.getStatus() != Status.SUCCESS) {
             updateValue(resource);
-        }
-        else {
+        } else {
             LiveData<Resource<ResultType>> updateResponseLivedata = loadUpdatedVersion();
             addSource(updateResponseLivedata, updateResponse -> {
                 resourceUpdateObserver(updateResponse);

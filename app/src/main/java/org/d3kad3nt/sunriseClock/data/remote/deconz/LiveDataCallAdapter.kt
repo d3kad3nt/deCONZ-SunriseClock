@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @param <R>
  */
 class LiveDataCallAdapter<R>(private val responseType: Type) :
-        CallAdapter<R, LiveData<ApiResponse<R>>> {
+    CallAdapter<R, LiveData<ApiResponse<R>>> {
 
     private val TAG = "DeconzLiveDataCallA."
 

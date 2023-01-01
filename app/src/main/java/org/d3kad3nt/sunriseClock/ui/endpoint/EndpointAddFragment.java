@@ -44,21 +44,28 @@ public class EndpointAddFragment extends Fragment {
     //Todo: This should definitely be removed (and replaced by setting the onClickListener inside of XML and
     // carrying over the logic to the viewmodel)
     private void addCreateEndpointListener(EndpointAddFragmentBinding binding,
-                                           EndpointAddDeconzFragmentBinding specificBinding) {
+            EndpointAddDeconzFragmentBinding specificBinding) {
         binding.createEndpoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Map<String, String> settings = new HashMap<>();
-                settings.put("name", binding.endpointName.getText().toString());
-                settings.put("type", specificBinding.getRoot().getTag().toString());
+                settings.put("name", binding.endpointName.getText()
+                                                         .toString());
+                settings.put("type", specificBinding.getRoot()
+                                                    .getTag()
+                                                    .toString());
                 ViewGroup rootLinearLayout = (ViewGroup) specificBinding.getRoot();
-                TextInputEditText[] input = {rootLinearLayout.findViewWithTag("baseUrl"),
-                        rootLinearLayout.findViewWithTag("port"), rootLinearLayout.findViewWithTag("apiKey")};
+                TextInputEditText[] input = {rootLinearLayout.findViewWithTag(
+                        "baseUrl"), rootLinearLayout.findViewWithTag("port"), rootLinearLayout.findViewWithTag(
+                        "apiKey")};
                 for (TextInputEditText i : input) {
-                    settings.put(i.getTag().toString(), i.getText().toString());
+                    settings.put(i.getTag()
+                                  .toString(), i.getText()
+                                                .toString());
                 }
                 if (viewModel.createEndpoint(settings)) {
-                    Navigation.findNavController(v).navigateUp();
+                    Navigation.findNavController(v)
+                              .navigateUp();
                 }
             }
         });

@@ -96,7 +96,7 @@ public class EndpointRepository {
         }
         EndpointBuilder builder = config.type.getBuilder();
         return builder.setConfig(config)
-                .build();
+                      .build();
     }
 
     public IEndpointUI createEndpoint(Map<String, String> config) {
@@ -106,13 +106,16 @@ public class EndpointRepository {
         EndpointType type = EndpointType.valueOf(config.remove("type"));
         String name = config.remove("name");
         Gson gson = new Gson();
-        JsonObject jsonConfig = gson.toJsonTree(config).getAsJsonObject();
+        JsonObject jsonConfig = gson.toJsonTree(config)
+                                    .getAsJsonObject();
         EndpointConfig endpointConfig = new EndpointConfig(type, name, new Date(), jsonConfig);
-        ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
-            endpointConfigDao.save(endpointConfig);
-        });
-        type.getBuilder().setConfig(endpointConfig)
-                .build();
+        ServiceLocator.getExecutor(ExecutorType.IO)
+                      .execute(() -> {
+                          endpointConfigDao.save(endpointConfig);
+                      });
+        type.getBuilder()
+            .setConfig(endpointConfig)
+            .build();
         return UIEndpoint.from(endpointConfig);
     }
 

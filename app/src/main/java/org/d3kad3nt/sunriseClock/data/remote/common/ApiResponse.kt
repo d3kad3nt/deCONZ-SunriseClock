@@ -44,7 +44,7 @@ sealed class ApiResponse<T> {
                     ApiEmptyResponse()
                 } else {
                     ApiSuccessResponse(
-                            body = body
+                        body = body
                     )
                 }
             } else {

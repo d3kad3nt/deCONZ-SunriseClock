@@ -60,7 +60,8 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
         //TODO: Improve defaultValues
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
-               .encodedAuthority(preferences.getString(IP.toString(), "") + ":" + preferences.getString(PORT.toString(), ""));
+               .encodedAuthority(
+                       preferences.getString(IP.toString(), "") + ":" + preferences.getString(PORT.toString(), ""));
         String apiKey = preferences.getString(API_KEY.toString(), "");
         Set<String> lightIds = preferences.getStringSet(ACTIVATED_LIGHTS.toString(), new HashSet<String>());
         //20221229: Legacy network code removed, this broadcast receiver is kept for reference purposes only.
