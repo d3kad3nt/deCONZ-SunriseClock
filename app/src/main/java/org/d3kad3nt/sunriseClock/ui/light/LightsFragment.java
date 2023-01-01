@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
-import org.d3kad3nt.sunriseClock.data.model.light.Light;
+import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
@@ -31,7 +31,7 @@ public class LightsFragment extends Fragment {
     private Spinner endpointSpinner;
     private final LightsState lightsState = new LightsState();
 
-    private  LightsListAdapter adapter;
+    private LightsListAdapter adapter;
 
     public static LightsFragment newInstance() {
         return new LightsFragment();
@@ -45,9 +45,9 @@ public class LightsFragment extends Fragment {
         adapter = new LightsListAdapter();
         binding.recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(requireActivity()).get(LightsViewModel.class);
-        viewModel.getLights().observe(getViewLifecycleOwner(), new Observer<Resource<List<Light>>>() {
+        viewModel.getLights().observe(getViewLifecycleOwner(), new Observer<Resource<List<UILight>>>() {
             @Override
-            public void onChanged(Resource<List<Light>> listResource) {
+            public void onChanged(Resource<List<UILight>> listResource) {
                 Log.d(TAG, listResource.getStatus().toString());
                 if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
                     lightsState.clearError();

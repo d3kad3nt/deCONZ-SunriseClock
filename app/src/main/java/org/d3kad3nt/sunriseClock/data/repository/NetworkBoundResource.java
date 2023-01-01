@@ -35,54 +35,56 @@ import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
  * Copied from the official Google architecture-components github-sample under https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/repository/NetworkBoundResource.kt
  *
  * You can read more about it in the [Architecture Guide](https://developer.android.com/arch).
- * @param <ResultType>
- * @param <RequestType>
  */
-public abstract class NetworkBoundResource<ResultType, RequestType> extends ExtendedMediatorLiveData<Resource<ResultType>> {
+public abstract class NetworkBoundResource<ResultType, RemoteType, DbType> extends ExtendedMediatorLiveData<Resource<ResultType>> {
 
-    private final LiveData<ResultType> dbSource;
+    private final LiveData<DbType> dbSource;
     protected BaseEndpoint endpoint = null;
-    protected ResultType dbObject = null;
+    protected DbType dbObject = null;
 
     public NetworkBoundResource() {
-        this.setValue( Resource.loading(null));
+        this.setValue(Resource.loading(null));
 
         dbSource = loadFromDb();
-        addSource(dbSource, dbObject -> {dbSourceObserver(dbObject, dbSource);});
+        this.addSource(dbSource, dbObject -> {
+            dbSourceObserver(dbObject, dbSource);
+        });
     }
 
-    private void dbSourceObserver(ResultType data, LiveData<ResultType> dbSourceLiveData){
-        if (data == null){
+    private void dbSourceObserver(DbType data, LiveData<DbType> dbSourceLiveData) {
+        if (data == null) {
             updateValue(Resource.loading(null));
-        }else{
+        } else {
             dbObject = data;
             removeSource(dbSourceLiveData);
-            if (shouldFetch(dbObject)){
+            if (shouldFetch(dbObject)) {
                 LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
-                addSource(endpointLiveData, baseEndpoint -> endpointLiveDataObserver(baseEndpoint, endpointLiveData));
-            }else{
-                addSource(dbSource, newData ->{
-                    updateValue(Resource.success(newData));
+                addSource(endpointLiveData, baseEndpoint -> {
+                    endpointLiveDataObserver(baseEndpoint, endpointLiveData);
+                });
+            } else {
+                addSource(dbSource, newData -> {
+                    updateValue(Resource.success(convertDbTypeToResultType(newData)));
                 });
             }
         }
     }
 
-    private void endpointLiveDataObserver( BaseEndpoint endpoint, LiveData<BaseEndpoint> endpointLiveData){
-        if (endpoint == null){
+    private void endpointLiveDataObserver(BaseEndpoint endpoint, LiveData<BaseEndpoint> endpointLiveData) {
+        if (endpoint == null) {
             updateValue(Resource.loading(null));
-        }else{
+        } else {
             this.endpoint = endpoint;
             fetchFromNetwork(dbSource);
             removeSource(endpointLiveData);
         }
     }
 
-    private void fetchFromNetwork(LiveData<ResultType> dbSource ) {
-        LiveData<ApiResponse<RequestType>> apiResponse = loadFromNetwork();
+    private void fetchFromNetwork(LiveData<DbType> dbSource) {
+        LiveData<ApiResponse<RemoteType>> apiResponse = loadFromNetwork();
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
-        addSource(dbSource, newData ->{
-            updateValue(Resource.loading(newData));
+        addSource(dbSource, newData -> {
+            updateValue(Resource.loading(convertDbTypeToResultType(newData)));
         });
         addSource(apiResponse, response -> {
             removeSource(apiResponse);
@@ -90,13 +92,13 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends Exte
             Class<? extends ApiResponse> aClass = response.getClass();
             if (ApiSuccessResponse.class.equals(aClass)) {
                 ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
-                    saveNetworkResponseToDb(processResponse((ApiSuccessResponse<RequestType>) response));
+                    saveResponseToDb(convertRemoteTypeToDbType((ApiSuccessResponse<RemoteType>) response));
                     ServiceLocator.getExecutor(ExecutorType.MainThread).execute(() -> {
                         // we specially request a new live data,
                         // otherwise we will get immediately last cached value,
                         // which may not be updated with latest results received from network.
                         addSource(loadFromDb(), newData -> {
-                            updateValue((Resource<ResultType>) Resource.success(newData));
+                            updateValue(Resource.success(convertDbTypeToResultType(newData)));
                         });
                     });
                 });
@@ -104,13 +106,13 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends Exte
                 ServiceLocator.getExecutor(ExecutorType.MainThread).execute(() -> {
                     // reload from disk whatever we had
                     addSource(loadFromDb(), newData -> {
-                        updateValue(Resource.success(newData));
+                        updateValue(Resource.success(convertDbTypeToResultType(newData)));
                     });
                 });
             } else if (ApiErrorResponse.class.equals(aClass)) {
                 onFetchFailed();
                 addSource(dbSource, newData -> {
-                    updateValue(Resource.error(((ApiErrorResponse<RequestType>) response).getErrorMessage(), newData));
+                    updateValue(Resource.error(((ApiErrorResponse<RemoteType>) response).getErrorMessage(), convertDbTypeToResultType(newData)));
                 });
             }
         });
@@ -119,28 +121,21 @@ public abstract class NetworkBoundResource<ResultType, RequestType> extends Exte
     protected void onFetchFailed() {}
 
     @WorkerThread
-    protected RequestType processResponse(ApiSuccessResponse<RequestType> response ){
-        //TODO: Ugly, tailored for retrofit
-        return response.getBody();
-    }
-
-    @WorkerThread
-    protected abstract void saveNetworkResponseToDb(RequestType item );
+    protected abstract void saveResponseToDb(DbType item);
 
     @MainThread
-    protected abstract boolean shouldFetch(ResultType data);
-
-    @MainThread
-    protected LiveData<ResultType> loadResource(){
-        return null;
-    }
+    protected abstract boolean shouldFetch(DbType data);
 
     @MainThread
     protected abstract LiveData<BaseEndpoint> loadEndpoint();
 
     @MainThread
-    protected abstract LiveData<ResultType> loadFromDb();
+    protected abstract LiveData<DbType> loadFromDb();
 
     @MainThread
-    protected abstract LiveData<ApiResponse<RequestType>> loadFromNetwork();
+    protected abstract LiveData<ApiResponse<RemoteType>> loadFromNetwork();
+
+    protected abstract ResultType convertDbTypeToResultType(DbType item);
+
+    protected abstract DbType convertRemoteTypeToDbType(ApiSuccessResponse<RemoteType> response);
 }

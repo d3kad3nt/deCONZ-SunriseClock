@@ -6,7 +6,7 @@
     <data>
         <variable
             name="light"
-            type="org.d3kad3nt.sunriseClock.data.model.light.Light"/>
+            type="org.d3kad3nt.sunriseClock.data.model.light.UILight"/>
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener"/>
@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:text="@{light.friendlyName}"
+                android:text="@{light.name}"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

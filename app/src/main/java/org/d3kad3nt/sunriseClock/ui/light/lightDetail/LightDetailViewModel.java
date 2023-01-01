@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import org.d3kad3nt.sunriseClock.data.model.light.Light;
+import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
@@ -21,14 +21,13 @@ public class LightDetailViewModel extends AndroidViewModel {
     private final LightRepository lightRepository = LightRepository.getInstance(getApplication().getApplicationContext());
     private final long lightID;
 
-    public LiveData<Resource<Light>> light;
+    public LiveData<Resource<UILight>> light;
     public VisibilityLiveData loadingIndicatorVisibility;
 
     public LightDetailViewModel(@NonNull Application application, long lightId) {
         super(application);
-        //Todo: Implement something to represent the state of the request inside UI (if (baseLightResource.getStatus().equals(Status.SUCCESS))...)
+        //Todo: Implement something to represent the state of the request inside UI (if (lightResource.getStatus().equals(Status.SUCCESS))...)
         //Todo: Data binding in XML has built-in null-safety so viewModel.light.data.friendlyName inside XML works for now (but should be changed?)
-        //Todo: Use custom model for UI
         this.lightID = lightId;
         light = getLight(lightId);
 
@@ -61,7 +60,7 @@ public class LightDetailViewModel extends AndroidViewModel {
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 
-    private LiveData<Resource<Light>> getLight(long lightID){
+    private LiveData<Resource<UILight>> getLight(long lightID){
         return lightRepository.getLight(lightID);
     }
 }

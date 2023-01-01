@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData;
 
 import com.google.gson.JsonObject;
 
+import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
-import org.d3kad3nt.sunriseClock.data.model.light.BaseLight;
 
 import java.util.List;
 
@@ -25,10 +25,10 @@ public interface IServices {
     String endpointLightIdHeader = "X-Deconz-EndpointLightId";
 
     @GET("lights/")
-    LiveData<ApiResponse<List<BaseLight>>> getLights();
+    LiveData<ApiResponse<List<RemoteLight>>> getLights();
 
     @GET("lights/{lightId}/")
-    LiveData<ApiResponse<BaseLight>> getLight(@Path("lightId") String lightId, @Header(endpointLightIdHeader) String headerLightId);
+    LiveData<ApiResponse<RemoteLight>> getLight(@Path("lightId") String lightId, @Header(endpointLightIdHeader) String headerLightId);
 
     @Headers( "Content-Type: application/json" )
     @PUT("lights/{lightId}/state")

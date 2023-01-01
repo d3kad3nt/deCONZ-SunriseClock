@@ -1,6 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.light;
 
-import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.d3kad3nt.sunriseClock.data.model.light.Light;
+import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.databinding.LightListElementBinding;
 
 
-public class LightsListAdapter extends ListAdapter<Light, LightsListAdapter.ViewHolder> {
+public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.ViewHolder> {
+
+    private static final String TAG = "LightsListAdapter";
 
     public LightsListAdapter() {
         super(new LightDiffCallback());
@@ -30,7 +32,7 @@ public class LightsListAdapter extends ListAdapter<Light, LightsListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Light light = getItem(position);
+        UILight light = getItem(position);
         holder.bind(createOnClickListener(light.getLightId()), light);
         holder.itemView.setTag(light);
     }
@@ -48,25 +50,34 @@ public class LightsListAdapter extends ListAdapter<Light, LightsListAdapter.View
             this.binding = binding;
         }
 
-        void bind(View.OnClickListener listener, Light item) {
+        void bind(View.OnClickListener listener, UILight item) {
             binding.setClickListener(listener);
             binding.setLight(item);
             binding.executePendingBindings();
         }
     }
 
-    static class LightDiffCallback extends DiffUtil.ItemCallback<Light> {
+    static class LightDiffCallback extends DiffUtil.ItemCallback<UILight> {
 
+        /**
+         * Used to determine structural changes between old and new list (additions/removals/position changes).
+         */
         @Override
-        public boolean areItemsTheSame(@NonNull Light oldItem, @NonNull Light newItem) {
-            //TODO: use real UUID
+        public boolean areItemsTheSame(@NonNull UILight oldItem, @NonNull UILight newItem) {
             return oldItem.getLightId() == newItem.getLightId();
         }
 
-        @SuppressLint("DiffUtilEquals")
+        /**
+         * Determines if the particular item was updated. Only called when {@link LightsListAdapter.LightDiffCallback#areItemsTheSame} returned true.
+         */
         @Override
-        public boolean areContentsTheSame(@NonNull Light oldItem, @NonNull Light newItem) {
-            return oldItem == newItem;
+        public boolean areContentsTheSame(@NonNull UILight oldItem, @NonNull UILight newItem) {
+            boolean result = oldItem.equals(newItem);
+            if (!result) {
+                Log.d(TAG, "Recyclerview determined that light with lightId " + oldItem.getLightId() + " was changed and its ViewHolder content must be updated.");
+            }
+            return result;
         }
+        // Optional getChangePayload() could be overwritten. This is called when areItemsTheSame() returns true for two items and areContentsTheSame() returns false for them to get a payload about the change.
     }
 }
