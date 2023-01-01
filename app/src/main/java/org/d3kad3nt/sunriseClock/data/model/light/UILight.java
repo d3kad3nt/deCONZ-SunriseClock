@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.Objects;
+
 public class UILight {
 
     private static final String TAG = "UiLight";
@@ -76,6 +78,21 @@ public class UILight {
 
     public boolean getIsColorable() {
         return isColorable;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        UILight otherLight = (UILight) o;
+        return Objects.equals(lightId, otherLight.lightId) && Objects.equals(endpointId, otherLight.endpointId) && Objects.equals(name, otherLight.name) && Objects.equals(isSwitchable, otherLight.isSwitchable) && Objects.equals(isOn, otherLight.isOn) && Objects.equals(isDimmable, otherLight.isDimmable) && Objects.equals(brightness, otherLight.brightness) && Objects.equals(isTemperaturable, otherLight.isTemperaturable) && Objects.equals(isColorable, otherLight.isColorable);
     }
 
     @NonNull
