@@ -13,10 +13,12 @@ import androidx.room.PrimaryKey;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
 import org.jetbrains.annotations.Contract;
 
-@Entity(tableName = DbLight.TABLENAME, indices = {@Index(value = {"endpoint_id", "endpoint_light_id"}, unique = true)},
+@Entity(tableName = DbLight.TABLENAME,
+        indices = {@Index(value = {"endpoint_id", "endpoint_light_id"}, unique = true)},
         // A DbLight is always bound to a single endpoint. It cannot exist without one:
         // Therefore Room is instructed to delete this DbLight if the endpoint gets deleted.
-        foreignKeys = @ForeignKey(entity = EndpointConfig.class, parentColumns = "endpointId", childColumns = "endpoint_id", onDelete = ForeignKey.CASCADE))
+        foreignKeys = @ForeignKey(entity = EndpointConfig.class, parentColumns = "endpointId",
+                                  childColumns = "endpoint_id", onDelete = ForeignKey.CASCADE))
 public class DbLight {
 
     @Ignore
@@ -60,10 +62,12 @@ public class DbLight {
     private long lightId;
 
     /**
-     * Create a new object that represents a light in the app's Room database. This constructor has
-     * to be public for Room to be able to create an object. This should not be otherwise accessed!
+     * Create a new object that represents a light in the app's Room database. This constructor has to be public for
+     * Room to be able to create an object. This should not be otherwise accessed!
      */
-    public DbLight(long endpointId, String endpointLightId, String name, boolean isSwitchable, boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature, boolean isColorable, int color) {
+    public DbLight(long endpointId, String endpointLightId, String name, boolean isSwitchable, boolean isOn,
+                   boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
+                   boolean isColorable, int color) {
         if (endpointId != 0L) {
             this.endpointId = endpointId;
         }
@@ -112,27 +116,27 @@ public class DbLight {
     }
 
     /**
-     * This setter has to be public for Room to be able to set the auto-generated id. It must not be
-     * used outside of Room!
+     * This setter has to be public for Room to be able to set the auto-generated id. It must not be used outside of
+     * Room!
      *
-     * @param lightId The auto-generated identifier of this light, not depending on the
-     *                (endpoint-specific) endpointLightId.
+     * @param lightId The auto-generated identifier of this light, not depending on the (endpoint-specific)
+     *                endpointLightId.
      */
     public void setLightId(long lightId) {
         this.lightId = lightId;
     }
 
     /**
-     * @return Foreign key (Room/SQLite) of the remote endpoint that this light belongs to. Only one
-     * endpoint light id (specific for that endpoint!) can exist for a single endpoint.
+     * @return Foreign key (Room/SQLite) of the remote endpoint that this light belongs to. Only one endpoint light id
+     * (specific for that endpoint!) can exist for a single endpoint.
      */
     public long getEndpointId() {
         return endpointId;
     }
 
     /**
-     * This field enables the remote endpoint to identify the correct light. A remote endpoint
-     * cannot work with the lightId.
+     * This field enables the remote endpoint to identify the correct light. A remote endpoint cannot work with the
+     * lightId.
      *
      * @return Identifier for this light inside (!) the remote endpoint.
      */
@@ -150,8 +154,8 @@ public class DbLight {
     }
 
     /**
-     * @return Whether the light's capabilities allow it to be turned on and off (true if allowed by
-     * the device, false if not).
+     * @return Whether the light's capabilities allow it to be turned on and off (true if allowed by the device, false
+     * if not).
      */
     public boolean getIsSwitchable() {
         return isSwitchable;
@@ -165,24 +169,23 @@ public class DbLight {
     }
 
     /**
-     * @return Whether the light's capabilities allow it to be dimmed (true if allowed by the
-     * device, false if not).
+     * @return Whether the light's capabilities allow it to be dimmed (true if allowed by the device, false if not).
      */
     public boolean getIsDimmable() {
         return isDimmable;
     }
 
     /**
-     * @return The current brightness of the light, where 0 is the lowest brightness or off
-     * (depending on the light) and 100 is the highest brightness.
+     * @return The current brightness of the light, where 0 is the lowest brightness or off (depending on the light)
+     * and 100 is the highest brightness.
      */
     public int getBrightness() {
         return brightness;
     }
 
     /**
-     * @return Whether the light's capabilities allow its color temperature to be changed (true if
-     * allowed by the device, false if not).
+     * @return Whether the light's capabilities allow its color temperature to be changed (true if allowed by the
+     * device, false if not).
      */
     public boolean getIsTemperaturable() {
         return isTemperaturable;
@@ -194,8 +197,8 @@ public class DbLight {
     }
 
     /**
-     * @return Whether the light's capabilities allow its color to be changed (true if allowed by
-     * the device, false if not).
+     * @return Whether the light's capabilities allow its color to be changed (true if allowed by the device, false if
+     * not).
      */
     public boolean getIsColorable() {
         return isColorable;

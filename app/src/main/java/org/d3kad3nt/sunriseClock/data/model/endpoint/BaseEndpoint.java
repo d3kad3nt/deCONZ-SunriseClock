@@ -31,9 +31,8 @@ public abstract class BaseEndpoint implements LightEndpoint {
     }
 
     /**
-     * Must be used to initialize the specific endpoint implementation after its (primitive) fields
-     * have been populated by eg. Gson. After initialization the endpoint must be ready to perform
-     * remote (network) operations.
+     * Must be used to initialize the specific endpoint implementation after its (primitive) fields have been
+     * populated by eg. Gson. After initialization the endpoint must be ready to perform remote (network) operations.
      */
     public abstract BaseEndpoint init();
 }

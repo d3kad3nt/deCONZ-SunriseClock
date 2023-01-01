@@ -55,10 +55,12 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
         ISO8601 schedulingTime = new ISO8601(date);
         Log.i(TAG, "Next alarm rings at :" + schedulingTime);
 
-        //TODO: Check if deconz url, apikey etc are valid. A 'valid' flag could be set when first adding or modifying these settings.
+        //TODO: Check if deconz url, apikey etc are valid. A 'valid' flag could be set when first adding or
+        // modifying these settings.
         //TODO: Improve defaultValues
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme("http").encodedAuthority(preferences.getString(IP.toString(), "") + ":" + preferences.getString(PORT.toString(), ""));
+        builder.scheme("http")
+               .encodedAuthority(preferences.getString(IP.toString(), "") + ":" + preferences.getString(PORT.toString(), ""));
         String apiKey = preferences.getString(API_KEY.toString(), "");
         Set<String> lightIds = preferences.getStringSet(ACTIVATED_LIGHTS.toString(), new HashSet<String>());
         //20221229: Legacy network code removed, this broadcast receiver is kept for reference purposes only.
@@ -69,7 +71,8 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
         //                @Override
         //                public void onSuccess(Response<Success> response) {
         //                    Success success = response.body();
-        //                    Log.i(TAG, "Successfully created schedule with id: " + Objects.requireNonNull(success).getId());
+        //                    Log.i(TAG, "Successfully created schedule with id: " + Objects.requireNonNull
+        //                    (success).getId());
         //                    preferences.edit().putLong(ALARM_TIME.toString(), alarmTime).apply();
         //                }
         //

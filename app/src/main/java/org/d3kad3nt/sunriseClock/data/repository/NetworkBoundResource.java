@@ -31,9 +31,10 @@ import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
 import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
 
 /**
- * A generic class that can provide a resource backed by both the sqlite database and the network.
- * Copied from the official Google architecture-components github-sample under
- * https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/repository/NetworkBoundResource.kt
+ * A generic class that can provide a resource backed by both the sqlite database and the network. Copied from the
+ * official Google architecture-components github-sample under https://github
+ * .com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android
+ * /example/github/repository/NetworkBoundResource.kt
  *
  * You can read more about it in the [Architecture Guide](https://developer.android.com/arch).
  */
@@ -118,7 +119,8 @@ public abstract class NetworkBoundResource <ResultType, RemoteType, DbType> exte
             else if (ApiErrorResponse.class.equals(aClass)) {
                 onFetchFailed();
                 addSource(dbSource, newData -> {
-                    updateValue(Resource.error(((ApiErrorResponse<RemoteType>) response).getErrorMessage(), convertDbTypeToResultType(newData)));
+                    updateValue(Resource.error(((ApiErrorResponse<RemoteType>) response).getErrorMessage(),
+                            convertDbTypeToResultType(newData)));
                 });
             }
         });

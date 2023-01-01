@@ -26,12 +26,13 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
     /**
      * Custom type adapter for usage with Gson.
      *
-     * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is not
-     *                   part of the JSON response, therefore it has to be set manually for a
-     *                   specific RemoteLight when deserializing it.
+     * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is not part of the JSON
+     *                   response, therefore it has to be set manually for a specific RemoteLight when deserializing
+     *                   it.
      */
     public RemoteLightListTypeAdapter(long endpointId) {
-        this.gson = new GsonBuilder().registerTypeAdapter(RemoteLight.class, new RemoteLightTypeAdapter(endpointId)).create();
+        this.gson = new GsonBuilder().registerTypeAdapter(RemoteLight.class, new RemoteLightTypeAdapter(endpointId))
+                                     .create();
     }
 
     @Override
@@ -45,7 +46,8 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
             JsonObject jsonLight = rawJson.get(lightId).getAsJsonObject();
 
             // Preprocessing: Manipulate returned json to include the light id.
-            // This enables the existing Gson typeadapter (RemoteLightTypeAdapter) to work for requests for both single and multiple light(s).
+            // This enables the existing Gson typeadapter (RemoteLightTypeAdapter) to work for requests for both
+            // single and multiple light(s).
             jsonLight.addProperty(IServices.endpointLightIdHeader, lightId);
 
             // Returns a single light by calling the already existing Gson typeadapter.

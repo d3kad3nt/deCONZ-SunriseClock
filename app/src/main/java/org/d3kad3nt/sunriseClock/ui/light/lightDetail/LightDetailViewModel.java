@@ -18,7 +18,8 @@ import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 
 public class LightDetailViewModel extends AndroidViewModel {
     private final static String TAG = "LightDetailViewModel";
-    private final LightRepository lightRepository = LightRepository.getInstance(getApplication().getApplicationContext());
+    private final LightRepository lightRepository =
+            LightRepository.getInstance(getApplication().getApplicationContext());
     private final long lightID;
 
     public LiveData<Resource<UILight>> light;
@@ -26,12 +27,17 @@ public class LightDetailViewModel extends AndroidViewModel {
 
     public LightDetailViewModel(@NonNull Application application, long lightId) {
         super(application);
-        //Todo: Implement something to represent the state of the request inside UI (if (lightResource.getStatus().equals(Status.SUCCESS))...)
-        //Todo: Data binding in XML has built-in null-safety so viewModel.light.data.friendlyName inside XML works for now (but should be changed?)
+        //Todo: Implement something to represent the state of the request inside UI (if (lightResource.getStatus()
+        // .equals(Status.SUCCESS))...)
+        //Todo: Data binding in XML has built-in null-safety so viewModel.light.data.friendlyName inside XML works
+        // for now (but should be changed?)
         this.lightID = lightId;
         light = getLight(lightId);
 
-        loadingIndicatorVisibility = new VisibilityLiveData(View.VISIBLE).setLoadingVisibility(View.VISIBLE).setSuccessVisibility(View.INVISIBLE).setErrorVisibility(View.INVISIBLE).addVisibilityProvider(light);
+        loadingIndicatorVisibility = new VisibilityLiveData(View.VISIBLE).setLoadingVisibility(View.VISIBLE)
+                                                                         .setSuccessVisibility(View.INVISIBLE)
+                                                                         .setErrorVisibility(View.INVISIBLE)
+                                                                         .addVisibilityProvider(light);
     }
 
     public void setLightOnState(boolean newState) {

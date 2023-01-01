@@ -37,7 +37,8 @@ public class LightsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         LightsFragmentBinding binding = LightsFragmentBinding.inflate(inflater, container, false);
         binding.setLightsState(lightsState);
         adapter = new LightsListAdapter();
@@ -52,7 +53,8 @@ public class LightsFragment extends Fragment {
                     adapter.submitList(listResource.getData());
                 }
                 else if (listResource.getStatus().equals(Status.ERROR)) {
-                    lightsState.setError(getResources().getString(R.string.noLights_title), listResource.getMessage());
+                    lightsState.setError(getResources().getString(R.string.noLights_title),
+                            listResource.getMessage());
                 }
             }
         });
@@ -68,7 +70,8 @@ public class LightsFragment extends Fragment {
 
     private void addEndpointSelector() {
         endpointSpinner = new Spinner(getContext());
-        EndpointSelectorAdapter adapter = new EndpointSelectorAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
+        EndpointSelectorAdapter adapter = new EndpointSelectorAdapter(getContext(),
+                android.R.layout.simple_spinner_dropdown_item);
         endpointSpinner.setAdapter(adapter);
         endpointSpinner.setOnItemSelectedListener(new EndpointSelectedListener(getContext()));
 
@@ -80,7 +83,8 @@ public class LightsFragment extends Fragment {
             }
             else {
                 removeFromToolbar(endpointSpinner);
-                lightsState.setError(getResources().getString(R.string.noEndpoint_title), getResources().getString(R.string.noEndpoint_message));
+                lightsState.setError(getResources().getString(R.string.noEndpoint_title),
+                        getResources().getString(R.string.noEndpoint_message));
             }
         });
 

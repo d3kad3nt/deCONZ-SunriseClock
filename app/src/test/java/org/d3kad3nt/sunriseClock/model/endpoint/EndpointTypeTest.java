@@ -1,9 +1,10 @@
 package org.d3kad3nt.sunriseClock.model.endpoint;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.DeconzEndpointBuilder;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class EndpointTypeTest {
 

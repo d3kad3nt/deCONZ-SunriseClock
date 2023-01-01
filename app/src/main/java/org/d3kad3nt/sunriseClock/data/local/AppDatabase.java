@@ -25,8 +25,11 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final List<Migration> migrations = new ArrayList<>(Arrays.asList(new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
-            database.execSQL("CREATE TABLE new_endpoint (" + "endpointId INTEGER PRIMARY KEY NOT NULL," + "date_added INTEGER," + "config TEXT," + "type INTEGER," + "name TEXT NOT NULL DEFAULT 'Unnamed Endpoint')");
-            database.execSQL("INSERT INTO new_endpoint (endpointId, date_added, config, type) " + "SELECT endpointId, date_added, config, type FROM endpoint");
+            database.execSQL("CREATE TABLE new_endpoint (" + "endpointId INTEGER PRIMARY KEY NOT NULL," +
+                    "date_added INTEGER," + "config TEXT," + "type INTEGER," + "name TEXT NOT NULL DEFAULT " +
+                    "'Unnamed" + " Endpoint')");
+            database.execSQL("INSERT INTO new_endpoint (endpointId, date_added, config, type) " + "SELECT " +
+                    "endpointId, date_added, config, type FROM endpoint");
             database.execSQL("DROP TABLE endpoint");
             database.execSQL("ALTER TABLE new_endpoint RENAME TO endpoint");
 
@@ -35,8 +38,8 @@ public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
     /**
-     * Using singleton pattern as of now. With dependency injection (Dagger, ...) this class could
-     * be mocked when unit testing.
+     * Using singleton pattern as of now. With dependency injection (Dagger, ...) this class could be mocked when unit
+     * testing.
      * TODO: Dependency Injection, optional
      */
     public static AppDatabase getInstance(Context context) {
@@ -49,7 +52,8 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     private static AppDatabase buildDatabase(Context context) {
-        return Room.databaseBuilder(context, AppDatabase.class, DB_NAME).addMigrations(allMigrations()).build();
+        return Room.databaseBuilder(context, AppDatabase.class, DB_NAME).addMigrations(allMigrations())
+                .build();
     }
 
     public static void destroyInstance() {

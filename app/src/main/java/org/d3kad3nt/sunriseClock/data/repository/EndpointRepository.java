@@ -50,7 +50,8 @@ public class EndpointRepository {
 
     LiveData<BaseEndpoint> getRepoEndpoint(long id) {
         if (!endpointLiveDataCache.containsKey(id)) {
-            LiveData<BaseEndpoint> endpointTransformation = Transformations.switchMap(endpointConfigDao.load(id), input -> {
+            LiveData<BaseEndpoint> endpointTransformation = Transformations.switchMap(endpointConfigDao.load(id),
+                    input -> {
                 if (input == null) {
                     return new MutableLiveData<>();
                 }
@@ -94,7 +95,8 @@ public class EndpointRepository {
             throw new NullPointerException("The given config object was null.");
         }
         EndpointBuilder builder = config.type.getBuilder();
-        return builder.setConfig(config).build();
+        return builder.setConfig(config)
+                .build();
     }
 
     public IEndpointUI createEndpoint(Map<String, String> config) {
@@ -109,7 +111,8 @@ public class EndpointRepository {
         ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
             endpointConfigDao.save(endpointConfig);
         });
-        type.getBuilder().setConfig(endpointConfig).build();
+        type.getBuilder().setConfig(endpointConfig)
+                .build();
         return UIEndpoint.from(endpointConfig);
     }
 

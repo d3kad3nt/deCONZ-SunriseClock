@@ -22,10 +22,13 @@ public class LightDetailFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         long lightID = LightDetailFragmentArgs.fromBundle(requireArguments()).getLight(); // id from navigation
-        // Use custom factory to initialize viewModel with light id (instead of using new ViewModelProvider(this).get(LightDetailViewModel.class))
-        viewModel = new ViewModelProvider(this, new LightDetailViewModelFactory(requireActivity().getApplication(), lightID)).get(LightDetailViewModel.class);
+        // Use custom factory to initialize viewModel with light id (instead of using new ViewModelProvider(this)
+        // .get(LightDetailViewModel.class))
+        viewModel = new ViewModelProvider(this, new LightDetailViewModelFactory(requireActivity().getApplication(),
+                lightID)).get(LightDetailViewModel.class);
         binding = LightDetailFragmentBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -33,7 +36,8 @@ public class LightDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         binding.setViewModel(viewModel);
-        // Specify the fragment view as the lifecycle owner of the binding. This is used so that the binding can observe LiveData updates.
+        // Specify the fragment view as the lifecycle owner of the binding. This is used so that the binding can
+        // observe LiveData updates.
         binding.setLifecycleOwner(getViewLifecycleOwner());
     }
 
