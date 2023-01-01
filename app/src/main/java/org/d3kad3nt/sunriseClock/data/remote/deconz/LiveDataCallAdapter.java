@@ -1,0 +1,65 @@
+package org.d3kad3nt.sunriseClock.data.remote.deconz;
+
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+
+import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
+
+import java.lang.reflect.Type;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import retrofit2.Call;
+import retrofit2.CallAdapter;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+/**
+ * A Retrofit adapter that converts the Call into a LiveData of ApiResponse.
+ *
+ * Adapted from the official Google architecture-components github-sample app under
+ * https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/util/LiveDataCallAdapter.kt.
+ */
+class LiveDataCallAdapter <T> implements CallAdapter<T, LiveData<ApiResponse<T>>> {
+    private static final String TAG = "DeconzLiveDataCallA.";
+    private final Type responseType;
+
+    LiveDataCallAdapter(Type responseType) {
+        this.responseType = responseType;
+    }
+
+    @NonNull
+    @Override
+    public Type responseType() {
+        return responseType;
+    }
+
+    @NonNull
+    @Override
+    public LiveData<ApiResponse<T>> adapt(@NonNull Call<T> call) {
+        return new LiveData<ApiResponse<T>>() {
+            AtomicBoolean started = new AtomicBoolean(false);
+
+            @Override
+            protected void onActive() {
+                super.onActive();
+                if (started.compareAndSet(false, true)) {
+                    call.enqueue(new Callback<T>() {
+                        @Override
+                        public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
+                            Log.d(TAG, "onResponse() called.");
+                            postValue(ApiResponse.create(response));
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<T> call, @NonNull Throwable throwable) {
+                            Log.d(TAG, "onFailure() called.");
+                            postValue(ApiResponse.create(throwable));
+                        }
+                    });
+                }
+            }
+        };
+    }
+}
