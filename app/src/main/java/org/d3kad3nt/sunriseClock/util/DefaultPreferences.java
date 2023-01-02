@@ -27,18 +27,14 @@ public class DefaultPreferences {
     private void initPreference(SettingKeys setting, boolean value, SharedPreferences preferences) {
         if (!preferences.contains(setting.toString())) {
             Log.i(TAG, "Set default value for " + setting + " to " + value);
-            preferences.edit()
-                    .putBoolean(setting.toString(), value)
-                    .apply();
+            preferences.edit().putBoolean(setting.toString(), value).apply();
         }
     }
 
     private void initPreference(SettingKeys setting, String value, SharedPreferences preferences) {
         if (!preferences.contains(setting.toString())) {
             Log.i(TAG, "Set default value for " + setting + " to " + value);
-            preferences.edit()
-                    .putString(setting.toString(), value)
-                    .apply();
+            preferences.edit().putString(setting.toString(), value).apply();
         }
     }
 }

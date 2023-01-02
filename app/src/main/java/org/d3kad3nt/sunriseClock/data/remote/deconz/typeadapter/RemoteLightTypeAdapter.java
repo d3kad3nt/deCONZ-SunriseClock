@@ -35,8 +35,8 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
     public RemoteLight deserialize(JsonElement json, Type typeOfT,
             JsonDeserializationContext context) throws JsonParseException {
 
-        RemoteLightBuilder remoteLightBuilder = new RemoteLightBuilder().setEndpointType(EndpointType.DECONZ)
-                .setEndpointId(this.endpointId);
+        RemoteLightBuilder remoteLightBuilder =
+                new RemoteLightBuilder().setEndpointType(EndpointType.DECONZ).setEndpointId(this.endpointId);
 
         Log.d(TAG, "Parsing JSON for single light: " + json.toString());
 
@@ -51,34 +51,29 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
         // This enables the existing Gson typeadapter (RemoteLightTypeAdapter) to work for requests for both single
         // and multiple light(s).
         if (rawJson.has(IServices.endpointLightIdHeader)) {
-            remoteLightBuilder = remoteLightBuilder.setEndpointLightId(rawJson.get(IServices.endpointLightIdHeader)
-                    .getAsString());
+            remoteLightBuilder =
+                    remoteLightBuilder.setEndpointLightId(rawJson.get(IServices.endpointLightIdHeader).getAsString());
         }
 
         if (rawJson.has("name")) {
-            remoteLightBuilder = remoteLightBuilder.setName(rawJson.get("name")
-                    .getAsString());
+            remoteLightBuilder = remoteLightBuilder.setName(rawJson.get("name").getAsString());
         }
 
         if (rawJsonState.has("on")) {
-            remoteLightBuilder = remoteLightBuilder.setIsSwitchable(true)
-                    .setIsOn(rawJsonState.get("on")
-                            .getAsBoolean());
+            remoteLightBuilder =
+                    remoteLightBuilder.setIsSwitchable(true).setIsOn(rawJsonState.get("on").getAsBoolean());
         }
 
         if (rawJsonState.has("bri")) {
-            remoteLightBuilder = remoteLightBuilder.setIsDimmable(true)
-                    .setBrightness(rawJsonState.get("bri")
-                            .getAsInt());
+            remoteLightBuilder =
+                    remoteLightBuilder.setIsDimmable(true).setBrightness(rawJsonState.get("bri").getAsInt());
         }
 
         if (rawJsonState.has("colormode")) {
-            switch (rawJsonState.get("colormode")
-                    .getAsString()) {
+            switch (rawJsonState.get("colormode").getAsString()) {
                 case "ct":
                     remoteLightBuilder = remoteLightBuilder.setIsTemperaturable(true)
-                            .setColorTemperature(rawJsonState.get("ct")
-                                    .getAsInt());
+                            .setColorTemperature(rawJsonState.get("ct").getAsInt());
                 case "xy":
                     remoteLightBuilder = remoteLightBuilder.setIsColorable(true);
                     //TODO: .setColor();

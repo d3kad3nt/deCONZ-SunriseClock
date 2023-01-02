@@ -11,8 +11,8 @@ import java.util.Map;
 
 public class EndpointAddViewModel extends AndroidViewModel {
 
-    private final EndpointRepository endpointRepository = EndpointRepository.getInstance(
-            getApplication().getApplicationContext());
+    private final EndpointRepository endpointRepository =
+            EndpointRepository.getInstance(getApplication().getApplicationContext());
 
     public EndpointAddViewModel(@NonNull Application application) {
         super(application);

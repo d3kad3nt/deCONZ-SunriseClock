@@ -19,8 +19,8 @@ import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 public class LightDetailViewModel extends AndroidViewModel {
 
     private final static String TAG = "LightDetailViewModel";
-    private final LightRepository lightRepository = LightRepository.getInstance(
-            getApplication().getApplicationContext());
+    private final LightRepository lightRepository =
+            LightRepository.getInstance(getApplication().getApplicationContext());
     private final long lightID;
 
     public LiveData<Resource<UILight>> light;
@@ -36,9 +36,7 @@ public class LightDetailViewModel extends AndroidViewModel {
         light = getLight(lightId);
 
         loadingIndicatorVisibility = new VisibilityLiveData(View.VISIBLE).setLoadingVisibility(View.VISIBLE)
-                .setSuccessVisibility(View.INVISIBLE)
-                .setErrorVisibility(View.INVISIBLE)
-                .addVisibilityProvider(light);
+                .setSuccessVisibility(View.INVISIBLE).setErrorVisibility(View.INVISIBLE).addVisibilityProvider(light);
     }
 
     public void setLightOnState(boolean newState) {

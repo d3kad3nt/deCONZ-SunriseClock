@@ -44,8 +44,7 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
         Log.d(TAG, "Parsing JSON for list of lights: " + rawJson.toString());
 
         for (String lightId : rawJson.keySet()) {
-            JsonObject jsonLight = rawJson.get(lightId)
-                    .getAsJsonObject();
+            JsonObject jsonLight = rawJson.get(lightId).getAsJsonObject();
 
             // Preprocessing: Manipulate returned json to include the light id.
             // This enables the existing Gson typeadapter (RemoteLightTypeAdapter) to work for requests for both

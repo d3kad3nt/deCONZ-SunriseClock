@@ -19,16 +19,15 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         Log.i("sunriseClock", "Settings");
         setPreferencesFromResource(R.xml.preferences_main, rootKey);
-        Map<String, Integer> links = Map.of("pref_connectivity_category",
-                R.id.action_mainSettingsFragment_to_connectivityFragment, "pref_alarm_category",
-                R.id.action_mainSettingsFragment_to_alarmFragment, "pref_interface_category",
-                R.id.action_mainSettingsFragment_to_interfaceFragment, "pref_debug_category",
-                R.id.action_mainSettingsFragment_to_debugFragment);
+        Map<String, Integer> links =
+                Map.of("pref_connectivity_category", R.id.action_mainSettingsFragment_to_connectivityFragment,
+                        "pref_alarm_category", R.id.action_mainSettingsFragment_to_alarmFragment,
+                        "pref_interface_category", R.id.action_mainSettingsFragment_to_interfaceFragment,
+                        "pref_debug_category", R.id.action_mainSettingsFragment_to_debugFragment);
         for (Map.Entry<String, Integer> entry : links.entrySet()) {
             ((Preference) Objects.requireNonNull(findPreference(entry.getKey()))).setOnPreferenceClickListener(
                     preference -> {
-                        NavHostFragment.findNavController(this)
-                                .navigate(entry.getValue());
+                        NavHostFragment.findNavController(this).navigate(entry.getValue());
                         return true;
                     });
         }

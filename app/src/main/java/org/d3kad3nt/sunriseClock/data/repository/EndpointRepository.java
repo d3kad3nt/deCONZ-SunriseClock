@@ -34,8 +34,7 @@ public class EndpointRepository {
     private static volatile EndpointRepository INSTANCE;
 
     private EndpointRepository(Context context) {
-        endpointConfigDao = AppDatabase.getInstance(context.getApplicationContext())
-                .endpointConfigDao();
+        endpointConfigDao = AppDatabase.getInstance(context.getApplicationContext()).endpointConfigDao();
     }
 
     public static EndpointRepository getInstance(Context context) {
@@ -51,8 +50,8 @@ public class EndpointRepository {
 
     LiveData<BaseEndpoint> getRepoEndpoint(long id) {
         if (!endpointLiveDataCache.containsKey(id)) {
-            LiveData<BaseEndpoint> endpointTransformation = Transformations.switchMap(endpointConfigDao.load(id),
-                    input -> {
+            LiveData<BaseEndpoint> endpointTransformation =
+                    Transformations.switchMap(endpointConfigDao.load(id), input -> {
                         if (input == null) {
                             return new MutableLiveData<>();
                         } else {
@@ -93,8 +92,7 @@ public class EndpointRepository {
             throw new NullPointerException("The given config object was null.");
         }
         EndpointBuilder builder = config.type.getBuilder();
-        return builder.setConfig(config)
-                .build();
+        return builder.setConfig(config).build();
     }
 
     public IEndpointUI createEndpoint(Map<String, String> config) {
@@ -104,16 +102,12 @@ public class EndpointRepository {
         EndpointType type = EndpointType.valueOf(config.remove("type"));
         String name = config.remove("name");
         Gson gson = new Gson();
-        JsonObject jsonConfig = gson.toJsonTree(config)
-                .getAsJsonObject();
+        JsonObject jsonConfig = gson.toJsonTree(config).getAsJsonObject();
         EndpointConfig endpointConfig = new EndpointConfig(type, name, new Date(), jsonConfig);
-        ServiceLocator.getExecutor(ExecutorType.IO)
-                .execute(() -> {
-                    endpointConfigDao.save(endpointConfig);
-                });
-        type.getBuilder()
-                .setConfig(endpointConfig)
-                .build();
+        ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
+            endpointConfigDao.save(endpointConfig);
+        });
+        type.getBuilder().setConfig(endpointConfig).build();
         return UIEndpoint.from(endpointConfig);
     }
 

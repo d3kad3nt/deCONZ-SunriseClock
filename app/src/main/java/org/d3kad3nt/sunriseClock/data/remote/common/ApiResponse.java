@@ -39,16 +39,14 @@ public abstract class ApiResponse <T> {
             String msg = null;
             if (response.errorBody() != null) {
                 try {
-                    msg = response.errorBody()
-                            .string();
+                    msg = response.errorBody().string();
                 }
                 catch (IOException ignored) {
                 }
             }
             final String errorMsg;
             if ((msg == null) || msg.isEmpty()) {
-                if (response.message()
-                        .isEmpty()) {
+                if (response.message().isEmpty()) {
                     errorMsg = "Unknown error!";
                 } else {
                     errorMsg = response.message();

@@ -24,8 +24,7 @@ public class LightDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        long lightID = LightDetailFragmentArgs.fromBundle(requireArguments())
-                .getLight(); // id from navigation
+        long lightID = LightDetailFragmentArgs.fromBundle(requireArguments()).getLight(); // id from navigation
         // Use custom factory to initialize viewModel with light id (instead of using new ViewModelProvider(this)
         // .get(LightDetailViewModel.class))
         viewModel = new ViewModelProvider(this,

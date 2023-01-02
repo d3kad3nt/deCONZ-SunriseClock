@@ -41,8 +41,7 @@ public class LightRepository {
      * TODO: Dependency Injection, optional
      */
     private LightRepository(Context context) {
-        dbLightDao = AppDatabase.getInstance(context.getApplicationContext())
-                .dbLightDao();
+        dbLightDao = AppDatabase.getInstance(context.getApplicationContext()).dbLightDao();
         endpointRepo = EndpointRepository.getInstance(context);
     }
 

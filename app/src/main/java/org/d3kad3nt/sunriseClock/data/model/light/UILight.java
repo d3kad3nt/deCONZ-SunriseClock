@@ -111,7 +111,8 @@ public class UILight {
         return Objects.equals(lightId, otherLight.lightId) && Objects.equals(endpointId, otherLight.endpointId) &&
                Objects.equals(name, otherLight.name) && Objects.equals(isSwitchable, otherLight.isSwitchable) &&
                Objects.equals(isOn, otherLight.isOn) && Objects.equals(isDimmable, otherLight.isDimmable) &&
-               Objects.equals(brightness, otherLight.brightness) && Objects.equals(isTemperaturable,
-                otherLight.isTemperaturable) && Objects.equals(isColorable, otherLight.isColorable);
+               Objects.equals(brightness, otherLight.brightness) &&
+               Objects.equals(isTemperaturable, otherLight.isTemperaturable) &&
+               Objects.equals(isColorable, otherLight.isColorable);
     }
 }

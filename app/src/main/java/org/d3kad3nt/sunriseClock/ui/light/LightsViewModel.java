@@ -22,12 +22,12 @@ import me.ibrahimsn.library.LivePreference;
 public class LightsViewModel extends AndroidViewModel {
 
     private static final String TAG = "LightsViewModel";
-    private final LightRepository lightRepository = LightRepository.getInstance(
-            getApplication().getApplicationContext());
-    private final EndpointRepository endpointRepository = EndpointRepository.getInstance(
-            getApplication().getApplicationContext());
-    private final SettingsRepository settingsRepository = SettingsRepository.getInstance(
-            getApplication().getApplicationContext());
+    private final LightRepository lightRepository =
+            LightRepository.getInstance(getApplication().getApplicationContext());
+    private final EndpointRepository endpointRepository =
+            EndpointRepository.getInstance(getApplication().getApplicationContext());
+    private final SettingsRepository settingsRepository =
+            SettingsRepository.getInstance(getApplication().getApplicationContext());
     private final LiveData<Resource<List<UILight>>> lights;
     private final LiveData<List<IEndpointUI>> endpoints;
     private final LiveData<IEndpointUI> selectedEndpoint;

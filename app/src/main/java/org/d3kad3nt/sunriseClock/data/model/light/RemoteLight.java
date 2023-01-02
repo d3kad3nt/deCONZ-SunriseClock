@@ -75,17 +75,11 @@ public class RemoteLight {
         DbLightBuilder dbLightBuilder = new DbLightBuilder();
         //Logic to convert remote light to db light depending on the endpoint type this light originated from.
         DbLight dbLight = dbLightBuilder.setEndpointId(remoteLight.getEndpointId())
-                .setEndpointLightId(remoteLight.getEndpointLightId())
-                .setName(remoteLight.getName())
-                .setIsSwitchable(remoteLight.getIsSwitchable())
-                .setIsOn(remoteLight.getIsOn())
+                .setEndpointLightId(remoteLight.getEndpointLightId()).setName(remoteLight.getName())
+                .setIsSwitchable(remoteLight.getIsSwitchable()).setIsOn(remoteLight.getIsOn())
                 .setIsDimmable(remoteLight.getIsDimmable())
                 // Convert brightness via linear conversion (copied from https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio)
-                .setBrightness((((remoteLight.getBrightness() - remoteLight.getEndpointType()
-                        .getMinBrightness()) * (DbLight.BRIGHTNESS_MAX - DbLight.BRIGHTNESS_MIN)) /
-                                (remoteLight.getEndpointType()
-                                         .getMaxBrightness() - remoteLight.getEndpointType()
-                                         .getMinBrightness())) + DbLight.BRIGHTNESS_MIN)
+                .setBrightness(calculateBrightness(remoteLight))
                 .setIsTemperaturable(remoteLight.getIsTemperaturable())
                 .setColorTemperature(remoteLight.getColorTemperature()) //Todo: Implement
                 // conversion
@@ -95,6 +89,14 @@ public class RemoteLight {
         Log.d(TAG, "Converted RemoteLight with endpointId " + remoteLight.getEndpointId() + " and endpointLightId " +
                    remoteLight.getEndpointLightId() + " to DbLight.");
         return dbLight;
+    }
+
+    private static int calculateBrightness(RemoteLight remoteLight) {
+
+        return (((remoteLight.getBrightness() - remoteLight.getEndpointType().getMinBrightness()) *
+                 (DbLight.BRIGHTNESS_MAX - DbLight.BRIGHTNESS_MIN)) /
+                (remoteLight.getEndpointType().getMaxBrightness() -
+                 remoteLight.getEndpointType().getMinBrightness())) + DbLight.BRIGHTNESS_MIN;
     }
 
     public EndpointType getEndpointType() {
