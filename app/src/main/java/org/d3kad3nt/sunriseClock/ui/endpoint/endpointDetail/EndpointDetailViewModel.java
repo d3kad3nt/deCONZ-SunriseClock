@@ -13,7 +13,7 @@ public class EndpointDetailViewModel extends AndroidViewModel {
 
     private final static String TAG = "EndpointDetailViewModel";
     private final EndpointRepository endpointRepository =
-            EndpointRepository.getInstance(getApplication().getApplicationContext());
+        EndpointRepository.getInstance(getApplication().getApplicationContext());
 
     public LiveData<IEndpointUI> endpointConfig;
 

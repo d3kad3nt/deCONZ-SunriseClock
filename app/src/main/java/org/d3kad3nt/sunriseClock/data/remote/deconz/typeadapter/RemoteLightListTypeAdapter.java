@@ -31,13 +31,14 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
      *                   it.
      */
     public RemoteLightListTypeAdapter(long endpointId) {
-        this.gson = new GsonBuilder().registerTypeAdapter(RemoteLight.class, new RemoteLightTypeAdapter(endpointId))
-                .create();
+        this.gson =
+            new GsonBuilder().registerTypeAdapter(RemoteLight.class, new RemoteLightTypeAdapter(endpointId)).create();
     }
 
     @Override
     public List<RemoteLight> deserialize(JsonElement json, Type typeOfT,
-            JsonDeserializationContext context) throws JsonParseException {
+        JsonDeserializationContext context) throws JsonParseException
+    {
         JsonObject rawJson = json.getAsJsonObject();
         List<RemoteLight> lights = new ArrayList<>();
 

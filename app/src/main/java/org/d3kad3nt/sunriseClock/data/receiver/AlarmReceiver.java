@@ -26,7 +26,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         if (!Objects.equals(intent.getAction(), "android.app.action.NEXT_ALARM_CLOCK_CHANGED")) {
             Log.w(context.getString(R.string.app_name),
-                    "The received Broadcast had the wrong action: " + intent.getAction());
+                "The received Broadcast had the wrong action: " + intent.getAction());
             return;
         }
         AlarmManager alarm = (AlarmManager) this.context.getSystemService(Context.ALARM_SERVICE);

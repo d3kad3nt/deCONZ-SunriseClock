@@ -35,7 +35,8 @@ public class EndpointsFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+        @Nullable Bundle savedInstanceState)
+    {
         EndpointsFragmentBinding binding = EndpointsFragmentBinding.inflate(inflater, container, false);
         adapter = new EndpointsListAdapter();
         binding.recyclerView.setAdapter(adapter);
@@ -59,7 +60,7 @@ public class EndpointsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v)
-                        .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointAddFragment());
+                    .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointAddFragment());
             }
         });
     }

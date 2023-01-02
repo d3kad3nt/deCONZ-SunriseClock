@@ -31,7 +31,7 @@ public class DbLightBuilder {
     public DbLight build() {
         // Validator logic is defined inside the constructor of DbLight (separation of concern).
         return new DbLight(endpointId, endpointLightId, name, isSwitchable, isOn, isDimmable, brightness,
-                isTemperaturable, colorTemperature, isColorable, color);
+            isTemperaturable, colorTemperature, isColorable, color);
     }
 
     /**

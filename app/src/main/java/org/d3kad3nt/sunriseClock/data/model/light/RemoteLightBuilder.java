@@ -57,11 +57,11 @@ public class RemoteLightBuilder {
         // these values after the single light was parsed by GSON
         if (endpointType == null) {
             throw new IllegalStateException(
-                    "RemoteLightBuilder cannot build this light without an endpoint type! " + "Check remote light" +
-                    " parsing logic.");
+                "RemoteLightBuilder cannot build this light without an endpoint type! " + "Check remote light" +
+                " parsing logic.");
         }
         return new RemoteLight(endpointType, endpointId, endpointLightId, name, isSwitchable, isOn, isDimmable,
-                brightness, isTemperaturable, colorTemperature, isColorable, color);
+            brightness, isTemperaturable, colorTemperature, isColorable, color);
     }
 
     public RemoteLightBuilder setEndpointType(EndpointType endpointType) {

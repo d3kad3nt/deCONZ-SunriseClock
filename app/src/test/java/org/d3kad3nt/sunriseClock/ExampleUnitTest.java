@@ -1,6 +1,5 @@
 package org.d3kad3nt.sunriseClock;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;

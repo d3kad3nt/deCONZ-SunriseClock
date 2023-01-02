@@ -35,7 +35,7 @@ public class EndpointConfig {
     public EndpointType type;
     @SuppressWarnings("NotNullFieldNotInitialized")
     @ColumnInfo(name = "name",
-            defaultValue = "Unnamed Endpoint")
+        defaultValue = "Unnamed Endpoint")
     @NonNull
     private String name;
 

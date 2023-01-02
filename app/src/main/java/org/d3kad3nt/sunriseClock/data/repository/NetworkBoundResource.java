@@ -116,7 +116,7 @@ public abstract class NetworkBoundResource <ResultType, RemoteType, DbType> exte
                 onFetchFailed();
                 addSource(dbSource, newData -> {
                     updateValue(Resource.error(((ApiErrorResponse<RemoteType>) response).getErrorMessage(),
-                            convertDbTypeToResultType(newData)));
+                        convertDbTypeToResultType(newData)));
                 });
             }
         });

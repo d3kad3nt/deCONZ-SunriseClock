@@ -14,14 +14,14 @@ import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
 import org.jetbrains.annotations.Contract;
 
 @Entity(tableName = DbLight.TABLENAME,
-        indices = {@Index(value = {"endpoint_id", "endpoint_light_id"},
-                unique = true)},
-        // A DbLight is always bound to a single endpoint. It cannot exist without one:
-        // Therefore Room is instructed to delete this DbLight if the endpoint gets deleted.
-        foreignKeys = @ForeignKey(entity = EndpointConfig.class,
-                parentColumns = "endpointId",
-                childColumns = "endpoint_id",
-                onDelete = ForeignKey.CASCADE))
+    indices = {@Index(value = {"endpoint_id", "endpoint_light_id"},
+        unique = true)},
+    // A DbLight is always bound to a single endpoint. It cannot exist without one:
+    // Therefore Room is instructed to delete this DbLight if the endpoint gets deleted.
+    foreignKeys = @ForeignKey(entity = EndpointConfig.class,
+        parentColumns = "endpointId",
+        childColumns = "endpoint_id",
+        onDelete = ForeignKey.CASCADE))
 public class DbLight {
 
     @Ignore
@@ -69,8 +69,9 @@ public class DbLight {
      * Room to be able to create an object. This should not be otherwise accessed!
      */
     public DbLight(long endpointId, String endpointLightId, String name, boolean isSwitchable, boolean isOn,
-            boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature, boolean isColorable,
-            int color) {
+        boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature, boolean isColorable,
+        int color)
+    {
         if (endpointId != 0L) {
             this.endpointId = endpointId;
         } else {

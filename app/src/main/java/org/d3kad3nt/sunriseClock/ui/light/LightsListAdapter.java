@@ -26,7 +26,7 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(
-                LightListElementBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+            LightListElementBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
 
     private View.OnClickListener createOnClickListener(long lightID) {
         return v -> Navigation.findNavController(v)
-                .navigate(LightsFragmentDirections.actionLightsToLightDetail(lightID));
+            .navigate(LightsFragmentDirections.actionLightsToLightDetail(lightID));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

@@ -24,7 +24,7 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(
-                EndpointListElementBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+            EndpointListElementBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
@@ -36,7 +36,7 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
 
     private View.OnClickListener createOnClickListener(long endpointID) {
         return v -> Navigation.findNavController(v)
-                .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointID));
+            .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointID));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

@@ -31,8 +31,9 @@ public class RemoteLight {
     private final int color;
 
     RemoteLight(EndpointType endpointType, long endpointId, String endpointLightId, String name, boolean isSwitchable,
-            boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
-            boolean isColorable, int color) {
+        boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
+        boolean isColorable, int color)
+    {
         this.endpointType = endpointType;
 
         if (endpointId != 0L) {
@@ -58,8 +59,8 @@ public class RemoteLight {
             this.brightness = brightness;
         } else {
             throw new IllegalArgumentException(
-                    "The given brightness of a light (endpoint type " + endpointType.name() + ") must be between " +
-                    endpointType.getMinBrightness() + " and " + endpointType.getMaxBrightness() + "!");
+                "The given brightness of a light (endpoint type " + endpointType.name() + ") must be between " +
+                endpointType.getMinBrightness() + " and " + endpointType.getMaxBrightness() + "!");
         }
 
         this.isTemperaturable = isTemperaturable;
@@ -75,17 +76,16 @@ public class RemoteLight {
         DbLightBuilder dbLightBuilder = new DbLightBuilder();
         //Logic to convert remote light to db light depending on the endpoint type this light originated from.
         DbLight dbLight = dbLightBuilder.setEndpointId(remoteLight.getEndpointId())
-                .setEndpointLightId(remoteLight.getEndpointLightId()).setName(remoteLight.getName())
-                .setIsSwitchable(remoteLight.getIsSwitchable()).setIsOn(remoteLight.getIsOn())
-                .setIsDimmable(remoteLight.getIsDimmable())
-                // Convert brightness via linear conversion (copied from https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio)
-                .setBrightness(calculateBrightness(remoteLight))
-                .setIsTemperaturable(remoteLight.getIsTemperaturable())
-                .setColorTemperature(remoteLight.getColorTemperature()) //Todo: Implement
-                // conversion
-                .setIsColorable(remoteLight.getIsColorable())
-                .setColor(remoteLight.getColor()) //Todo: Implement conversion
-                .build();
+            .setEndpointLightId(remoteLight.getEndpointLightId()).setName(remoteLight.getName())
+            .setIsSwitchable(remoteLight.getIsSwitchable()).setIsOn(remoteLight.getIsOn())
+            .setIsDimmable(remoteLight.getIsDimmable())
+            // Convert brightness via linear conversion (copied from https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio)
+            .setBrightness(calculateBrightness(remoteLight)).setIsTemperaturable(remoteLight.getIsTemperaturable())
+            .setColorTemperature(remoteLight.getColorTemperature()) //Todo: Implement
+            // conversion
+            .setIsColorable(remoteLight.getIsColorable())
+            .setColor(remoteLight.getColor()) //Todo: Implement conversion
+            .build();
         Log.d(TAG, "Converted RemoteLight with endpointId " + remoteLight.getEndpointId() + " and endpointLightId " +
                    remoteLight.getEndpointLightId() + " to DbLight.");
         return dbLight;

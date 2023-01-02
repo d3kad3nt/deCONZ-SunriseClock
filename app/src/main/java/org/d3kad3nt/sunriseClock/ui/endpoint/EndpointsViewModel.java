@@ -19,9 +19,9 @@ import me.ibrahimsn.library.LivePreference;
 public class EndpointsViewModel extends AndroidViewModel {
 
     private final EndpointRepository endpointRepository =
-            EndpointRepository.getInstance(getApplication().getApplicationContext());
+        EndpointRepository.getInstance(getApplication().getApplicationContext());
     private final SettingsRepository settingsRepository =
-            SettingsRepository.getInstance(getApplication().getApplicationContext());
+        SettingsRepository.getInstance(getApplication().getApplicationContext());
     private final LiveData<List<IEndpointUI>> endpoints;
     private final LiveData<IEndpointUI> selectedEndpoint;
 
