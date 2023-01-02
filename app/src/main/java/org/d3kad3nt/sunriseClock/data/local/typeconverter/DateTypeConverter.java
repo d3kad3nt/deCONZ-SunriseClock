@@ -19,5 +19,4 @@ public class DateTypeConverter {
             return date.getTime();
         }
     }
-
 }

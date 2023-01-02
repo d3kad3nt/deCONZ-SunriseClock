@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.databinding.LightListElementBinding;
 
-
 public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.ViewHolder> {
 
     private static final String TAG = "LightsListAdapter";
@@ -26,8 +25,8 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LightListElementBinding.inflate(
-                LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(
+            LightListElementBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
@@ -38,11 +37,12 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
     }
 
     private View.OnClickListener createOnClickListener(long lightID) {
-        return v -> Navigation.findNavController(v).navigate(
-                LightsFragmentDirections.actionLightsToLightDetail(lightID));
+        return v -> Navigation.findNavController(v)
+            .navigate(LightsFragmentDirections.actionLightsToLightDetail(lightID));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+
         private final LightListElementBinding binding;
 
         ViewHolder(@NonNull LightListElementBinding binding) {
@@ -68,16 +68,20 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         }
 
         /**
-         * Determines if the particular item was updated. Only called when {@link LightsListAdapter.LightDiffCallback#areItemsTheSame} returned true.
+         * Determines if the particular item was updated. Only called when
+         * {@link LightsListAdapter.LightDiffCallback#areItemsTheSame}
+         * returned true.
          */
         @Override
         public boolean areContentsTheSame(@NonNull UILight oldItem, @NonNull UILight newItem) {
             boolean result = oldItem.equals(newItem);
             if (!result) {
-                Log.d(TAG, "Recyclerview determined that light with lightId " + oldItem.getLightId() + " was changed and its ViewHolder content must be updated.");
+                Log.d(TAG, "Recyclerview determined that light with lightId " + oldItem.getLightId() + " was " +
+                           "changed and its ViewHolder content must be updated.");
             }
             return result;
         }
-        // Optional getChangePayload() could be overwritten. This is called when areItemsTheSame() returns true for two items and areContentsTheSame() returns false for them to get a payload about the change.
+        // Optional getChangePayload() could be overwritten. This is called when areItemsTheSame() returns true for
+        // two items and areContentsTheSame() returns false for them to get a payload about the change.
     }
 }

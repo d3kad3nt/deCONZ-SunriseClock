@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import org.jetbrains.annotations.Contract;
 
 public class UIEndpoint implements IEndpointUI {
+
     private final String stringRepresentation;
     private final long id;
 
@@ -15,7 +16,7 @@ public class UIEndpoint implements IEndpointUI {
 
     @NonNull
     @Contract("_ -> new")
-    public static UIEndpoint from(@NonNull EndpointConfig baseEndpoint){
+    public static UIEndpoint from(@NonNull EndpointConfig baseEndpoint) {
         return new UIEndpoint(baseEndpoint.toString(), baseEndpoint.getId());
     }
 

@@ -8,6 +8,7 @@ import androidx.preference.PreferenceManager;
 
 //TODO: Check if this class is neccessary
 public class DefaultPreferences {
+
     private final Context context;
 
     private final String TAG = "DefaultPreferences";

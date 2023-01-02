@@ -6,7 +6,7 @@ public class Empty {
 
     static Empty instance = new Empty();
 
-    public static Empty getInstance(){
+    public static Empty getInstance() {
         return instance;
     }
 

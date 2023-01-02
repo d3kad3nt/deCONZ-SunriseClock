@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.databinding.EndpointListElementBinding;
 
-
 public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsListAdapter.ViewHolder> {
 
     public EndpointsListAdapter() {
@@ -24,8 +23,8 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(EndpointListElementBinding.inflate(
-                LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(
+            EndpointListElementBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
@@ -36,12 +35,13 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
     }
 
     private View.OnClickListener createOnClickListener(long endpointID) {
-        return v -> Navigation.findNavController(v).navigate(
-                EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointID));
+        return v -> Navigation.findNavController(v)
+            .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointID));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private EndpointListElementBinding binding;
+
+        private final EndpointListElementBinding binding;
 
         ViewHolder(@NonNull EndpointListElementBinding binding) {
             super(binding.getRoot());

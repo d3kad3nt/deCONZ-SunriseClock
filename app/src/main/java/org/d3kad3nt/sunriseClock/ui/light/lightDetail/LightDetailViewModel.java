@@ -17,8 +17,10 @@ import org.d3kad3nt.sunriseClock.ui.util.VisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 
 public class LightDetailViewModel extends AndroidViewModel {
+
     private final static String TAG = "LightDetailViewModel";
-    private final LightRepository lightRepository = LightRepository.getInstance(getApplication().getApplicationContext());
+    private final LightRepository lightRepository =
+        LightRepository.getInstance(getApplication().getApplicationContext());
     private final long lightID;
 
     public LiveData<Resource<UILight>> light;
@@ -26,41 +28,39 @@ public class LightDetailViewModel extends AndroidViewModel {
 
     public LightDetailViewModel(@NonNull Application application, long lightId) {
         super(application);
-        //Todo: Implement something to represent the state of the request inside UI (if (lightResource.getStatus().equals(Status.SUCCESS))...)
-        //Todo: Data binding in XML has built-in null-safety so viewModel.light.data.friendlyName inside XML works for now (but should be changed?)
+        //Todo: Implement something to represent the state of the request inside UI (if (lightResource.getStatus()
+        // .equals(Status.SUCCESS))...)
+        //Todo: Data binding in XML has built-in null-safety so viewModel.light.data.friendlyName inside XML works
+        // for now (but should be changed?)
         this.lightID = lightId;
         light = getLight(lightId);
 
-        loadingIndicatorVisibility = new VisibilityLiveData(View.VISIBLE)
-                .setLoadingVisibility(View.VISIBLE)
-                .setSuccessVisibility(View.INVISIBLE)
-                .setErrorVisibility(View.INVISIBLE)
-                .addVisibilityProvider(light);
+        loadingIndicatorVisibility = new VisibilityLiveData(View.VISIBLE).setLoadingVisibility(View.VISIBLE)
+            .setSuccessVisibility(View.INVISIBLE).setErrorVisibility(View.INVISIBLE).addVisibilityProvider(light);
     }
 
-    public void setLightOnState(boolean newState){
+    public void setLightOnState(boolean newState) {
         LiveDataUtil.observeOnce(light, lightResource -> {
-           if (lightResource == null || lightResource.getStatus() == Status.LOADING){
-               return;
-           }
+            if (lightResource == null || lightResource.getStatus() == Status.LOADING) {
+                return;
+            }
             LiveData<EmptyResource> state = lightRepository.setOnState(lightID, newState);
             loadingIndicatorVisibility.addVisibilityProvider(state);
-
         });
     }
 
-    public void setLightBrightness(int brightness, boolean changedByUser){
+    public void setLightBrightness(int brightness, boolean changedByUser) {
         Log.d(TAG, "Bright: " + brightness + " " + changedByUser);
-        if (! changedByUser){
+        if (!changedByUser) {
             return;
         }
         // Todo: double?
-        double brightnessPercent =((double) brightness)/100;
+        double brightnessPercent = ((double) brightness) / 100;
         LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightnessPercent);
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 
-    private LiveData<Resource<UILight>> getLight(long lightID){
+    private LiveData<Resource<UILight>> getLight(long lightID) {
         return lightRepository.getLight(lightID);
     }
 }

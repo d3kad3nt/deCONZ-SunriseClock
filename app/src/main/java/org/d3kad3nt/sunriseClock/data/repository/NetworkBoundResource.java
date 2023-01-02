@@ -31,12 +31,14 @@ import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
 import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
 
 /**
- * A generic class that can provide a resource backed by both the sqlite database and the network.
- * Copied from the official Google architecture-components github-sample under https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/repository/NetworkBoundResource.kt
+ * A generic class that can provide a resource backed by both the sqlite database and the network. Copied from the
+ * official Google architecture-components github-sample under https://github
+ * .com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android
+ * /example/github/repository/NetworkBoundResource.kt
  *
  * You can read more about it in the [Architecture Guide](https://developer.android.com/arch).
  */
-public abstract class NetworkBoundResource<ResultType, RemoteType, DbType> extends ExtendedMediatorLiveData<Resource<ResultType>> {
+public abstract class NetworkBoundResource <ResultType, RemoteType, DbType> extends ExtendedMediatorLiveData<Resource<ResultType>> {
 
     private final LiveData<DbType> dbSource;
     protected BaseEndpoint endpoint = null;
@@ -96,7 +98,8 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType> exten
                     ServiceLocator.getExecutor(ExecutorType.MainThread).execute(() -> {
                         // we specially request a new live data,
                         // otherwise we will get immediately last cached value,
-                        // which may not be updated with latest results received from network.
+                        // which may not be updated with latest results received from
+                        // network.
                         addSource(loadFromDb(), newData -> {
                             updateValue(Resource.success(convertDbTypeToResultType(newData)));
                         });
@@ -112,13 +115,15 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType> exten
             } else if (ApiErrorResponse.class.equals(aClass)) {
                 onFetchFailed();
                 addSource(dbSource, newData -> {
-                    updateValue(Resource.error(((ApiErrorResponse<RemoteType>) response).getErrorMessage(), convertDbTypeToResultType(newData)));
+                    updateValue(Resource.error(((ApiErrorResponse<RemoteType>) response).getErrorMessage(),
+                        convertDbTypeToResultType(newData)));
                 });
             }
         });
     }
 
-    protected void onFetchFailed() {}
+    protected void onFetchFailed() {
+    }
 
     @WorkerThread
     protected abstract void saveResponseToDb(DbType item);

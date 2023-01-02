@@ -2,72 +2,64 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:tag="DECONZ"
         tools:context="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointAddFragment">
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.7" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editTextUrlContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/url"
+            app:helperText="Format: http://192.168.0.10"
+            app:helperTextEnabled="true"
             app:layout_constraintBottom_toTopOf="@id/editTextApikeyContainer"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/guideline"
-            app:suffixText="/api"
-            app:helperTextEnabled="true"
-            app:helperText="Format: http://192.168.0.10">
-
+            app:suffixText="/api">
             <com.google.android.material.textfield.TextInputEditText
-                android:tag="baseUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textUri" />
+                android:inputType="textUri"
+                android:tag="baseUrl" />
         </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editTextPortContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/port"
+            app:helperText="Format: 80"
+            app:helperTextEnabled="true"
             app:layout_constraintBottom_toTopOf="@id/editTextApikeyContainer"
             app:layout_constraintLeft_toRightOf="@id/guideline"
-            app:layout_constraintRight_toRightOf="parent"
-            app:helperTextEnabled="true"
-            app:helperText="Format: 80">
-
+            app:layout_constraintRight_toRightOf="parent">
             <com.google.android.material.textfield.TextInputEditText
-                android:tag="port"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:tag="port" />
         </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editTextApikeyContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/api_key"
-            app:layout_constraintTop_toBottomOf="@id/editTextPortContainer"
             app:endIconMode="password_toggle"
+            app:helperText="Format: B42617A9"
             app:helperTextEnabled="true"
-            app:helperText="Format: B42617A9">
-
+            app:layout_constraintTop_toBottomOf="@id/editTextPortContainer">
             <com.google.android.material.textfield.TextInputEditText
-                android:tag="apiKey"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:tag="apiKey" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

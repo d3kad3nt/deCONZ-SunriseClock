@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.Objects;
 
 public class EndpointDetailViewModelFactory implements ViewModelProvider.Factory {
+
     private final Application mApplication;
     private final long mParam;
 

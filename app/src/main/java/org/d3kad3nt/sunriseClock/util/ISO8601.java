@@ -9,10 +9,10 @@ import java.util.TimeZone;
 
 public class ISO8601 {
 
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
 
-    private String iso8601;
-    private Date date;
+    private final String iso8601;
+    private final Date date;
 
     /**
      * @param date Time in UTC (!)
@@ -49,7 +49,7 @@ public class ISO8601 {
      * @param time Time to convert in UTC (!)
      * @return Date object in UTC timezone.
      */
-    private Date getFromIso(String time) throws ParseException{
+    private Date getFromIso(String time) throws ParseException {
         return dateFormat.parse(time);
     }
 
@@ -65,5 +65,4 @@ public class ISO8601 {
     public String toString() {
         return getIso8601();
     }
-
 }

@@ -32,8 +32,8 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
     private final BroadcastReceiver.PendingResult pendingResult;
     private final AlarmManager alarm;
 
-    private WeakReference<Context> context;
-    private SharedPreferences preferences;
+    private final WeakReference<Context> context;
+    private final SharedPreferences preferences;
 
     SchedulingTask(BroadcastReceiver.PendingResult pendingResult, AlarmManager alarm, Context context) {
         this.pendingResult = pendingResult;
@@ -55,31 +55,33 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
         ISO8601 schedulingTime = new ISO8601(date);
         Log.i(TAG, "Next alarm rings at :" + schedulingTime);
 
-        //TODO: Check if deconz url, apikey etc are valid. A 'valid' flag could be set when first adding or modifying these settings.
+        //TODO: Check if deconz url, apikey etc are valid. A 'valid' flag could be set when first adding or
+        // modifying these settings.
         //TODO: Improve defaultValues
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme("http")
-                .encodedAuthority(preferences.getString(IP.toString(), "") + ":" + preferences.getString(PORT.toString(), ""));
+        builder.scheme("http").encodedAuthority(
+            preferences.getString(IP.toString(), "") + ":" + preferences.getString(PORT.toString(), ""));
         String apiKey = preferences.getString(API_KEY.toString(), "");
         Set<String> lightIds = preferences.getStringSet(ACTIVATED_LIGHTS.toString(), new HashSet<String>());
         //20221229: Legacy network code removed, this broadcast receiver is kept for reference purposes only.
         // Todo: Use the new app architecture (repository, MVVM).
-//        for (String lightId : lightIds) {
-//            DeconzRequestSchedulesHelper deconz = new DeconzRequestSchedulesHelper(builder.build(), apiKey);
-//            deconz.schedulePowerOn(new SimplifiedCallback<Success>() {
-//                @Override
-//                public void onSuccess(Response<Success> response) {
-//                    Success success = response.body();
-//                    Log.i(TAG, "Successfully created schedule with id: " + Objects.requireNonNull(success).getId());
-//                    preferences.edit().putLong(ALARM_TIME.toString(), alarmTime).apply();
-//                }
-//
-//                @Override
-//                public void onError() {
-//                    //TODO
-//                }
-//            }, lightId, schedulingTime);
-//        }
+        //        for (String lightId : lightIds) {
+        //            DeconzRequestSchedulesHelper deconz = new DeconzRequestSchedulesHelper(builder.build(), apiKey);
+        //            deconz.schedulePowerOn(new SimplifiedCallback<Success>() {
+        //                @Override
+        //                public void onSuccess(Response<Success> response) {
+        //                    Success success = response.body();
+        //                    Log.i(TAG, "Successfully created schedule with id: " + Objects.requireNonNull
+        //                    (success).getId());
+        //                    preferences.edit().putLong(ALARM_TIME.toString(), alarmTime).apply();
+        //                }
+        //
+        //                @Override
+        //                public void onError() {
+        //                    //TODO
+        //                }
+        //            }, lightId, schedulingTime);
+        //        }
 
         return "TODO" + schedulingTime;
     }
@@ -88,13 +90,11 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String s) {
 
         if (preferences.getBoolean(TOAST_ACTIVE.toString(), true)) {
-            Toast.makeText(this.context.get(), s,
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this.context.get(), s, Toast.LENGTH_LONG).show();
         }
 
         // Must call finish() so the BroadcastReceiver can be recycled.
         pendingResult.finish();
     }
-
 }
 

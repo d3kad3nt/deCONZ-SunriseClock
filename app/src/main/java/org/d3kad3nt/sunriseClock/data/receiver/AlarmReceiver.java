@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private String TAG = "AlarmReceiver";
+    private final String TAG = "AlarmReceiver";
 
     private Context context;
 
@@ -25,7 +25,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         this.context = context;
 
         if (!Objects.equals(intent.getAction(), "android.app.action.NEXT_ALARM_CLOCK_CHANGED")) {
-            Log.w(context.getString(R.string.app_name), "The received Broadcast had the wrong action: " + intent.getAction());
+            Log.w(context.getString(R.string.app_name),
+                "The received Broadcast had the wrong action: " + intent.getAction());
             return;
         }
         AlarmManager alarm = (AlarmManager) this.context.getSystemService(Context.ALARM_SERVICE);
@@ -37,10 +38,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (checkPrerequisites()) {
             addSchedule(alarm, context);
         }
-
     }
 
-    /* TODO: Retrieve formerly used schedule ids (probably from local storage) to remove obsolete schedulues from deconz.
+    /* TODO: Retrieve formerly used schedule ids (probably from local storage) to remove obsolete schedulues from
+        deconz.
      * Could use the new WorkManager from jetpack. */
     private void removeObsoleteSchedules() {
 
@@ -69,7 +70,5 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.d(TAG, "WiFi is not enabled.");
             return false;
         }
-
     }
-
 }

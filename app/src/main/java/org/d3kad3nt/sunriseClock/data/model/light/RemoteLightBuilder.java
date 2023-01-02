@@ -3,6 +3,7 @@ package org.d3kad3nt.sunriseClock.data.model.light;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 
 public class RemoteLightBuilder {
+
     private static final String TAG = "RemoteLightBuilder";
 
     private EndpointType endpointType;
@@ -52,11 +53,15 @@ public class RemoteLightBuilder {
     }
 
     public RemoteLight build() {
-        //Todo: Check if endpointId and endpointLightId are set, problem: RemoteLightListTypeAdapter has to set these values after the single light was parsed by GSON
+        //Todo: Check if endpointId and endpointLightId are set, problem: RemoteLightListTypeAdapter has to set
+        // these values after the single light was parsed by GSON
         if (endpointType == null) {
-            throw new IllegalStateException("RemoteLightBuilder cannot build this light without an endpoint type! Check remote light parsing logic.");
+            throw new IllegalStateException(
+                "RemoteLightBuilder cannot build this light without an endpoint type! " + "Check remote light" +
+                " parsing logic.");
         }
-        return new RemoteLight(endpointType, endpointId, endpointLightId, name, isSwitchable, isOn, isDimmable, brightness, isTemperaturable, colorTemperature, isColorable, color);
+        return new RemoteLight(endpointType, endpointId, endpointLightId, name, isSwitchable, isOn, isDimmable,
+            brightness, isTemperaturable, colorTemperature, isColorable, color);
     }
 
     public RemoteLightBuilder setEndpointType(EndpointType endpointType) {
@@ -64,57 +69,57 @@ public class RemoteLightBuilder {
         return this;
     }
 
-    public RemoteLightBuilder setEndpointId(long endpointId){
+    public RemoteLightBuilder setEndpointId(long endpointId) {
         this.endpointId = endpointId;
         return this;
     }
 
-    public RemoteLightBuilder setEndpointLightId(String endpointLightId){
+    public RemoteLightBuilder setEndpointLightId(String endpointLightId) {
         this.endpointLightId = endpointLightId;
         return this;
     }
 
-    public RemoteLightBuilder setName(String name){
+    public RemoteLightBuilder setName(String name) {
         this.name = name;
         return this;
     }
 
-    public RemoteLightBuilder setIsSwitchable(boolean isSwitchable){
+    public RemoteLightBuilder setIsSwitchable(boolean isSwitchable) {
         this.isSwitchable = isSwitchable;
         return this;
     }
 
-    public RemoteLightBuilder setIsOn(boolean isOn){
+    public RemoteLightBuilder setIsOn(boolean isOn) {
         this.isOn = isOn;
         return this;
     }
 
-    public RemoteLightBuilder setIsDimmable(boolean isDimmable){
+    public RemoteLightBuilder setIsDimmable(boolean isDimmable) {
         this.isDimmable = isDimmable;
         return this;
     }
 
-    public RemoteLightBuilder setBrightness(int brightness){
+    public RemoteLightBuilder setBrightness(int brightness) {
         this.brightness = brightness;
         return this;
     }
 
-    public RemoteLightBuilder setIsTemperaturable(boolean isTemperaturable){
+    public RemoteLightBuilder setIsTemperaturable(boolean isTemperaturable) {
         this.isTemperaturable = isTemperaturable;
         return this;
     }
 
-    public RemoteLightBuilder setColorTemperature(int colorTemperature){
+    public RemoteLightBuilder setColorTemperature(int colorTemperature) {
         this.colorTemperature = colorTemperature;
         return this;
     }
 
-    public RemoteLightBuilder setIsColorable(boolean isColorable){
+    public RemoteLightBuilder setIsColorable(boolean isColorable) {
         this.isColorable = isColorable;
         return this;
     }
 
-    public RemoteLightBuilder setColor(int color){
+    public RemoteLightBuilder setColor(int color) {
         this.color = color;
         return this;
     }

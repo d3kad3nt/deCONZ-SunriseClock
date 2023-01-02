@@ -14,15 +14,15 @@ import retrofit2.Response;
  * Common class used by API responses.
  *
  * Adapted from the official Google architecture-components github-sample app under
- * https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/api/ApiResponse.kt.
+ * https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com
+ * /android/example/github/api/ApiResponse.kt.
  */
 public abstract class ApiResponse <T> {
 
     public static <T> ApiResponse<T> create(Throwable error) {
         if (error.getMessage() != null) {
             return new ApiErrorResponse<>(error.getMessage());
-        }
-        else {
+        } else {
             return new ApiErrorResponse<>("Unknown error!");
         }
     }
@@ -32,12 +32,10 @@ public abstract class ApiResponse <T> {
             final T body = response.body();
             if (body == null || response.code() == 204) {
                 return new ApiEmptyResponse<>();
-            }
-            else {
+            } else {
                 return new ApiSuccessResponse<>(body);
             }
-        }
-        else {
+        } else {
             String msg = null;
             if (response.errorBody() != null) {
                 try {
@@ -50,12 +48,10 @@ public abstract class ApiResponse <T> {
             if ((msg == null) || msg.isEmpty()) {
                 if (response.message().isEmpty()) {
                     errorMsg = "Unknown error!";
-                }
-                else {
+                } else {
                     errorMsg = response.message();
                 }
-            }
-            else {
+            } else {
                 errorMsg = msg;
             }
             return new ApiErrorResponse<>(errorMsg);

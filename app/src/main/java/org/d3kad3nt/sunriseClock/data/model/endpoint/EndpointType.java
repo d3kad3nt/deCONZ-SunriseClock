@@ -1,7 +1,7 @@
 package org.d3kad3nt.sunriseClock.data.model.endpoint;
 
-import org.d3kad3nt.sunriseClock.data.remote.deconz.DeconzEndpointBuilder;
 import org.d3kad3nt.sunriseClock.data.remote.common.EndpointBuilder;
+import org.d3kad3nt.sunriseClock.data.remote.deconz.DeconzEndpointBuilder;
 
 /**
  * Lists all currently implemented types of (remote) endpoints.

@@ -17,15 +17,18 @@ import java.util.List;
 import me.ibrahimsn.library.LivePreference;
 
 public class EndpointsViewModel extends AndroidViewModel {
-    private final EndpointRepository endpointRepository = EndpointRepository.getInstance(getApplication().getApplicationContext());
-    private final SettingsRepository settingsRepository = SettingsRepository.getInstance(getApplication().getApplicationContext());
+
+    private final EndpointRepository endpointRepository =
+        EndpointRepository.getInstance(getApplication().getApplicationContext());
+    private final SettingsRepository settingsRepository =
+        SettingsRepository.getInstance(getApplication().getApplicationContext());
     private final LiveData<List<IEndpointUI>> endpoints;
     private final LiveData<IEndpointUI> selectedEndpoint;
 
     public EndpointsViewModel(@NonNull Application application) {
         super(application);
         //TODO use something better
-        LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id",0);
+        LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id", 0);
         endpoints = endpointRepository.getAllEndpoints();
         selectedEndpoint = Transformations.switchMap(endpointID, new Function<Long, LiveData<IEndpointUI>>() {
             @Override
@@ -35,7 +38,7 @@ public class EndpointsViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<List<IEndpointUI>> getEndpoints(){
+    public LiveData<List<IEndpointUI>> getEndpoints() {
         return endpoints;
     }
 

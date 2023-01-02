@@ -3,9 +3,9 @@ package org.d3kad3nt.sunriseClock.ui.preference;
 import android.os.Bundle;
 import android.util.Log;
 
-import org.d3kad3nt.sunriseClock.R;
-
 import androidx.preference.PreferenceFragmentCompat;
+
+import org.d3kad3nt.sunriseClock.R;
 
 public class DebugFragment extends PreferenceFragmentCompat {
 
@@ -13,8 +13,5 @@ public class DebugFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         Log.i("sunriseClock", "Settings");
         setPreferencesFromResource(R.xml.preferences_debug, rootKey);
-
     }
-
-
 }

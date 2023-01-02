@@ -20,10 +20,14 @@ import java.util.List;
 import me.ibrahimsn.library.LivePreference;
 
 public class LightsViewModel extends AndroidViewModel {
+
     private static final String TAG = "LightsViewModel";
-    private final LightRepository lightRepository = LightRepository.getInstance(getApplication().getApplicationContext());
-    private final EndpointRepository endpointRepository = EndpointRepository.getInstance(getApplication().getApplicationContext());
-    private final SettingsRepository settingsRepository = SettingsRepository.getInstance(getApplication().getApplicationContext());
+    private final LightRepository lightRepository =
+        LightRepository.getInstance(getApplication().getApplicationContext());
+    private final EndpointRepository endpointRepository =
+        EndpointRepository.getInstance(getApplication().getApplicationContext());
+    private final SettingsRepository settingsRepository =
+        SettingsRepository.getInstance(getApplication().getApplicationContext());
     private final LiveData<Resource<List<UILight>>> lights;
     private final LiveData<List<IEndpointUI>> endpoints;
     private final LiveData<IEndpointUI> selectedEndpoint;
@@ -31,7 +35,7 @@ public class LightsViewModel extends AndroidViewModel {
     public LightsViewModel(@NonNull Application application) {
         super(application);
         //TODO use something better
-        LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id",0);
+        LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id", 0);
         lights = Transformations.switchMap(endpointID, endpointId -> {
             return lightRepository.getLightsForEndpoint(endpointId);
         });
@@ -44,11 +48,11 @@ public class LightsViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<Resource<List<UILight>>> getLights(){
+    public LiveData<Resource<List<UILight>>> getLights() {
         return lights;
     }
 
-    public LiveData<List<IEndpointUI>> getEndpoints(){
+    public LiveData<List<IEndpointUI>> getEndpoints() {
         return endpoints;
     }
 

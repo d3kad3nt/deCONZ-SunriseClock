@@ -5,7 +5,7 @@
         android:title="@string/lights_title" />
     <item
         android:id="@+id/endpoints"
-        android:title="@string/endpoint"/>
+        android:title="@string/endpoint" />
     <item
         android:id="@+id/mainSettingsFragment"
         android:title="@string/preferences_title" />

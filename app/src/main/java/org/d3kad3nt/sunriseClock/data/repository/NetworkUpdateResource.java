@@ -12,7 +12,7 @@ import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
 import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class NetworkUpdateResource<ResultType, RemoteType, DbType> extends ExtendedMediatorLiveData<EmptyResource> {
+public abstract class NetworkUpdateResource <ResultType, RemoteType, DbType> extends ExtendedMediatorLiveData<EmptyResource> {
 
     protected DbType dbObject;
 
@@ -23,16 +23,6 @@ public abstract class NetworkUpdateResource<ResultType, RemoteType, DbType> exte
             dbObjectLoadObserver(resource, resourceLoad);
         });
     }
-
-    protected abstract LiveData<DbType> loadFromDB();
-
-    protected abstract LiveData<BaseEndpoint> loadEndpoint();
-
-    @NotNull
-    protected abstract LiveData<ApiResponse<RemoteType>> sendNetworkRequest(BaseEndpoint baseEndpoint);
-
-    @NotNull
-    protected abstract LiveData<Resource<ResultType>> loadUpdatedVersion();
 
     private void dbObjectLoadObserver(DbType resource, LiveData<DbType> resourceLiveData) {
         if (resource == null) {
@@ -59,7 +49,8 @@ public abstract class NetworkUpdateResource<ResultType, RemoteType, DbType> exte
         }
     }
 
-    private void networkResponseObserver(ApiResponse<RemoteType> response, LiveData<ApiResponse<RemoteType>> networkResponseLivedata) {
+    private void networkResponseObserver(ApiResponse<RemoteType> response,
+                                         LiveData<ApiResponse<RemoteType>> networkResponseLivedata) {
         EmptyResource resource = toResource(response);
         if (resource.getStatus() != Status.SUCCESS) {
             updateValue(resource);
@@ -88,4 +79,14 @@ public abstract class NetworkUpdateResource<ResultType, RemoteType, DbType> exte
             }
         }
     }
+
+    protected abstract LiveData<DbType> loadFromDB();
+
+    protected abstract LiveData<BaseEndpoint> loadEndpoint();
+
+    @NotNull
+    protected abstract LiveData<ApiResponse<RemoteType>> sendNetworkRequest(BaseEndpoint baseEndpoint);
+
+    @NotNull
+    protected abstract LiveData<Resource<ResultType>> loadUpdatedVersion();
 }

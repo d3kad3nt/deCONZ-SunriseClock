@@ -8,5 +8,4 @@ public interface EndpointBuilder {
     EndpointBuilder setConfig(EndpointConfig config);
 
     BaseEndpoint build();
-
 }

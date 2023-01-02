@@ -2,31 +2,27 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
         <variable
             name="endpoint"
-            type="org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI"/>
+            type="org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI" />
         <variable
             name="clickListener"
-            type="android.view.View.OnClickListener"/>
+            type="android.view.View.OnClickListener" />
     </data>
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"
         android:onClick="@{clickListener}"
         app:cardCornerRadius="5dp"
         tools:context="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

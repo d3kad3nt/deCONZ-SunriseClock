@@ -29,17 +29,15 @@ import java.util.Map;
 
 public class EndpointRepository {
 
-    private static EndpointConfigDao endpointConfigDao;
-
     private static final Map<Long, LiveData<BaseEndpoint>> endpointLiveDataCache = new HashMap<>();
-
+    private static EndpointConfigDao endpointConfigDao;
     private static volatile EndpointRepository INSTANCE;
 
-    private EndpointRepository(Context context){
+    private EndpointRepository(Context context) {
         endpointConfigDao = AppDatabase.getInstance(context.getApplicationContext()).endpointConfigDao();
     }
 
-    public static EndpointRepository getInstance(Context context){
+    public static EndpointRepository getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (LightRepository.class) {
                 if (INSTANCE == null) {
@@ -50,23 +48,24 @@ public class EndpointRepository {
         return INSTANCE;
     }
 
-    LiveData<BaseEndpoint> getRepoEndpoint(long id){
+    LiveData<BaseEndpoint> getRepoEndpoint(long id) {
         if (!endpointLiveDataCache.containsKey(id)) {
-            LiveData<BaseEndpoint> endpointTransformation = Transformations.switchMap(endpointConfigDao.load(id), input -> {
-                if (input == null) {
-                    return new MutableLiveData<>();
-                } else {
-                    return new MutableLiveData<>(createEndpoint(input));
-                }
-            });
+            LiveData<BaseEndpoint> endpointTransformation =
+                Transformations.switchMap(endpointConfigDao.load(id), input -> {
+                    if (input == null) {
+                        return new MutableLiveData<>();
+                    } else {
+                        return new MutableLiveData<>(createEndpoint(input));
+                    }
+                });
             endpointLiveDataCache.put(id, endpointTransformation);
         }
         return endpointLiveDataCache.get(id);
     }
 
-    public LiveData<IEndpointUI> getEndpoint(long id){
+    public LiveData<IEndpointUI> getEndpoint(long id) {
         return Transformations.map(endpointConfigDao.load(id), endpointConfig -> {
-            if (endpointConfig == null){
+            if (endpointConfig == null) {
                 return null;
             } else {
                 return UIEndpoint.from(endpointConfig);
@@ -74,13 +73,13 @@ public class EndpointRepository {
         });
     }
 
-    public LiveData<List<IEndpointUI>> getAllEndpoints(){
+    public LiveData<List<IEndpointUI>> getAllEndpoints() {
         return Transformations.switchMap(endpointConfigDao.loadAll(), input -> {
             if (input == null) {
                 return new MutableLiveData<>(Collections.emptyList());
             } else {
                 List<IEndpointUI> list = new ArrayList<>();
-                for (EndpointConfig config : input){
+                for (EndpointConfig config : input) {
                     list.add(UIEndpoint.from(config));
                 }
                 return new MutableLiveData<>(list);
@@ -88,8 +87,8 @@ public class EndpointRepository {
         });
     }
 
-    private BaseEndpoint createEndpoint(EndpointConfig config){
-        if (config == null){
+    private BaseEndpoint createEndpoint(EndpointConfig config) {
+        if (config == null) {
             throw new NullPointerException("The given config object was null.");
         }
         EndpointBuilder builder = config.type.getBuilder();
@@ -111,5 +110,4 @@ public class EndpointRepository {
         type.getBuilder().setConfig(endpointConfig).build();
         return UIEndpoint.from(endpointConfig);
     }
-
 }
