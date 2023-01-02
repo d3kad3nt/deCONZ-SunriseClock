@@ -38,7 +38,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (checkPrerequisites()) {
             addSchedule(alarm, context);
         }
-
     }
 
     /* TODO: Retrieve formerly used schedule ids (probably from local storage) to remove obsolete schedulues from
@@ -71,7 +70,5 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.d(TAG, "WiFi is not enabled.");
             return false;
         }
-
     }
-
 }

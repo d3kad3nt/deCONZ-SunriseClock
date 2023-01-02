@@ -96,6 +96,5 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
         // Must call finish() so the BroadcastReceiver can be recycled.
         pendingResult.finish();
     }
-
 }
 

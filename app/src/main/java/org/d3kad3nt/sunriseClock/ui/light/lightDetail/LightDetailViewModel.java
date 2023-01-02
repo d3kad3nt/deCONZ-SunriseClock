@@ -46,7 +46,6 @@ public class LightDetailViewModel extends AndroidViewModel {
             }
             LiveData<EmptyResource> state = lightRepository.setOnState(lightID, newState);
             loadingIndicatorVisibility.addVisibilityProvider(state);
-
         });
     }
 

@@ -13,6 +13,5 @@ public class InterfaceFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         Log.i("sunriseClock", "Settings");
         setPreferencesFromResource(R.xml.preferences_interface, rootKey);
-
     }
 }

@@ -110,5 +110,4 @@ public class EndpointRepository {
         type.getBuilder().setConfig(endpointConfig).build();
         return UIEndpoint.from(endpointConfig);
     }
-
 }

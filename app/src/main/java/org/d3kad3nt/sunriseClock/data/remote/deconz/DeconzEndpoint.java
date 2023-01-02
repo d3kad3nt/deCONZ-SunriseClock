@@ -111,12 +111,10 @@ public class DeconzEndpoint extends BaseEndpoint {
                             ResponseBody body = ResponseBody.create(contentType, String.valueOf(jsonObject));
 
                             return response.newBuilder().body(body).build();
-
                         }
                         catch (JSONException ignored) {
 
                         }
-
                     }
                 }
 
@@ -172,5 +170,4 @@ public class DeconzEndpoint extends BaseEndpoint {
         requestBody.add("bri", new JsonPrimitive(deconzBrigtness));
         return this.retrofit.updateLightState(endpointLightId, requestBody);
     }
-
 }

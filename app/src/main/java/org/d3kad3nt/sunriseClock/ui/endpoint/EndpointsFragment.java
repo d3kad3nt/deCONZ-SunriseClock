@@ -63,5 +63,4 @@ public class EndpointsFragment extends Fragment {
             }
         });
     }
-
 }

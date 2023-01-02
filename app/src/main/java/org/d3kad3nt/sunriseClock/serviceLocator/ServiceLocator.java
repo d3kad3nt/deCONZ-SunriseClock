@@ -29,5 +29,4 @@ public class ServiceLocator {
             mainThreadHandler.post(command);
         }
     }
-
 }

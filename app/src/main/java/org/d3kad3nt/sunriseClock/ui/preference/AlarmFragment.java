@@ -16,7 +16,6 @@ public class AlarmFragment extends PreferenceFragmentCompat implements SharedPre
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         Log.i("sunriseClock", "Settings");
         setPreferencesFromResource(R.xml.preferences_alarm, rootKey);
-
     }
 
     @Override

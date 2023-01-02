@@ -9,5 +9,4 @@ public class ExtendedMediatorLiveData <T> extends MediatorLiveData<T> {
             this.setValue(newValue);
         }
     }
-
 }

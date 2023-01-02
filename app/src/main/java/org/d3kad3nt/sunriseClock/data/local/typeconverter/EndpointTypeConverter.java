@@ -21,5 +21,4 @@ public class EndpointTypeConverter {
     public static Integer toInteger(EndpointType type) {
         return type.getId();
     }
-
 }

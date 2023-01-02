@@ -34,7 +34,6 @@ public abstract class AppDatabase extends RoomDatabase {
                              "endpointId, date_added, config, type FROM endpoint");
             database.execSQL("DROP TABLE endpoint");
             database.execSQL("ALTER TABLE new_endpoint RENAME TO endpoint");
-
         }
     }));
     private static volatile AppDatabase INSTANCE;

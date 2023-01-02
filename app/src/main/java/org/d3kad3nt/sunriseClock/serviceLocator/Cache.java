@@ -23,5 +23,4 @@ abstract class Cache <K, T> {
         instances.put(key, instance);
         return true;
     }
-
 }

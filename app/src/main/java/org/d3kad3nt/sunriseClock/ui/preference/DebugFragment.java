@@ -13,7 +13,5 @@ public class DebugFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         Log.i("sunriseClock", "Settings");
         setPreferencesFromResource(R.xml.preferences_debug, rootKey);
-
     }
-
 }

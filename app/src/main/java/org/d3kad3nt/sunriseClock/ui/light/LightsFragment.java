@@ -98,7 +98,6 @@ public class LightsFragment extends Fragment {
             };
             viewModel.getEndpoints().observe(getViewLifecycleOwner(), endpointSelector);
             viewModel.getEndpoints().removeObserver(endpointSelector);
-
         });
     }
 
