@@ -28,7 +28,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
             ((Preference) Objects.requireNonNull(findPreference(entry.getKey()))).setOnPreferenceClickListener(
                     preference -> {
                         NavHostFragment.findNavController(this)
-                                       .navigate(entry.getValue());
+                                .navigate(entry.getValue());
                         return true;
                     });
         }

@@ -17,7 +17,7 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         super.onResume();
         // Register the listener whenever a key changes
         getPreferenceScreen().getSharedPreferences()
-                             .registerOnSharedPreferenceChangeListener(this);
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
         super.onPause();
         // Unregister the listener whenever a key changes
         getPreferenceScreen().getSharedPreferences()
-                             .unregisterOnSharedPreferenceChangeListener(this);
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override

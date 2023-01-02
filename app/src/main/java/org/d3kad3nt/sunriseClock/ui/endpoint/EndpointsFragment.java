@@ -41,16 +41,16 @@ public class EndpointsFragment extends Fragment {
         binding.recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointsViewModel.class);
         viewModel.getEndpoints()
-                 .observe(getViewLifecycleOwner(), new Observer<List<IEndpointUI>>() {
-                     @Override
-                     public void onChanged(List<IEndpointUI> endpointConfigList) {
-                         if (!endpointConfigList.isEmpty()) {
-                             adapter.submitList(endpointConfigList);
-                         } else {
-                             Log.d(TAG, "No Endpoints found");
-                         }
-                     }
-                 });
+                .observe(getViewLifecycleOwner(), new Observer<List<IEndpointUI>>() {
+                    @Override
+                    public void onChanged(List<IEndpointUI> endpointConfigList) {
+                        if (!endpointConfigList.isEmpty()) {
+                            adapter.submitList(endpointConfigList);
+                        } else {
+                            Log.d(TAG, "No Endpoints found");
+                        }
+                    }
+                });
         addAddEndpointListener(binding);
         return binding.getRoot();
     }
@@ -60,7 +60,7 @@ public class EndpointsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v)
-                          .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointAddFragment());
+                        .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointAddFragment());
             }
         });
     }

@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
                 R.id.main_activity_nav_fragment);
         navController = navHostFragment.getNavController();
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).setOpenableLayout(
-                                                                                               binding.drawerLayout)
-                                                                                       .build();
+                        binding.drawerLayout)
+                .build();
 
         setSupportActionBar(binding.toolbar);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

@@ -28,8 +28,8 @@ public class DefaultPreferences {
         if (!preferences.contains(setting.toString())) {
             Log.i(TAG, "Set default value for " + setting + " to " + value);
             preferences.edit()
-                       .putBoolean(setting.toString(), value)
-                       .apply();
+                    .putBoolean(setting.toString(), value)
+                    .apply();
         }
     }
 
@@ -37,8 +37,8 @@ public class DefaultPreferences {
         if (!preferences.contains(setting.toString())) {
             Log.i(TAG, "Set default value for " + setting + " to " + value);
             preferences.edit()
-                       .putString(setting.toString(), value)
-                       .apply();
+                    .putString(setting.toString(), value)
+                    .apply();
         }
     }
 }

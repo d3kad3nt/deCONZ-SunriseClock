@@ -36,9 +36,9 @@ public class LightDetailViewModel extends AndroidViewModel {
         light = getLight(lightId);
 
         loadingIndicatorVisibility = new VisibilityLiveData(View.VISIBLE).setLoadingVisibility(View.VISIBLE)
-                                                                         .setSuccessVisibility(View.INVISIBLE)
-                                                                         .setErrorVisibility(View.INVISIBLE)
-                                                                         .addVisibilityProvider(light);
+                .setSuccessVisibility(View.INVISIBLE)
+                .setErrorVisibility(View.INVISIBLE)
+                .addVisibilityProvider(light);
     }
 
     public void setLightOnState(boolean newState) {

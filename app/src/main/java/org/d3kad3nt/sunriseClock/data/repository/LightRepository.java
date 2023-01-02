@@ -42,7 +42,7 @@ public class LightRepository {
      */
     private LightRepository(Context context) {
         dbLightDao = AppDatabase.getInstance(context.getApplicationContext())
-                                .dbLightDao();
+                .dbLightDao();
         endpointRepo = EndpointRepository.getInstance(context);
     }
 

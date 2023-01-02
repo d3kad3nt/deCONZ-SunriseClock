@@ -37,7 +37,7 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
 
     private View.OnClickListener createOnClickListener(long endpointID) {
         return v -> Navigation.findNavController(v)
-                              .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointID));
+                .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointID));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

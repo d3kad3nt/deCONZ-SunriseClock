@@ -56,7 +56,7 @@ public class SettingsRepository {
 
     public void setSetting(String id, long value) {
         preferences.edit()
-                   .putLong(id, value)
-                   .apply();
+                .putLong(id, value)
+                .apply();
     }
 }

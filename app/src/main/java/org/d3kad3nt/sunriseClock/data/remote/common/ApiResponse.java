@@ -40,7 +40,7 @@ public abstract class ApiResponse <T> {
             if (response.errorBody() != null) {
                 try {
                     msg = response.errorBody()
-                                  .string();
+                            .string();
                 }
                 catch (IOException ignored) {
                 }
@@ -48,7 +48,7 @@ public abstract class ApiResponse <T> {
             final String errorMsg;
             if ((msg == null) || msg.isEmpty()) {
                 if (response.message()
-                            .isEmpty()) {
+                        .isEmpty()) {
                     errorMsg = "Unknown error!";
                 } else {
                     errorMsg = response.message();

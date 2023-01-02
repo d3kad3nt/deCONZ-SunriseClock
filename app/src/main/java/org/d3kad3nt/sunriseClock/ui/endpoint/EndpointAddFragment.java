@@ -50,22 +50,22 @@ public class EndpointAddFragment extends Fragment {
             public void onClick(View v) {
                 Map<String, String> settings = new HashMap<>();
                 settings.put("name", binding.endpointName.getText()
-                                                         .toString());
+                        .toString());
                 settings.put("type", specificBinding.getRoot()
-                                                    .getTag()
-                                                    .toString());
+                        .getTag()
+                        .toString());
                 ViewGroup rootLinearLayout = (ViewGroup) specificBinding.getRoot();
                 TextInputEditText[] input = {rootLinearLayout.findViewWithTag(
                         "baseUrl"), rootLinearLayout.findViewWithTag("port"), rootLinearLayout.findViewWithTag(
                         "apiKey")};
                 for (TextInputEditText i : input) {
                     settings.put(i.getTag()
-                                  .toString(), i.getText()
-                                                .toString());
+                            .toString(), i.getText()
+                            .toString());
                 }
                 if (viewModel.createEndpoint(settings)) {
                     Navigation.findNavController(v)
-                              .navigateUp();
+                            .navigateUp();
                 }
             }
         });

@@ -32,7 +32,7 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
      */
     public RemoteLightListTypeAdapter(long endpointId) {
         this.gson = new GsonBuilder().registerTypeAdapter(RemoteLight.class, new RemoteLightTypeAdapter(endpointId))
-                                     .create();
+                .create();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
 
         for (String lightId : rawJson.keySet()) {
             JsonObject jsonLight = rawJson.get(lightId)
-                                          .getAsJsonObject();
+                    .getAsJsonObject();
 
             // Preprocessing: Manipulate returned json to include the light id.
             // This enables the existing Gson typeadapter (RemoteLightTypeAdapter) to work for requests for both

@@ -94,29 +94,27 @@ public abstract class NetworkBoundResource <ResultType, RemoteType, DbType> exte
             Class<? extends ApiResponse> aClass = response.getClass();
             if (ApiSuccessResponse.class.equals(aClass)) {
                 ServiceLocator.getExecutor(ExecutorType.IO)
-                              .execute(() -> {
-                                  saveResponseToDb(
-                                          convertRemoteTypeToDbType((ApiSuccessResponse<RemoteType>) response));
-                                  ServiceLocator.getExecutor(ExecutorType.MainThread)
-                                                .execute(() -> {
-                                                    // we specially request a new live data,
-                                                    // otherwise we will get immediately last cached value,
-                                                    // which may not be updated with latest results received from
-                                                    // network.
-                                                    addSource(loadFromDb(), newData -> {
-                                                        updateValue(
-                                                                Resource.success(convertDbTypeToResultType(newData)));
-                                                    });
-                                                });
-                              });
+                        .execute(() -> {
+                            saveResponseToDb(convertRemoteTypeToDbType((ApiSuccessResponse<RemoteType>) response));
+                            ServiceLocator.getExecutor(ExecutorType.MainThread)
+                                    .execute(() -> {
+                                        // we specially request a new live data,
+                                        // otherwise we will get immediately last cached value,
+                                        // which may not be updated with latest results received from
+                                        // network.
+                                        addSource(loadFromDb(), newData -> {
+                                            updateValue(Resource.success(convertDbTypeToResultType(newData)));
+                                        });
+                                    });
+                        });
             } else if (ApiEmptyResponse.class.equals(aClass)) {
                 ServiceLocator.getExecutor(ExecutorType.MainThread)
-                              .execute(() -> {
-                                  // reload from disk whatever we had
-                                  addSource(loadFromDb(), newData -> {
-                                      updateValue(Resource.success(convertDbTypeToResultType(newData)));
-                                  });
-                              });
+                        .execute(() -> {
+                            // reload from disk whatever we had
+                            addSource(loadFromDb(), newData -> {
+                                updateValue(Resource.success(convertDbTypeToResultType(newData)));
+                            });
+                        });
             } else if (ApiErrorResponse.class.equals(aClass)) {
                 onFetchFailed();
                 addSource(dbSource, newData -> {

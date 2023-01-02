@@ -45,24 +45,24 @@ public class LightsFragment extends Fragment {
         binding.recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(requireActivity()).get(LightsViewModel.class);
         viewModel.getLights()
-                 .observe(getViewLifecycleOwner(), new Observer<Resource<List<UILight>>>() {
-                     @Override
-                     public void onChanged(Resource<List<UILight>> listResource) {
-                         Log.d(TAG, listResource.getStatus()
-                                                .toString());
-                         if (listResource.getStatus()
-                                         .equals(Status.SUCCESS) && listResource.getData() != null) {
-                             lightsState.clearError();
-                             List<UILight> list = listResource.getData();
-                             list.addAll(listResource.getData());
-                             adapter.submitList(list);
-                         } else if (listResource.getStatus()
-                                                .equals(Status.ERROR)) {
-                             lightsState.setError(getResources().getString(R.string.noLights_title),
-                                     listResource.getMessage());
-                         }
-                     }
-                 });
+                .observe(getViewLifecycleOwner(), new Observer<Resource<List<UILight>>>() {
+                    @Override
+                    public void onChanged(Resource<List<UILight>> listResource) {
+                        Log.d(TAG, listResource.getStatus()
+                                .toString());
+                        if (listResource.getStatus()
+                                    .equals(Status.SUCCESS) && listResource.getData() != null) {
+                            lightsState.clearError();
+                            List<UILight> list = listResource.getData();
+                            list.addAll(listResource.getData());
+                            adapter.submitList(list);
+                        } else if (listResource.getStatus()
+                                .equals(Status.ERROR)) {
+                            lightsState.setError(getResources().getString(R.string.noLights_title),
+                                    listResource.getMessage());
+                        }
+                    }
+                });
         addEndpointSelector();
         return binding.getRoot();
     }
@@ -81,39 +81,39 @@ public class LightsFragment extends Fragment {
         endpointSpinner.setOnItemSelectedListener(new EndpointSelectedListener(getContext()));
 
         viewModel.getEndpoints()
-                 .observe(getViewLifecycleOwner(), configList -> {
-                     adapter.submitCollection(configList);
-                     if (!configList.isEmpty()) {
-                         addToToolbar(endpointSpinner);
-                         lightsState.clearError();
-                     } else {
-                         removeFromToolbar(endpointSpinner);
-                         lightsState.setError(getResources().getString(R.string.noEndpoint_title),
-                                 getResources().getString(R.string.noEndpoint_message));
-                     }
-                 });
+                .observe(getViewLifecycleOwner(), configList -> {
+                    adapter.submitCollection(configList);
+                    if (!configList.isEmpty()) {
+                        addToToolbar(endpointSpinner);
+                        lightsState.clearError();
+                    } else {
+                        removeFromToolbar(endpointSpinner);
+                        lightsState.setError(getResources().getString(R.string.noEndpoint_title),
+                                getResources().getString(R.string.noEndpoint_message));
+                    }
+                });
 
         viewModel.getSelectedEndpoint()
-                 .observe(getViewLifecycleOwner(), endpointConfig -> {
+                .observe(getViewLifecycleOwner(), endpointConfig -> {
 
-                     Observer<? super List<IEndpointUI>> endpointSelector = new Observer<List<IEndpointUI>>() {
-                         @Override
-                         public void onChanged(List<IEndpointUI> endpointConfigs) {
-                             endpointSpinner.setSelection(endpointConfigs.indexOf(endpointConfig));
-                         }
-                     };
-                     viewModel.getEndpoints()
-                              .observe(getViewLifecycleOwner(), endpointSelector);
-                     viewModel.getEndpoints()
-                              .removeObserver(endpointSelector);
+                    Observer<? super List<IEndpointUI>> endpointSelector = new Observer<List<IEndpointUI>>() {
+                        @Override
+                        public void onChanged(List<IEndpointUI> endpointConfigs) {
+                            endpointSpinner.setSelection(endpointConfigs.indexOf(endpointConfig));
+                        }
+                    };
+                    viewModel.getEndpoints()
+                            .observe(getViewLifecycleOwner(), endpointSelector);
+                    viewModel.getEndpoints()
+                            .removeObserver(endpointSelector);
 
-                 });
+                });
     }
 
     private void removeFromToolbar(View view) {
         if (getActivity() != null && getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).getToolbar()
-                                          .removeView(view);
+                    .removeView(view);
         }
     }
 

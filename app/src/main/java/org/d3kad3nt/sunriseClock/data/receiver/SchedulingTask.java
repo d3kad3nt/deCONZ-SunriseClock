@@ -51,7 +51,7 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
         }
         Date date = new Date();
         final long alarmTime = alarm.getNextAlarmClock()
-                                    .getTriggerTime();
+                .getTriggerTime();
         date.setTime(alarmTime);
         ISO8601 schedulingTime = new ISO8601(date);
         Log.i(TAG, "Next alarm rings at :" + schedulingTime);
@@ -61,8 +61,8 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
         //TODO: Improve defaultValues
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("http")
-               .encodedAuthority(
-                       preferences.getString(IP.toString(), "") + ":" + preferences.getString(PORT.toString(), ""));
+                .encodedAuthority(
+                        preferences.getString(IP.toString(), "") + ":" + preferences.getString(PORT.toString(), ""));
         String apiKey = preferences.getString(API_KEY.toString(), "");
         Set<String> lightIds = preferences.getStringSet(ACTIVATED_LIGHTS.toString(), new HashSet<String>());
         //20221229: Legacy network code removed, this broadcast receiver is kept for reference purposes only.
@@ -93,7 +93,7 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
 
         if (preferences.getBoolean(TOAST_ACTIVE.toString(), true)) {
             Toast.makeText(this.context.get(), s, Toast.LENGTH_LONG)
-                 .show();
+                    .show();
         }
 
         // Must call finish() so the BroadcastReceiver can be recycled.

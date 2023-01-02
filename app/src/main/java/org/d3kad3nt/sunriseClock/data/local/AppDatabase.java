@@ -55,8 +55,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase buildDatabase(Context context) {
         return Room.databaseBuilder(context, AppDatabase.class, DB_NAME)
-                   .addMigrations(allMigrations())
-                   .build();
+                .addMigrations(allMigrations())
+                .build();
     }
 
     public static void destroyInstance() {

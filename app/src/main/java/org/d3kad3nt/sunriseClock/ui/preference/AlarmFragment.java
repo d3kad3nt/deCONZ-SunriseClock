@@ -24,7 +24,7 @@ public class AlarmFragment extends PreferenceFragmentCompat implements SharedPre
         super.onResume();
         // Register the listener whenever a key changes
         getPreferenceScreen().getSharedPreferences()
-                             .registerOnSharedPreferenceChangeListener(this);
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class AlarmFragment extends PreferenceFragmentCompat implements SharedPre
         super.onPause();
         // Unregister the listener whenever a key changes
         getPreferenceScreen().getSharedPreferences()
-                             .unregisterOnSharedPreferenceChangeListener(this);
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override

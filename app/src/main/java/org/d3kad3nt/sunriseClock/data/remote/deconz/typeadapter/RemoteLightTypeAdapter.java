@@ -36,7 +36,7 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
             JsonDeserializationContext context) throws JsonParseException {
 
         RemoteLightBuilder remoteLightBuilder = new RemoteLightBuilder().setEndpointType(EndpointType.DECONZ)
-                                                                        .setEndpointId(this.endpointId);
+                .setEndpointId(this.endpointId);
 
         Log.d(TAG, "Parsing JSON for single light: " + json.toString());
 
@@ -52,33 +52,33 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
         // and multiple light(s).
         if (rawJson.has(IServices.endpointLightIdHeader)) {
             remoteLightBuilder = remoteLightBuilder.setEndpointLightId(rawJson.get(IServices.endpointLightIdHeader)
-                                                                              .getAsString());
+                    .getAsString());
         }
 
         if (rawJson.has("name")) {
             remoteLightBuilder = remoteLightBuilder.setName(rawJson.get("name")
-                                                                   .getAsString());
+                    .getAsString());
         }
 
         if (rawJsonState.has("on")) {
             remoteLightBuilder = remoteLightBuilder.setIsSwitchable(true)
-                                                   .setIsOn(rawJsonState.get("on")
-                                                                        .getAsBoolean());
+                    .setIsOn(rawJsonState.get("on")
+                            .getAsBoolean());
         }
 
         if (rawJsonState.has("bri")) {
             remoteLightBuilder = remoteLightBuilder.setIsDimmable(true)
-                                                   .setBrightness(rawJsonState.get("bri")
-                                                                              .getAsInt());
+                    .setBrightness(rawJsonState.get("bri")
+                            .getAsInt());
         }
 
         if (rawJsonState.has("colormode")) {
             switch (rawJsonState.get("colormode")
-                                .getAsString()) {
+                    .getAsString()) {
                 case "ct":
                     remoteLightBuilder = remoteLightBuilder.setIsTemperaturable(true)
-                                                           .setColorTemperature(rawJsonState.get("ct")
-                                                                                            .getAsInt());
+                            .setColorTemperature(rawJsonState.get("ct")
+                                    .getAsInt());
                 case "xy":
                     remoteLightBuilder = remoteLightBuilder.setIsColorable(true);
                     //TODO: .setColor();
