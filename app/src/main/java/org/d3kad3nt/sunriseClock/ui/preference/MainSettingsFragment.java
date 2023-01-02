@@ -1,6 +1,5 @@
 package org.d3kad3nt.sunriseClock.ui.preference;
 
-
 import android.os.Bundle;
 import android.util.Log;
 

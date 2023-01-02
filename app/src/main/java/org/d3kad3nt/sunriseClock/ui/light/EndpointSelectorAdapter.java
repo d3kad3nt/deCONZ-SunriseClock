@@ -10,7 +10,6 @@ import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import java.util.Collection;
 import java.util.List;
 
-
 public class EndpointSelectorAdapter extends ArrayAdapter<IEndpointUI> {
 
     public EndpointSelectorAdapter(@NonNull Context context, int resource, @NonNull List<IEndpointUI> objects) {

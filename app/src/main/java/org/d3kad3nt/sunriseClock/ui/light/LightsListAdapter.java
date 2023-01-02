@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.databinding.LightListElementBinding;
 
-
 public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.ViewHolder> {
 
     private static final String TAG = "LightsListAdapter";

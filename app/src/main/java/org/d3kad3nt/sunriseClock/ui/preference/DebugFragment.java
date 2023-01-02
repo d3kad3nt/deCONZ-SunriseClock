@@ -16,5 +16,4 @@ public class DebugFragment extends PreferenceFragmentCompat {
 
     }
 
-
 }

@@ -16,7 +16,6 @@ public class SettingsRepository {
     private final LiveSharedPreferences liveSharedPreferences;
     private final SharedPreferences preferences;
 
-
     private SettingsRepository(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         liveSharedPreferences = new LiveSharedPreferences(preferences);
