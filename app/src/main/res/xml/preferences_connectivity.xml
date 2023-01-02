@@ -14,5 +14,4 @@
             app:title="@string/allowedWLAN" />
         <!-- Change allowed WLAN to List and add button to add current WLAN -->
     </PreferenceCategory>
-
 </androidx.preference.PreferenceScreen>

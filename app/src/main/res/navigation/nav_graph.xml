@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/lights">
-
     <fragment
         android:id="@+id/lights"
         android:name="org.d3kad3nt.sunriseClock.ui.light.LightsFragment"

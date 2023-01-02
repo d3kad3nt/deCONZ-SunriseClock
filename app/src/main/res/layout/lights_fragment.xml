@@ -2,21 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="lightsState"
             type="org.d3kad3nt.sunriseClock.ui.light.LightsState" />
     </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.LightsFragment">
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
@@ -32,7 +27,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="7"
             tools:listitem="@layout/light_list_element" />
-
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/errorTitle"
             android:layout_width="wrap_content"
@@ -43,7 +37,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/errorText"
             android:layout_width="0dp"

@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-
-
     <SwitchPreferenceCompat
         app:defaultValue="true"
         app:key="pref_schedule_set_toast"
         app:title="@string/schedule_toast" />
-
     <SwitchPreferenceCompat
         app:key="pref_boot"
         app:title="@string/start_on_boot" />
-
 </androidx.preference.PreferenceScreen>

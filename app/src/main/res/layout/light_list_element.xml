@@ -2,18 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-
         <variable
             name="light"
             type="org.d3kad3nt.sunriseClock.data.model.light.UILight" />
-
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
     </data>
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,11 +20,9 @@
         android:onClick="@{clickListener}"
         app:cardCornerRadius="5dp"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.LightsFragment">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
