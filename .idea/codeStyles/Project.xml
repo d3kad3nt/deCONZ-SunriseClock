@@ -1,6 +1,13 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
     <option name="FORMATTER_TAGS_ENABLED" value="true" />
+    <AndroidXmlCodeStyleSettings>
+      <option name="LAYOUT_SETTINGS">
+        <value>
+          <option name="INSERT_BLANK_LINE_BEFORE_TAG" value="false" />
+        </value>
+      </option>
+    </AndroidXmlCodeStyleSettings>
     <JavaCodeStyleSettings>
       <option name="GENERATE_FINAL_LOCALS" value="true" />
       <option name="GENERATE_FINAL_PARAMETERS" value="true" />
@@ -16,6 +23,7 @@
     </JetCodeStyleSettings>
     <XML>
       <option name="XML_KEEP_BLANK_LINES" value="0" />
+      <option name="XML_WHITE_SPACE_AROUND_CDATA" value="1" />
     </XML>
     <codeStyleSettings language="JAVA">
       <option name="RIGHT_MARGIN" value="118" />
