@@ -24,6 +24,7 @@ package org.d3kad3nt.sunriseClock.data.model.resource;
  * @param <T>
  */
 public class Resource <T> {
+
     private final Status status;
     private final T data;
     private final String message;

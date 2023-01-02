@@ -17,9 +17,10 @@ import org.d3kad3nt.sunriseClock.ui.util.VisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 
 public class LightDetailViewModel extends AndroidViewModel {
+
     private final static String TAG = "LightDetailViewModel";
-    private final LightRepository lightRepository =
-            LightRepository.getInstance(getApplication().getApplicationContext());
+    private final LightRepository lightRepository = LightRepository.getInstance(
+            getApplication().getApplicationContext());
     private final long lightID;
 
     public LiveData<Resource<UILight>> light;

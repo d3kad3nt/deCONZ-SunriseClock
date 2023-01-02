@@ -34,7 +34,8 @@ public class EndpointRepository {
     private static volatile EndpointRepository INSTANCE;
 
     private EndpointRepository(Context context) {
-        endpointConfigDao = AppDatabase.getInstance(context.getApplicationContext()).endpointConfigDao();
+        endpointConfigDao = AppDatabase.getInstance(context.getApplicationContext())
+                                       .endpointConfigDao();
     }
 
     public static EndpointRepository getInstance(Context context) {
@@ -52,13 +53,12 @@ public class EndpointRepository {
         if (!endpointLiveDataCache.containsKey(id)) {
             LiveData<BaseEndpoint> endpointTransformation = Transformations.switchMap(endpointConfigDao.load(id),
                     input -> {
-                if (input == null) {
-                    return new MutableLiveData<>();
-                }
-                else {
-                    return new MutableLiveData<>(createEndpoint(input));
-                }
-            });
+                        if (input == null) {
+                            return new MutableLiveData<>();
+                        } else {
+                            return new MutableLiveData<>(createEndpoint(input));
+                        }
+                    });
             endpointLiveDataCache.put(id, endpointTransformation);
         }
         return endpointLiveDataCache.get(id);
@@ -68,8 +68,7 @@ public class EndpointRepository {
         return Transformations.map(endpointConfigDao.load(id), endpointConfig -> {
             if (endpointConfig == null) {
                 return null;
-            }
-            else {
+            } else {
                 return UIEndpoint.from(endpointConfig);
             }
         });
@@ -79,8 +78,7 @@ public class EndpointRepository {
         return Transformations.switchMap(endpointConfigDao.loadAll(), input -> {
             if (input == null) {
                 return new MutableLiveData<>(Collections.emptyList());
-            }
-            else {
+            } else {
                 List<IEndpointUI> list = new ArrayList<>();
                 for (EndpointConfig config : input) {
                     list.add(UIEndpoint.from(config));

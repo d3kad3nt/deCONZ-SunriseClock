@@ -50,7 +50,8 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
             return "SunriseClock is not active";
         }
         Date date = new Date();
-        final long alarmTime = alarm.getNextAlarmClock().getTriggerTime();
+        final long alarmTime = alarm.getNextAlarmClock()
+                                    .getTriggerTime();
         date.setTime(alarmTime);
         ISO8601 schedulingTime = new ISO8601(date);
         Log.i(TAG, "Next alarm rings at :" + schedulingTime);
@@ -91,7 +92,8 @@ public class SchedulingTask extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String s) {
 
         if (preferences.getBoolean(TOAST_ACTIVE.toString(), true)) {
-            Toast.makeText(this.context.get(), s, Toast.LENGTH_LONG).show();
+            Toast.makeText(this.context.get(), s, Toast.LENGTH_LONG)
+                 .show();
         }
 
         // Must call finish() so the BroadcastReceiver can be recycled.

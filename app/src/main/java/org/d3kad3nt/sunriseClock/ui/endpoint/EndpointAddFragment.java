@@ -30,8 +30,8 @@ public class EndpointAddFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(
-            @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         EndpointAddFragmentBinding binding = EndpointAddFragmentBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointAddViewModel.class);
         //TODO select endpoint type

@@ -32,7 +32,8 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
     }
 
     @Override
-    public RemoteLight deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public RemoteLight deserialize(JsonElement json, Type typeOfT,
+            JsonDeserializationContext context) throws JsonParseException {
 
         RemoteLightBuilder remoteLightBuilder = new RemoteLightBuilder().setEndpointType(EndpointType.DECONZ)
                                                                         .setEndpointId(this.endpointId);
@@ -55,7 +56,8 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
         }
 
         if (rawJson.has("name")) {
-            remoteLightBuilder = remoteLightBuilder.setName(rawJson.get("name").getAsString());
+            remoteLightBuilder = remoteLightBuilder.setName(rawJson.get("name")
+                                                                   .getAsString());
         }
 
         if (rawJsonState.has("on")) {
@@ -71,7 +73,8 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
         }
 
         if (rawJsonState.has("colormode")) {
-            switch (rawJsonState.get("colormode").getAsString()) {
+            switch (rawJsonState.get("colormode")
+                                .getAsString()) {
                 case "ct":
                     remoteLightBuilder = remoteLightBuilder.setIsTemperaturable(true)
                                                            .setColorTemperature(rawJsonState.get("ct")

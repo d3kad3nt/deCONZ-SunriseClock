@@ -80,8 +80,7 @@ public class DbLight {
 
         if (endpointLightId != null && !endpointLightId.isEmpty()) {
             this.endpointLightId = endpointLightId;
-        }
-        else {
+        } else {
             Log.e(TAG, "The given endpointLightId string cannot be null or empty!");
             throw new IllegalArgumentException("The given endpointLightId string cannot be null or empty!");
         }
@@ -93,8 +92,7 @@ public class DbLight {
 
         if (brightness >= BRIGHTNESS_MIN && brightness <= BRIGHTNESS_MAX) {
             this.brightness = brightness;
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("The given brightness of a light must be between 0 and 100!");
         }
 

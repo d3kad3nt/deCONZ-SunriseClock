@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import org.d3kad3nt.sunriseClock.util.Empty;
 
 public class EmptyResource extends Resource<Empty> {
+
     protected EmptyResource(@NonNull Status status, @Nullable String message) {
         super(status, Empty.getInstance(), message);
     }

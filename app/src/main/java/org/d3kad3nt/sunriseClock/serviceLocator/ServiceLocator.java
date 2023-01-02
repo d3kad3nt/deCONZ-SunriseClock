@@ -21,6 +21,7 @@ public class ServiceLocator {
     }
 
     private static class MainThreadExecutor implements Executor {
+
         private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
         @Override

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 public class LightDetailViewModelFactory implements ViewModelProvider.Factory {
+
     private final Application mApplication;
     private final long mId;
 
@@ -22,8 +23,7 @@ public class LightDetailViewModelFactory implements ViewModelProvider.Factory {
             //This Cast is checked with the previous if statement.
             //noinspection unchecked
             return (T) new LightDetailViewModel(mApplication, mId);
-        }
-        else {
+        } else {
             throw new UnsupportedOperationException("This Factory can only create LightDetailViewModel instances");
         }
     }

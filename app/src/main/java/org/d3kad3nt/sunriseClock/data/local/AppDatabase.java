@@ -18,7 +18,9 @@ import java.util.List;
 /**
  * The Room database for this app.
  */
-@Database(entities = {DbLight.class, EndpointConfig.class}, version = 2, exportSchema = false)
+@Database(entities = {DbLight.class, EndpointConfig.class},
+        version = 2,
+        exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "sunriseclock-db-DEV.db";
@@ -26,10 +28,10 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE new_endpoint (" + "endpointId INTEGER PRIMARY KEY NOT NULL," +
-                    "date_added INTEGER," + "config TEXT," + "type INTEGER," + "name TEXT NOT NULL DEFAULT " +
-                    "'Unnamed" + " Endpoint')");
+                             "date_added INTEGER," + "config TEXT," + "type INTEGER," +
+                             "name TEXT NOT NULL DEFAULT " + "'Unnamed" + " Endpoint')");
             database.execSQL("INSERT INTO new_endpoint (endpointId, date_added, config, type) " + "SELECT " +
-                    "endpointId, date_added, config, type FROM endpoint");
+                             "endpointId, date_added, config, type FROM endpoint");
             database.execSQL("DROP TABLE endpoint");
             database.execSQL("ALTER TABLE new_endpoint RENAME TO endpoint");
 

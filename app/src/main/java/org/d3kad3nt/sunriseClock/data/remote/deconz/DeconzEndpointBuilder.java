@@ -19,7 +19,8 @@ public class DeconzEndpointBuilder implements EndpointBuilder {
 
     @Override
     public BaseEndpoint build() {
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+                                     .create();
         BaseEndpoint endpoint = gson.fromJson(config.getJsonConfig(), DeconzEndpoint.class);
         // Postprocessing: Set original endpoint config.
         endpoint.setOriginalEndpointConfig(config);

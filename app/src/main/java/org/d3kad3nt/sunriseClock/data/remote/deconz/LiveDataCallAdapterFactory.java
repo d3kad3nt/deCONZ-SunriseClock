@@ -14,12 +14,14 @@ import retrofit2.Retrofit;
 
 /**
  * Adapted from the official Google architecture-components github-sample app under
- * https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/util/LiveDataCallAdapterFactory.kt.
+ * https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com
+ * /android/example/github/util/LiveDataCallAdapterFactory.kt.
  */
 class LiveDataCallAdapterFactory extends CallAdapter.Factory {
 
     @Override
-    public CallAdapter<?, ?> get(@NonNull Type returnType, @NonNull Annotation[] annotations, @NonNull Retrofit retrofit) {
+    public CallAdapter<?, ?> get(@NonNull Type returnType, @NonNull Annotation[] annotations,
+            @NonNull Retrofit retrofit) {
         if (getRawType(returnType) != LiveData.class) {
             return null;
         }

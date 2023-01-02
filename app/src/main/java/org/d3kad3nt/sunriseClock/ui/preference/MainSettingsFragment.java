@@ -25,10 +25,12 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
                 R.id.action_mainSettingsFragment_to_interfaceFragment, "pref_debug_category",
                 R.id.action_mainSettingsFragment_to_debugFragment);
         for (Map.Entry<String, Integer> entry : links.entrySet()) {
-            ((Preference) Objects.requireNonNull(findPreference(entry.getKey()))).setOnPreferenceClickListener(preference -> {
-                NavHostFragment.findNavController(this).navigate(entry.getValue());
-                return true;
-            });
+            ((Preference) Objects.requireNonNull(findPreference(entry.getKey()))).setOnPreferenceClickListener(
+                    preference -> {
+                        NavHostFragment.findNavController(this)
+                                       .navigate(entry.getValue());
+                        return true;
+                    });
         }
     }
 }

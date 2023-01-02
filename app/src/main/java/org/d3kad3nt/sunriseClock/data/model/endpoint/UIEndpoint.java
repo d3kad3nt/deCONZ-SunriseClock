@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import org.jetbrains.annotations.Contract;
 
 public class UIEndpoint implements IEndpointUI {
+
     private final String stringRepresentation;
     private final long id;
 

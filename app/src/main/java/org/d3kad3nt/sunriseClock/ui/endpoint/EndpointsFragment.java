@@ -34,23 +34,23 @@ public class EndpointsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(
-            @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         EndpointsFragmentBinding binding = EndpointsFragmentBinding.inflate(inflater, container, false);
         adapter = new EndpointsListAdapter();
         binding.recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointsViewModel.class);
-        viewModel.getEndpoints().observe(getViewLifecycleOwner(), new Observer<List<IEndpointUI>>() {
-            @Override
-            public void onChanged(List<IEndpointUI> endpointConfigList) {
-                if (!endpointConfigList.isEmpty()) {
-                    adapter.submitList(endpointConfigList);
-                }
-                else {
-                    Log.d(TAG, "No Endpoints found");
-                }
-            }
-        });
+        viewModel.getEndpoints()
+                 .observe(getViewLifecycleOwner(), new Observer<List<IEndpointUI>>() {
+                     @Override
+                     public void onChanged(List<IEndpointUI> endpointConfigList) {
+                         if (!endpointConfigList.isEmpty()) {
+                             adapter.submitList(endpointConfigList);
+                         } else {
+                             Log.d(TAG, "No Endpoints found");
+                         }
+                     }
+                 });
         addAddEndpointListener(binding);
         return binding.getRoot();
     }

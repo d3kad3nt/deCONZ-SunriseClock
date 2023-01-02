@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
 public class DbLightBuilder {
+
     private static final String TAG = "DbLightBuilder";
 
     private long endpointId;

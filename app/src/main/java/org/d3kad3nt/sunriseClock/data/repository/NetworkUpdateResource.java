@@ -27,8 +27,7 @@ public abstract class NetworkUpdateResource <ResultType, RemoteType, DbType> ext
     private void dbObjectLoadObserver(DbType resource, LiveData<DbType> resourceLiveData) {
         if (resource == null) {
             updateValue(EmptyResource.loading("Resource loads"));
-        }
-        else {
+        } else {
             this.dbObject = resource;
             LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
             addSource(endpointLiveData, endpoint -> {
@@ -41,8 +40,7 @@ public abstract class NetworkUpdateResource <ResultType, RemoteType, DbType> ext
     private void endpointLiveDataObserver(BaseEndpoint baseEndpoint, LiveData<BaseEndpoint> endpointLiveData) {
         if (baseEndpoint == null) {
             updateValue(EmptyResource.loading("Endpoints loads"));
-        }
-        else {
+        } else {
             LiveData<ApiResponse<RemoteType>> networkResponseLivedata = this.sendNetworkRequest(baseEndpoint);
             addSource(networkResponseLivedata, response -> {
                 networkResponseObserver(response, networkResponseLivedata);
@@ -73,12 +71,10 @@ public abstract class NetworkUpdateResource <ResultType, RemoteType, DbType> ext
     private <T> EmptyResource toResource(ApiResponse<T> response) {
         if (response == null) {
             return EmptyResource.loading("");
-        }
-        else {
+        } else {
             if (response instanceof ApiEmptyResponse || response instanceof ApiSuccessResponse) {
                 return EmptyResource.success("");
-            }
-            else {
+            } else {
                 return EmptyResource.error("");
             }
         }

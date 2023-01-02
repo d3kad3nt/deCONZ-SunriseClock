@@ -67,8 +67,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             Log.d(TAG, "Currently connected to BSSID: " + bssid);
             //TODO: Only execute if in defined wifi connection (TODO: settings element).
             return true;
-        }
-        else {
+        } else {
             Log.d(TAG, "WiFi is not enabled.");
             return false;
         }
