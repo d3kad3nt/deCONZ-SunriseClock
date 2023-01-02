@@ -69,9 +69,8 @@ public class DbLight {
      * Room to be able to create an object. This should not be otherwise accessed!
      */
     public DbLight(long endpointId, String endpointLightId, String name, boolean isSwitchable, boolean isOn,
-        boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature, boolean isColorable,
-        int color)
-    {
+                   boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
+                   boolean isColorable, int color) {
         if (endpointId != 0L) {
             this.endpointId = endpointId;
         } else {

@@ -21,8 +21,7 @@ class LiveDataCallAdapterFactory extends CallAdapter.Factory {
 
     @Override
     public CallAdapter<?, ?> get(@NonNull Type returnType, @NonNull Annotation[] annotations,
-        @NonNull Retrofit retrofit)
-    {
+                                 @NonNull Retrofit retrofit) {
         if (getRawType(returnType) != LiveData.class) {
             return null;
         }

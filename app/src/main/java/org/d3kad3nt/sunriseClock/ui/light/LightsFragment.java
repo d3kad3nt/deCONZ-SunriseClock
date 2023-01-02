@@ -38,8 +38,7 @@ public class LightsFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState)
-    {
+                             @Nullable Bundle savedInstanceState) {
         LightsFragmentBinding binding = LightsFragmentBinding.inflate(inflater, container, false);
         binding.setLightsState(lightsState);
         adapter = new LightsListAdapter();

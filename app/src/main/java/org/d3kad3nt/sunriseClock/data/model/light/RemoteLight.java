@@ -31,9 +31,8 @@ public class RemoteLight {
     private final int color;
 
     RemoteLight(EndpointType endpointType, long endpointId, String endpointLightId, String name, boolean isSwitchable,
-        boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
-        boolean isColorable, int color)
-    {
+                boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
+                boolean isColorable, int color) {
         this.endpointType = endpointType;
 
         if (endpointId != 0L) {

@@ -31,9 +31,8 @@ public class UILight {
     //private final int color; // Not yet implemented in the backend
 
     private UILight(long lightId, long endpointId, String name, boolean isSwitchable, boolean isOn,
-        boolean isDimmable, int brightness, boolean isTemperaturable/*, int colorTemperature*/,
-        boolean isColorable/*, int color*/)
-    {
+                    boolean isDimmable, int brightness, boolean isTemperaturable/*, int colorTemperature*/,
+                    boolean isColorable/*, int color*/) {
         this.lightId = lightId;
         this.endpointId = endpointId;
         this.name = name;

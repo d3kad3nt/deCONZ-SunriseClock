@@ -29,7 +29,7 @@ public interface IServices {
 
     @GET("lights/{lightId}/")
     LiveData<ApiResponse<RemoteLight>> getLight(@Path("lightId") String lightId,
-        @Header(endpointLightIdHeader) String headerLightId);
+                                                @Header(endpointLightIdHeader) String headerLightId);
 
     @Headers("Content-Type: application/json")
     @PUT("lights/{lightId}/state")

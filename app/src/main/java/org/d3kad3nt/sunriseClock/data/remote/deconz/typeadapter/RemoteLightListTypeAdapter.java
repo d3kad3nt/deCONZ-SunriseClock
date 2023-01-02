@@ -37,8 +37,7 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
 
     @Override
     public List<RemoteLight> deserialize(JsonElement json, Type typeOfT,
-        JsonDeserializationContext context) throws JsonParseException
-    {
+                                         JsonDeserializationContext context) throws JsonParseException {
         JsonObject rawJson = json.getAsJsonObject();
         List<RemoteLight> lights = new ArrayList<>();
 

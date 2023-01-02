@@ -23,8 +23,7 @@ public class EndpointDetailFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState)
-    {
+                             @Nullable Bundle savedInstanceState) {
         long endpointID =
             EndpointDetailFragmentArgs.fromBundle(requireArguments()).getEndpointID(); // id from navigation
         // Use custom factory to initialize viewModel with endpoint id (instead of using new ViewModelProvider

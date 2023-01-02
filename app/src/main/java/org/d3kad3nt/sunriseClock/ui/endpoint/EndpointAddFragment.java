@@ -31,8 +31,7 @@ public class EndpointAddFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState)
-    {
+                             @Nullable Bundle savedInstanceState) {
         EndpointAddFragmentBinding binding = EndpointAddFragmentBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointAddViewModel.class);
         //TODO select endpoint type
@@ -45,8 +44,7 @@ public class EndpointAddFragment extends Fragment {
     //Todo: This should definitely be removed (and replaced by setting the onClickListener inside of XML and
     // carrying over the logic to the viewmodel)
     private void addCreateEndpointListener(EndpointAddFragmentBinding binding,
-        EndpointAddDeconzFragmentBinding specificBinding)
-    {
+                                           EndpointAddDeconzFragmentBinding specificBinding) {
         binding.createEndpoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
