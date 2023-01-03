@@ -33,8 +33,6 @@ public class RemoteLightBuilder {
     }
 
     public RemoteLight build() {
-        //Todo: Check if endpointId and endpointLightId are set, problem: RemoteLightListTypeAdapter has to set
-        // these values after the single light was parsed by GSON
         if (endpointType == null) {
             throw new IllegalStateException(
                 "RemoteLightBuilder cannot build this light without an endpoint type! " + "Check remote light" +
