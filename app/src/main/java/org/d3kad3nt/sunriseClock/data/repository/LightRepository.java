@@ -5,11 +5,13 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
+import org.d3kad3nt.sunriseClock.data.local.DbGroupDao;
 import org.d3kad3nt.sunriseClock.data.local.DbLightDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
+import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
+import org.d3kad3nt.sunriseClock.data.model.group.RemoteGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
@@ -32,6 +34,7 @@ public class LightRepository {
 
     private final static String TAG = "LightRepository";
     private static DbLightDao dbLightDao;
+    private static DbGroupDao dbGroupDao;
     private static volatile LightRepository INSTANCE;
     private final EndpointRepository endpointRepo;
 
@@ -42,6 +45,7 @@ public class LightRepository {
      */
     private LightRepository(Context context) {
         dbLightDao = AppDatabase.getInstance(context.getApplicationContext()).dbLightDao();
+        dbGroupDao = AppDatabase.getInstance(context.getApplicationContext()).dbGroupDao();
         endpointRepo = EndpointRepository.getInstance(context);
     }
 
@@ -88,9 +92,7 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<List<DbLight>> loadFromDb() {
-                return Transformations.map(dbLightDao.loadAllForEndpoint(endpointId), input -> {
-                    return new ArrayList<>(input);
-                });
+                return dbLightDao.loadAllForEndpoint(endpointId);
             }
 
             @NotNull
@@ -163,6 +165,63 @@ public class LightRepository {
             @Override
             protected DbLight convertRemoteTypeToDbType(ApiSuccessResponse<RemoteLight> response) {
                 return DbLight.from(response.getBody());
+            }
+        };
+    }
+
+    public LiveData<Resource<List<DbGroup>>> getGroupsForEndpoint(long endpointId) {
+        try {
+            endpointRepo.getEndpoint(endpointId);
+        }
+        catch (NullPointerException e) {
+            Resource<List<DbGroup>> resource = Resource.error("Endpoint doesn't exist", null);
+            return new MutableLiveData<>(resource);
+        }
+        return new NetworkBoundResource<List<DbGroup>, List<RemoteGroup>, List<DbGroup>>() {
+
+            @Override
+            protected void saveResponseToDb(List<DbGroup> items) {
+                for (DbGroup group : items) {
+                    //Todo: Work with @Ignore to extract lightIds from object and manually insert them into the
+                    // crossref table
+                    dbGroupDao.upsert(group);
+                }
+            }
+
+            @Override
+            protected boolean shouldFetch(List<DbGroup> data) {
+                //TODO
+                return true;
+            }
+
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getRepoEndpoint(endpointId);
+            }
+
+            @Override
+            protected LiveData<List<DbGroup>> loadFromDb() {
+                return dbGroupDao.loadAllForEndpoint(endpointId);
+            }
+
+            @Override
+            protected LiveData<ApiResponse<List<RemoteGroup>>> loadFromNetwork() {
+                return endpoint.getGroups();
+            }
+
+            @Override
+            protected List<DbGroup> convertDbTypeToResultType(List<DbGroup> item) {
+                //Todo: Convert to UI type
+                return item;
+            }
+
+            @Override
+            protected List<DbGroup> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteGroup>> response) {
+                List<DbGroup> groups = new ArrayList<>();
+                for (RemoteGroup group : response.getBody()) {
+                    groups.add(DbGroup.from(group));
+                }
+                return groups;
             }
         };
     }

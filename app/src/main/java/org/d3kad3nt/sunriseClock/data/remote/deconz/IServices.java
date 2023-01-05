@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 
 import com.google.gson.JsonObject;
 
+import org.d3kad3nt.sunriseClock.data.model.group.RemoteGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 
@@ -29,9 +30,12 @@ public interface IServices {
 
     @GET("lights/{lightId}/")
     LiveData<ApiResponse<RemoteLight>> getLight(@Path("lightId") String lightId,
-                                                @Header(endpointLightIdHeader) String headerLightId);
+        @Header(endpointLightIdHeader) String headerLightId);
 
     @Headers("Content-Type: application/json")
     @PUT("lights/{lightId}/state")
     LiveData<ApiResponse<ResponseBody>> updateLightState(@Path("lightId") String lightId, @Body JsonObject body);
+
+    @GET("groups/")
+    LiveData<ApiResponse<List<RemoteGroup>>> getGroups();
 }

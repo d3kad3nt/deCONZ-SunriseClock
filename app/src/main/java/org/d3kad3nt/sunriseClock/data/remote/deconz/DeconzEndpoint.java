@@ -14,8 +14,11 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
+import org.d3kad3nt.sunriseClock.data.model.group.RemoteGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
+import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.RemoteGroupListTypeAdapter;
+import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.RemoteGroupTypeAdapter;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.RemoteLightListTypeAdapter;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.RemoteLightTypeAdapter;
 import org.json.JSONException;
@@ -67,14 +70,19 @@ public class DeconzEndpoint extends BaseEndpoint {
         //TODO: De-Uglify
         Uri fullApiUrl = Uri.parse(baseUrl.concat(":" + port)).buildUpon().scheme("http").appendPath("api")
             .appendEncodedPath(apiKey + "/").build();
-        //Gson has to be instructed to use our custom type adapter for a list of light.
+
+        long endpointId = getOriginalEndpointConfig().getId();
+
+        //Gson has to be instructed to use our custom type adapter for a list of lights or groups.
         Type remoteLightType = new TypeToken<RemoteLight>() {}.getType();
         Type remoteLightListType = new TypeToken<List<RemoteLight>>() {}.getType();
+        Type remoteGroupType = new TypeToken<RemoteGroup>() {}.getType();
+        Type remoteGroupListType = new TypeToken<List<RemoteGroup>>() {}.getType();
 
-        Gson gson = new GsonBuilder().registerTypeAdapter(remoteLightType,
-                new RemoteLightTypeAdapter(super.getOriginalEndpointConfig().getId()))
-            .registerTypeAdapter(remoteLightListType,
-                new RemoteLightListTypeAdapter(super.getOriginalEndpointConfig().getId())).create();
+        Gson gson = new GsonBuilder().registerTypeAdapter(remoteLightType, new RemoteLightTypeAdapter(endpointId))
+            .registerTypeAdapter(remoteLightListType, new RemoteLightListTypeAdapter(endpointId))
+            .registerTypeAdapter(remoteGroupType, new RemoteGroupTypeAdapter(endpointId))
+            .registerTypeAdapter(remoteGroupListType, new RemoteGroupListTypeAdapter(endpointId)).create();
 
         // Debugging HTTP interceptor for underlying okHttp library.
         Interceptor interceptor = new Interceptor() {
@@ -154,6 +162,12 @@ public class DeconzEndpoint extends BaseEndpoint {
         // the original request. A okHttp interceptor is used to modify the JSON response from the
         // Deconz endpoint and adds this light id.
         return this.retrofit.getLight(id, id);
+    }
+
+    @Override
+    public LiveData<ApiResponse<List<RemoteGroup>>> getGroups() {
+        Log.d(TAG, "Requesting all groups from endpoint: " + this.baseUrl);
+        return this.retrofit.getGroups();
     }
 
     @Override
