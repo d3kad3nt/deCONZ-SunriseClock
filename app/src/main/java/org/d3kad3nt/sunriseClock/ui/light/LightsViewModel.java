@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.ui.light;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
@@ -9,8 +10,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
+import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
+import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
@@ -29,6 +32,7 @@ public class LightsViewModel extends AndroidViewModel {
     private final SettingsRepository settingsRepository =
         SettingsRepository.getInstance(getApplication().getApplicationContext());
     private final LiveData<Resource<List<UILight>>> lights;
+    private final LiveData<Resource<List<DbGroup>>> groups;
     private final LiveData<List<IEndpointUI>> endpoints;
     private final LiveData<IEndpointUI> selectedEndpoint;
 
@@ -39,6 +43,17 @@ public class LightsViewModel extends AndroidViewModel {
         lights = Transformations.switchMap(endpointID, endpointId -> {
             return lightRepository.getLightsForEndpoint(endpointId);
         });
+
+        //Todo remove test
+        groups = Transformations.switchMap(endpointID, endpointId -> {
+            return lightRepository.getGroupsForEndpoint(endpointId);
+        });
+        groups.observeForever(listResource -> {
+            if (listResource.getStatus() == Status.SUCCESS) {
+                Log.d(TAG, listResource.getData().get(2).getName());
+            }
+        });
+
         endpoints = endpointRepository.getAllEndpoints();
         selectedEndpoint = Transformations.switchMap(endpointID, new Function<Long, LiveData<IEndpointUI>>() {
             @Override

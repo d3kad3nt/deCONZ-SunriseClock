@@ -9,6 +9,8 @@ import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
+import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
+import org.d3kad3nt.sunriseClock.data.model.group.DbGroupLightCrossref;
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ import java.util.List;
 /**
  * The Room database for this app.
  */
-@Database(entities = {DbLight.class, EndpointConfig.class},
+@Database(entities = {DbLight.class, DbGroup.class, DbGroupLightCrossref.class, EndpointConfig.class},
     version = 2,
     exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
@@ -66,6 +68,8 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract DbLightDao dbLightDao();
+
+    public abstract DbGroupDao dbGroupDao();
 
     public abstract EndpointConfigDao endpointConfigDao();
 }
