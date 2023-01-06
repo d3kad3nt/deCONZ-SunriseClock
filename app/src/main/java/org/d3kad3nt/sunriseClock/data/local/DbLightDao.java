@@ -35,7 +35,7 @@ public interface DbLightDao {
         long rowId = save(obj);
         if (rowId != -1L) {
             Log.d(TAG, "Inserted DbLight (row id: " + rowId + ") with endpointId " + obj.getEndpointId() + " and " +
-                       "endpointLightId: " + obj.getEndpointLightId());
+                "endpointLightId: " + obj.getEndpointLightId());
             return;
         }
 
@@ -48,7 +48,7 @@ public interface DbLightDao {
             } else if (rowsUpdated == 0) {
                 Log.w(TAG,
                     "0 rows updated by room. This could mean that the primary key (lightId: " + obj.getLightId() +
-                    ") could not be found in the database table.");
+                        ") could not be found in the database table.");
             }
         }
         // Case 3
@@ -62,11 +62,11 @@ public interface DbLightDao {
                     obj.getIsTemperaturable(), obj.getColorTemperature(), obj.getIsColorable(), obj.getColor());
             Log.d(TAG,
                 rowsUpdated + " rows updated by room. Updated DbLight with endpointId: " + obj.getEndpointId() +
-                " and endpointLightId: " + obj.getEndpointLightId());
+                    " and endpointLightId: " + obj.getEndpointLightId());
         } else {
             Log.w(TAG,
                 "Neither lightId nor (endpointId and endpointLightId) were set. No update could be " + "performed" +
-                " by room!");
+                    " by room!");
         }
     }
 
@@ -99,9 +99,9 @@ public interface DbLightDao {
      * @return Number of rows that were updated successfully.
      */
     @Query("UPDATE " + DbLight.TABLENAME + " SET name = :friendlyName, is_switchable = :switchable, is_on = :on, " +
-           "is_dimmable  = :dimmable, brightness = :brightness, is_temperaturable = :temperaturable, " +
-           "colortemperature = :colorTemperature, is_colorable = :colorable, color = :color WHERE endpoint_id = " +
-           ":endpointId AND endpoint_light_id = :endpointLightId")
+        "is_dimmable  = :dimmable, brightness = :brightness, is_temperaturable = :temperaturable, " +
+        "colortemperature = :colorTemperature, is_colorable = :colorable, color = :color WHERE endpoint_id = " +
+        ":endpointId AND endpoint_light_id = :endpointLightId")
     int updateUsingEndpointIdAndEndpointLightId(long endpointId, String endpointLightId, String friendlyName,
                                                 boolean switchable, boolean on, boolean dimmable, int brightness,
                                                 boolean temperaturable, int colorTemperature, boolean colorable,
