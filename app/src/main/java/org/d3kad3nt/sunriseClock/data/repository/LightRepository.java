@@ -129,7 +129,7 @@ public class LightRepository {
                 // The primary key lightId is not known to the remote endpoint, but it is known to us.
                 // Set the lightId to enable direct update/insert via primary key (instead of endpointId and
                 // endpointLightId) through Room.
-                item.setLightId(lightId);
+                item.setId(lightId);
                 dbLightDao.upsert(item);
             }
 
@@ -154,7 +154,7 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<ApiResponse<RemoteLight>> loadFromNetwork() {
-                return endpoint.getLight(dbObject.getEndpointLightId());
+                return endpoint.getLight(dbObject.getEndpointObjectId());
             }
 
             @Override
@@ -243,7 +243,7 @@ public class LightRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
-                return baseEndpoint.setOnState(dbObject.getEndpointLightId(), newState);
+                return baseEndpoint.setOnState(dbObject.getEndpointObjectId(), newState);
             }
 
             @NotNull
@@ -271,7 +271,7 @@ public class LightRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
-                return baseEndpoint.setBrightness(dbObject.getEndpointLightId(), brightness);
+                return baseEndpoint.setBrightness(dbObject.getEndpointObjectId(), brightness);
             }
 
             @NotNull

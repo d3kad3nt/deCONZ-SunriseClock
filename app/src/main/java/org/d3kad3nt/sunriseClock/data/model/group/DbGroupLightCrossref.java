@@ -12,10 +12,10 @@ import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
     primaryKeys = {"group_id", "light_id"},
     indices = {@Index(value = {"group_id"}), @Index(value = "light_id")},
     foreignKeys = {@ForeignKey(entity = DbGroup.class,
-        parentColumns = "group_id",
+        parentColumns = "id",
         childColumns = "group_id",
         onDelete = ForeignKey.CASCADE), @ForeignKey(entity = DbLight.class,
-        parentColumns = "light_id",
+        parentColumns = "id",
         childColumns = "light_id",
         onDelete = ForeignKey.CASCADE)})
 public class DbGroupLightCrossref {
