@@ -91,10 +91,9 @@ public class DeconzEndpoint extends BaseEndpoint {
             public Response intercept(@NonNull Chain chain) throws IOException {
                 Request request = chain.request();
                 Response response = chain.proceed(request);
-                Log.d(TAG, "HTTP interceptor: Intercepted request to: " +
-                           response.request().url() +
-                           " led to HTTP code: " +
-                           response.code());
+                Log.d(TAG,
+                    "HTTP interceptor: Intercepted request to: " + response.request().url() + " led to HTTP code: " +
+                        response.code());
 
                 if (response.code() >= 200 && response.code() <= 399 && response.body() != null) {
 
@@ -163,12 +162,6 @@ public class DeconzEndpoint extends BaseEndpoint {
         // the original request. A okHttp interceptor is used to modify the JSON response from the
         // Deconz endpoint and adds this light id.
         return this.retrofit.getLight(id, id);
-    }
-
-    @Override
-    public LiveData<ApiResponse<List<RemoteGroup>>> getGroups() {
-        Log.d(TAG, "Requesting all groups from endpoint: " + this.baseUrl);
-        return this.retrofit.getGroups();
     }
 
     @Override
