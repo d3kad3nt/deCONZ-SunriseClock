@@ -33,10 +33,8 @@ public class RemoteGroupTypeAdapter implements JsonDeserializer<RemoteGroup> {
     }
 
     @Override
-    public RemoteGroup deserialize(JsonElement json,
-        Type typeOfT,
-        JsonDeserializationContext context) throws JsonParseException
-    {
+    public RemoteGroup deserialize(JsonElement json, Type typeOfT,
+                                   JsonDeserializationContext context) throws JsonParseException {
         RemoteGroupBuilder remoteGroupBuilder =
             new RemoteGroupBuilder().setEndpointType(EndpointType.DECONZ).setEndpointId(this.endpointId);
 

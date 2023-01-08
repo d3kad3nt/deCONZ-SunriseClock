@@ -35,10 +35,8 @@ public class RemoteGroupListTypeAdapter implements JsonDeserializer<List<RemoteG
     }
 
     @Override
-    public List<RemoteGroup> deserialize(final JsonElement json,
-        final Type typeOfT,
-        final JsonDeserializationContext context) throws JsonParseException
-    {
+    public List<RemoteGroup> deserialize(final JsonElement json, final Type typeOfT,
+                                         final JsonDeserializationContext context) throws JsonParseException {
         JsonObject rawJson = json.getAsJsonObject();
         List<RemoteGroup> groups = new ArrayList<>();
 

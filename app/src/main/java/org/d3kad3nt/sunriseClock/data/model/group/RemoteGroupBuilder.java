@@ -29,7 +29,7 @@ public class RemoteGroupBuilder {
         if (endpointType == null) {
             throw new IllegalStateException(
                 "RemoteLightBuilder cannot build this light without an endpoint type! Check remote light parsing " +
-                "logic.");
+                    "logic.");
         }
         return new RemoteGroup(endpointType, endpointId, endpointGroupId, name, endpointLightIds);
     }

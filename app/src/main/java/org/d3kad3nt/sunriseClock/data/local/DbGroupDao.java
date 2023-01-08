@@ -33,13 +33,8 @@ public interface DbGroupDao {
         // Case 1
         long rowId = save(obj);
         if (rowId != -1L) {
-            Log.d(TAG, "Inserted DbLight (row id: " +
-                       rowId +
-                       ") with endpointId " +
-                       obj.getEndpointId() +
-                       " and " +
-                       "endpointGroupId: " +
-                       obj.getEndpointGroupId());
+            Log.d(TAG, "Inserted DbLight (row id: " + rowId + ") with endpointId " + obj.getEndpointId() + " and " +
+                "endpointGroupId: " + obj.getEndpointGroupId());
             return;
         }
 
@@ -50,9 +45,9 @@ public interface DbGroupDao {
             if (rowsUpdated >= 1) {
                 Log.d(TAG, rowsUpdated + " rows updated by room. Updated DbGroup with groupId: " + obj.getGroupId());
             } else if (rowsUpdated == 0) {
-                Log.w(TAG, "0 rows updated by room. This could mean that the primary key (groupId: " +
-                           obj.getGroupId() +
-                           ") could not be found in the database table.");
+                Log.w(TAG,
+                    "0 rows updated by room. This could mean that the primary key (groupId: " + obj.getGroupId() +
+                        ") could not be found in the database table.");
             }
         }
         // Case 3
@@ -62,14 +57,12 @@ public interface DbGroupDao {
         else if (obj.getEndpointId() != 0L && !(obj.getEndpointGroupId().equals(""))) {
             int rowsUpdated =
                 updateUsingEndpointIdAndEndpointGroupId(obj.getEndpointId(), obj.getEndpointGroupId(), obj.getName());
-            Log.d(TAG, rowsUpdated +
-                       " rows updated by room. Updated DbGroup with endpointId: " +
-                       obj.getEndpointId() +
-                       " and endpointGroupId: " +
-                       obj.getEndpointGroupId());
+            Log.d(TAG,
+                rowsUpdated + " rows updated by room. Updated DbGroup with endpointId: " + obj.getEndpointId() +
+                    " and endpointGroupId: " + obj.getEndpointGroupId());
         } else {
             Log.w(TAG, "Neither groupId nor (endpointId and endpointGroupId) were set. No update could be " +
-                       "performed by room!");
+                "performed by room!");
         }
     }
 
@@ -101,10 +94,8 @@ public interface DbGroupDao {
      *
      * @return Number of rows that were updated successfully.
      */
-    @Query("UPDATE '" +
-           DbGroup.TABLENAME +
-           "' SET name = :name WHERE endpoint_id = " +
-           ":endpointId AND endpoint_group_id = :endpointGroupId")
+    @Query("UPDATE '" + DbGroup.TABLENAME + "' SET name = :name WHERE endpoint_id = " +
+        ":endpointId AND endpoint_group_id = :endpointGroupId")
     int updateUsingEndpointIdAndEndpointGroupId(long endpointId, String endpointGroupId, String name);
 
     @Query(value = "SELECT * FROM '" + DbGroup.TABLENAME + "' WHERE endpoint_id = :endpointId")

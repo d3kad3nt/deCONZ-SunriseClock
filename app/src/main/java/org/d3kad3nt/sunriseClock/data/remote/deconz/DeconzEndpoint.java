@@ -91,9 +91,10 @@ public class DeconzEndpoint extends BaseEndpoint {
             public Response intercept(@NonNull Chain chain) throws IOException {
                 Request request = chain.request();
                 Response response = chain.proceed(request);
-                Log.d(TAG,
-                    "HTTP interceptor: Intercepted request to: " + response.request().url() + " led to HTTP code: " +
-                        response.code());
+                Log.d(TAG, "HTTP interceptor: Intercepted request to: " +
+                           response.request().url() +
+                           " led to HTTP code: " +
+                           response.code());
 
                 if (response.code() >= 200 && response.code() <= 399 && response.body() != null) {
 
@@ -165,12 +166,6 @@ public class DeconzEndpoint extends BaseEndpoint {
     }
 
     @Override
-    public LiveData<ApiResponse<List<RemoteGroup>>> getGroups() {
-        Log.d(TAG, "Requesting all groups from endpoint: " + this.baseUrl);
-        return this.retrofit.getGroups();
-    }
-
-    @Override
     public LiveData<ApiResponse<ResponseBody>> setOnState(String endpointLightId, boolean newState) {
         JsonObject requestBody = new JsonObject();
         requestBody.add("on", new JsonPrimitive(newState));
@@ -184,5 +179,11 @@ public class DeconzEndpoint extends BaseEndpoint {
         long deconzBrigtness = Math.round(brightness * 255);
         requestBody.add("bri", new JsonPrimitive(deconzBrigtness));
         return this.retrofit.updateLightState(endpointLightId, requestBody);
+    }
+
+    @Override
+    public LiveData<ApiResponse<List<RemoteGroup>>> getGroups() {
+        Log.d(TAG, "Requesting all groups from endpoint: " + this.baseUrl);
+        return this.retrofit.getGroups();
     }
 }

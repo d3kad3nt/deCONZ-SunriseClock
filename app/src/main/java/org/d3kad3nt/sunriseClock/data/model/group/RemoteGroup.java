@@ -22,12 +22,8 @@ public class RemoteGroup {
 
     private final List<String> endpointLightIds;
 
-    RemoteGroup(EndpointType endpointType,
-        long endpointId,
-        String endpointGroupId,
-        String name,
-        List<String> endpointLightIds)
-    {
+    RemoteGroup(EndpointType endpointType, long endpointId, String endpointGroupId, String name,
+                List<String> endpointLightIds) {
         this.endpointType = endpointType;
 
         if (endpointId != 0L) {
@@ -56,11 +52,8 @@ public class RemoteGroup {
         //Logic to convert remote group to db group depending on the endpoint type this group originated from.
         DbGroup dbGroup = dbGroupBuilder.setEndpointId(remoteGroup.getEndpointId())
             .setEndpointGroupId(remoteGroup.getEndpointGroupId()).setName(remoteGroup.getName()).build();
-        Log.d(TAG, "Converted RemoteGroup with endpointId " +
-                   remoteGroup.getEndpointId() +
-                   " and endpointGroupId " +
-                   remoteGroup.getEndpointGroupId() +
-                   " to DbGroup.");
+        Log.d(TAG, "Converted RemoteGroup with endpointId " + remoteGroup.getEndpointId() + " and endpointGroupId " +
+            remoteGroup.getEndpointGroupId() + " to DbGroup.");
         return dbGroup;
     }
 
