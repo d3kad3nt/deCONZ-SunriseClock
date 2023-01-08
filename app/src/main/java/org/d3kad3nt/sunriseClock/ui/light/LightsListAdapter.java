@@ -77,7 +77,7 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
             boolean result = oldItem.equals(newItem);
             if (!result) {
                 Log.d(TAG, "Recyclerview determined that light with lightId " + oldItem.getLightId() + " was " +
-                           "changed and its ViewHolder content must be updated.");
+                    "changed and its ViewHolder content must be updated.");
             }
             return result;
         }

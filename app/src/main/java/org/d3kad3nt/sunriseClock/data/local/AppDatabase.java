@@ -29,9 +29,9 @@ public abstract class AppDatabase extends RoomDatabase {
         public void migrate(SupportSQLiteDatabase database) {
             database.execSQL(
                 "CREATE TABLE new_endpoint (" + "endpointId INTEGER PRIMARY KEY NOT NULL," + "date_added INTEGER," +
-                "config TEXT," + "type INTEGER," + "name TEXT NOT NULL DEFAULT " + "'Unnamed" + " Endpoint')");
+                    "config TEXT," + "type INTEGER," + "name TEXT NOT NULL DEFAULT " + "'Unnamed" + " Endpoint')");
             database.execSQL("INSERT INTO new_endpoint (endpointId, date_added, config, type) " + "SELECT " +
-                             "endpointId, date_added, config, type FROM endpoint");
+                "endpointId, date_added, config, type FROM endpoint");
             database.execSQL("DROP TABLE endpoint");
             database.execSQL("ALTER TABLE new_endpoint RENAME TO endpoint");
         }

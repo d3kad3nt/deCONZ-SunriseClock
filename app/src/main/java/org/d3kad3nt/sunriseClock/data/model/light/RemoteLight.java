@@ -59,7 +59,7 @@ public class RemoteLight {
         } else {
             throw new IllegalArgumentException(
                 "The given brightness of a light (endpoint type " + endpointType.name() + ") must be between " +
-                endpointType.getMinBrightness() + " and " + endpointType.getMaxBrightness() + "!");
+                    endpointType.getMinBrightness() + " and " + endpointType.getMaxBrightness() + "!");
         }
 
         this.isTemperaturable = isTemperaturable;
@@ -86,16 +86,16 @@ public class RemoteLight {
             .setColor(remoteLight.getColor()) //Todo: Implement conversion
             .build();
         Log.d(TAG, "Converted RemoteLight with endpointId " + remoteLight.getEndpointId() + " and endpointLightId " +
-                   remoteLight.getEndpointLightId() + " to DbLight.");
+            remoteLight.getEndpointLightId() + " to DbLight.");
         return dbLight;
     }
 
     private static int calculateBrightness(RemoteLight remoteLight) {
 
         return (((remoteLight.getBrightness() - remoteLight.getEndpointType().getMinBrightness()) *
-                 (DbLight.BRIGHTNESS_MAX - DbLight.BRIGHTNESS_MIN)) /
-                (remoteLight.getEndpointType().getMaxBrightness() -
-                 remoteLight.getEndpointType().getMinBrightness())) + DbLight.BRIGHTNESS_MIN;
+                     (DbLight.BRIGHTNESS_MAX - DbLight.BRIGHTNESS_MIN)) /
+                    (remoteLight.getEndpointType().getMaxBrightness() -
+                         remoteLight.getEndpointType().getMinBrightness())) + DbLight.BRIGHTNESS_MIN;
     }
 
     public EndpointType getEndpointType() {

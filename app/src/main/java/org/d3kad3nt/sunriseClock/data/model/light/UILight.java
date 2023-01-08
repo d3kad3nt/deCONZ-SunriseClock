@@ -57,7 +57,7 @@ public class UILight {
                 dbLight.getIsColorable());
         Log.d(TAG,
             "Converted DbLight with lightId " + dbLight.getLightId() + " (endpointId " + dbLight.getEndpointId() +
-            ", endpointLightId " + dbLight.getEndpointLightId() + ") to UILight.");
+                ", endpointLightId " + dbLight.getEndpointLightId() + ") to UILight.");
         return uiLight;
     }
 
@@ -110,10 +110,10 @@ public class UILight {
         }
         UILight otherLight = (UILight) o;
         return Objects.equals(lightId, otherLight.lightId) && Objects.equals(endpointId, otherLight.endpointId) &&
-               Objects.equals(name, otherLight.name) && Objects.equals(isSwitchable, otherLight.isSwitchable) &&
-               Objects.equals(isOn, otherLight.isOn) && Objects.equals(isDimmable, otherLight.isDimmable) &&
-               Objects.equals(brightness, otherLight.brightness) &&
-               Objects.equals(isTemperaturable, otherLight.isTemperaturable) &&
-               Objects.equals(isColorable, otherLight.isColorable);
+            Objects.equals(name, otherLight.name) && Objects.equals(isSwitchable, otherLight.isSwitchable) &&
+            Objects.equals(isOn, otherLight.isOn) && Objects.equals(isDimmable, otherLight.isDimmable) &&
+            Objects.equals(brightness, otherLight.brightness) &&
+            Objects.equals(isTemperaturable, otherLight.isTemperaturable) &&
+            Objects.equals(isColorable, otherLight.isColorable);
     }
 }

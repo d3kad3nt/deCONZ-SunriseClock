@@ -85,7 +85,7 @@ public class DeconzEndpoint extends BaseEndpoint {
                 Response response = chain.proceed(request);
                 Log.d(TAG,
                     "HTTP interceptor: Intercepted request to: " + response.request().url() + " led to HTTP code: " +
-                    response.code());
+                        response.code());
 
                 if (response.code() >= 200 && response.code() <= 399 && response.body() != null) {
 
