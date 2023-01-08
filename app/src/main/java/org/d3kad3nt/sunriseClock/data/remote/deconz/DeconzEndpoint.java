@@ -166,6 +166,12 @@ public class DeconzEndpoint extends BaseEndpoint {
     }
 
     @Override
+    public LiveData<ApiResponse<List<RemoteGroup>>> getGroups() {
+        Log.d(TAG, "Requesting all groups from endpoint: " + this.baseUrl);
+        return this.retrofit.getGroups();
+    }
+
+    @Override
     public LiveData<ApiResponse<ResponseBody>> setOnState(String endpointLightId, boolean newState) {
         JsonObject requestBody = new JsonObject();
         requestBody.add("on", new JsonPrimitive(newState));
