@@ -15,7 +15,7 @@ public abstract class DbEndpointEntity {
 
     @ColumnInfo(name = "id_on_endpoint")
     @NonNull // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string).
-    private final String endpointObjectId;
+    private final String endpointEntityId;
 
     @ColumnInfo(name = "name")
     @NonNull // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string).
@@ -25,7 +25,7 @@ public abstract class DbEndpointEntity {
     @ColumnInfo(name = "id")
     private long id; // Cannot be final because Room must be able to set the groupId after it was auto-generated.
 
-    public DbEndpointEntity(long endpointId, String endpointObjectId, String name) {
+    public DbEndpointEntity(long endpointId, String endpointEntityId, String name) {
 
         if (endpointId != 0L) {
             this.endpointId = endpointId;
@@ -34,8 +34,8 @@ public abstract class DbEndpointEntity {
             throw new IllegalArgumentException("The given endpointId cannot be 0!");
         }
 
-        if (endpointObjectId != null && !endpointObjectId.isEmpty()) {
-            this.endpointObjectId = endpointObjectId;
+        if (endpointEntityId != null && !endpointEntityId.isEmpty()) {
+            this.endpointEntityId = endpointEntityId;
         } else {
             Log.e(TAG, "The given endpointObjectId string cannot be null or empty!");
             throw new IllegalArgumentException("The given endpointObjectId string cannot be null or empty!");
@@ -53,14 +53,14 @@ public abstract class DbEndpointEntity {
     }
 
     /**
-     * This field enables the remote endpoint to identify the correct object. A remote endpoint cannot work with the
-     * (auto-generated) id that we use.
+     * This field enables the remote endpoint to identify the correct entity. A remote endpoint cannot work with the
+     * (auto-generated) id that we use internally.
      *
-     * @return Identifier for this object inside (!) the remote endpoint.
+     * @return Identifier for this entity as used by the remote endpoint.
      */
     @NonNull
-    public String getEndpointObjectId() {
-        return endpointObjectId;
+    public String getEndpointEntityId() {
+        return endpointEntityId;
     }
 
     /**

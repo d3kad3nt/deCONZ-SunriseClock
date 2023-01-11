@@ -2,9 +2,7 @@ package org.d3kad3nt.sunriseClock.data.local;
 
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -13,12 +11,10 @@ import androidx.room.Update;
 
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 
-import java.util.List;
-
 @Dao
-public interface DbLightDao {
+public interface DbEndpointEntityDao {
 
-    String TAG = "DbLightDao";
+    String TAG = "DbEndpointEntityDao";
 
     /**
      * Insert light object into the database (create) or update existing light object. Case 1: Insert if neither
@@ -105,13 +101,4 @@ public interface DbLightDao {
                                                 boolean switchable, boolean on, boolean dimmable, int brightness,
                                                 boolean temperaturable, int colorTemperature, boolean colorable,
                                                 int color);
-
-    @Delete()
-    void delete(DbLight obj);
-
-    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE id = :lightId")
-    LiveData<DbLight> load(long lightId);
-
-    @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE endpoint_id = :endpointId")
-    LiveData<List<DbLight>> loadAllForEndpoint(long endpointId);
 }

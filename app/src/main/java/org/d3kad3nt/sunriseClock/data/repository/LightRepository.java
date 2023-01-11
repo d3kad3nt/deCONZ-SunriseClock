@@ -154,7 +154,7 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<ApiResponse<RemoteLight>> loadFromNetwork() {
-                return endpoint.getLight(dbObject.getEndpointObjectId());
+                return endpoint.getLight(dbObject.getEndpointEntityId());
             }
 
             @Override
@@ -243,7 +243,7 @@ public class LightRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
-                return baseEndpoint.setOnState(dbObject.getEndpointObjectId(), newState);
+                return baseEndpoint.setOnState(dbObject.getEndpointEntityId(), newState);
             }
 
             @NotNull
@@ -271,7 +271,7 @@ public class LightRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
-                return baseEndpoint.setBrightness(dbObject.getEndpointObjectId(), brightness);
+                return baseEndpoint.setBrightness(dbObject.getEndpointEntityId(), brightness);
             }
 
             @NotNull
