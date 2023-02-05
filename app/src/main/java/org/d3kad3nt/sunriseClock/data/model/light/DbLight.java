@@ -214,7 +214,7 @@ public class DbLight {
         return color;
     }
 
-    public boolean isReachable() {
+    public boolean getIsReachable() {
         return isReachable;
     }
 }
