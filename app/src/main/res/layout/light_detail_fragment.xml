@@ -20,6 +20,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <!--Todo: Change to material slider (slider does not support onProgressChanged, therefore custom databinding adapter for setLightBrightness has to be written)-->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_not_reachable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/md_theme_light_error"
+            app:contentPaddingBottom="8dp"
+            app:contentPaddingLeft="16dp"
+            app:contentPaddingRight="16dp"
+            app:contentPaddingTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="@{viewModel.notReachableCardVisibility}">
+            <TextView
+                android:id="@+id/label_not_reachable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/light_not_reachable"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/switch_on_state"
             android:layout_width="wrap_content"
@@ -50,7 +72,7 @@
             android:layout_marginTop="24dp"
             android:text="@string/light_on_state_label"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/card_not_reachable" />
         <TextView
             android:id="@+id/label_brightness"
             android:layout_width="wrap_content"

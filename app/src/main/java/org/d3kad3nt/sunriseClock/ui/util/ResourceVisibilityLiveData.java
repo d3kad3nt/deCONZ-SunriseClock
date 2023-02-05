@@ -11,7 +11,7 @@ import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import java.util.HashSet;
 import java.util.Set;
 
-public class VisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Integer> {
+public class ResourceVisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Integer> {
 
     private final LiveData<Integer> initialVisibilityLivedata;
     //This uses a raw instance of Resource because the real type is only known in addVisibilityProvider
@@ -21,32 +21,32 @@ public class VisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Inte
     private Integer successVisibility = View.VISIBLE;
     private Integer errorVisibility = View.VISIBLE;
 
-    public VisibilityLiveData(Integer initialVisibility) {
+    public ResourceVisibilityLiveData(Integer initialVisibility) {
         initialVisibilityLivedata = new MutableLiveData<>(initialVisibility);
         this.addSource(initialVisibilityLivedata, integer -> this.setValue(integer));
     }
 
-    public <T> VisibilityLiveData addVisibilityProvider(LiveData<? extends Resource<T>> liveData) {
+    public <T> ResourceVisibilityLiveData addVisibilityProvider(LiveData<? extends Resource<T>> liveData) {
         this.removeSource(this.initialVisibilityLivedata);
-        VisibilityLiveData visibilityLivedata = this;
+        ResourceVisibilityLiveData resourceVisibilityLivedata = this;
         this.addSource(liveData, new Observer<Resource<T>>() {
             @Override
             public void onChanged(Resource<T> resource) {
                 switch (resource.getStatus()) {
                     case LOADING:
                         loading.add(liveData);
-                        visibilityLivedata.setValue(loadingVisibility);
+                        resourceVisibilityLivedata.setValue(loadingVisibility);
                         break;
                     case SUCCESS:
                         loading.remove(liveData);
                         if (loading.isEmpty()) {
-                            visibilityLivedata.setValue(successVisibility);
+                            resourceVisibilityLivedata.setValue(successVisibility);
                         }
-                        visibilityLivedata.removeSource(liveData);
+                        resourceVisibilityLivedata.removeSource(liveData);
                         break;
                     case ERROR:
-                        visibilityLivedata.setValue(errorVisibility);
-                        visibilityLivedata.removeSource(liveData);
+                        resourceVisibilityLivedata.setValue(errorVisibility);
+                        resourceVisibilityLivedata.removeSource(liveData);
                         break;
                 }
             }
@@ -58,7 +58,7 @@ public class VisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Inte
         return errorVisibility;
     }
 
-    public VisibilityLiveData setErrorVisibility(Integer errorVisibility) {
+    public ResourceVisibilityLiveData setErrorVisibility(Integer errorVisibility) {
         this.errorVisibility = errorVisibility;
         return this;
     }
@@ -67,7 +67,7 @@ public class VisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Inte
         return successVisibility;
     }
 
-    public VisibilityLiveData setSuccessVisibility(Integer successVisibility) {
+    public ResourceVisibilityLiveData setSuccessVisibility(Integer successVisibility) {
         this.successVisibility = successVisibility;
         return this;
     }
@@ -76,7 +76,7 @@ public class VisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Inte
         return loadingVisibility;
     }
 
-    public VisibilityLiveData setLoadingVisibility(Integer loadingVisibility) {
+    public ResourceVisibilityLiveData setLoadingVisibility(Integer loadingVisibility) {
         this.loadingVisibility = loadingVisibility;
         return this;
     }
