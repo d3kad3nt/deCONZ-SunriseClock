@@ -32,13 +32,13 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UILight light = getItem(position);
-        holder.bind(createOnClickListener(light.getLightId()), light);
+        holder.bind(createOnClickListener(light.getLightId(), light.getName()), light);
         holder.itemView.setTag(light);
     }
 
-    private View.OnClickListener createOnClickListener(long lightID) {
+    private View.OnClickListener createOnClickListener(long lightID, String lightName) {
         return v -> Navigation.findNavController(v)
-            .navigate(LightsFragmentDirections.actionLightsToLightDetail(lightID));
+            .navigate(LightsFragmentDirections.actionLightsToLightDetail(lightID, lightName));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
