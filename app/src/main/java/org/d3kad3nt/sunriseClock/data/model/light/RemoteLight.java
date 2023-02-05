@@ -82,10 +82,10 @@ public class RemoteLight {
             .setIsDimmable(remoteLight.getIsDimmable())
             // Convert brightness via linear conversion (copied from https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio)
             .setBrightness(calculateBrightness(remoteLight)).setIsTemperaturable(remoteLight.getIsTemperaturable())
-            .setColorTemperature(remoteLight.getColorTemperature()) //Todo: Implement
-            // conversion
+            .setColorTemperature(remoteLight.getColorTemperature()) //Todo: Implement conversion
             .setIsColorable(remoteLight.getIsColorable())
             .setColor(remoteLight.getColor()) //Todo: Implement conversion
+            .setIsReachable(remoteLight.getIsReachable())
             .build();
         Log.d(TAG, "Converted RemoteLight with endpointId " + remoteLight.getEndpointId() + " and endpointLightId " +
             remoteLight.getEndpointLightId() + " to DbLight.");

@@ -58,6 +58,10 @@ public class DbLight {
     private final boolean isColorable;
     @ColumnInfo(name = "color")
     private final int color;
+
+    @ColumnInfo(name = "is_reachable",
+        defaultValue = "true")
+    private final boolean isReachable;
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "light_id")
     // Cannot be final because Room must be able to set the lightId after it was auto-generated.
@@ -68,9 +72,9 @@ public class DbLight {
      * Create a new object that represents a light in the app's Room database. This constructor has to be public for
      * Room to be able to create an object. This should not be otherwise accessed!
      */
-    public DbLight(long endpointId, String endpointLightId, String name, boolean isSwitchable, boolean isOn,
-                   boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
-                   boolean isColorable, int color) {
+    public DbLight(long endpointId, @NonNull String endpointLightId, @NonNull String name, boolean isSwitchable,
+                   boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
+                   boolean isColorable, int color, boolean isReachable) {
         if (endpointId != 0L) {
             this.endpointId = endpointId;
         } else {
@@ -78,7 +82,7 @@ public class DbLight {
             throw new IllegalArgumentException("The given endpointId cannot be 0!");
         }
 
-        if (endpointLightId != null && !endpointLightId.isEmpty()) {
+        if (!endpointLightId.isEmpty()) {
             this.endpointLightId = endpointLightId;
         } else {
             Log.e(TAG, "The given endpointLightId string cannot be null or empty!");
@@ -100,6 +104,7 @@ public class DbLight {
         this.colorTemperature = colorTemperature; //Todo: Define which values are allowed, see DbLightBuilder javadoc
         this.isColorable = isColorable;
         this.color = color; //Todo: Define which values are allowed, see DbLightBuilder javadoc
+        this.isReachable = isReachable;
     }
 
     @NonNull
@@ -207,5 +212,9 @@ public class DbLight {
     // Todo: Add javadoc to document allowed values for the color.
     public int getColor() {
         return color;
+    }
+
+    public boolean isReachable() {
+        return isReachable;
     }
 }
