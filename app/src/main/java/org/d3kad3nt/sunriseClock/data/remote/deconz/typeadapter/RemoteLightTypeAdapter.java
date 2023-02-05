@@ -51,17 +51,15 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
         // This enables the existing Gson typeadapter (RemoteLightTypeAdapter) to work for requests for both single
         // and multiple light(s).
         if (rawJson.has(IServices.endpointLightIdHeader)) {
-            remoteLightBuilder =
-                remoteLightBuilder.setEndpointLightId(rawJson.get(IServices.endpointLightIdHeader).getAsString());
+            remoteLightBuilder.setEndpointLightId(rawJson.get(IServices.endpointLightIdHeader).getAsString());
         }
 
         if (rawJson.has("name")) {
-            remoteLightBuilder = remoteLightBuilder.setName(rawJson.get("name").getAsString());
+            remoteLightBuilder.setName(rawJson.get("name").getAsString());
         }
 
         if (rawJsonState.has("on")) {
-            remoteLightBuilder =
-                remoteLightBuilder.setIsSwitchable(true).setIsOn(rawJsonState.get("on").getAsBoolean());
+            remoteLightBuilder.setIsSwitchable(true).setIsOn(rawJsonState.get("on").getAsBoolean());
         }
 
         if (rawJsonState.has("bri")) {
@@ -72,15 +70,19 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
         if (rawJsonState.has("colormode")) {
             switch (rawJsonState.get("colormode").getAsString()) {
                 case "ct":
-                    remoteLightBuilder = remoteLightBuilder.setIsTemperaturable(true)
+                    remoteLightBuilder.setIsTemperaturable(true)
                         .setColorTemperature(rawJsonState.get("ct").getAsInt());
                 case "xy":
-                    remoteLightBuilder = remoteLightBuilder.setIsColorable(true);
+                    remoteLightBuilder.setIsColorable(true);
                     //TODO: .setColor();
                 case "hs":
-                    remoteLightBuilder = remoteLightBuilder.setIsColorable(true);
+                    remoteLightBuilder.setIsColorable(true);
                     //TODO: .setColor();
             }
+        }
+
+        if (rawJsonState.has("reachable")) {
+            remoteLightBuilder.setIsReachable(rawJsonState.get("reachable").getAsBoolean());
         }
         return remoteLightBuilder.build();
     }
