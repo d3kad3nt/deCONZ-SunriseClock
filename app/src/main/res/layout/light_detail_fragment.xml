@@ -20,16 +20,6 @@
             app:layout_constraintBottom_toTopOf="@+id/list_light_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/list_light_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:text="@{viewModel.light.data.name}"
-            app:layout_constraintBottom_toTopOf="@+id/switch_on_state"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/list_light_loading"
-            tools:text="@sample/sample.json/lights/name" />
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/switch_on_state"
             android:layout_width="wrap_content"

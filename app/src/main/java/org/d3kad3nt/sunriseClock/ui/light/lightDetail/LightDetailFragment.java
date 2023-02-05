@@ -7,9 +7,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import org.d3kad3nt.sunriseClock.data.model.light.UILight;
+import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.databinding.LightDetailFragmentBinding;
 
 public class LightDetailFragment extends Fragment {
@@ -31,7 +36,29 @@ public class LightDetailFragment extends Fragment {
             new LightDetailViewModelFactory(requireActivity().getApplication(), lightID)).get(
             LightDetailViewModel.class);
         binding = LightDetailFragmentBinding.inflate(inflater, container, false);
+        setLabel();
         return binding.getRoot();
+    }
+
+    private void setLabel() {
+        viewModel.light.observe(getViewLifecycleOwner(), new Observer<Resource<UILight>>() {
+            @Override
+            public void onChanged(final Resource<UILight> uiLightResource) {
+                AppCompatActivity activity = ((AppCompatActivity) getActivity());
+                if (activity == null) {
+                    return;
+                }
+                ActionBar actionBar = activity.getSupportActionBar();
+                if (actionBar == null) {
+                    return;
+                }
+                UILight light = uiLightResource.getData();
+                if (light == null) {
+                    return;
+                }
+                actionBar.setTitle(light.getName());
+            }
+        });
     }
 
     @Override
