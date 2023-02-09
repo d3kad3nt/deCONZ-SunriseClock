@@ -30,10 +30,11 @@ public class UILight {
     private final boolean isColorable;
     //private final int color; // Not yet implemented in the backend
 
+    private final boolean isReachable;
+
     private UILight(long lightId, long endpointId, String name, boolean isSwitchable, boolean isOn,
                     boolean isDimmable, int brightness, boolean isTemperaturable/*, int colorTemperature*/,
-                    boolean isColorable/*, int color*/) {
-
+                    boolean isColorable/*, int color*/, boolean isReachable) {
         this.lightId = lightId;
         this.endpointId = endpointId;
         this.name = name;
@@ -45,6 +46,7 @@ public class UILight {
         //this.colorTemperature = colorTemperature;
         this.isColorable = isColorable;
         //this.color = color;
+        this.isReachable = isReachable;
     }
 
     @NonNull
@@ -55,7 +57,7 @@ public class UILight {
         UILight uiLight =
             new UILight(dbLight.getId(), dbLight.getEndpointId(), dbLight.getName(), dbLight.getIsSwitchable(),
                 dbLight.getIsOn(), dbLight.getIsDimmable(), dbLight.getBrightness(), dbLight.getIsTemperaturable(),
-                dbLight.getIsColorable());
+                dbLight.getIsColorable(), dbLight.getIsReachable());
         Log.d(TAG, "Converted DbLight with lightId " + dbLight.getId() + " (endpointId " + dbLight.getEndpointId() +
             ", endpointLightId " + dbLight.getEndpointEntityId() + ") to UILight.");
         return uiLight;
@@ -97,6 +99,10 @@ public class UILight {
         return isColorable;
     }
 
+    public boolean getIsReachable() {
+        return isReachable;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -114,6 +120,7 @@ public class UILight {
             Objects.equals(isOn, otherLight.isOn) && Objects.equals(isDimmable, otherLight.isDimmable) &&
             Objects.equals(brightness, otherLight.brightness) &&
             Objects.equals(isTemperaturable, otherLight.isTemperaturable) &&
-            Objects.equals(isColorable, otherLight.isColorable);
+            Objects.equals(isColorable, otherLight.isColorable) &&
+            Objects.equals(isReachable, otherLight.isReachable);
     }
 }

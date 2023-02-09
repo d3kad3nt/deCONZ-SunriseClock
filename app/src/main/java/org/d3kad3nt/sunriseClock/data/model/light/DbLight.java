@@ -33,33 +33,45 @@ public class DbLight extends DbEndpointEntity {
     @Ignore
     private static final String TAG = "DbLight";
 
-    @ColumnInfo(name = "is_switchable")
+    @ColumnInfo(name = "is_switchable",
+        defaultValue = "false")
     private final boolean isSwitchable;
-    @ColumnInfo(name = "is_on")
+    @ColumnInfo(name = "is_on",
+        defaultValue = "false")
     private final boolean isOn;
 
-    @ColumnInfo(name = "is_dimmable")
+    @ColumnInfo(name = "is_dimmable",
+        defaultValue = "false")
     private final boolean isDimmable;
-    @ColumnInfo(name = "brightness")
+    @ColumnInfo(name = "brightness",
+        defaultValue = "0")
     private final int brightness;
 
-    @ColumnInfo(name = "is_temperaturable")
+    @ColumnInfo(name = "is_temperaturable",
+        defaultValue = "false")
     private final boolean isTemperaturable;
-    @ColumnInfo(name = "colortemperature")
+    @ColumnInfo(name = "colortemperature",
+        defaultValue = "0")
     private final int colorTemperature;
 
-    @ColumnInfo(name = "is_colorable")
+    @ColumnInfo(name = "is_colorable",
+        defaultValue = "false")
     private final boolean isColorable;
-    @ColumnInfo(name = "color")
+    @ColumnInfo(name = "color",
+        defaultValue = "0")
     private final int color;
+
+    @ColumnInfo(name = "is_reachable",
+        defaultValue = "true")
+    private final boolean isReachable;
 
     /**
      * Create a new object that represents a light in the app's Room database. This constructor has to be public for
      * Room to be able to create an object. This should not be otherwise accessed!
      */
-    public DbLight(long endpointId, String endpointObjectId, String name, boolean isSwitchable, boolean isOn,
-                   boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
-                   boolean isColorable, int color) {
+    public DbLight(long endpointId, @NonNull String endpointObjectId, @NonNull String name, boolean isSwitchable,
+                   boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
+                   boolean isColorable, int color, boolean isReachable) {
 
         super(endpointId, endpointObjectId, name);
 
@@ -77,6 +89,7 @@ public class DbLight extends DbEndpointEntity {
         this.colorTemperature = colorTemperature; //Todo: Define which values are allowed, see DbLightBuilder javadoc
         this.isColorable = isColorable;
         this.color = color; //Todo: Define which values are allowed, see DbLightBuilder javadoc
+        this.isReachable = isReachable;
     }
 
     @NonNull
@@ -139,5 +152,9 @@ public class DbLight extends DbEndpointEntity {
     // Todo: Add javadoc to document allowed values for the color.
     public int getColor() {
         return color;
+    }
+
+    public boolean getIsReachable() {
+        return isReachable;
     }
 }

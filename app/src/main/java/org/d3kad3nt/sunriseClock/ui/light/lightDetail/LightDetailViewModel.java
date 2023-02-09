@@ -5,15 +5,18 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
-import org.d3kad3nt.sunriseClock.ui.util.VisibilityLiveData;
+import org.d3kad3nt.sunriseClock.ui.util.BooleanVisibilityLiveData;
+import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 
 public class LightDetailViewModel extends AndroidViewModel {
@@ -24,7 +27,9 @@ public class LightDetailViewModel extends AndroidViewModel {
     private final long lightID;
 
     public LiveData<Resource<UILight>> light;
-    public VisibilityLiveData loadingIndicatorVisibility;
+    public ResourceVisibilityLiveData loadingIndicatorVisibility;
+
+    public BooleanVisibilityLiveData notReachableCardVisibility;
 
     public LightDetailViewModel(@NonNull Application application, long lightId) {
         super(application);
@@ -35,8 +40,12 @@ public class LightDetailViewModel extends AndroidViewModel {
         this.lightID = lightId;
         light = getLight(lightId);
 
-        loadingIndicatorVisibility = new VisibilityLiveData(View.VISIBLE).setLoadingVisibility(View.VISIBLE)
+        loadingIndicatorVisibility = new ResourceVisibilityLiveData(View.VISIBLE).setLoadingVisibility(View.VISIBLE)
             .setSuccessVisibility(View.INVISIBLE).setErrorVisibility(View.INVISIBLE).addVisibilityProvider(light);
+
+        notReachableCardVisibility =
+            new BooleanVisibilityLiveData(View.GONE).setTrueVisibility(View.GONE).setFalseVisibility(View.VISIBLE)
+                .addVisibilityProvider(getIsReachable());
     }
 
     public void setLightOnState(boolean newState) {
@@ -62,5 +71,17 @@ public class LightDetailViewModel extends AndroidViewModel {
 
     private LiveData<Resource<UILight>> getLight(long lightID) {
         return lightRepository.getLight(lightID);
+    }
+
+    private LiveData<Boolean> getIsReachable() {
+        return Transformations.map(light, new Function<Resource<UILight>, Boolean>() {
+            @Override
+            public Boolean apply(final Resource<UILight> input) {
+                if (input.getStatus() == Status.SUCCESS) {
+                    return input.getData().getIsReachable();
+                }
+                return true;
+            }
+        });
     }
 }

@@ -21,6 +21,8 @@ public class DbLightBuilder {
     private boolean isColorable = false;
     private int color = 0;
 
+    private boolean isReachable = true;
+
     /**
      * Builder for constructing DbLights.
      */
@@ -31,7 +33,7 @@ public class DbLightBuilder {
     public DbLight build() {
         // Validator logic is defined inside the constructor of DbLight (separation of concern).
         return new DbLight(endpointId, endpointLightId, name, isSwitchable, isOn, isDimmable, brightness,
-            isTemperaturable, colorTemperature, isColorable, color);
+            isTemperaturable, colorTemperature, isColorable, color, isReachable);
     }
 
     /**
@@ -124,6 +126,11 @@ public class DbLightBuilder {
     // Todo: Add javadoc to document allowed values for the color.
     public DbLightBuilder setColor(int color) {
         this.color = color;
+        return this;
+    }
+
+    public DbLightBuilder setIsReachable(boolean isReachable) {
+        this.isReachable = isReachable;
         return this;
     }
 }

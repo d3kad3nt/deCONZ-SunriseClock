@@ -61,4 +61,7 @@
     <string name="endpoint_list">Alle Endpoints</string>
     <string name="add">hinzufügen</string>
     <string name="endpoint_add">Endpoint hinzufügen</string>
+    <string name="light_on_state_label">Angeschaltet</string>
+    <string name="light_brightness_label">Helligkeit</string>
+    <string name="light_not_reachable">Licht kann nicht erreicht werden</string>
 </resources>

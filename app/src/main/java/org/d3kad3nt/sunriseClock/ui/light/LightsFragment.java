@@ -50,9 +50,7 @@ public class LightsFragment extends Fragment {
                 Log.d(TAG, listResource.getStatus().toString());
                 if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
                     lightsState.clearError();
-                    List<UILight> list = listResource.getData();
-                    list.addAll(listResource.getData());
-                    adapter.submitList(list);
+                    adapter.submitList(listResource.getData());
                 } else if (listResource.getStatus().equals(Status.ERROR)) {
                     lightsState.setError(getResources().getString(R.string.noLights_title),
                         listResource.getMessage());

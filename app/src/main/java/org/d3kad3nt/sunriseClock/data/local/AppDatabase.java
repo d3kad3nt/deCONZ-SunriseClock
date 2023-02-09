@@ -2,6 +2,8 @@ package org.d3kad3nt.sunriseClock.data.local;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -21,14 +23,16 @@ import java.util.List;
  * The Room database for this app.
  */
 @Database(entities = {DbLight.class, DbGroup.class, DbGroupLightCrossref.class, EndpointConfig.class},
-    version = 2,
-    exportSchema = false)
+    version = 4,
+    autoMigrations = {@AutoMigration(from = 2,
+        to = 3), @AutoMigration(from = 3,
+        to = 4)})
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "sunriseclock-db-DEV.db";
     private static final List<Migration> migrations = new ArrayList<>(Arrays.asList(new Migration(1, 2) {
         @Override
-        public void migrate(SupportSQLiteDatabase database) {
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL(
                 "CREATE TABLE new_endpoint (" + "endpointId INTEGER PRIMARY KEY NOT NULL," + "date_added INTEGER," +
                     "config TEXT," + "type INTEGER," + "name TEXT NOT NULL DEFAULT " + "'Unnamed" + " Endpoint')");

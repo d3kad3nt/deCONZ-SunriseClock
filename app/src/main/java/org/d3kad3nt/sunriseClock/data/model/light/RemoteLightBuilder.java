@@ -25,6 +25,8 @@ public class RemoteLightBuilder {
     private boolean isColorable = false;
     private int color = 0;
 
+    private boolean isReachable = true;
+
     /**
      * Builder for constructing RemoteLights.
      */
@@ -39,7 +41,7 @@ public class RemoteLightBuilder {
                     " parsing logic.");
         }
         return new RemoteLight(endpointType, endpointId, endpointLightId, name, isSwitchable, isOn, isDimmable,
-            brightness, isTemperaturable, colorTemperature, isColorable, color);
+            brightness, isTemperaturable, colorTemperature, isColorable, color, isReachable);
     }
 
     public RemoteLightBuilder setEndpointType(EndpointType endpointType) {
@@ -99,6 +101,11 @@ public class RemoteLightBuilder {
 
     public RemoteLightBuilder setColor(int color) {
         this.color = color;
+        return this;
+    }
+
+    public RemoteLightBuilder setIsReachable(boolean isReachable) {
+        this.isReachable = isReachable;
         return this;
     }
 }
