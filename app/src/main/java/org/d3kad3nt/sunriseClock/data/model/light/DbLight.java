@@ -38,25 +38,34 @@ public class DbLight {
     @NonNull
     // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string).
     private final String endpointLightId;
-    @ColumnInfo(name = "name")
+    @ColumnInfo(name = "name",
+        defaultValue = "No Name")
     @NonNull
     // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string).
     private final String name;
-    @ColumnInfo(name = "is_switchable")
+    @ColumnInfo(name = "is_switchable",
+        defaultValue = "false")
     private final boolean isSwitchable;
-    @ColumnInfo(name = "is_on")
+    @ColumnInfo(name = "is_on",
+        defaultValue = "false")
     private final boolean isOn;
-    @ColumnInfo(name = "is_dimmable")
+    @ColumnInfo(name = "is_dimmable",
+        defaultValue = "false")
     private final boolean isDimmable;
-    @ColumnInfo(name = "brightness")
+    @ColumnInfo(name = "brightness",
+        defaultValue = "0")
     private final int brightness;
-    @ColumnInfo(name = "is_temperaturable")
+    @ColumnInfo(name = "is_temperaturable",
+        defaultValue = "false")
     private final boolean isTemperaturable;
-    @ColumnInfo(name = "colortemperature")
+    @ColumnInfo(name = "colortemperature",
+        defaultValue = "0")
     private final int colorTemperature;
-    @ColumnInfo(name = "is_colorable")
+    @ColumnInfo(name = "is_colorable",
+        defaultValue = "false")
     private final boolean isColorable;
-    @ColumnInfo(name = "color")
+    @ColumnInfo(name = "color",
+        defaultValue = "0")
     private final int color;
 
     @ColumnInfo(name = "is_reachable",
