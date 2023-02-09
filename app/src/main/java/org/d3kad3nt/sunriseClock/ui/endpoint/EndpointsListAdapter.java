@@ -30,13 +30,13 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         IEndpointUI endpoint = getItem(position);
-        holder.bind(createOnClickListener(endpoint.getId()), endpoint);
+        holder.bind(createOnClickListener(endpoint), endpoint);
         holder.itemView.setTag(endpoint);
     }
 
-    private View.OnClickListener createOnClickListener(long endpointID) {
-        return v -> Navigation.findNavController(v)
-            .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointID));
+    private View.OnClickListener createOnClickListener(IEndpointUI endpoint) {
+        return v -> Navigation.findNavController(v).navigate(
+            EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpoint.getId(), endpoint.getName()));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
