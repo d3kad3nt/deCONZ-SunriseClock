@@ -119,15 +119,18 @@ public class DbLightBuilder {
      *                    device, false if not).
      */
     public DbLightBuilder setIsColorable(boolean isColorable) {
-        this.isColorable = isColorable; return this;
+        this.isColorable = isColorable;
+        return this;
     }
 
     // Todo: Add javadoc to document allowed values for the color.
     public DbLightBuilder setColor(int color) {
-        this.color = color; return this;
+        this.color = color;
+        return this;
     }
 
     public DbLightBuilder setIsReachable(boolean isReachable) {
-        this.isReachable = isReachable; return this;
+        this.isReachable = isReachable;
+        return this;
     }
 }
