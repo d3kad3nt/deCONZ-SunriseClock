@@ -29,10 +29,11 @@ public class RemoteLight {
 
     private final boolean isColorable;
     private final int color;
+    private final boolean isReachable;
 
     RemoteLight(EndpointType endpointType, long endpointId, String endpointLightId, String name, boolean isSwitchable,
                 boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
-                boolean isColorable, int color) {
+                boolean isColorable, int color, boolean isReachable) {
         this.endpointType = endpointType;
 
         if (endpointId != 0L) {
@@ -66,6 +67,7 @@ public class RemoteLight {
         this.colorTemperature = colorTemperature; //Todo: Define which values are allowed for each endpoint type
         this.isColorable = isColorable;
         this.color = color; //Todo: Define which values are allowed for each endpoint type
+        this.isReachable = isReachable;
     }
 
     @NonNull
@@ -80,10 +82,10 @@ public class RemoteLight {
             .setIsDimmable(remoteLight.getIsDimmable())
             // Convert brightness via linear conversion (copied from https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio)
             .setBrightness(calculateBrightness(remoteLight)).setIsTemperaturable(remoteLight.getIsTemperaturable())
-            .setColorTemperature(remoteLight.getColorTemperature()) //Todo: Implement
-            // conversion
+            .setColorTemperature(remoteLight.getColorTemperature()) //Todo: Implement conversion
             .setIsColorable(remoteLight.getIsColorable())
             .setColor(remoteLight.getColor()) //Todo: Implement conversion
+            .setIsReachable(remoteLight.getIsReachable())
             .build();
         Log.d(TAG, "Converted RemoteLight with endpointId " + remoteLight.getEndpointId() + " and endpointLightId " +
             remoteLight.getEndpointLightId() + " to DbLight.");
@@ -152,5 +154,9 @@ public class RemoteLight {
 
     public int getColor() {
         return color;
+    }
+
+    public boolean getIsReachable() {
+        return isReachable;
     }
 }

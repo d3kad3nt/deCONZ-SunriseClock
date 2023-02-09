@@ -38,26 +38,39 @@ public class DbLight {
     @NonNull
     // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string).
     private final String endpointLightId;
-    @ColumnInfo(name = "name")
+    @ColumnInfo(name = "name",
+        defaultValue = "No Name")
     @NonNull
     // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string).
     private final String name;
-    @ColumnInfo(name = "is_switchable")
+    @ColumnInfo(name = "is_switchable",
+        defaultValue = "false")
     private final boolean isSwitchable;
-    @ColumnInfo(name = "is_on")
+    @ColumnInfo(name = "is_on",
+        defaultValue = "false")
     private final boolean isOn;
-    @ColumnInfo(name = "is_dimmable")
+    @ColumnInfo(name = "is_dimmable",
+        defaultValue = "false")
     private final boolean isDimmable;
-    @ColumnInfo(name = "brightness")
+    @ColumnInfo(name = "brightness",
+        defaultValue = "0")
     private final int brightness;
-    @ColumnInfo(name = "is_temperaturable")
+    @ColumnInfo(name = "is_temperaturable",
+        defaultValue = "false")
     private final boolean isTemperaturable;
-    @ColumnInfo(name = "colortemperature")
+    @ColumnInfo(name = "colortemperature",
+        defaultValue = "0")
     private final int colorTemperature;
-    @ColumnInfo(name = "is_colorable")
+    @ColumnInfo(name = "is_colorable",
+        defaultValue = "false")
     private final boolean isColorable;
-    @ColumnInfo(name = "color")
+    @ColumnInfo(name = "color",
+        defaultValue = "0")
     private final int color;
+
+    @ColumnInfo(name = "is_reachable",
+        defaultValue = "true")
+    private final boolean isReachable;
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "light_id")
     // Cannot be final because Room must be able to set the lightId after it was auto-generated.
@@ -68,9 +81,9 @@ public class DbLight {
      * Create a new object that represents a light in the app's Room database. This constructor has to be public for
      * Room to be able to create an object. This should not be otherwise accessed!
      */
-    public DbLight(long endpointId, String endpointLightId, String name, boolean isSwitchable, boolean isOn,
-                   boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
-                   boolean isColorable, int color) {
+    public DbLight(long endpointId, @NonNull String endpointLightId, @NonNull String name, boolean isSwitchable,
+                   boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
+                   boolean isColorable, int color, boolean isReachable) {
         if (endpointId != 0L) {
             this.endpointId = endpointId;
         } else {
@@ -78,7 +91,7 @@ public class DbLight {
             throw new IllegalArgumentException("The given endpointId cannot be 0!");
         }
 
-        if (endpointLightId != null && !endpointLightId.isEmpty()) {
+        if (!endpointLightId.isEmpty()) {
             this.endpointLightId = endpointLightId;
         } else {
             Log.e(TAG, "The given endpointLightId string cannot be null or empty!");
@@ -100,6 +113,7 @@ public class DbLight {
         this.colorTemperature = colorTemperature; //Todo: Define which values are allowed, see DbLightBuilder javadoc
         this.isColorable = isColorable;
         this.color = color; //Todo: Define which values are allowed, see DbLightBuilder javadoc
+        this.isReachable = isReachable;
     }
 
     @NonNull
@@ -207,5 +221,9 @@ public class DbLight {
     // Todo: Add javadoc to document allowed values for the color.
     public int getColor() {
         return color;
+    }
+
+    public boolean getIsReachable() {
+        return isReachable;
     }
 }
