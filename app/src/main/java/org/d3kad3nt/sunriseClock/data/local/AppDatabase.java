@@ -21,9 +21,10 @@ import java.util.List;
  * The Room database for this app.
  */
 @Database(entities = {DbLight.class, EndpointConfig.class},
-    version = 3,
+    version = 4,
     autoMigrations = {@AutoMigration(from = 2,
-        to = 3)})
+        to = 3), @AutoMigration(from = 3,
+        to = 4)})
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "sunriseclock-db-DEV.db";
