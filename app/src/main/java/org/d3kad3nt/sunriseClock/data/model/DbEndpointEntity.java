@@ -17,7 +17,8 @@ public abstract class DbEndpointEntity {
     @NonNull // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string).
     private final String endpointEntityId;
 
-    @ColumnInfo(name = "name")
+    @ColumnInfo(name = "name",
+        defaultValue = "No Name")
     @NonNull // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string).
     private final String name;
 

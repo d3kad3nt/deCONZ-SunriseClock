@@ -31,8 +31,8 @@ public class DbGroup extends DbEndpointEntity {
      * Create a new object that represents a group in the app's Room database. This constructor has to be public for
      * Room to be able to create an object. This should not be otherwise accessed!
      */
-    public DbGroup(long endpointId, String endpointObjectId, String name) {
-        super(endpointId, endpointObjectId, name);
+    public DbGroup(long endpointId, String endpointEntityId, String name) {
+        super(endpointId, endpointEntityId, name);
     }
 
     @NonNull

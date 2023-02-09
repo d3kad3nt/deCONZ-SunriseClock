@@ -69,11 +69,11 @@ public class DbLight extends DbEndpointEntity {
      * Create a new object that represents a light in the app's Room database. This constructor has to be public for
      * Room to be able to create an object. This should not be otherwise accessed!
      */
-    public DbLight(long endpointId, @NonNull String endpointObjectId, @NonNull String name, boolean isSwitchable,
+    public DbLight(long endpointId, @NonNull String endpointEntityId, @NonNull String name, boolean isSwitchable,
                    boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
                    boolean isColorable, int color, boolean isReachable) {
 
-        super(endpointId, endpointObjectId, name);
+        super(endpointId, endpointEntityId, name);
 
         this.isSwitchable = isSwitchable;
         this.isOn = isOn;

@@ -5,8 +5,10 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.room.AutoMigration;
 import androidx.room.Database;
+import androidx.room.RenameColumn;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.AutoMigrationSpec;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
@@ -23,10 +25,14 @@ import java.util.List;
  * The Room database for this app.
  */
 @Database(entities = {DbLight.class, DbGroup.class, DbGroupLightCrossref.class, EndpointConfig.class},
-    version = 4,
+    version = 6,
     autoMigrations = {@AutoMigration(from = 2,
         to = 3), @AutoMigration(from = 3,
-        to = 4)})
+        to = 4), @AutoMigration(from = 4,
+        to = 5,
+        spec = AppDatabase.Migration4To5.class), @AutoMigration(from = 5,
+        to = 6,
+        spec = AppDatabase.Migration5To6.class)})
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "sunriseclock-db-DEV.db";
@@ -69,6 +75,22 @@ public abstract class AppDatabase extends RoomDatabase {
     public static Migration[] allMigrations() {
         Migration[] migrationsArray = new Migration[migrations.size()];
         return migrations.toArray(migrationsArray);
+    }
+
+    @RenameColumn(tableName = "light",
+        fromColumnName = "light_id",
+        toColumnName = "id")
+    static class Migration4To5 implements AutoMigrationSpec {
+
+    }
+
+    @RenameColumn.Entries(value = {@RenameColumn(tableName = "light",
+        fromColumnName = "endpoint_light_id",
+        toColumnName = "id_on_endpoint"), @RenameColumn(tableName = "group",
+        fromColumnName = "endpoint_light_id",
+        toColumnName = "id_on_endpoint")})
+    static class Migration5To6 implements AutoMigrationSpec {
+
     }
 
     public abstract DbLightDao dbLightDao();
