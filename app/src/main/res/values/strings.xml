@@ -68,4 +68,6 @@
     <string name="endpoint_list">All Endpoints</string>
     <string name="add">add</string>
     <string name="endpoint_add">Add Endpoint</string>
+    <string name="light_on_state_label">Light State</string>
+    <string name="light_brightness_label">Brightness</string>
 </resources>
