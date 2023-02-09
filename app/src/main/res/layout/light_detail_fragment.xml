@@ -19,7 +19,6 @@
             android:visibility="@{viewModel.loadingIndicatorVisibility}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-        <!--Todo: Change to material slider (slider does not support onProgressChanged, therefore custom databinding adapter for setLightBrightness has to be written)-->
         <androidx.cardview.widget.CardView
             android:id="@+id/card_not_reachable"
             android:layout_width="wrap_content"
@@ -52,6 +51,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/label_on_state"
             app:layout_constraintStart_toEndOf="@+id/label_on_state"
             app:layout_constraintTop_toTopOf="@+id/label_on_state" />
+        <!--Todo: Change to material slider (slider does not support onProgressChanged, therefore custom databinding adapter for setLightBrightness has to be written)-->
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/slider"
             android:layout_width="0dp"
