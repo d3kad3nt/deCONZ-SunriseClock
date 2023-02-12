@@ -71,4 +71,5 @@
     <string name="light_on_state_label">Light State</string>
     <string name="light_brightness_label">Brightness</string>
     <string name="light_not_reachable">Light is not reachable</string>
+    <string name="endpoint_type">Endpoint Type</string>
 </resources>

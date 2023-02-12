@@ -12,12 +12,24 @@
         android:layout_height="wrap_content"
         tools:context="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailFragment">
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/list_endpoint_name"
+            android:id="@+id/label_endpointType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.endpointConfig.stringRepresentation}"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/endpoint_type"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@sample/sample.json/endpoints/name" />
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/text_endpointType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_weight="1"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="@+id/label_endpointType"
+            app:layout_constraintStart_toEndOf="@+id/label_endpointType"
+            app:layout_constraintTop_toTopOf="@+id/label_endpointType"
+            tools:text="@{viewModel.endpointConfig.type.name}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
