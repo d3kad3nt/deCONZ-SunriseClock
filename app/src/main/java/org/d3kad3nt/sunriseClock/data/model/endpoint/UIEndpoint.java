@@ -11,16 +11,20 @@ public class UIEndpoint implements IEndpointUI {
 
     private final String name;
 
-    UIEndpoint(@NonNull String stringRepresentation, long id, String name) {
+    private final EndpointType type;
+
+    UIEndpoint(@NonNull String stringRepresentation, long id, String name, EndpointType type) {
         this.stringRepresentation = stringRepresentation;
         this.id = id;
         this.name = name;
+        this.type = type;
     }
 
     @NonNull
     @Contract("_ -> new")
     public static UIEndpoint from(@NonNull EndpointConfig baseEndpoint) {
-        return new UIEndpoint(baseEndpoint.toString(), baseEndpoint.getId(), baseEndpoint.getName());
+        return new UIEndpoint(baseEndpoint.toString(), baseEndpoint.getId(), baseEndpoint.getName(),
+            EndpointType.DECONZ);
     }
 
     @Override
@@ -31,6 +35,11 @@ public class UIEndpoint implements IEndpointUI {
     @Override
     public long getId() {
         return id;
+    }
+
+    @Override
+    public EndpointType getType() {
+        return type;
     }
 
     @NonNull

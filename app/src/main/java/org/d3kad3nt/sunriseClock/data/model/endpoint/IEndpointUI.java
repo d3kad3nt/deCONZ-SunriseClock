@@ -7,4 +7,6 @@ public interface IEndpointUI {
     String getStringRepresentation();
 
     long getId();
+
+    EndpointType getType();
 }
