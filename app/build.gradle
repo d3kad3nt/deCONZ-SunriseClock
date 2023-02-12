@@ -32,8 +32,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+        sourceCompatibility = 1.9
+        targetCompatibility = 1.9
     }
 
     namespace 'org.d3kad3nt.sunriseClock'
