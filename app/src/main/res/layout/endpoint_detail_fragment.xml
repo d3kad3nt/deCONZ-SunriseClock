@@ -26,10 +26,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_weight="1"
-            android:text="TextView"
+            android:text="@{viewModel.endpointConfig.type.name}"
             app:layout_constraintBottom_toBottomOf="@+id/label_endpointType"
             app:layout_constraintStart_toEndOf="@+id/label_endpointType"
-            app:layout_constraintTop_toTopOf="@+id/label_endpointType"
-            tools:text="@{viewModel.endpointConfig.type.name}" />
+            app:layout_constraintTop_toTopOf="@+id/label_endpointType" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
