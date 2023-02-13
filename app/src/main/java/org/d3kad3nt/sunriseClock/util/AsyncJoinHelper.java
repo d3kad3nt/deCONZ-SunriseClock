@@ -1,5 +1,6 @@
 package org.d3kad3nt.sunriseClock.util;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.HashSet;
@@ -44,7 +45,7 @@ public class AsyncJoinHelper {
 
     public static abstract class Observer <T> implements androidx.lifecycle.Observer<T> {
 
-        public Observer(AsyncJoinHelper joinHelper) {
+        public Observer(@NonNull AsyncJoinHelper joinHelper) {
             joinHelper.addAsyncTask(this);
         }
     }
