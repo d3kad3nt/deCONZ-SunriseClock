@@ -104,6 +104,11 @@ public class ControlService extends ControlsProviderService {
 
     }
 
+    @NonNull
+    private String getControlId(@NonNull UILight light) {
+        return String.format("sunrise-%s-%s", light.getEndpointId(), light.getLightId());
+    }
+
     private LiveData<Resource<UILight>> getUILight(String controlId, LightRepository lightRepository) {
         long lightID = Long.parseLong(controlId.split("-")[2]);
         return lightRepository.getLight(lightID);
