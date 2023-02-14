@@ -1,9 +1,10 @@
-package org.d3kad3nt.sunriseClock.data.model.group;
+package org.d3kad3nt.sunriseClock.data.model.groupWithLights;
 
 import androidx.room.Embedded;
 import androidx.room.Junction;
 import androidx.room.Relation;
 
+import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 
 import java.util.List;
