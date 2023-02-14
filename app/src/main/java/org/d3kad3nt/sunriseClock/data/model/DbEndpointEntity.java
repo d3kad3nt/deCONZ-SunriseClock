@@ -89,4 +89,9 @@ public abstract class DbEndpointEntity {
     public void setId(long id) {
         this.id = id;
     }
+
+    /**
+     * @return Name of the table containing these entities in the database.
+     */
+    public abstract String getTABLENAME();
 }

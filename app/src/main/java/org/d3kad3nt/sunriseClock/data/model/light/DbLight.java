@@ -157,4 +157,9 @@ public class DbLight extends DbEndpointEntity {
     public boolean getIsReachable() {
         return isReachable;
     }
+
+    @Override
+    public String getTABLENAME() {
+        return DbLight.TABLENAME;
+    }
 }

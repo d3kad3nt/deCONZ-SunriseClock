@@ -35,6 +35,11 @@ public class DbGroup extends DbEndpointEntity {
         super(endpointId, endpointEntityId, name);
     }
 
+    @Override
+    public String getTABLENAME() {
+        return DbGroup.TABLENAME;
+    }
+
     @NonNull
     @Contract("_ -> new")
     public static DbGroup from(@NonNull RemoteGroup remoteGroup) {
