@@ -38,15 +38,15 @@ public abstract class DbEndpointEntity {
         if (endpointEntityId != null && !endpointEntityId.isEmpty()) {
             this.endpointEntityId = endpointEntityId;
         } else {
-            Log.e(TAG, "The given endpointObjectId string cannot be null or empty!");
-            throw new IllegalArgumentException("The given endpointObjectId string cannot be null or empty!");
+            Log.e(TAG, "The given endpointEntityId string cannot be null or empty!");
+            throw new IllegalArgumentException("The given endpointEntityId string cannot be null or empty!");
         }
 
         this.name = name;
     }
 
     /**
-     * @return Foreign key of the remote endpoint that this object belongs to. Only one endpoint object id (specific
+     * @return Foreign key of the remote endpoint that this entity belongs to. Only one endpoint object id (specific
      * for that endpoint!) can exist for a single endpoint.
      */
     public long getEndpointId() {
