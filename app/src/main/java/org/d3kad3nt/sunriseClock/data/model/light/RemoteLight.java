@@ -4,19 +4,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import org.d3kad3nt.sunriseClock.data.model.RemoteEndpointEntity;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 import org.jetbrains.annotations.Contract;
 
-public class RemoteLight {
+public class RemoteLight extends RemoteEndpointEntity {
 
     private static final String TAG = "RemoteLight";
-
-    private final EndpointType endpointType;
-
-    private final long endpointId;
-    private final String endpointLightId;
-
-    private final String name;
 
     private final boolean isSwitchable;
     private final boolean isOn;
@@ -34,23 +28,8 @@ public class RemoteLight {
     RemoteLight(EndpointType endpointType, long endpointId, String endpointLightId, String name, boolean isSwitchable,
                 boolean isOn, boolean isDimmable, int brightness, boolean isTemperaturable, int colorTemperature,
                 boolean isColorable, int color, boolean isReachable) {
-        this.endpointType = endpointType;
+        super(endpointType, endpointId, endpointLightId, name);
 
-        if (endpointId != 0L) {
-            this.endpointId = endpointId;
-        } else {
-            Log.e(TAG, "The given endpointId cannot be 0!");
-            throw new IllegalArgumentException("The given endpointId cannot be 0!");
-        }
-
-        if (endpointLightId != null && !endpointLightId.isEmpty()) {
-            this.endpointLightId = endpointLightId;
-        } else {
-            Log.e(TAG, "The given endpointLightId string cannot be null or empty!");
-            throw new IllegalArgumentException("The given endpointLightId string cannot be null or empty!");
-        }
-
-        this.name = name;
         this.isSwitchable = isSwitchable;
         this.isOn = isOn;
         this.isDimmable = isDimmable;
@@ -75,9 +54,11 @@ public class RemoteLight {
     static DbLight toDbLight(RemoteLight remoteLight) {
         Log.d(TAG, "Converting RemoteLight to DbLight...");
         DbLightBuilder dbLightBuilder = new DbLightBuilder();
-        //Logic to convert remote light to db light depending on the endpoint type this light originated from.
+        // Logic to convert remote light to db light depending on the endpoint type this light originated from.
+        // The endpoint type could be used to implement conversions depending on the type of the remote endpoint
+        // this entity originated from.
         DbLight dbLight = dbLightBuilder.setEndpointId(remoteLight.getEndpointId())
-            .setEndpointLightId(remoteLight.getEndpointLightId()).setName(remoteLight.getName())
+            .setEndpointLightId(remoteLight.getEndpointEntityId()).setName(remoteLight.getName())
             .setIsSwitchable(remoteLight.getIsSwitchable()).setIsOn(remoteLight.getIsOn())
             .setIsDimmable(remoteLight.getIsDimmable())
             // Convert brightness via linear conversion (copied from https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio)
@@ -85,10 +66,9 @@ public class RemoteLight {
             .setColorTemperature(remoteLight.getColorTemperature()) //Todo: Implement conversion
             .setIsColorable(remoteLight.getIsColorable())
             .setColor(remoteLight.getColor()) //Todo: Implement conversion
-            .setIsReachable(remoteLight.getIsReachable())
-            .build();
+            .setIsReachable(remoteLight.getIsReachable()).build();
         Log.d(TAG, "Converted RemoteLight with endpointId " + remoteLight.getEndpointId() + " and endpointLightId " +
-            remoteLight.getEndpointLightId() + " to DbLight.");
+            remoteLight.getEndpointEntityId() + " to DbLight.");
         return dbLight;
     }
 
@@ -98,22 +78,6 @@ public class RemoteLight {
                      (DbLight.BRIGHTNESS_MAX - DbLight.BRIGHTNESS_MIN)) /
                     (remoteLight.getEndpointType().getMaxBrightness() -
                          remoteLight.getEndpointType().getMinBrightness())) + DbLight.BRIGHTNESS_MIN;
-    }
-
-    public EndpointType getEndpointType() {
-        return endpointType;
-    }
-
-    public long getEndpointId() {
-        return endpointId;
-    }
-
-    public String getEndpointLightId() {
-        return endpointLightId;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public boolean getIsSwitchable() {
