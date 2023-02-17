@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AsyncJoinHelper {
+public class AsyncJoin {
 
     private final static String TAG = "AsyncJoinHelper";
     private final MutableLiveData<Boolean> joinState = new MutableLiveData<>();
@@ -45,7 +45,7 @@ public class AsyncJoinHelper {
 
     public static abstract class Observer <T> implements androidx.lifecycle.Observer<T> {
 
-        public Observer(@NonNull AsyncJoinHelper joinHelper) {
+        public Observer(@NonNull AsyncJoin joinHelper) {
             joinHelper.addAsyncTask(this);
         }
     }

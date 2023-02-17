@@ -20,7 +20,7 @@ import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
-import org.d3kad3nt.sunriseClock.util.AsyncJoinHelper;
+import org.d3kad3nt.sunriseClock.util.AsyncJoin;
 import org.d3kad3nt.sunriseClock.util.ExtendedPublisher;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 
@@ -44,15 +44,15 @@ public class ControlService extends ControlsProviderService {
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         ExtendedPublisher<Control> flow = new ExtendedPublisher<>(true);
         LiveData<List<IEndpointUI>> allEndpoints = endpointRepository.getAllEndpoints();
-        AsyncJoinHelper asyncHelper = new AsyncJoinHelper();
+        AsyncJoin asyncHelper = new AsyncJoin();
 
-        LiveDataUtil.observeOnce(allEndpoints, new AsyncJoinHelper.Observer<>(asyncHelper) {
+        LiveDataUtil.observeOnce(allEndpoints, new AsyncJoin.Observer<>(asyncHelper) {
             @Override
             public void onChanged(final List<IEndpointUI> endpoints) {
                 for (IEndpointUI endpoint : endpoints) {
                     LiveData<Resource<List<UILight>>> lightResources =
                         lightRepository.getLightsForEndpoint(endpoint.getId());
-                    lightResources.observeForever(new AsyncJoinHelper.Observer<>(asyncHelper) {
+                    lightResources.observeForever(new AsyncJoin.Observer<>(asyncHelper) {
                         @Override
                         public void onChanged(final Resource<List<UILight>> listResource) {
                             if (listResource.getStatus() == Status.LOADING) {
@@ -95,14 +95,14 @@ public class ControlService extends ControlsProviderService {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         ExtendedPublisher<Control> flow = new ExtendedPublisher<>(true);
-        AsyncJoinHelper asyncHelper = new AsyncJoinHelper();
+        AsyncJoin asyncHelper = new AsyncJoin();
         for (String controlId : controlIds) {
             LiveData<Resource<UILight>> lightLiveData = getUILight(controlId, lightRepository);
-            lightLiveData.observeForever(new AsyncJoinHelper.Observer<>(asyncHelper) {
+            lightLiveData.observeForever(new AsyncJoin.Observer<>(asyncHelper) {
                 @Override
                 public void onChanged(final Resource<UILight> resource) {
                     Control.StatefulBuilder builder = new Control.StatefulBuilder(controlId, pendingIntent);
-                    AsyncJoinHelper asyncPublish = new AsyncJoinHelper();
+                    AsyncJoin asyncPublish = new AsyncJoin();
                     builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
                     if (resource.getStatus() == Status.LOADING) {
                         return;
@@ -111,7 +111,7 @@ public class ControlService extends ControlsProviderService {
                     }
                     UILight light = resource.getData();
                     LiveData<IEndpointUI> endpointUILiveData = endpointRepository.getEndpoint(light.getEndpointId());
-                    endpointUILiveData.observeForever(new AsyncJoinHelper.Observer<>(asyncPublish) {
+                    endpointUILiveData.observeForever(new AsyncJoin.Observer<>(asyncPublish) {
                         @Override
                         public void onChanged(final IEndpointUI iEndpointUI) {
                             //TODO use endpoint.getName, when it is merged
