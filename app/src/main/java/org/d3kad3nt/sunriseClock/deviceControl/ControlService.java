@@ -8,6 +8,7 @@ import android.service.controls.Control;
 import android.service.controls.ControlsProviderService;
 import android.service.controls.DeviceTypes;
 import android.service.controls.actions.ControlAction;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -87,15 +88,53 @@ public class ControlService extends ControlsProviderService {
     @NonNull
     @Override
     public Flow.Publisher<Control> createPublisherFor(@NonNull final List<String> controlIds) {
-        Context context = getBaseContext();
+        final Context context = getBaseContext();
+        final EndpointRepository endpointRepository = EndpointRepository.getInstance(context);
+        final LightRepository lightRepository = LightRepository.getInstance(context);
         Intent intent = new Intent();
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        Control control =
-            new Control.StatelessBuilder("sunrise-test1", pendingIntent).setTitle("Test 1").setSubtitle("Subtitle")
-                .setStructure("Test Structure").setDeviceType(DeviceTypes.TYPE_LIGHT).build();
-        List<Control> list = List.of(control);
-        return FlowUtil.publishList(list);
+        ExtendedPublisher<Control> flow = new ExtendedPublisher<>(true);
+        AsyncJoinHelper asyncHelper = new AsyncJoinHelper();
+        for (String controlId : controlIds) {
+            LiveData<Resource<UILight>> lightLiveData = getUILight(controlId, lightRepository);
+            lightLiveData.observeForever(new AsyncJoinHelper.Observer<>(asyncHelper) {
+                @Override
+                public void onChanged(final Resource<UILight> resource) {
+                    Control.StatefulBuilder builder = new Control.StatefulBuilder(controlId, pendingIntent);
+                    AsyncJoinHelper asyncPublish = new AsyncJoinHelper();
+                    builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
+                    if (resource.getStatus() == Status.LOADING) {
+                        return;
+                    } else if (resource.getStatus() == Status.ERROR) {
+                        return;
+                    }
+                    UILight light = resource.getData();
+                    LiveData<IEndpointUI> endpointUILiveData = endpointRepository.getEndpoint(light.getEndpointId());
+                    endpointUILiveData.observeForever(new AsyncJoinHelper.Observer<>(asyncPublish) {
+                        @Override
+                        public void onChanged(final IEndpointUI iEndpointUI) {
+                            //TODO use endpoint.getName, when it is merged
+                            builder.setStructure(iEndpointUI.getStringRepresentation());
+                            endpointUILiveData.removeObserver(this);
+                            asyncPublish.removeAsyncTask(this);
+                        }
+                    });
+                    builder.setTitle(light.getName());
+                    if (light.getIsOn()) {
+                        builder.setStatus(Control.STATUS_OK);
+                    } else {
+                        builder.setStatus(Control.STATUS_DISABLED);
+                    }
+                    asyncPublish.executeWhenJoined(() -> {
+                        flow.publish(builder.build());
+                        Log.d(TAG, "Publish control");
+                    });
+                }
+            });
+        }
+        asyncHelper.executeWhenJoined(() -> flow.complete());
+        return flow;
     }
 
     @Override
@@ -109,7 +148,8 @@ public class ControlService extends ControlsProviderService {
         return String.format("sunrise-%s-%s", light.getEndpointId(), light.getLightId());
     }
 
-    private LiveData<Resource<UILight>> getUILight(String controlId, LightRepository lightRepository) {
+    private LiveData<Resource<UILight>> getUILight(@NonNull String controlId,
+                                                   @NonNull LightRepository lightRepository) {
         long lightID = Long.parseLong(controlId.split("-")[2]);
         return lightRepository.getLight(lightID);
     }
