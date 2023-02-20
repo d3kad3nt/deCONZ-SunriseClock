@@ -6,6 +6,16 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This class is used to execute a Action after one ore multiple Tasks are finished.
+ *
+ * You can set a Action that should be executed by calling executeWhenJoined. This action gets executed, when all
+ * registered Async Tasks are finished/removed.
+ *
+ * This class also contains a subclass of androidx.lifecycle.Observer<T> that adds the observer as a Task in the
+ * constructor. This is done, to prevent that a Observer Task isn't added, when the task should be added in the first
+ * call of the observer an the observer doesn'T get called in time.
+ */
 public class AsyncJoin {
 
     private final static String TAG = "AsyncJoinHelper";
