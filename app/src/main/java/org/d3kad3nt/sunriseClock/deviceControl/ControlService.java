@@ -40,6 +40,7 @@ public class ControlService extends ControlsProviderService {
         final EndpointRepository endpointRepository = EndpointRepository.getInstance(context);
         final LightRepository lightRepository = LightRepository.getInstance(context);
         Intent intent = new Intent();
+        //Ths given Flags are always necessary
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         ExtendedPublisher<Control> flow = new ExtendedPublisher<>(true);
@@ -55,26 +56,21 @@ public class ControlService extends ControlsProviderService {
                     lightResources.observeForever(new AsyncJoin.Observer<>(asyncHelper) {
                         @Override
                         public void onChanged(final Resource<List<UILight>> listResource) {
-                            if (listResource.getStatus() == Status.LOADING) {
-                                return;
+                            switch (listResource.getStatus()) {
+                                case SUCCESS:
+                                    for (UILight light : listResource.getData()) {
+                                        flow.publish(getStatelessControl(light, endpoint, pendingIntent));
+                                    }
+                                    removeObserver(this, lightResources, asyncHelper);
+                                case ERROR:
+                                    Log.w(TAG, String.format(
+                                        "Error occurred while loading Lights of Endpoint %s for DeviceControl",
+                                        endpoint.getStringRepresentation()));
+                                    removeObserver(this, lightResources, asyncHelper);
+                                    break;
+                                case LOADING:
+                                    break;
                             }
-                            if (listResource.getStatus() == Status.ERROR) {
-                                lightResources.removeObserver(this);
-                                asyncHelper.removeAsyncTask(this);
-                                return;
-                            }
-                            List<UILight> lights = listResource.getData();
-                            for (UILight light : lights) {
-                                Control.StatelessBuilder builder =
-                                    new Control.StatelessBuilder(getControlId(light), pendingIntent);
-                                builder.setTitle(light.getName());
-                                //TODO use endpoint.getName, when it is merged
-                                builder.setStructure(endpoint.getStringRepresentation());
-                                builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
-                                flow.publish(builder.build());
-                            }
-                            lightResources.removeObserver(this);
-                            asyncHelper.removeAsyncTask(this);
                         }
                     });
                 }
@@ -83,6 +79,22 @@ public class ControlService extends ControlsProviderService {
         });
         asyncHelper.executeWhenJoined(() -> flow.complete());
         return flow;
+    }
+
+    private <T> void removeObserver(final AsyncJoin.Observer<T> observer, final LiveData<T> livedata,
+                                    final AsyncJoin asyncHelper) {
+        asyncHelper.removeAsyncTask(observer);
+        livedata.removeObserver(observer);
+    }
+
+    private @NonNull Control getStatelessControl(@NonNull final UILight light, @NonNull final IEndpointUI endpoint,
+                                                 @NonNull final PendingIntent pendingIntent) {
+        Control.StatelessBuilder builder = new Control.StatelessBuilder(getControlId(light), pendingIntent);
+        builder.setTitle(light.getName());
+        //TODO use endpoint.getName, when it is merged
+        builder.setStructure(endpoint.getStringRepresentation());
+        builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
+        return builder.build();
     }
 
     @NonNull
