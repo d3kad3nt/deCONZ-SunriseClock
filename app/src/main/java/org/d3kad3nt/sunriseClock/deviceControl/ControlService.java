@@ -248,7 +248,6 @@ public class ControlService extends ControlsProviderService {
 
     private String getEndpointName(long endpointID) {
         if (endpointNames.containsKey(endpointID)) {
-            Log.d(TAG, "Cached Endpoint Name: " + endpointNames.get(endpointID));
             return endpointNames.get(endpointID);
         }
         Log.w(TAG, "Endpoint Name for " + endpointID + " not loaded");
