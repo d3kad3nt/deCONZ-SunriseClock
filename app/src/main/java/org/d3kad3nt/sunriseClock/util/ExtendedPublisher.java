@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.util;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -14,8 +15,9 @@ import java.util.function.Consumer;
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class ExtendedPublisher <T> implements Flow.Publisher<T> {
 
-    private final List<Flow.Subscriber<? super T>> subscriberList = new LinkedList<>();
     private final List<ExtendedSubscription> subscriptionList = new LinkedList<>();
+
+    private final static String TAG = "ExtendedPublisher";
 
     private final boolean cache_publish_values;
 
@@ -60,7 +62,8 @@ public class ExtendedPublisher <T> implements Flow.Publisher<T> {
     }
 
     public void complete() {
-        subscriberList.forEach(subscriber -> subscriber.onComplete());
+        subscriptionList.forEach(subscription -> subscription.subscriber.onComplete());
+        subscriptionList.clear();
         cache.clear();
     }
 
@@ -87,7 +90,7 @@ public class ExtendedPublisher <T> implements Flow.Publisher<T> {
 
         @Override
         public void cancel() {
-            subscriberList.remove(subscriber);
+            subscriptionList.remove(this);
         }
     }
 }
