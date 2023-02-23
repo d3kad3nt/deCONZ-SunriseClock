@@ -7,6 +7,7 @@ import android.os.Build;
 import android.service.controls.Control;
 import android.service.controls.ControlsProviderService;
 import android.service.controls.DeviceTypes;
+import android.service.controls.actions.BooleanAction;
 import android.service.controls.actions.ControlAction;
 import android.service.controls.templates.ControlButton;
 import android.service.controls.templates.ControlTemplate;
@@ -21,6 +22,7 @@ import androidx.lifecycle.Observer;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
+import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
@@ -131,7 +133,7 @@ public class ControlService extends ControlsProviderService {
 
     private void observeChanges(final String lightID, final ExtendedPublisher<Control> flow,
                                 PendingIntent pendingIntent) {
-        LiveData<Resource<UILight>> lightLiveData = getUILight(lightID, getLightRepository());
+        LiveData<Resource<UILight>> lightLiveData = getUILight(lightID);
         lightLiveData.observeForever(new Observer<>() {
             @Override
             public void onChanged(final Resource<UILight> resource) {
@@ -175,6 +177,24 @@ public class ControlService extends ControlsProviderService {
     public void performControlAction(@NonNull final String controlId, @NonNull final ControlAction action,
                                      @NonNull final Consumer<Integer> consumer) {
 
+        if (action instanceof BooleanAction) {
+            // Inform SystemUI that the action has been received and is being processed
+            consumer.accept(ControlAction.RESPONSE_OK);
+            Log.d(TAG, "Received ControlAction request");
+
+            BooleanAction booleanAction = (BooleanAction) action;
+            Log.d(TAG, "New State: " + booleanAction.getNewState() + ", for LightID " + controlId);
+            LiveData<EmptyResource> responseLiveData =
+                getLightRepository().setOnState(Long.parseLong(controlId), booleanAction.getNewState());
+            responseLiveData.observeForever(new Observer<>() {
+                @Override
+                public void onChanged(final EmptyResource emptyResource) {
+                    if (!emptyResource.getStatus().equals(Status.LOADING)) {
+                        responseLiveData.removeObserver(this);
+                    }
+                }
+            });
+        }
     }
 
     @NonNull
@@ -182,10 +202,9 @@ public class ControlService extends ControlsProviderService {
         return Long.toString(light.getLightId());
     }
 
-    private LiveData<Resource<UILight>> getUILight(@NonNull String controlId,
-                                                   @NonNull LightRepository lightRepository) {
+    private LiveData<Resource<UILight>> getUILight(@NonNull String controlId) {
         long lightID = Long.parseLong(controlId);
-        return lightRepository.getLight(lightID);
+        return getLightRepository().getLight(lightID);
     }
 
     @NonNull
