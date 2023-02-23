@@ -8,11 +8,16 @@ import android.service.controls.Control;
 import android.service.controls.ControlsProviderService;
 import android.service.controls.DeviceTypes;
 import android.service.controls.actions.ControlAction;
+import android.service.controls.templates.ControlButton;
+import android.service.controls.templates.ControlTemplate;
+import android.service.controls.templates.ToggleTemplate;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
@@ -24,7 +29,10 @@ import org.d3kad3nt.sunriseClock.util.AsyncJoin;
 import org.d3kad3nt.sunriseClock.util.ExtendedPublisher;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Flow;
 import java.util.function.Consumer;
 
@@ -33,18 +41,27 @@ public class ControlService extends ControlsProviderService {
 
     private static final String TAG = "ControlService";
 
+    //This indicates if the device has to be unlocked to interact with the device Controls.
+    //TODO: This could be specified in a setting.
+    private static final boolean AUTH_REQUIRED = false;
+    @NonNull
+    private final Map<Long, String> endpointNames = new HashMap<>();
+    private final Map<String, ExtendedPublisher<Control>> controlFlows = new HashMap<>();
+    @Nullable
+    private EndpointRepository nullableEndpointRepository;
+    @Nullable
+    private LightRepository nullableLightRepository;
+
     @NonNull
     @Override
     public Flow.Publisher<Control> createPublisherForAllAvailable() {
         final Context context = getBaseContext();
-        final EndpointRepository endpointRepository = EndpointRepository.getInstance(context);
-        final LightRepository lightRepository = LightRepository.getInstance(context);
         Intent intent = new Intent();
         //Ths given Flags are always necessary
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         ExtendedPublisher<Control> flow = new ExtendedPublisher<>(true);
-        LiveData<List<IEndpointUI>> allEndpoints = endpointRepository.getAllEndpoints();
+        LiveData<List<IEndpointUI>> allEndpoints = getEndpointRepository().getAllEndpoints();
         AsyncJoin asyncHelper = new AsyncJoin();
 
         LiveDataUtil.observeOnce(allEndpoints, new AsyncJoin.Observer<>(asyncHelper) {
@@ -52,14 +69,15 @@ public class ControlService extends ControlsProviderService {
             public void onChanged(final List<IEndpointUI> endpoints) {
                 for (IEndpointUI endpoint : endpoints) {
                     LiveData<Resource<List<UILight>>> lightResources =
-                        lightRepository.getLightsForEndpoint(endpoint.getId());
+                        getLightRepository().getLightsForEndpoint(endpoint.getId());
                     lightResources.observeForever(new AsyncJoin.Observer<>(asyncHelper) {
                         @Override
                         public void onChanged(final Resource<List<UILight>> listResource) {
                             switch (listResource.getStatus()) {
                                 case SUCCESS:
                                     for (UILight light : listResource.getData()) {
-                                        flow.publish(getStatelessControl(light, endpoint, pendingIntent));
+                                        endpointNames.put(light.getLightId(), endpoint.getStringRepresentation());
+                                        flow.publish(getStatelessControl(light, pendingIntent));
                                     }
                                     removeObserver(this, lightResources, asyncHelper);
                                 case ERROR:
@@ -81,72 +99,76 @@ public class ControlService extends ControlsProviderService {
         return flow;
     }
 
-    private <T> void removeObserver(final AsyncJoin.Observer<T> observer, final LiveData<T> livedata,
-                                    final AsyncJoin asyncHelper) {
-        asyncHelper.removeAsyncTask(observer);
-        livedata.removeObserver(observer);
-    }
-
-    private @NonNull Control getStatelessControl(@NonNull final UILight light, @NonNull final IEndpointUI endpoint,
-                                                 @NonNull final PendingIntent pendingIntent) {
-        Control.StatelessBuilder builder = new Control.StatelessBuilder(getControlId(light), pendingIntent);
-        builder.setTitle(light.getName());
-        //TODO use endpoint.getName, when it is merged
-        builder.setStructure(endpoint.getStringRepresentation());
-        builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
-        return builder.build();
-    }
-
     @NonNull
     @Override
     public Flow.Publisher<Control> createPublisherFor(@NonNull final List<String> controlIds) {
         final Context context = getBaseContext();
-        final EndpointRepository endpointRepository = EndpointRepository.getInstance(context);
-        final LightRepository lightRepository = LightRepository.getInstance(context);
         Intent intent = new Intent();
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        ExtendedPublisher<Control> flow = new ExtendedPublisher<>(true);
-        AsyncJoin asyncHelper = new AsyncJoin();
+        ExtendedPublisher<Control> flow = getFlow(controlIds);
         for (String controlId : controlIds) {
-            LiveData<Resource<UILight>> lightLiveData = getUILight(controlId, lightRepository);
-            lightLiveData.observeForever(new AsyncJoin.Observer<>(asyncHelper) {
-                @Override
-                public void onChanged(final Resource<UILight> resource) {
-                    Control.StatefulBuilder builder = new Control.StatefulBuilder(controlId, pendingIntent);
-                    AsyncJoin asyncPublish = new AsyncJoin();
-                    builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
-                    if (resource.getStatus() == Status.LOADING) {
-                        return;
-                    } else if (resource.getStatus() == Status.ERROR) {
-                        return;
-                    }
-                    UILight light = resource.getData();
-                    LiveData<IEndpointUI> endpointUILiveData = endpointRepository.getEndpoint(light.getEndpointId());
-                    endpointUILiveData.observeForever(new AsyncJoin.Observer<>(asyncPublish) {
-                        @Override
-                        public void onChanged(final IEndpointUI iEndpointUI) {
-                            //TODO use endpoint.getName, when it is merged
-                            builder.setStructure(iEndpointUI.getStringRepresentation());
-                            endpointUILiveData.removeObserver(this);
-                            asyncPublish.removeAsyncTask(this);
-                        }
-                    });
-                    builder.setTitle(light.getName());
-                    if (light.getIsOn()) {
-                        builder.setStatus(Control.STATUS_OK);
-                    } else {
-                        builder.setStatus(Control.STATUS_DISABLED);
-                    }
-                    asyncPublish.executeWhenJoined(() -> {
-                        flow.publish(builder.build());
-                        Log.d(TAG, "Publish control");
-                    });
-                }
-            });
+            observeChanges(controlId, flow, pendingIntent);
         }
-        asyncHelper.executeWhenJoined(() -> flow.complete());
         return flow;
+    }
+
+    private <T> void removeObserver(final AsyncJoin.Observer<T> observer, @NonNull final LiveData<T> livedata,
+                                    @NonNull final AsyncJoin asyncHelper) {
+        asyncHelper.removeAsyncTask(observer);
+        livedata.removeObserver(observer);
+    }
+
+    private @NonNull Control getStatelessControl(@NonNull final UILight light,
+                                                 @NonNull final PendingIntent pendingIntent) {
+        Control.StatelessBuilder builder = new Control.StatelessBuilder(getControlId(light), pendingIntent);
+        builder.setTitle(light.getName());
+        //TODO use endpoint.getName, when it is merged
+        builder.setStructure(getEndpointName(light.getEndpointId()));
+        builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
+        return builder.build();
+    }
+
+    private void observeChanges(final String lightID, final ExtendedPublisher<Control> flow,
+                                PendingIntent pendingIntent) {
+        LiveData<Resource<UILight>> lightLiveData = getUILight(lightID, getLightRepository());
+        lightLiveData.observeForever(new Observer<>() {
+            @Override
+            public void onChanged(final Resource<UILight> resource) {
+
+                if (resource.getStatus() == Status.LOADING) {
+                    return;
+                } else if (resource.getStatus() == Status.ERROR) {
+                    return;
+                }
+                UILight light = resource.getData();
+                flow.publish(getStatefulControl(light, pendingIntent));
+                Log.d(TAG, "Publish control");
+            }
+        });
+    }
+
+    private Control getStatefulControl(final UILight light, final PendingIntent pendingIntent) {
+        Control.StatefulBuilder builder = new Control.StatefulBuilder(getControlId(light), pendingIntent);
+        builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
+        builder.setSubtitle(getEndpointName(light.getEndpointId()));
+        builder.setStructure(getEndpointName(light.getEndpointId()));
+        builder.setTitle(light.getName());
+        builder.setStatus(Control.STATUS_OK);
+        ControlButton button = new ControlButton(light.getIsOn(), "Activate");
+        ControlTemplate template = new ToggleTemplate(getControlId(light), button);
+        builder.setControlTemplate(template);
+        return builder.build();
+    }
+
+    @NonNull
+    private ExtendedPublisher<Control> getFlow(List<String> controlIds) {
+        String flowKey = String.join(",", controlIds);
+        if (!controlFlows.containsKey(flowKey)) {
+            controlFlows.put(flowKey, new ExtendedPublisher<>(true));
+        }
+        //The map always contains the key, because it is checked before this
+        return Objects.requireNonNull(controlFlows.get(flowKey));
     }
 
     @Override
@@ -164,5 +186,59 @@ public class ControlService extends ControlsProviderService {
                                                    @NonNull LightRepository lightRepository) {
         long lightID = Long.parseLong(controlId);
         return lightRepository.getLight(lightID);
+    }
+
+    @NonNull
+    private EndpointRepository getEndpointRepository() {
+        if (nullableEndpointRepository == null) {
+            Context context = getNonNullBaseContext();
+            nullableEndpointRepository = EndpointRepository.getInstance(context);
+        }
+        return nullableEndpointRepository;
+    }
+
+    @NonNull
+    private LightRepository getLightRepository() {
+        if (nullableLightRepository == null) {
+            Context context = getNonNullBaseContext();
+            nullableLightRepository = LightRepository.getInstance(context);
+        }
+        return nullableLightRepository;
+    }
+
+    @NonNull
+    private Context getNonNullBaseContext() {
+        Context context = getBaseContext();
+        if (context == null) {
+            throw new IllegalStateException("No Context could be found");
+        }
+        return context;
+    }
+
+    private void initEndpointNames() {
+        LiveDataUtil.observeOnce(getEndpointRepository().getAllEndpoints(), new Observer<>() {
+            @Override
+            public void onChanged(final List<IEndpointUI> iEndpointUIS) {
+                for (IEndpointUI endpoint : iEndpointUIS) {
+                    endpointNames.put(endpoint.getId(), endpoint.getStringRepresentation());
+                }
+                Log.d(TAG, "Added Endpoint Names");
+            }
+        });
+    }
+
+    private String getEndpointName(long endpointID) {
+        if (endpointNames.containsKey(endpointID)) {
+            Log.d(TAG, "Cached Endpoint Name: " + endpointNames.get(endpointID));
+            return endpointNames.get(endpointID);
+        }
+        Log.w(TAG, "Endpoint Name for " + endpointID + " not loaded");
+        return "No Name";
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        initEndpointNames();
     }
 }
