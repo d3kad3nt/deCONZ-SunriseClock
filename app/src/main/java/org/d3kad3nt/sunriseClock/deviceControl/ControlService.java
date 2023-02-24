@@ -159,6 +159,10 @@ public class ControlService extends ControlsProviderService {
         builder.setSubtitle(getEndpointName(light.getEndpointId()));
         builder.setStructure(getEndpointName(light.getEndpointId()));
         builder.setTitle(light.getName());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            builder.setAuthRequired(AUTH_REQUIRED);
+        }
+
         if (!light.getIsReachable()) {
             builder.setStatus(Control.STATUS_DISABLED);
         } else {
