@@ -9,8 +9,11 @@ import android.service.controls.ControlsProviderService;
 import android.service.controls.DeviceTypes;
 import android.service.controls.actions.BooleanAction;
 import android.service.controls.actions.ControlAction;
+import android.service.controls.actions.FloatAction;
 import android.service.controls.templates.ControlButton;
 import android.service.controls.templates.ControlTemplate;
+import android.service.controls.templates.RangeTemplate;
+import android.service.controls.templates.ToggleRangeTemplate;
 import android.service.controls.templates.ToggleTemplate;
 import android.util.Log;
 
@@ -156,10 +159,22 @@ public class ControlService extends ControlsProviderService {
         builder.setSubtitle(getEndpointName(light.getEndpointId()));
         builder.setStructure(getEndpointName(light.getEndpointId()));
         builder.setTitle(light.getName());
-        builder.setStatus(Control.STATUS_OK);
-        ControlButton button = new ControlButton(light.getIsOn(), "Activate");
-        ControlTemplate template = new ToggleTemplate(getControlId(light), button);
-        builder.setControlTemplate(template);
+        if (!light.getIsReachable()) {
+            builder.setStatus(Control.STATUS_DISABLED);
+        } else {
+            builder.setStatus(Control.STATUS_OK);
+        }
+        if (light.getIsDimmable()) {
+            ControlButton button = new ControlButton(light.getIsOn(), "Activate");
+            RangeTemplate rangeTemplate =
+                new RangeTemplate(getControlId(light), (float) 0, 100, light.getBrightness(), 1, "Brightness");
+            ControlTemplate template = new ToggleRangeTemplate(getControlId(light), button, rangeTemplate);
+            builder.setControlTemplate(template);
+        } else if (light.getIsSwitchable()) {
+            ControlButton button = new ControlButton(light.getIsOn(), "Activate");
+            ControlTemplate template = new ToggleTemplate(getControlId(light), button);
+            builder.setControlTemplate(template);
+        }
         return builder.build();
     }
 
@@ -176,25 +191,48 @@ public class ControlService extends ControlsProviderService {
     @Override
     public void performControlAction(@NonNull final String controlId, @NonNull final ControlAction action,
                                      @NonNull final Consumer<Integer> consumer) {
-
+        Log.d(TAG, "Received ControlAction request");
         if (action instanceof BooleanAction) {
             // Inform SystemUI that the action has been received and is being processed
             consumer.accept(ControlAction.RESPONSE_OK);
-            Log.d(TAG, "Received ControlAction request");
-
-            BooleanAction booleanAction = (BooleanAction) action;
-            Log.d(TAG, "New State: " + booleanAction.getNewState() + ", for LightID " + controlId);
-            LiveData<EmptyResource> responseLiveData =
-                getLightRepository().setOnState(Long.parseLong(controlId), booleanAction.getNewState());
-            responseLiveData.observeForever(new Observer<>() {
-                @Override
-                public void onChanged(final EmptyResource emptyResource) {
-                    if (!emptyResource.getStatus().equals(Status.LOADING)) {
-                        responseLiveData.removeObserver(this);
-                    }
-                }
-            });
+            performBooleanControlAction(controlId, (BooleanAction) action);
+        } else if (action instanceof FloatAction) {
+            consumer.accept(ControlAction.RESPONSE_OK);
+            performFloatControlAction(controlId, (FloatAction) action);
+        } else {
+            Log.w(TAG, "Unknown Action " + action.getClass().getSimpleName() + " for id " + controlId);
+            consumer.accept(ControlAction.RESPONSE_FAIL);
         }
+    }
+
+    private void performFloatControlAction(@NonNull final String controlId, @NonNull final FloatAction action) {
+        Log.d(TAG, "New brightness Value: " + action.getNewValue() + ", for LightID " + controlId);
+        LiveData<EmptyResource> responseLiveData =
+            getLightRepository().setBrightness(Long.parseLong(controlId), (int) action.getNewValue());
+        //The observer is needed because livedata executes only if it has a observer.
+        responseLiveData.observeForever(new Observer<>() {
+            @Override
+            public void onChanged(final EmptyResource emptyResource) {
+                if (!emptyResource.getStatus().equals(Status.LOADING)) {
+                    responseLiveData.removeObserver(this);
+                }
+            }
+        });
+    }
+
+    public void performBooleanControlAction(@NonNull final String controlId, @NonNull final BooleanAction action) {
+        Log.d(TAG, "New On State: " + action.getNewState() + ", for LightID " + controlId);
+        LiveData<EmptyResource> responseLiveData =
+            getLightRepository().setOnState(Long.parseLong(controlId), action.getNewState());
+        //The observer is needed because livedata executes only if it has a observer.
+        responseLiveData.observeForever(new Observer<>() {
+            @Override
+            public void onChanged(final EmptyResource emptyResource) {
+                if (!emptyResource.getStatus().equals(Status.LOADING)) {
+                    responseLiveData.removeObserver(this);
+                }
+            }
+        });
     }
 
     @NonNull
