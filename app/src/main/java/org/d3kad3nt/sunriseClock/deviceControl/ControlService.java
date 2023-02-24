@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.service.controls.Control;
 import android.service.controls.ControlsProviderService;
 import android.service.controls.DeviceTypes;
@@ -22,7 +23,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavDeepLinkBuilder;
 
+import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
@@ -108,12 +111,11 @@ public class ControlService extends ControlsProviderService {
     @Override
     public Flow.Publisher<Control> createPublisherFor(@NonNull final List<String> controlIds) {
         final Context context = getBaseContext();
-        Intent intent = new Intent();
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,
+//            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         ExtendedPublisher<Control> flow = getFlow(controlIds);
         for (String controlId : controlIds) {
-            observeChanges(controlId, flow, pendingIntent);
+            observeChanges(controlId, flow);
         }
         return flow;
     }
@@ -134,8 +136,7 @@ public class ControlService extends ControlsProviderService {
         return builder.build();
     }
 
-    private void observeChanges(final String lightID, final ExtendedPublisher<Control> flow,
-                                PendingIntent pendingIntent) {
+    private void observeChanges(final String lightID, final ExtendedPublisher<Control> flow) {
         LiveData<Resource<UILight>> lightLiveData = getUILight(lightID);
         lightLiveData.observeForever(new Observer<>() {
             @Override
@@ -147,18 +148,24 @@ public class ControlService extends ControlsProviderService {
                     return;
                 }
                 UILight light = resource.getData();
-                flow.publish(getStatefulControl(light, pendingIntent));
-                Log.d(TAG, "Publish control");
+                flow.publish(getStatefulControl(light));
             }
         });
     }
 
-    private Control getStatefulControl(final UILight light, final PendingIntent pendingIntent) {
+    private Control getStatefulControl(@NonNull final UILight light) {
+        Bundle args = new Bundle();
+        args.putString("LightName", light.getName());
+        args.putLong("Light", light.getLightId());
+        PendingIntent pendingIntent = new NavDeepLinkBuilder(getNonNullBaseContext()).setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.lightDetail).setArguments(args).createPendingIntent();
         Control.StatefulBuilder builder = new Control.StatefulBuilder(getControlId(light), pendingIntent);
         builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
         builder.setSubtitle(getEndpointName(light.getEndpointId()));
         builder.setStructure(getEndpointName(light.getEndpointId()));
         builder.setTitle(light.getName());
+
+        builder.setAppIntent(pendingIntent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             builder.setAuthRequired(AUTH_REQUIRED);
         }
