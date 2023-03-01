@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.deviceControl;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -21,10 +20,6 @@ public class ControlActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Bundle args = new Bundle();
-        args.putLong("Light", getIntent().getLongExtra("Light", -1));
-        args.putString("LightName", getIntent().getStringExtra("LightName"));
-        Log.d(TAG, args.toString());
         ActivityDeviceControlBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_device_control);
         setContentView(binding.getRoot());
         NavHostFragment navHostFragment =
@@ -34,7 +29,7 @@ public class ControlActivity extends AppCompatActivity {
         }
         NavController navController = navHostFragment.getNavController();
 
-        navController.setGraph(R.navigation.nav_graph_device_control, args);
+        navController.setGraph(R.navigation.nav_graph_device_control, getIntent().getExtras());
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
 
         setSupportActionBar(binding.toolbar);
