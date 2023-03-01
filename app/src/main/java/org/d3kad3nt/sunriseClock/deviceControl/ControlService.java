@@ -23,9 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.navigation.NavDeepLinkBuilder;
 
-import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
@@ -157,8 +155,15 @@ public class ControlService extends ControlsProviderService {
         Bundle args = new Bundle();
         args.putString("LightName", light.getName());
         args.putLong("Light", light.getLightId());
-        PendingIntent pendingIntent = new NavDeepLinkBuilder(getNonNullBaseContext()).setGraph(R.navigation.nav_graph)
-            .setDestination(R.id.lightDetail).setArguments(args).createPendingIntent();
+        Intent intent = new Intent(getNonNullBaseContext(), ControlActivity.class);
+        intent.putExtra("LightName", light.getName());
+        intent.putExtra("Light", light.getLightId());
+//        NavDeepLinkBuilder navBuilder =
+//            new NavDeepLinkBuilder(getNonNullBaseContext()).setGraph(R.navigation.nav_graph)
+//                .setDestination(R.id.lightDetail).setArguments(args);
+//        PendingIntent pendingIntent = navBuilder.createPendingIntent();
+        PendingIntent pendingIntent = PendingIntent.getActivity(getNonNullBaseContext(), 1, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE, args);
         Control.StatefulBuilder builder = new Control.StatefulBuilder(getControlId(light), pendingIntent);
         builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
         builder.setSubtitle(getEndpointName(light.getEndpointId()));
