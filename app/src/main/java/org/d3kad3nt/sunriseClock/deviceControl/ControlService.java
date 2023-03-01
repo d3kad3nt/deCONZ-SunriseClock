@@ -158,19 +158,16 @@ public class ControlService extends ControlsProviderService {
         Intent intent = new Intent(getNonNullBaseContext(), ControlActivity.class);
         intent.putExtra("LightName", light.getName());
         intent.putExtra("Light", light.getLightId());
-//        NavDeepLinkBuilder navBuilder =
-//            new NavDeepLinkBuilder(getNonNullBaseContext()).setGraph(R.navigation.nav_graph)
-//                .setDestination(R.id.lightDetail).setArguments(args);
-//        PendingIntent pendingIntent = navBuilder.createPendingIntent();
-        PendingIntent pendingIntent = PendingIntent.getActivity(getNonNullBaseContext(), 1, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE, args);
+        PendingIntent pendingIntent =
+            PendingIntent.getActivity(getNonNullBaseContext(), (int) light.getLightId(), intent,
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT, args);
         Control.StatefulBuilder builder = new Control.StatefulBuilder(getControlId(light), pendingIntent);
         builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
         builder.setSubtitle(getEndpointName(light.getEndpointId()));
         builder.setStructure(getEndpointName(light.getEndpointId()));
         builder.setTitle(light.getName());
 
-        builder.setAppIntent(pendingIntent);
+//        builder.setAppIntent(pendingIntent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             builder.setAuthRequired(AUTH_REQUIRED);
         }
