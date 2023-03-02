@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.util;
 
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -40,11 +39,6 @@ public class ExtendedPublisher <T> implements Flow.Publisher<T> {
         ExtendedSubscription subscription = new ExtendedSubscription(subscriber);
         subscriber.onSubscribe(subscription);
         subscriptionList.add(subscription);
-        if (cache_publish_values) {
-            for (T value : cache) {
-                subscriber.onNext(value);
-            }
-        }
     }
 
     public void publish(@NonNull T value) {
