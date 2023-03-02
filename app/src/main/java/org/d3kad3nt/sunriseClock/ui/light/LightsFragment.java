@@ -1,5 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.light;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,9 +19,9 @@ import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
-import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
 import org.d3kad3nt.sunriseClock.ui.MainActivity;
+import org.jetbrains.annotations.Contract;
 
 import java.util.List;
 
@@ -32,6 +33,8 @@ public class LightsFragment extends Fragment {
     private Spinner endpointSpinner;
     private LightsListAdapter adapter;
 
+    @NonNull
+    @Contract(" -> new")
     public static LightsFragment newInstance() {
         return new LightsFragment();
     }
@@ -48,12 +51,17 @@ public class LightsFragment extends Fragment {
             @Override
             public void onChanged(Resource<List<UILight>> listResource) {
                 Log.d(TAG, listResource.getStatus().toString());
-                if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
-                    lightsState.clearError();
+                if (listResource.getData() != null) {
                     adapter.submitList(listResource.getData());
-                } else if (listResource.getStatus().equals(Status.ERROR)) {
-                    lightsState.setError(getResources().getString(R.string.noLights_title),
-                        listResource.getMessage());
+                }
+                switch (listResource.getStatus()) {
+                    case SUCCESS:
+                        lightsState.clearError();
+                        break;
+                    case ERROR:
+                        String errorMsg = getResources().getString(R.string.noLights_title);
+                        lightsState.setError(errorMsg, listResource.getMessage());
+                        break;
                 }
             }
         });
@@ -68,11 +76,15 @@ public class LightsFragment extends Fragment {
     }
 
     private void addEndpointSelector() {
-        endpointSpinner = new Spinner(getContext());
+        Context context = getContext();
+        if (context == null) {
+            throw new IllegalStateException("No Context found");
+        }
+        endpointSpinner = new Spinner(context);
         EndpointSelectorAdapter adapter =
-            new EndpointSelectorAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
+            new EndpointSelectorAdapter(context, android.R.layout.simple_spinner_dropdown_item);
         endpointSpinner.setAdapter(adapter);
-        endpointSpinner.setOnItemSelectedListener(new EndpointSelectedListener(getContext()));
+        endpointSpinner.setOnItemSelectedListener(new EndpointSelectedListener(context));
 
         viewModel.getEndpoints().observe(getViewLifecycleOwner(), configList -> {
             adapter.submitCollection(configList);
@@ -90,7 +102,7 @@ public class LightsFragment extends Fragment {
 
             Observer<? super List<IEndpointUI>> endpointSelector = new Observer<List<IEndpointUI>>() {
                 @Override
-                public void onChanged(List<IEndpointUI> endpointConfigs) {
+                public void onChanged(@NonNull List<IEndpointUI> endpointConfigs) {
                     endpointSpinner.setSelection(endpointConfigs.indexOf(endpointConfig));
                 }
             };
