@@ -89,8 +89,7 @@ public abstract class NetworkBoundResource <ResultType, RemoteType, DbType> exte
         addSource(apiResponse, response -> {
             removeSource(apiResponse);
             removeSource(dbSource);
-            Class<? extends ApiResponse> aClass = response.getClass();
-            if (ApiSuccessResponse.class.equals(aClass)) {
+            if (response instanceof ApiSuccessResponse) {
                 ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
                     saveResponseToDb(convertRemoteTypeToDbType((ApiSuccessResponse<RemoteType>) response));
                     ServiceLocator.getExecutor(ExecutorType.MainThread).execute(() -> {
@@ -103,14 +102,14 @@ public abstract class NetworkBoundResource <ResultType, RemoteType, DbType> exte
                         });
                     });
                 });
-            } else if (ApiEmptyResponse.class.equals(aClass)) {
+            } else if (response instanceof ApiEmptyResponse) {
                 ServiceLocator.getExecutor(ExecutorType.MainThread).execute(() -> {
                     // reload from disk whatever we had
                     addSource(loadFromDb(), newData -> {
                         updateValue(Resource.success(convertDbTypeToResultType(newData)));
                     });
                 });
-            } else if (ApiErrorResponse.class.equals(aClass)) {
+            } else if (response instanceof ApiErrorResponse) {
                 onFetchFailed();
                 addSource(dbSource, newData -> {
                     updateValue(Resource.error(((ApiErrorResponse<RemoteType>) response).getErrorMessage(),
