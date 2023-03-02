@@ -18,6 +18,7 @@ import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.ui.util.BooleanVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
+import org.jetbrains.annotations.Contract;
 
 public class LightDetailViewModel extends AndroidViewModel {
 
@@ -73,14 +74,16 @@ public class LightDetailViewModel extends AndroidViewModel {
         return lightRepository.getLight(lightID);
     }
 
+    @NonNull
+    @Contract(" -> new")
     private LiveData<Boolean> getIsReachable() {
         return Transformations.map(light, new Function<Resource<UILight>, Boolean>() {
             @Override
             public Boolean apply(final Resource<UILight> input) {
-                if (input.getStatus() == Status.SUCCESS) {
+                if (input.getData() != null) {
                     return input.getData().getIsReachable();
                 }
-                return true;
+                return false;
             }
         });
     }
