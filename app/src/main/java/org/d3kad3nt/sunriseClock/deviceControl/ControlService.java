@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.service.controls.Control;
 import android.service.controls.ControlsProviderService;
 import android.service.controls.DeviceTypes;
@@ -108,9 +107,6 @@ public class ControlService extends ControlsProviderService {
     @NonNull
     @Override
     public Flow.Publisher<Control> createPublisherFor(@NonNull final List<String> controlIds) {
-        final Context context = getBaseContext();
-//        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,
-//            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         ExtendedPublisher<Control> flow = getFlow(controlIds);
         for (String controlId : controlIds) {
             observeChanges(controlId, flow);
@@ -152,22 +148,19 @@ public class ControlService extends ControlsProviderService {
     }
 
     private Control getStatefulControl(@NonNull final UILight light) {
-        Bundle args = new Bundle();
-        args.putString("LightName", light.getName());
-        args.putLong("Light", light.getLightId());
         Intent intent = new Intent(getNonNullBaseContext(), ControlActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("LightName", light.getName());
         intent.putExtra("Light", light.getLightId());
         PendingIntent pendingIntent =
             PendingIntent.getActivity(getNonNullBaseContext(), (int) light.getLightId(), intent,
-                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT, args);
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         Control.StatefulBuilder builder = new Control.StatefulBuilder(getControlId(light), pendingIntent);
         builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
         builder.setSubtitle(getEndpointName(light.getEndpointId()));
         builder.setStructure(getEndpointName(light.getEndpointId()));
         builder.setTitle(light.getName());
 
-//        builder.setAppIntent(pendingIntent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             builder.setAuthRequired(AUTH_REQUIRED);
         }
