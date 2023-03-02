@@ -195,7 +195,12 @@ public class LightRepository {
         };
     }
 
-    public LiveData<EmptyResource> setBrightness(long lightId, double brightness) {
+    public LiveData<EmptyResource> setBrightness(long lightId, int brightness) {
+
+        if (brightness < 0 || brightness > 100) {
+            throw new IllegalStateException(
+                "The new brightness for light " + lightId + " has to be between 0 and 100 and not " + brightness);
+        }
 
         return new NetworkUpdateResource<UILight, ResponseBody, DbLight>() {
 

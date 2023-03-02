@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_devicecontrol"
+    app:startDestination="@id/lightDetail">
+    <fragment
+        android:id="@+id/lightDetail"
+        android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment"
+        android:label="{LightName}"
+        tools:layout="@layout/light_detail_fragment">
+        <argument
+            android:name="Light"
+            app:argType="long" />
+        <argument
+            android:name="LightName"
+            app:argType="string" />
+    </fragment>
+</navigation>
