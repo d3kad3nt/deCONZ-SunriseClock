@@ -149,12 +149,14 @@ public class ControlService extends ControlsProviderService {
 
     private Control getStatefulControl(@NonNull final UILight light) {
         Intent intent = new Intent(getNonNullBaseContext(), ControlActivity.class);
+        //I don't know what this flag does, but it removes one warning
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("LightName", light.getName());
         intent.putExtra("Light", light.getLightId());
         PendingIntent pendingIntent =
             PendingIntent.getActivity(getNonNullBaseContext(), (int) light.getLightId(), intent,
                 PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+
         Control.StatefulBuilder builder = new Control.StatefulBuilder(getControlId(light), pendingIntent);
         builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
         builder.setSubtitle(getEndpointName(light.getEndpointId()));
