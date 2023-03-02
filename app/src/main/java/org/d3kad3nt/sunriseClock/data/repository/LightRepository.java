@@ -1,22 +1,27 @@
 package org.d3kad3nt.sunriseClock.data.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.DbLightDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
+import org.d3kad3nt.sunriseClock.data.model.light.DbLightBuilder;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
+import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
+import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -161,7 +166,28 @@ public class LightRepository {
             }
 
             @Override
+            protected void onFetchFailed() {
+                //Set Light State to not reachable
+                LiveData<DbLight> light = dbLightDao.load(lightId);
+                light.observeForever(new Observer<DbLight>() {
+                    @Override
+                    public void onChanged(final DbLight dbLight) {
+                        if (dbLight == null) {
+                            return;
+                        }
+                        light.removeObserver(this);
+                        ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
+                            DbLight updatedLight = DbLightBuilder.from(dbLight).setIsReachable(false).build();
+                            dbLightDao.upsert(updatedLight);
+                        });
+                    }
+                });
+            }
+
+            @Override
             protected DbLight convertRemoteTypeToDbType(ApiSuccessResponse<RemoteLight> response) {
+                Log.d(TAG, "Convert: Light " + response.getBody().getName() + " is reachable: " +
+                    response.getBody().getIsReachable());
                 return DbLight.from(response.getBody());
             }
         };
