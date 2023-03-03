@@ -129,7 +129,7 @@ public class LightRepository {
                 LiveData<List<DbLight>> light = loadFromDb();
                 LiveDataUtil.observeUntilNotNull(light, new Action<List<DbLight>>() {
                     @Override
-                    public void execute(final List<DbLight> dbLights) {
+                    public void execute(@NonNull final List<DbLight> dbLights) {
                         ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
                             for (DbLight light : dbLights) {
                                 DbLight updatedLight = DbLightBuilder.from(light).setIsReachable(false).build();
@@ -189,7 +189,7 @@ public class LightRepository {
                 LiveData<DbLight> light = loadFromDb();
                 LiveDataUtil.observeUntilNotNull(light, new Action<DbLight>() {
                     @Override
-                    public void execute(final DbLight dbLight) {
+                    public void execute(@NonNull final DbLight dbLight) {
                         ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
                             DbLight updatedLight = DbLightBuilder.from(dbLight).setIsReachable(false).build();
                             dbLightDao.upsert(updatedLight);

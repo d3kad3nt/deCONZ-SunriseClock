@@ -1,6 +1,9 @@
 package org.d3kad3nt.sunriseClock.util;
 
+import androidx.annotation.NonNull;
+
+@FunctionalInterface
 public interface Action <T> {
 
-    void execute(T t);
+    void execute(@NonNull final T t);
 }
