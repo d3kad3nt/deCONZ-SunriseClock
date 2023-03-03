@@ -121,6 +121,27 @@ public class LightRepository {
                 }
                 return lights;
             }
+
+            @Override
+            protected void onFetchFailed() {
+                //Set Light State to not reachable
+                LiveData<List<DbLight>> light = loadFromDb();
+                light.observeForever(new Observer<List<DbLight>>() {
+                    @Override
+                    public void onChanged(final List<DbLight> dbLights) {
+                        if (dbLights == null) {
+                            return;
+                        }
+                        light.removeObserver(this);
+                        ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
+                            for (DbLight light : dbLights) {
+                                DbLight updatedLight = DbLightBuilder.from(light).setIsReachable(false).build();
+                                dbLightDao.upsert(updatedLight);
+                            }
+                        });
+                    }
+                });
+            }
         };
     }
 
@@ -168,7 +189,7 @@ public class LightRepository {
             @Override
             protected void onFetchFailed() {
                 //Set Light State to not reachable
-                LiveData<DbLight> light = dbLightDao.load(lightId);
+                LiveData<DbLight> light = loadFromDb();
                 light.observeForever(new Observer<DbLight>() {
                     @Override
                     public void onChanged(final DbLight dbLight) {
