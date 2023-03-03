@@ -15,11 +15,11 @@ public class LiveDataUtil {
         });
     }
 
-    public static <T> void observeOnce(@NonNull final LiveData<T> liveData, @NonNull final Observer<T> observer) {
+    public static <T> void observeOnce(@NonNull final LiveData<T> liveData, @NonNull final Action<T> action) {
         liveData.observeForever(new Observer<T>() {
             @Override
             public void onChanged(T t) {
-                observer.onChanged(t);
+                action.execute(t);
                 liveData.removeObserver(this);
             }
         });
