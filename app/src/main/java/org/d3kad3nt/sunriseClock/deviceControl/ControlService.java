@@ -57,6 +57,13 @@ public class ControlService extends ControlsProviderService {
     @Nullable
     private LightRepository nullableLightRepository;
 
+    /**
+     * This Method gets called by the Android Device Controls, when all available Controls are listed.
+     *
+     * This occurs for example when a new Device Control should be added.
+     *
+     * @return A Flow which returns Controls for all Lights
+     */
     @NonNull
     @Override
     public Flow.Publisher<Control> createPublisherForAllAvailable() {
@@ -104,6 +111,15 @@ public class ControlService extends ControlsProviderService {
         return flow;
     }
 
+    /**
+     * This Method gets called be the Android Device Controls when the state of one ore multiple Device Controls
+     * should be given.
+     *
+     * This is for example the case when the device Control View is opened and a Control from this App is used.
+     *
+     * @param controlIds The IDs of the device controls that
+     * @return A Flow of Control Elements that is updated when the state of a Light is changed.
+     */
     @NonNull
     @Override
     public Flow.Publisher<Control> createPublisherFor(@NonNull final List<String> controlIds) {
@@ -196,6 +212,13 @@ public class ControlService extends ControlsProviderService {
         return Objects.requireNonNull(controlFlows.get(flowKey));
     }
 
+    /**
+     * This gets called by the Android Device Controls, when someone interacts with a device control.
+     *
+     * @param controlId The Id of the Device Control
+     * @param action    The Action that was performed
+     * @param consumer  A Consumer that gets informed, when the response gets processed.
+     */
     @Override
     public void performControlAction(@NonNull final String controlId, @NonNull final ControlAction action,
                                      @NonNull final Consumer<Integer> consumer) {
