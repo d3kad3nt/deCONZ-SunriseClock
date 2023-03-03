@@ -6,7 +6,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
@@ -22,6 +21,8 @@ import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
 import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
+import org.d3kad3nt.sunriseClock.util.Action;
+import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -126,13 +127,9 @@ public class LightRepository {
             protected void onFetchFailed() {
                 //Set Light State to not reachable
                 LiveData<List<DbLight>> light = loadFromDb();
-                light.observeForever(new Observer<List<DbLight>>() {
+                LiveDataUtil.observeUntilNotNull(light, new Action<List<DbLight>>() {
                     @Override
-                    public void onChanged(final List<DbLight> dbLights) {
-                        if (dbLights == null) {
-                            return;
-                        }
-                        light.removeObserver(this);
+                    public void execute(final List<DbLight> dbLights) {
                         ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
                             for (DbLight light : dbLights) {
                                 DbLight updatedLight = DbLightBuilder.from(light).setIsReachable(false).build();
@@ -190,13 +187,9 @@ public class LightRepository {
             protected void onFetchFailed() {
                 //Set Light State to not reachable
                 LiveData<DbLight> light = loadFromDb();
-                light.observeForever(new Observer<DbLight>() {
+                LiveDataUtil.observeUntilNotNull(light, new Action<DbLight>() {
                     @Override
-                    public void onChanged(final DbLight dbLight) {
-                        if (dbLight == null) {
-                            return;
-                        }
-                        light.removeObserver(this);
+                    public void execute(final DbLight dbLight) {
                         ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
                             DbLight updatedLight = DbLightBuilder.from(dbLight).setIsReachable(false).build();
                             dbLightDao.upsert(updatedLight);
