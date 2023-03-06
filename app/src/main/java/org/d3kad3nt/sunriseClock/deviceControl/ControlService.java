@@ -157,13 +157,13 @@ public class ControlService extends ControlsProviderService {
                 } else if (resource.getStatus() == Status.ERROR) {
                     return;
                 }
-                UILight light = resource.getData();
-                flow.publish(getStatefulControl(light));
+                flow.publish(getStatefulControl(resource));
             }
         });
     }
 
-    private Control getStatefulControl(@NonNull final UILight light) {
+    private Control getStatefulControl(@NonNull final Resource<UILight> lightResource) {
+        UILight light = lightResource.getData();
         Intent intent = new Intent(getNonNullBaseContext(), ControlActivity.class);
         //I don't know what this flag does, but it removes one warning
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -183,7 +183,7 @@ public class ControlService extends ControlsProviderService {
             builder.setAuthRequired(AUTH_REQUIRED);
         }
 
-        if (!light.getIsReachable()) {
+        if (lightResource.getStatus() == Status.ERROR || !light.getIsReachable()) {
             builder.setStatus(Control.STATUS_DISABLED);
         } else {
             builder.setStatus(Control.STATUS_OK);
