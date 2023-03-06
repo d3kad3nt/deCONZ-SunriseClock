@@ -12,17 +12,12 @@ import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.DbLightDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
-import org.d3kad3nt.sunriseClock.data.model.light.DbLightBuilder;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
-import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
-import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
-import org.d3kad3nt.sunriseClock.util.Action;
-import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -122,23 +117,6 @@ public class LightRepository {
                 }
                 return lights;
             }
-
-            @Override
-            protected void onFetchFailed() {
-                //Set Light State to not reachable
-                LiveData<List<DbLight>> light = loadFromDb();
-                LiveDataUtil.observeUntilNotNull(light, new Action<List<DbLight>>() {
-                    @Override
-                    public void execute(@NonNull final List<DbLight> dbLights) {
-                        ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
-                            for (DbLight light : dbLights) {
-                                DbLight updatedLight = DbLightBuilder.from(light).setIsReachable(false).build();
-                                dbLightDao.upsert(updatedLight);
-                            }
-                        });
-                    }
-                });
-            }
         };
     }
 
@@ -181,21 +159,6 @@ public class LightRepository {
             @Override
             protected UILight convertDbTypeToResultType(DbLight item) {
                 return UILight.from(item);
-            }
-
-            @Override
-            protected void onFetchFailed() {
-                //Set Light State to not reachable
-                LiveData<DbLight> light = loadFromDb();
-                LiveDataUtil.observeUntilNotNull(light, new Action<DbLight>() {
-                    @Override
-                    public void execute(@NonNull final DbLight dbLight) {
-                        ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
-                            DbLight updatedLight = DbLightBuilder.from(dbLight).setIsReachable(false).build();
-                            dbLightDao.upsert(updatedLight);
-                        });
-                    }
-                });
             }
 
             @Override

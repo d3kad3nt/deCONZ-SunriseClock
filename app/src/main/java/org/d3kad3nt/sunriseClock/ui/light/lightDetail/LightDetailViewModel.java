@@ -77,9 +77,12 @@ public class LightDetailViewModel extends AndroidViewModel {
     @NonNull
     @Contract(" -> new")
     private LiveData<Boolean> getIsReachable() {
-        return Transformations.map(light, new Function<Resource<UILight>, Boolean>() {
+        return Transformations.map(light, new Function<>() {
             @Override
             public Boolean apply(final Resource<UILight> input) {
+                if (input.getStatus() == Status.ERROR) {
+                    return false;
+                }
                 if (input.getData() != null) {
                     return input.getData().getIsReachable();
                 }
