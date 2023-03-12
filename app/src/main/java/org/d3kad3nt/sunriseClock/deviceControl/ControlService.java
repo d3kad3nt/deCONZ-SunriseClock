@@ -23,6 +23,7 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
+import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
@@ -163,15 +164,15 @@ public class ControlService extends ControlsProviderService {
     }
 
     private Control getStatefulControl(@NonNull final Resource<UILight> lightResource) {
+        Context context = getNonNullBaseContext();
         UILight light = lightResource.getData();
-        Intent intent = new Intent(getNonNullBaseContext(), ControlActivity.class);
+        Intent intent = new Intent(context, ControlActivity.class);
         //I don't know what this flag does, but it removes one warning
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("LightName", light.getName());
         intent.putExtra("Light", light.getLightId());
-        PendingIntent pendingIntent =
-            PendingIntent.getActivity(getNonNullBaseContext(), (int) light.getLightId(), intent,
-                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) light.getLightId(), intent,
+            PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         Control.StatefulBuilder builder = new Control.StatefulBuilder(getControlId(light), pendingIntent);
         builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
@@ -189,13 +190,16 @@ public class ControlService extends ControlsProviderService {
             builder.setStatus(Control.STATUS_OK);
         }
         if (light.getIsDimmable()) {
-            ControlButton button = new ControlButton(light.getIsOn(), "Activate");
+            ControlButton button =
+                new ControlButton(light.getIsOn(), context.getString(R.string.light_on_state_label));
             RangeTemplate rangeTemplate =
-                new RangeTemplate(getControlId(light), (float) 0, 100, light.getBrightness(), 1, "Brightness");
+                new RangeTemplate(getControlId(light), (float) 0, 100, light.getBrightness(), 1,
+                    context.getString(R.string.light_brightness_label));
             ControlTemplate template = new ToggleRangeTemplate(getControlId(light), button, rangeTemplate);
             builder.setControlTemplate(template);
         } else if (light.getIsSwitchable()) {
-            ControlButton button = new ControlButton(light.getIsOn(), "Activate");
+            ControlButton button =
+                new ControlButton(light.getIsOn(), context.getString(R.string.light_on_state_label));
             ControlTemplate template = new ToggleTemplate(getControlId(light), button);
             builder.setControlTemplate(template);
         }
