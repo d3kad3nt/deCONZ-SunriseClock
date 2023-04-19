@@ -32,11 +32,11 @@ import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
 
 /**
  * A generic class that can provide a resource backed by both the sqlite database and the network. Copied from the
- * official Google architecture-components github-sample under https://github
- * .com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android
- * /example/github/repository/NetworkBoundResource.kt
+ * official Google architecture-components github-sample under <a
+ * href="https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main
+ * /java/com/android/example/github/repository/NetworkBoundResource.kt">NetworkBoundResource Source</a>
  *
- * You can read more about it in the [Architecture Guide](https://developer.android.com/arch).
+ * You can read more about it in the <a href="https://developer.android.com/arch">Architecture Guide</a>
  */
 public abstract class NetworkBoundResource <ResultType, RemoteType, DbType> extends ExtendedMediatorLiveData<Resource<ResultType>> {
 
@@ -60,6 +60,9 @@ public abstract class NetworkBoundResource <ResultType, RemoteType, DbType> exte
             dbObject = data;
             removeSource(dbSourceLiveData);
             if (shouldFetch(dbObject)) {
+                addSource(dbSource, newData -> {
+                    updateValue(Resource.success(convertDbTypeToResultType(newData)));
+                });
                 LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
                 addSource(endpointLiveData, baseEndpoint -> {
                     endpointLiveDataObserver(baseEndpoint, endpointLiveData);
@@ -73,9 +76,7 @@ public abstract class NetworkBoundResource <ResultType, RemoteType, DbType> exte
     }
 
     private void endpointLiveDataObserver(BaseEndpoint endpoint, LiveData<BaseEndpoint> endpointLiveData) {
-        if (endpoint == null) {
-            updateValue(Resource.loading(null));
-        } else {
+        if (endpoint != null) {
             this.endpoint = endpoint;
             fetchFromNetwork(dbSource);
             removeSource(endpointLiveData);
@@ -85,14 +86,10 @@ public abstract class NetworkBoundResource <ResultType, RemoteType, DbType> exte
     private void fetchFromNetwork(LiveData<DbType> dbSource) {
         LiveData<ApiResponse<RemoteType>> apiResponse = loadFromNetwork();
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
-        addSource(dbSource, newData -> {
-            updateValue(Resource.loading(convertDbTypeToResultType(newData)));
-        });
         addSource(apiResponse, response -> {
             removeSource(apiResponse);
             removeSource(dbSource);
-            Class<? extends ApiResponse> aClass = response.getClass();
-            if (ApiSuccessResponse.class.equals(aClass)) {
+            if (response instanceof ApiSuccessResponse) {
                 ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
                     saveResponseToDb(convertRemoteTypeToDbType((ApiSuccessResponse<RemoteType>) response));
                     ServiceLocator.getExecutor(ExecutorType.MainThread).execute(() -> {
@@ -105,14 +102,14 @@ public abstract class NetworkBoundResource <ResultType, RemoteType, DbType> exte
                         });
                     });
                 });
-            } else if (ApiEmptyResponse.class.equals(aClass)) {
+            } else if (response instanceof ApiEmptyResponse) {
                 ServiceLocator.getExecutor(ExecutorType.MainThread).execute(() -> {
                     // reload from disk whatever we had
                     addSource(loadFromDb(), newData -> {
                         updateValue(Resource.success(convertDbTypeToResultType(newData)));
                     });
                 });
-            } else if (ApiErrorResponse.class.equals(aClass)) {
+            } else if (response instanceof ApiErrorResponse) {
                 onFetchFailed();
                 addSource(dbSource, newData -> {
                     updateValue(Resource.error(((ApiErrorResponse<RemoteType>) response).getErrorMessage(),

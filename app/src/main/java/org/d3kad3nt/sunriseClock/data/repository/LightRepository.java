@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.data.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -162,6 +163,8 @@ public class LightRepository {
 
             @Override
             protected DbLight convertRemoteTypeToDbType(ApiSuccessResponse<RemoteLight> response) {
+                Log.d(TAG, "Convert: Light " + response.getBody().getName() + " is reachable: " +
+                    response.getBody().getIsReachable());
                 return DbLight.from(response.getBody());
             }
         };

@@ -26,6 +26,24 @@ public class DbLightBuilder {
     /**
      * Builder for constructing DbLights.
      */
+
+    public static DbLightBuilder from(DbLight dbLight) {
+        DbLightBuilder builder = new DbLightBuilder();
+        builder.setEndpointId(dbLight.getEndpointId());
+        builder.setEndpointLightId(dbLight.getEndpointLightId());
+        builder.setName(dbLight.getName());
+        builder.setIsSwitchable(dbLight.getIsSwitchable());
+        builder.setIsOn(dbLight.getIsOn());
+        builder.setIsDimmable(dbLight.getIsDimmable());
+        builder.setBrightness(dbLight.getBrightness());
+        builder.setIsTemperaturable(dbLight.getIsTemperaturable());
+        builder.setColorTemperature(dbLight.getColorTemperature());
+        builder.setIsColorable(dbLight.getIsColorable());
+        builder.setColor(dbLight.getColor());
+        builder.setIsReachable(dbLight.getIsReachable());
+        return builder;
+    }
+
     public DbLightBuilder() {
 
     }
