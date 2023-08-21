@@ -3,7 +3,6 @@ package org.d3kad3nt.sunriseClock.ui.endpoint;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
@@ -14,6 +13,7 @@ import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
 
 import java.util.List;
 
+import kotlin.jvm.functions.Function1;
 import me.ibrahimsn.library.LivePreference;
 
 public class EndpointsViewModel extends AndroidViewModel {
@@ -30,9 +30,9 @@ public class EndpointsViewModel extends AndroidViewModel {
         //TODO use something better
         LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id", 0);
         endpoints = endpointRepository.getAllEndpoints();
-        selectedEndpoint = Transformations.switchMap(endpointID, new Function<Long, LiveData<IEndpointUI>>() {
+        selectedEndpoint = Transformations.switchMap(endpointID, new Function1<Long, LiveData<IEndpointUI>>() {
             @Override
-            public LiveData<IEndpointUI> apply(Long input) {
+            public LiveData<IEndpointUI> invoke(Long input) {
                 return endpointRepository.getEndpoint(input);
             }
         });
