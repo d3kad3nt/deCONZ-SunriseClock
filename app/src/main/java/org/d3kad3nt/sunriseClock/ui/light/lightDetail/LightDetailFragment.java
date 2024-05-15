@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.ui.light.lightDetail;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class LightDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        Log.d("LightDetailFragment", requireArguments().toString());
         long lightID = LightDetailFragmentArgs.fromBundle(requireArguments()).getLight(); // id from navigation
         // Use custom factory to initialize viewModel with light id (instead of using new ViewModelProvider(this)
         // .get(LightDetailViewModel.class))
