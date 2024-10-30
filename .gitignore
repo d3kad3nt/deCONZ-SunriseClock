@@ -38,7 +38,7 @@ captures/
 *.iml
 #This contains user data
 .idea
-!.idea
+!.idea/
 .idea/*
 !.idea/codeStyles
 !.idea/inspectionProfiles
