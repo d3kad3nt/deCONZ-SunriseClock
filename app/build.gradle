@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: "androidx.navigation.safeargs"
 
 android {
-    compileSdk 33
+    compileSdk 34
     defaultConfig {
         applicationId "org.d3kad3nt.sunriseClock"
         minSdkVersion 21
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -32,23 +32,23 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = 1.9
-        targetCompatibility = 1.9
+        sourceCompatibility = 21
+        targetCompatibility = 21
     }
 
     namespace 'org.d3kad3nt.sunriseClock'
 }
 
 dependencies {
-    def room_version = '2.4.3'
-    def retrofit_version = '2.9.0'
+    def room_version = '2.6.1'
+    def retrofit_version = '2.11.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.5.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.8.6"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6"
 
     // Navigation component
     implementation "androidx.navigation:navigation-fragment:$nav_version"
@@ -64,26 +64,26 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     // GUI
-    implementation "com.google.android.material:material:1.7.0"
+    implementation 'com.google.android.material:material:1.12.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
-    implementation "androidx.drawerlayout:drawerlayout:1.1.1"
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.viewpager:viewpager:1.0.0"
 
     // Appcompat
-    implementation "androidx.appcompat:appcompat:1.5.0"
+    implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
 
     // Preference
-    implementation "androidx.preference:preference:1.2.0"
+    implementation 'androidx.preference:preference:1.2.1'
 
     implementation 'com.github.ibrahimsn98:live-preferences:1.9'
 
     // Tests
-    androidTestImplementation "androidx.test:runner:1.4.0"
-    testImplementation "org.junit.jupiter:junit-jupiter:5.6.2"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 }
