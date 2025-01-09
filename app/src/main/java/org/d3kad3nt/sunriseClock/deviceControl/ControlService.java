@@ -60,7 +60,7 @@ public class ControlService extends ControlsProviderService {
 
     /**
      * This Method gets called by the Android Device Controls, when all available Controls are listed.
-     *
+     * <p>
      * This occurs for example when a new Device Control should be added.
      *
      * @return A Flow which returns Controls for all Lights
@@ -70,7 +70,7 @@ public class ControlService extends ControlsProviderService {
     public Flow.Publisher<Control> createPublisherForAllAvailable() {
         final Context context = getBaseContext();
         Intent intent = new Intent();
-        //Ths given Flags are always necessary
+        //The given Flags are always necessary
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,
             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         ExtendedPublisher<Control> flow = new ExtendedPublisher<>(true);
@@ -115,7 +115,7 @@ public class ControlService extends ControlsProviderService {
     /**
      * This Method gets called be the Android Device Controls when the state of one ore multiple Device Controls
      * should be given.
-     *
+     * <p>
      * This is for example the case when the device Control View is opened and a Control from this App is used.
      *
      * @param controlIds The IDs of the device controls that
