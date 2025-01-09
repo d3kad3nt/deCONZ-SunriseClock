@@ -64,9 +64,7 @@ public class LightDetailViewModel extends AndroidViewModel {
         if (!changedByUser) {
             return;
         }
-        // Todo: double?
-        double brightnessPercent = ((double) brightness) / 100;
-        LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightnessPercent);
+        LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightness);
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 
@@ -75,7 +73,7 @@ public class LightDetailViewModel extends AndroidViewModel {
     }
 
     private LiveData<Boolean> getIsReachable() {
-        return Transformations.map(light, new Function1<Resource<UILight>, Boolean>() {
+        return Transformations.map(light, new Function1<>() {
             @Override
             public Boolean invoke(final Resource<UILight> input) {
                 if (input.getStatus() == Status.SUCCESS) {
