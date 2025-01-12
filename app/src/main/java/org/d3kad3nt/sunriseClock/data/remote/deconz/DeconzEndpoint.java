@@ -101,7 +101,7 @@ public class DeconzEndpoint extends BaseEndpoint {
 
                         assert response.body() != null;
                         String stringJson = response.body().string();
-                        JSONObject jsonObject = null;
+                        JSONObject jsonObject;
 
                         try {
                             jsonObject = new JSONObject(stringJson);
@@ -164,11 +164,11 @@ public class DeconzEndpoint extends BaseEndpoint {
     }
 
     @Override
-    public LiveData<ApiResponse<ResponseBody>> setBrightness(String endpointLightId, double brightness) {
+    public LiveData<ApiResponse<ResponseBody>> setBrightness(String endpointLightId, int brightness) {
         JsonObject requestBody = new JsonObject();
         //Deconz takes values from 0 to 255 for the brightness
-        long deconzBrigtness = Math.round(brightness * 255);
-        requestBody.add("bri", new JsonPrimitive(deconzBrigtness));
+        long deconzBrightness = Math.round(brightness * 2.55);
+        requestBody.add("bri", new JsonPrimitive(deconzBrightness));
         return this.retrofit.updateLightState(endpointLightId, requestBody);
     }
 }
