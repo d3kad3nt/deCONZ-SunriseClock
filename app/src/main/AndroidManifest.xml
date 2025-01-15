@@ -37,6 +37,7 @@
             </intent-filter>
         </receiver>
         <service
+            tools:targetApi="r"
             android:name=".deviceControl.ControlService"
             android:exported="true"
             android:label="Deconz Sunrise Clock"
