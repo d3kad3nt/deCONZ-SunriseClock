@@ -141,11 +141,13 @@ public class DeconzEndpoint extends BaseEndpoint {
         String scheme = providedURI.getScheme();
         if (scheme == null) {
             scheme = "http";
-        } String host = providedURI.getHost();
+        }
+        String host = providedURI.getHost();
         if (host == null) {
             // URLs like test.com are parsed as if they have no host and test.com is a path
             host = providedURI.getPath();
-        } String path = String.format("/api/%s/", apiKey);
+        }
+        String path = String.format("/api/%s/", apiKey);
         try {
             return new URI(scheme, null, host, port, path, null, null);
         }
