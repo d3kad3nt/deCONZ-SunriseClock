@@ -80,8 +80,7 @@ public class DeconzEndpoint extends BaseEndpoint {
             @Override
             public Response intercept(@NonNull Chain chain) throws IOException {
                 Request request = chain.request();
-                Response response = chain.proceed(request);
-                Log.d(TAG,
+                Response response = chain.proceed(request); Log.d(TAG,
                     "HTTP interceptor: Intercepted request to: " + response.request().url() + " led to HTTP code: " +
                         response.code());
 
@@ -119,7 +118,8 @@ public class DeconzEndpoint extends BaseEndpoint {
 
                 return response;
             }
-        }; OkHttpClient httpClient = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        };
+        OkHttpClient httpClient = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
         this.retrofit = new Retrofit.Builder()
             // Set base URL for all requests to this deconz endpoint.
@@ -137,16 +137,19 @@ public class DeconzEndpoint extends BaseEndpoint {
     }
 
     private URI createUri() {
-        URI providedURI = URI.create(baseUrl); String scheme = providedURI.getScheme(); if (scheme == null) {
+        URI providedURI = URI.create(baseUrl);
+        String scheme = providedURI.getScheme();
+        if (scheme == null) {
             scheme = "http";
-        } String host = providedURI.getHost(); if (host == null) {
+        } String host = providedURI.getHost();
+        if (host == null) {
             // URLs like test.com are parsed as if they have no host and test.com is a path
             host = providedURI.getPath();
-        } String path = String.format("/api/%s/", apiKey); try {
+        } String path = String.format("/api/%s/", apiKey);
+        try {
             return new URI(scheme, null, host, port, path, null, null);
         }
         catch (URISyntaxException e) {
-            //TODO catch Exception
             throw new IllegalArgumentException("URI can't be parsed", e);
         }
     }
