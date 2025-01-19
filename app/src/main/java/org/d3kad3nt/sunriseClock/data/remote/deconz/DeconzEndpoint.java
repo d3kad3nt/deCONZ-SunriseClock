@@ -1,6 +1,5 @@
 package org.d3kad3nt.sunriseClock.data.remote.deconz;
 
-import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -23,6 +22,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import okhttp3.Interceptor;
@@ -53,8 +54,6 @@ public class DeconzEndpoint extends BaseEndpoint {
 
     private transient IServices retrofit;
 
-    private transient OkHttpClient httpClient;
-
     public DeconzEndpoint(String baseUrl, int port, String apiKey) {
         this.baseUrl = baseUrl;
         this.port = port;
@@ -64,9 +63,8 @@ public class DeconzEndpoint extends BaseEndpoint {
     @Override
     public DeconzEndpoint init() {
 
-        //TODO: De-Uglify
-        Uri fullApiUrl = Uri.parse(baseUrl.concat(":" + port)).buildUpon().scheme("http").appendPath("api")
-            .appendEncodedPath(apiKey + "/").build();
+        URI fullApiUrl = createUri();
+
         //Gson has to be instructed to use our custom type adapter for a list of light.
         Type remoteLightType = new TypeToken<RemoteLight>() {}.getType();
         Type remoteLightListType = new TypeToken<List<RemoteLight>>() {}.getType();
@@ -82,8 +80,7 @@ public class DeconzEndpoint extends BaseEndpoint {
             @Override
             public Response intercept(@NonNull Chain chain) throws IOException {
                 Request request = chain.request();
-                Response response = chain.proceed(request);
-                Log.d(TAG,
+                Response response = chain.proceed(request); Log.d(TAG,
                     "HTTP interceptor: Intercepted request to: " + response.request().url() + " led to HTTP code: " +
                         response.code());
 
@@ -122,7 +119,7 @@ public class DeconzEndpoint extends BaseEndpoint {
                 return response;
             }
         };
-        this.httpClient = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        OkHttpClient httpClient = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
         this.retrofit = new Retrofit.Builder()
             // Set base URL for all requests to this deconz endpoint.
@@ -137,6 +134,26 @@ public class DeconzEndpoint extends BaseEndpoint {
             .create(IServices.class);
 
         return this;
+    }
+
+    private URI createUri() {
+        URI providedURI = URI.create(baseUrl);
+        String scheme = providedURI.getScheme();
+        if (scheme == null) {
+            scheme = "http";
+        }
+        String host = providedURI.getHost();
+        if (host == null) {
+            // URLs like test.com are parsed as if they have no host and test.com is a path
+            host = providedURI.getPath();
+        }
+        String path = String.format("/api/%s/", apiKey);
+        try {
+            return new URI(scheme, null, host, port, path, null, null);
+        }
+        catch (URISyntaxException e) {
+            throw new IllegalArgumentException("URI can't be parsed", e);
+        }
     }
 
     @Override
