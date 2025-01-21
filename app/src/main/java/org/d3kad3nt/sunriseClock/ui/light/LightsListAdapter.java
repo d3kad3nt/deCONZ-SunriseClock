@@ -18,8 +18,11 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
 
     private static final String TAG = "LightsListAdapter";
 
-    public LightsListAdapter() {
+    private final ListItemClickListener test;
+
+    public LightsListAdapter(final ListItemClickListener test) {
         super(new LightDiffCallback());
+        this.test = test;
     }
 
     @NonNull
@@ -41,7 +44,11 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
             .navigate(LightsFragmentDirections.actionLightsToLightDetail(lightID, lightName));
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIndex);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final LightListElementBinding binding;
 
@@ -51,9 +58,34 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         }
 
         void bind(View.OnClickListener listener, UILight item) {
-            binding.setClickListener(listener);
+            binding.setNavigateToLightDetail(new NavigateToLightDetailClickListener());
+            binding.setSetLightOnState(new SetLightOnClickListener());
+            binding.setLightClickListeners(new LightClickListeners());
             binding.setLight(item);
             binding.executePendingBindings();
+        }
+
+        public class LightClickListeners {
+            public void onCardClick(final View view) {
+                UILight light = getItem(getAbsoluteAdapterPosition());
+                test.onListItemClick(0);
+            }
+        }
+
+        class NavigateToLightDetailClickListener implements View.OnClickListener {
+            @Override
+            public void onClick(final View v) {
+                UILight light = getItem(getAbsoluteAdapterPosition());
+                Log.d(TAG, "HALLO " + light.getName());
+                test.onListItemClick(0);
+            }
+        }
+
+        class SetLightOnClickListener implements View.OnClickListener {
+            @Override
+            public void onClick(final View v) {
+                Log.d(TAG, "Test");
+            }
         }
     }
 

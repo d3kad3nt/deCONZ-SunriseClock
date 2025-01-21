@@ -3,37 +3,60 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View" />
         <variable
             name="light"
             type="org.d3kad3nt.sunriseClock.data.model.light.UILight" />
         <variable
-            name="clickListener"
+            name="navigateToLightDetail"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="setLightOnState"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="lightClickListeners"
+            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.ViewHolder.LightClickListeners" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="5dp"
-        android:onClick="@{clickListener}"
-        app:cardCornerRadius="5dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="10dp"
+        android:onClick="@{lightClickListeners.onCardClick}"
+        app:cardCornerRadius="10dp"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.LightsFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="10dp">
             <com.google.android.material.textview.MaterialTextView
-                android:layout_width="match_parent"
+                android:id="@+id/materialTextView2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:lines="1"
                 android:text="@{light.name}"
                 android:textSize="20sp"
+                android:ellipsize="end"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/materialSwitch2"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@sample/sample.json/lights/name" />
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/materialSwitch2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@{light.isOn}"
+                android:enabled="@{light.isReachable}"
+                android:visibility="@{light.isSwitchable ? View.VISIBLE : View.INVISIBLE}"
+                android:onCheckedChanged="@{(switch, checked) -> setLightOnState}"
+                android:onClick="@{(switch) -> lightClickListeners.onCardClick(switch)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toEndOf="@+id/materialTextView2"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

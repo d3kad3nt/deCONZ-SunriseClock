@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
@@ -24,7 +25,7 @@ import org.d3kad3nt.sunriseClock.ui.MainActivity;
 
 import java.util.List;
 
-public class LightsFragment extends Fragment {
+public class LightsFragment extends Fragment implements LightsListAdapter.ListItemClickListener {
 
     private static final String TAG = "LightsFragment";
     private final LightsState lightsState = new LightsState();
@@ -41,7 +42,7 @@ public class LightsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         LightsFragmentBinding binding = LightsFragmentBinding.inflate(inflater, container, false);
         binding.setLightsState(lightsState);
-        adapter = new LightsListAdapter();
+        adapter = new LightsListAdapter(this);
         binding.recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(requireActivity()).get(LightsViewModel.class);
         viewModel.getLights().observe(getViewLifecycleOwner(), new Observer<Resource<List<UILight>>>() {
@@ -112,5 +113,12 @@ public class LightsFragment extends Fragment {
                 toolbar.addView(view);
             }
         }
+    }
+
+    @Override
+    public void onListItemClick(final int clickedItemIndex) {
+        Log.d(TAG, String.valueOf(clickedItemIndex));
+        Navigation.findNavController(this.getView())
+            .navigate(LightsFragmentDirections.actionLightsToLightDetail(1, "Test"));
     }
 }
