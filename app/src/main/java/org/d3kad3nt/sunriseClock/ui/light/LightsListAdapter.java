@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
@@ -81,10 +82,12 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
             }
         }
 
-        class SetLightOnClickListener implements View.OnClickListener {
+        class SetLightOnClickListener implements CompoundButton.OnCheckedChangeListener {
+
             @Override
-            public void onClick(final View v) {
-                Log.d(TAG, "Test");
+            public void onCheckedChanged(final CompoundButton compoundButton, final boolean user) {
+                UILight light = getItem(getAbsoluteAdapterPosition());
+                Log.d(TAG,""+ compoundButton.isChecked());
             }
         }
     }

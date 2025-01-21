@@ -12,7 +12,7 @@
             type="android.view.View.OnClickListener" />
         <variable
             name="setLightOnState"
-            type="android.view.View.OnClickListener" />
+            type="android.widget.CompoundButton.OnCheckedChangeListener" />
         <variable
             name="lightClickListeners"
             type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.ViewHolder.LightClickListeners" />
@@ -50,8 +50,7 @@
                 android:checked="@{light.isOn}"
                 android:enabled="@{light.isReachable}"
                 android:visibility="@{light.isSwitchable ? View.VISIBLE : View.INVISIBLE}"
-                android:onCheckedChanged="@{(switch, checked) -> setLightOnState}"
-                android:onClick="@{(switch) -> lightClickListeners.onCardClick(switch)}"
+                android:onCheckedChanged="@{setLightOnState}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
