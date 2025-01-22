@@ -113,6 +113,12 @@ public class EndpointRepository {
     }
 
     public void deleteEndpoint(long endpoint) {
-        LiveDataUtil.observeOnce(endpointConfigDao.load(endpoint), endpointConfigDao::delete);
+        LiveDataUtil.observeOnce(
+            endpointConfigDao.load(endpoint),endpointConfig -> {
+                ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
+                    endpointConfigDao.delete(endpointConfig);
+                });
+            }
+        );
     }
 }

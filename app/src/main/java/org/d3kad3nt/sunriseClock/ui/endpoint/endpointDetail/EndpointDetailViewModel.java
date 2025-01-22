@@ -30,5 +30,6 @@ public class EndpointDetailViewModel extends AndroidViewModel {
 
     public void deleteEndpoint() {
         endpointRepository.deleteEndpoint(endpointId);
+
     }
 }

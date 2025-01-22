@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import org.d3kad3nt.sunriseClock.databinding.EndpointDetailFragmentBinding;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
@@ -43,6 +44,7 @@ public class EndpointDetailFragment extends Fragment {
             public void onClick(View v) {
                 LiveDataUtil.observeOnce(viewModel.endpointConfig,iEndpointUI -> {
                     viewModel.deleteEndpoint();
+                    Navigation.findNavController(v).navigateUp();
                 });
             }
 
