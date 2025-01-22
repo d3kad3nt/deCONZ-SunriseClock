@@ -19,6 +19,7 @@ import org.d3kad3nt.sunriseClock.data.model.endpoint.UIEndpoint;
 import org.d3kad3nt.sunriseClock.data.remote.common.EndpointBuilder;
 import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
+import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -109,5 +110,9 @@ public class EndpointRepository {
         });
         type.getBuilder().setConfig(endpointConfig).build();
         return UIEndpoint.from(endpointConfig);
+    }
+
+    public void deleteEndpoint(long endpoint) {
+        LiveDataUtil.observeOnce(endpointConfigDao.load(endpoint), endpointConfigDao::delete);
     }
 }
