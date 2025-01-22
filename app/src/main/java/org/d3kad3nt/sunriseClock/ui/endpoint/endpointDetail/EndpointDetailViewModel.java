@@ -16,13 +16,19 @@ public class EndpointDetailViewModel extends AndroidViewModel {
         EndpointRepository.getInstance(getApplication().getApplicationContext());
 
     public LiveData<IEndpointUI> endpointConfig;
+    private final long endpointId;
 
     public EndpointDetailViewModel(@NonNull Application application, long endpointId) {
         super(application);
         endpointConfig = getEndpoint(endpointId);
+        this.endpointId = endpointId;
     }
 
     private LiveData<IEndpointUI> getEndpoint(long endpointID) {
         return endpointRepository.getEndpoint(endpointID);
+    }
+
+    public void deleteEndpoint() {
+        endpointRepository.deleteEndpoint(endpointId);
     }
 }

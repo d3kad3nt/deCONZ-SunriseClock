@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import org.d3kad3nt.sunriseClock.databinding.EndpointDetailFragmentBinding;
+import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 
 public class EndpointDetailFragment extends Fragment {
 
@@ -32,7 +33,20 @@ public class EndpointDetailFragment extends Fragment {
             new EndpointDetailViewModelFactory(requireActivity().getApplication(), endpointID)).get(
             EndpointDetailViewModel.class);
         binding = EndpointDetailFragmentBinding.inflate(inflater, container, false);
+        addDeleteEndpointListener(binding);
         return binding.getRoot();
+    }
+
+    private void addDeleteEndpointListener(final EndpointDetailFragmentBinding binding) {
+        binding.deleteEndpoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LiveDataUtil.observeOnce(viewModel.endpointConfig,iEndpointUI -> {
+                    viewModel.deleteEndpoint();
+                });
+            }
+
+        });
     }
 
     @Override

@@ -56,7 +56,7 @@
     <string name="lights_title">All Lights</string>
     <string name="lightDetail_title">Light info</string>
     <string name="preferences_title">Preferences</string>
-    <string name="conectivity_settings_title">Conectivity</string>
+    <string name="conectivity_settings_title">Connectivity</string>
     <string name="alarm_settings_title">Alarm</string>
     <string name="debug_settings_title">Debug</string>
     <string name="interface_settings_title">Interface</string>
@@ -71,4 +71,5 @@
     <string name="light_on_state_label">Light State</string>
     <string name="light_brightness_label">Brightness</string>
     <string name="light_not_reachable">Light is not reachable</string>
+    <string name="delete">Delete</string>
 </resources>
