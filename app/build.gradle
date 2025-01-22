@@ -47,7 +47,7 @@ dependencies {
 
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.8.6"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.8.7"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7"
 
     // Navigation component
@@ -70,7 +70,7 @@ dependencies {
     implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.viewpager:viewpager:1.0.0"
+    implementation "androidx.viewpager:viewpager:1.1.0"
 
     // Appcompat
     implementation 'androidx.appcompat:appcompat:1.7.0'
@@ -83,7 +83,7 @@ dependencies {
 
     // Tests
     androidTestImplementation 'androidx.test:runner:1.6.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 }
