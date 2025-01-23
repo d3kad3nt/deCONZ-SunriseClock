@@ -43,11 +43,11 @@ public class EndpointDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 LiveDataUtil.observeOnce(viewModel.endpointConfig,iEndpointUI -> {
-                    viewModel.deleteEndpoint();
-                    Navigation.findNavController(v).navigateUp();
+                    if (viewModel.deleteEndpoint()) {
+                        Navigation.findNavController(v).navigateUp();
+                    }
                 });
             }
-
         });
     }
 

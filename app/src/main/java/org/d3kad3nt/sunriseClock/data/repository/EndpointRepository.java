@@ -33,6 +33,7 @@ public class EndpointRepository {
     private static final Map<Long, LiveData<BaseEndpoint>> endpointLiveDataCache = new HashMap<>();
     private static EndpointConfigDao endpointConfigDao;
     private static volatile EndpointRepository INSTANCE;
+    private static final String TAG = EndpointRepository.class.getSimpleName();
 
     private EndpointRepository(Context context) {
         endpointConfigDao = AppDatabase.getInstance(context.getApplicationContext()).endpointConfigDao();
