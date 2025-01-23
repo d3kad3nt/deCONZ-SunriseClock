@@ -25,26 +25,25 @@ import org.d3kad3nt.sunriseClock.ui.MainActivity;
 
 import java.util.List;
 
-public class LightsFragment extends Fragment implements LightsListAdapter.ListItemClickListener {
+public class LightsFragment extends Fragment implements LightsListAdapter.ClickListeners {
 
     private static final String TAG = "LightsFragment";
     private final LightsState lightsState = new LightsState();
+    private LightsFragmentBinding binding;
     private LightsViewModel viewModel;
     private Spinner endpointSpinner;
     private LightsListAdapter adapter;
 
-    public static LightsFragment newInstance() {
-        return new LightsFragment();
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        LightsFragmentBinding binding = LightsFragmentBinding.inflate(inflater, container, false);
-        binding.setLightsState(lightsState);
-        adapter = new LightsListAdapter(this);
-        binding.recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(requireActivity()).get(LightsViewModel.class);
+        adapter = new LightsListAdapter(this);
+
+        binding = LightsFragmentBinding.inflate(inflater, container, false);
+        binding.setLightsState(lightsState);
+        binding.recyclerView.setAdapter(adapter);
+
         viewModel.getLights().observe(getViewLifecycleOwner(), new Observer<Resource<List<UILight>>>() {
             @Override
             public void onChanged(Resource<List<UILight>> listResource) {
@@ -58,14 +57,25 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ListIt
                 }
             }
         });
+
         addEndpointSelector();
+
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        binding.setViewModel(viewModel);
+        // Specify the fragment view as the lifecycle owner of the binding. This is used so that the binding can
+        // observe LiveData updates.
+        binding.setLifecycleOwner(getViewLifecycleOwner());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         removeFromToolbar(endpointSpinner);
+        binding = null;
     }
 
     private void addEndpointSelector() {
@@ -116,9 +126,12 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ListIt
     }
 
     @Override
-    public void onListItemClick(final int clickedItemIndex) {
-        Log.d(TAG, String.valueOf(clickedItemIndex));
-        Navigation.findNavController(this.getView())
-            .navigate(LightsFragmentDirections.actionLightsToLightDetail(1, "Test"));
+    public void onCardClick(View view, final long lightId, final String lightName) {
+        Navigation.findNavController(view).navigate(LightsFragmentDirections.actionLightsToLightDetail(lightId, lightName));
+    }
+
+    @Override
+    public void onSwitchCheckedChanged(final long lightId, final boolean state) {
+        viewModel.setLightOnState(lightId, state);
     }
 }

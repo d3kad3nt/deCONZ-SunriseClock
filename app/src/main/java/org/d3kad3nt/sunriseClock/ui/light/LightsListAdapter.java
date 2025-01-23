@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,11 +18,11 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
 
     private static final String TAG = "LightsListAdapter";
 
-    private final ListItemClickListener test;
+    private final ClickListeners clickListeners;
 
-    public LightsListAdapter(final ListItemClickListener test) {
+    public LightsListAdapter(final ClickListeners clickListeners) {
         super(new LightDiffCallback());
-        this.test = test;
+        this.clickListeners = clickListeners;
     }
 
     @NonNull
@@ -36,17 +35,13 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UILight light = getItem(position);
-        holder.bind(createOnClickListener(light.getLightId(), light.getName()), light);
+        holder.bind(light);
         holder.itemView.setTag(light);
     }
 
-    private View.OnClickListener createOnClickListener(long lightID, String lightName) {
-        return v -> Navigation.findNavController(v)
-            .navigate(LightsFragmentDirections.actionLightsToLightDetail(lightID, lightName));
-    }
-
-    public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
+    public interface ClickListeners {
+        void onCardClick(View view, long lightId, String lightName);
+        void onSwitchCheckedChanged(long lightId, boolean state);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,36 +53,26 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
             this.binding = binding;
         }
 
-        void bind(View.OnClickListener listener, UILight item) {
-            binding.setNavigateToLightDetail(new NavigateToLightDetailClickListener());
-            binding.setSetLightOnState(new SetLightOnClickListener());
-            binding.setLightClickListeners(new LightClickListeners());
+        void bind(UILight item) {
+            binding.setCardClickListener(new CardClickListener());
+            binding.setSwitchCheckedChangedListener(new SwitchCheckedChangedListener());
             binding.setLight(item);
             binding.executePendingBindings();
         }
 
-        public class LightClickListeners {
-            public void onCardClick(final View view) {
+        public class CardClickListener implements View.OnClickListener {
+            @Override
+            public void onClick(final View view) {
                 UILight light = getItem(getAbsoluteAdapterPosition());
-                test.onListItemClick(0);
+                clickListeners.onCardClick(view, light.getLightId(), light.getName());
             }
         }
 
-        class NavigateToLightDetailClickListener implements View.OnClickListener {
+        public class SwitchCheckedChangedListener implements CompoundButton.OnCheckedChangeListener {
             @Override
-            public void onClick(final View v) {
+            public void onCheckedChanged(final CompoundButton compoundButton, final boolean isChecked) {
                 UILight light = getItem(getAbsoluteAdapterPosition());
-                Log.d(TAG, "HALLO " + light.getName());
-                test.onListItemClick(0);
-            }
-        }
-
-        class SetLightOnClickListener implements CompoundButton.OnCheckedChangeListener {
-
-            @Override
-            public void onCheckedChanged(final CompoundButton compoundButton, final boolean user) {
-                UILight light = getItem(getAbsoluteAdapterPosition());
-                Log.d(TAG,""+ compoundButton.isChecked());
+                clickListeners.onSwitchCheckedChanged(light.getLightId(), isChecked);
             }
         }
     }

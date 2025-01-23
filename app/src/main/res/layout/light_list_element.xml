@@ -8,21 +8,18 @@
             name="light"
             type="org.d3kad3nt.sunriseClock.data.model.light.UILight" />
         <variable
-            name="navigateToLightDetail"
-            type="android.view.View.OnClickListener" />
+            name="cardClickListener"
+            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.ViewHolder.CardClickListener" />
         <variable
-            name="setLightOnState"
-            type="android.widget.CompoundButton.OnCheckedChangeListener" />
-        <variable
-            name="lightClickListeners"
-            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.ViewHolder.LightClickListeners" />
+            name="switchCheckedChangedListener"
+            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.ViewHolder.SwitchCheckedChangedListener" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="10dp"
-        android:onClick="@{lightClickListeners.onCardClick}"
+        android:onClick="@{cardClickListener}"
         app:cardCornerRadius="10dp"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.LightsFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,7 +47,7 @@
                 android:checked="@{light.isOn}"
                 android:enabled="@{light.isReachable}"
                 android:visibility="@{light.isSwitchable ? View.VISIBLE : View.INVISIBLE}"
-                android:onCheckedChanged="@{setLightOnState}"
+                android:onCheckedChanged="@{switchCheckedChangedListener}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
