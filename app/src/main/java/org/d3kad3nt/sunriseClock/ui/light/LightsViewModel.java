@@ -1,6 +1,8 @@
 package org.d3kad3nt.sunriseClock.ui.light;
 
 import android.app.Application;
+import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -9,10 +11,12 @@ import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
+import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
+import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 
 import java.util.List;
 
@@ -32,8 +36,15 @@ public class LightsViewModel extends AndroidViewModel {
     private final LiveData<List<IEndpointUI>> endpoints;
     private final LiveData<IEndpointUI> selectedEndpoint;
 
+    public ResourceVisibilityLiveData loadingIndicatorVisibility;
+
     public LightsViewModel(@NonNull Application application) {
         super(application);
+
+        // Todo: Integrate initial loading of lights.
+        loadingIndicatorVisibility = new ResourceVisibilityLiveData(View.INVISIBLE).setLoadingVisibility(View.VISIBLE)
+            .setSuccessVisibility(View.INVISIBLE).setErrorVisibility(View.INVISIBLE);
+
         //TODO use something better
         LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id", 0);
         lights = Transformations.switchMap(endpointID, endpointId -> {
@@ -58,5 +69,11 @@ public class LightsViewModel extends AndroidViewModel {
 
     public LiveData<IEndpointUI> getSelectedEndpoint() {
         return selectedEndpoint;
+    }
+
+    public void setLightOnState(long lightId, boolean newState) {
+        Log.d(TAG, String.format("User toggled setLightOnState with lightId %s to state %s.", lightId, newState));
+        LiveData<EmptyResource> state = lightRepository.setOnState(lightId, newState);
+        loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 }

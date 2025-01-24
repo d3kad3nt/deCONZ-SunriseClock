@@ -17,10 +17,6 @@ public class LightDetailFragment extends Fragment {
     private LightDetailFragmentBinding binding;
     private LightDetailViewModel viewModel;
 
-    public static LightDetailFragment newInstance() {
-        return new LightDetailFragment();
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {

@@ -4,9 +4,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,8 +18,11 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
 
     private static final String TAG = "LightsListAdapter";
 
-    public LightsListAdapter() {
+    private final ClickListeners clickListeners;
+
+    public LightsListAdapter(final ClickListeners clickListeners) {
         super(new LightDiffCallback());
+        this.clickListeners = clickListeners;
     }
 
     @NonNull
@@ -32,16 +35,16 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UILight light = getItem(position);
-        holder.bind(createOnClickListener(light.getLightId(), light.getName()), light);
+        holder.bind(light);
         holder.itemView.setTag(light);
     }
 
-    private View.OnClickListener createOnClickListener(long lightID, String lightName) {
-        return v -> Navigation.findNavController(v)
-            .navigate(LightsFragmentDirections.actionLightsToLightDetail(lightID, lightName));
+    public interface ClickListeners {
+        void onCardClick(View view, long lightId, String lightName);
+        void onSwitchCheckedChanged(long lightId, boolean state);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final LightListElementBinding binding;
 
@@ -50,10 +53,27 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
             this.binding = binding;
         }
 
-        void bind(View.OnClickListener listener, UILight item) {
-            binding.setClickListener(listener);
+        void bind(UILight item) {
+            binding.setCardClickListener(new CardClickListener());
+            binding.setSwitchCheckedChangedListener(new SwitchCheckedChangedListener());
             binding.setLight(item);
             binding.executePendingBindings();
+        }
+
+        public class CardClickListener implements View.OnClickListener {
+            @Override
+            public void onClick(final View view) {
+                UILight light = getItem(getAbsoluteAdapterPosition());
+                clickListeners.onCardClick(view, light.getLightId(), light.getName());
+            }
+        }
+
+        public class SwitchCheckedChangedListener implements CompoundButton.OnCheckedChangeListener {
+            @Override
+            public void onCheckedChanged(final CompoundButton compoundButton, final boolean isChecked) {
+                UILight light = getItem(getAbsoluteAdapterPosition());
+                clickListeners.onSwitchCheckedChanged(light.getLightId(), isChecked);
+            }
         }
     }
 
