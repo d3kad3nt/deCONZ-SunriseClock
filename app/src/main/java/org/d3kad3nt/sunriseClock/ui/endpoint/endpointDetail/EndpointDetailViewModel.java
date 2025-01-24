@@ -39,7 +39,6 @@ public class EndpointDetailViewModel extends AndroidViewModel {
     }
 
     public boolean deleteEndpoint() {
-        endpointRepository.deleteEndpoint(endpointId);
         final AtomicBoolean result = new AtomicBoolean(false);
         LivePreference<Long> selectedEndpoint = settingsRepository.getLongSetting("endpoint_id", 0);
         LiveDataUtil.observeOnce(selectedEndpoint, selectedEndpointId -> {
