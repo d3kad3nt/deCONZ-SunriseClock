@@ -19,6 +19,7 @@ import org.d3kad3nt.sunriseClock.data.model.endpoint.UIEndpoint;
 import org.d3kad3nt.sunriseClock.data.remote.common.EndpointBuilder;
 import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
+import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +33,7 @@ public class EndpointRepository {
     private static final Map<Long, LiveData<BaseEndpoint>> endpointLiveDataCache = new HashMap<>();
     private static EndpointConfigDao endpointConfigDao;
     private static volatile EndpointRepository INSTANCE;
+    private static final String TAG = EndpointRepository.class.getSimpleName();
 
     private EndpointRepository(Context context) {
         endpointConfigDao = AppDatabase.getInstance(context.getApplicationContext()).endpointConfigDao();
@@ -109,5 +111,15 @@ public class EndpointRepository {
         });
         type.getBuilder().setConfig(endpointConfig).build();
         return UIEndpoint.from(endpointConfig);
+    }
+
+    public void deleteEndpoint(long endpoint) {
+        LiveDataUtil.observeOnce(
+            endpointConfigDao.load(endpoint),endpointConfig -> {
+                ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
+                    endpointConfigDao.delete(endpointConfig);
+                });
+            }
+        );
     }
 }
