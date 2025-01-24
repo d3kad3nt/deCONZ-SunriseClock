@@ -131,7 +131,12 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
     }
 
     @Override
-    public void onSwitchCheckedChanged(final long lightId, final boolean state) {
+    public void onSwitchCheckedChange(final long lightId, final boolean state) {
         viewModel.setLightOnState(lightId, state);
+    }
+
+    @Override
+    public void onSliderTouch(final long lightId, final float brightness) {
+        viewModel.setLightBrightness(lightId, (int) brightness);
     }
 }
