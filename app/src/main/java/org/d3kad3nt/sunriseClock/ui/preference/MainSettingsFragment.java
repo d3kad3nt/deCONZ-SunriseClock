@@ -26,7 +26,9 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
         for (Map.Entry<String, Integer> entry : links.entrySet()) {
             ((Preference) Objects.requireNonNull(findPreference(entry.getKey()))).setOnPreferenceClickListener(
                 preference -> {
-                    NavHostFragment.findNavController(this).navigate(entry.getValue());
+                    // The Integer has to be converted to a int.
+                    // Otherwise a wrong function signature for navigate is selected
+                    NavHostFragment.findNavController(this).navigate(entry.getValue().intValue());
                     return true;
                 });
         }
