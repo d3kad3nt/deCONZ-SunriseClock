@@ -136,7 +136,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
     }
 
     @Override
-    public void onSliderTouch(final long lightId, final float brightness) {
-        viewModel.setLightBrightness(lightId, (int) brightness);
+    public void onSliderTouch(final long lightId, final int brightness, final boolean state) {
+        viewModel.setLightBrightness(lightId, brightness);
     }
 }

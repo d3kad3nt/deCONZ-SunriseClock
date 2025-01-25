@@ -44,11 +44,32 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
 
     public interface ClickListeners {
 
+        /**
+         * Navigates to the light detail screen, providing detailed information for this light.
+         *
+         * @param view      View representing the light card.
+         * @param lightId   The unique identifier for this light.
+         * @param lightName Name of the light.
+         */
         void onCardClick(View view, long lightId, String lightName);
 
+        /**
+         * Turns the light on or off.
+         *
+         * @param lightId The unique identifier for this light.
+         * @param state   Whether the light should be turned on (true) or off (false).
+         */
         void onSwitchCheckedChange(long lightId, boolean state);
 
-        void onSliderTouch(long lightId, float brightness);
+        /**
+         * Changes the brightness of the light, identified by the given lightId. If the light is not already on, it
+         * should be turned on before changing the brightness level.
+         *
+         * @param lightId    The unique identifier for this light.
+         * @param brightness Desired light brightness, ranging from 0 (lowest) to 100 (highest).
+         * @param state      Whether the light is on (true) or off (false).
+         */
+        void onSliderTouch(long lightId, int brightness, boolean state);
     }
 
     static class LightDiffCallback extends DiffUtil.ItemCallback<UILight> {
@@ -133,7 +154,7 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
             @Override
             public void onStopTrackingTouch(@NonNull final Slider slider) {
                 UILight light = getItem(getAbsoluteAdapterPosition());
-                clickListeners.onSliderTouch(light.getLightId(), slider.getValue());
+                clickListeners.onSliderTouch(light.getLightId(), (int) slider.getValue(), light.getIsOn());
             }
         }
     }
