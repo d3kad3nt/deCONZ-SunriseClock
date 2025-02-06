@@ -76,4 +76,11 @@ public class LightsViewModel extends AndroidViewModel {
         LiveData<EmptyResource> state = lightRepository.setOnState(lightId, newState);
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
+
+    public void setLightBrightness(long lightId, int brightness) {
+        Log.d(TAG,
+            String.format("Slider for setLightBrightness for lightId %s was set to value %s.", lightId, brightness));
+        LiveData<EmptyResource> state = lightRepository.setBrightness(lightId, brightness);
+        loadingIndicatorVisibility.addVisibilityProvider(state);
+    }
 }
