@@ -49,6 +49,10 @@ public class SettingsRepository {
         return getLongSetting(SettingKeys.ACTIVE_ENDPOINT_ID);
     }
 
+    public void setActiveEndpoint(long value){
+        setLongSetting(SettingKeys.ACTIVE_ENDPOINT_ID, value);
+    }
+
     private boolean getBooleanSetting(SettingKeys key){
         validateSettingExists(key);
         return preferences.getBoolean(key.toString(), false);
@@ -59,6 +63,15 @@ public class SettingsRepository {
         return preferences.getLong(key.toString(), 0);
     }
 
+    private int getIntSetting(SettingKeys key){
+        validateSettingExists(key);
+        return preferences.getInt(key.toString(), 0);
+    }
+
+private String getStringSetting(SettingKeys key){
+        validateSettingExists(key);
+        return preferences.getString(key.toString(),"");
+    }
     private void validateSettingExists(@NonNull final SettingKeys key) {
         if (preferences.contains(key.toString())){
             throw new IllegalStateException(String.format("Setting %s doesn't exists", key));
@@ -113,8 +126,20 @@ public class SettingsRepository {
     }
 
 
-    public void setSetting(String id, long value) {
-        preferences.edit().putLong(id, value).apply();
+    private void setLongSetting(@NonNull SettingKeys key, long value) {
+        preferences.edit().putLong(key.toString(), value).apply();
+    }
+
+    private void setIntSetting(@NonNull SettingKeys key, int value) {
+        preferences.edit().putInt(key.toString(), value).apply();
+    }
+
+    private void setStringSetting(@NonNull SettingKeys key, String value) {
+        preferences.edit().putString(key.toString(), value).apply();
+    }
+
+    private void setBooleanSetting(@NonNull SettingKeys key, Boolean value) {
+        preferences.edit().putBoolean(key.toString(), value).apply();
     }
 
     enum SettingKeys {
