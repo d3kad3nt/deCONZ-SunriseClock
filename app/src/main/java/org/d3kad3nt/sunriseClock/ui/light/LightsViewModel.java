@@ -21,7 +21,6 @@ import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import java.util.List;
 
 import kotlin.jvm.functions.Function1;
-import me.ibrahimsn.library.LivePreference;
 
 public class LightsViewModel extends AndroidViewModel {
 
@@ -45,13 +44,12 @@ public class LightsViewModel extends AndroidViewModel {
         loadingIndicatorVisibility = new ResourceVisibilityLiveData(View.INVISIBLE).setLoadingVisibility(View.VISIBLE)
             .setSuccessVisibility(View.INVISIBLE).setErrorVisibility(View.INVISIBLE);
 
-        //TODO use something better
-        LivePreference<Long> endpointID = settingsRepository.getLongSetting("endpoint_id", 0);
+        LiveData<Long> endpointID = settingsRepository.getActiveEndpointIdAsLivedata();
         lights = Transformations.switchMap(endpointID, endpointId -> {
             return lightRepository.getLightsForEndpoint(endpointId);
         });
         endpoints = endpointRepository.getAllEndpoints();
-        selectedEndpoint = Transformations.switchMap(endpointID, new Function1<Long, LiveData<IEndpointUI>>() {
+        selectedEndpoint = Transformations.switchMap(endpointID, new Function1<>() {
             @Override
             public LiveData<IEndpointUI> invoke(Long input) {
                 return endpointRepository.getEndpoint(input);
