@@ -2,10 +2,10 @@ package org.d3kad3nt.sunriseClock.data.repository;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Supplier;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.preference.PreferenceManager;
@@ -20,6 +20,9 @@ public class SettingsRepository {
     private static volatile SettingsRepository INSTANCE;
     private final SharedPreferences preferences;
     private final Map<SettingKeys, Listener<Boolean>> listenerBooleanCache = new HashMap<>();
+    private final Map<SettingKeys, Listener<Long>> listenerLongCache = new HashMap<>();
+    private final Map<SettingKeys, Listener<Integer>> listenerIntCache = new HashMap<>();
+    private final Map<SettingKeys, Listener<String>> listenerStringCache = new HashMap<>();
 
     private SettingsRepository(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -38,51 +41,77 @@ public class SettingsRepository {
         return INSTANCE;
     }
 
-    public boolean getBooleanSetting(SettingKeys key){
-        return false;
-    }
-
     public LiveData<Long> getActiveEndpointIdAsLivedata(){
         return getObservableLongSetting(SettingKeys.ACTIVE_ENDPOINT_ID);
     }
 
-    private LiveData<Boolean> getObservableBooleanSetting(SettingKeys id) {
-        if (!preferences.contains(id.toString())) {
-            throw new IllegalStateException(String.format("Setting %s doesn't exit", id));
-        }
-        if (listenerBooleanCache.containsKey(id)) {
-            return Objects.requireNonNull(listenerBooleanCache.get(id)).liveData();
-        }
+    public long getActiveEndpoint(){
+        return getLongSetting(SettingKeys.ACTIVE_ENDPOINT_ID);
+    }
 
-        MutableLiveData<Boolean> liveData = new MutableLiveData<>();
+    private boolean getBooleanSetting(SettingKeys key){
+        validateSettingExists(key);
+        return preferences.getBoolean(key.toString(), false);
+    }
+
+    private long getLongSetting(SettingKeys key){
+        validateSettingExists(key);
+        return preferences.getLong(key.toString(), 0);
+    }
+
+    private void validateSettingExists(@NonNull final SettingKeys key) {
+        if (preferences.contains(key.toString())){
+            throw new IllegalStateException(String.format("Setting %s doesn't exists", key));
+        }
+    }
+
+    private <T> LiveData<T> getObservableSetting(SettingKeys settingKeys, @NonNull Map<SettingKeys, Listener<T>> cache,
+                                                 @NonNull final Supplier<T> function){
+        validateSettingExists(settingKeys);
+        if (cache.containsKey(settingKeys)){
+            return Objects.requireNonNull(cache.get(settingKeys)).liveData();
+        }
+        MutableLiveData<T> liveData = new MutableLiveData<>();
         SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences,
                                                   @Nullable final String key) {
-                if (key != null && key.equals(id.toString())) {
-                    liveData.postValue(sharedPreferences.getBoolean(key, false));
+                if (key != null && key.equals(settingKeys.toString())) {
+                    liveData.postValue(function.get());
                 }
             }
         };
-        listenerBooleanCache.put(id, new Listener<>(listener, liveData));
+        cache.put(settingKeys, new Listener<>(listener, liveData));
         preferences.registerOnSharedPreferenceChangeListener(listener);
         return liveData;
     }
 
-
-    public LivePreference<Integer> getIntegerSetting(String id, int defaultValue) {
-        if (!preferences.contains(id)) {
-            Log.i(TAG, "The Setting " + id + " doesn't exist yet.");
-        }
-        return liveSharedPreferences.getInt(id, defaultValue);
+    private LiveData<Long> getObservableLongSetting(SettingKeys settingKeys){
+        return getObservableSetting(settingKeys, listenerLongCache, new Supplier<>() {
+            public Long get() {
+                return preferences.getLong(settingKeys.toString(), 0);
+            }
+        });
     }
 
-    public LiveData<Long> getLongSetting(String id, long defaultValue) {
-        if (!preferences.contains(id)) {
-            Log.i(TAG, "The Setting " + id + " doesn't exist yet.");
-        }
-        return liveSharedPreferences.getLong(id, defaultValue);
+    private LiveData<Boolean> getObservableBooleanSetting(SettingKeys settingKeys) {
+        return getObservableSetting(settingKeys, listenerBooleanCache, () -> {
+            return preferences.getBoolean(settingKeys.toString(), false);
+        });
     }
+
+    private LiveData<String> getObservableStringSetting(SettingKeys settingKeys) {
+        return getObservableSetting(settingKeys, listenerStringCache, () -> {
+            return preferences.getString(settingKeys.toString(), "");
+        });
+    }
+
+    private LiveData<Integer> getObservableIntSetting(SettingKeys settingKeys) {
+        return getObservableSetting(settingKeys, listenerIntCache, () -> {
+            return preferences.getInt(settingKeys.toString(), 0);
+        });
+    }
+
 
     public void setSetting(String id, long value) {
         preferences.edit().putLong(id, value).apply();
