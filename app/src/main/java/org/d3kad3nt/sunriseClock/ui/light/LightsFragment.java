@@ -23,6 +23,8 @@ import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
 import org.d3kad3nt.sunriseClock.ui.MainActivity;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class LightsFragment extends Fragment implements LightsListAdapter.ClickListeners {
@@ -50,7 +52,14 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
                 Log.d(TAG, listResource.getStatus().toString());
                 if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
                     lightsState.clearError();
-                    adapter.submitList(listResource.getData());
+                    List<UILight> list = listResource.getData();
+                    Collections.sort(list, new Comparator<>() {
+                        @Override
+                        public int compare(final UILight uiLight, final UILight uiLight2) {
+                            return uiLight.getName().compareTo(uiLight2.getName());
+                        }
+                    });
+                    adapter.submitList(list);
                 } else if (listResource.getStatus().equals(Status.ERROR)) {
                     lightsState.setError(getResources().getString(R.string.noLights_title),
                         listResource.getMessage());
