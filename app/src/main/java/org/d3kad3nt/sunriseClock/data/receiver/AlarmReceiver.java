@@ -36,7 +36,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         removeObsoleteSchedules();
         if (checkPrerequisites()) {
-            addSchedule(alarm, context);
+            //Add Schedule
         }
     }
 
@@ -47,11 +47,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     }
 
-    private void addSchedule(AlarmManager alarm, Context context) {
-        final PendingResult pendingResult = goAsync();
-        SchedulingTask asyncTask = new SchedulingTask(pendingResult, alarm, context);
-        asyncTask.execute();
-    }
 
     /**
      * Checks whether WiFi is enabled and device is connected to to a specific BSSID (from settings).

@@ -79,8 +79,6 @@ dependencies {
     // Preference
     implementation 'androidx.preference:preference:1.2.1'
 
-    implementation 'com.github.ibrahimsn98:live-preferences:1.9'
-
     // Tests
     androidTestImplementation 'androidx.test:runner:1.6.2'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
