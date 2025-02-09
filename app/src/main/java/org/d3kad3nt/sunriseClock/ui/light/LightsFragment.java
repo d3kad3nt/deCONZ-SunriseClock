@@ -63,6 +63,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
                 } else if (listResource.getStatus().equals(Status.ERROR)) {
                     lightsState.setError(getResources().getString(R.string.noLights_title),
                         listResource.getMessage());
+                    adapter.submitList(List.of());
                 }
             }
         });

@@ -19,7 +19,7 @@ public class EndpointSelectedListener implements android.widget.AdapterView.OnIt
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         IEndpointUI selected = (IEndpointUI) parent.getItemAtPosition(position);
         SettingsRepository settingsRepository = SettingsRepository.getInstance(context);
-        settingsRepository.setSetting("endpoint_id", selected.getId());
+        settingsRepository.setActiveEndpoint(selected.getId());
     }
 
     @Override
