@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.DiffUtil;
@@ -69,7 +70,7 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
          * @param brightness Desired light brightness, ranging from 0 (lowest) to 100 (highest).
          * @param state      Whether the light is on (true) or off (false).
          */
-        void onSliderTouch(long lightId, int brightness, boolean state);
+        void onSliderTouch(long lightId, @IntRange(from = 0, to = 100) int brightness, boolean state);
     }
 
     static class LightDiffCallback extends DiffUtil.ItemCallback<UILight> {

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -55,7 +56,7 @@ public class LightDetailViewModel extends AndroidViewModel {
         });
     }
 
-    public void setLightBrightness(int brightness, boolean changedByUser) {
+    public void setLightBrightness(@IntRange(from = 0, to = 100) int brightness, boolean changedByUser) {
         Log.d(TAG, "Bright: " + brightness + " " + changedByUser);
         if (!changedByUser) {
             return;

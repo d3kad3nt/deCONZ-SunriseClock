@@ -2,6 +2,7 @@ package org.d3kad3nt.sunriseClock.data.remote.deconz;
 
 import android.util.Log;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
@@ -181,7 +182,7 @@ public class DeconzEndpoint extends BaseEndpoint {
     }
 
     @Override
-    public LiveData<ApiResponse<ResponseBody>> setBrightness(String endpointLightId, int brightness) {
+    public LiveData<ApiResponse<ResponseBody>> setBrightness(String endpointLightId, @IntRange(from = 0, to = 100) int brightness) {
         JsonObject requestBody = new JsonObject();
         //Deconz takes values from 0 to 255 for the brightness
         long deconzBrightness = Math.round(brightness * 2.55);
