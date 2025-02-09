@@ -13,6 +13,7 @@ import androidx.preference.PreferenceManager;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 public class SettingsRepository {
 
@@ -28,7 +29,7 @@ public class SettingsRepository {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    record Listener<T>(SharedPreferences.OnSharedPreferenceChangeListener listener, MutableLiveData<T> liveData){}
+    record Listener<T>(SharedPreferences.OnSharedPreferenceChangeListener listener, MutableLiveData<Optional<T>> liveData){}
 
     public static SettingsRepository getInstance(Context context) {
         if (INSTANCE == null) {
@@ -41,7 +42,7 @@ public class SettingsRepository {
         return INSTANCE;
     }
 
-    public LiveData<Long> getActiveEndpointIdAsLivedata(){
+    public LiveData<Optional<Long>> getActiveEndpointIdAsLivedata(){
         return getObservableLongSetting(SettingKeys.ACTIVE_ENDPOINT_ID);
     }
 
@@ -78,19 +79,24 @@ private String getStringSetting(SettingKeys key){
         }
     }
 
-    private <T> LiveData<T> getObservableSetting(SettingKeys settingKeys, @NonNull Map<SettingKeys, Listener<T>> cache,
-                                                 @NonNull final Supplier<T> function){
-        validateSettingExists(settingKeys);
+    private <T> LiveData<Optional<T>> getObservableSetting(SettingKeys settingKeys, @NonNull Map<SettingKeys, Listener<T>> cache,
+                                                           @NonNull final Supplier<T> function){
         if (cache.containsKey(settingKeys)){
             return Objects.requireNonNull(cache.get(settingKeys)).liveData();
         }
-        MutableLiveData<T> liveData = new MutableLiveData<>();
+        Optional<T> initialValue;
+        if (preferences.contains(settingKeys.toString())){
+            initialValue = Optional.of(function.get());
+        } else {
+            initialValue = Optional.empty();
+        }
+        MutableLiveData<Optional<T>>liveData = new MutableLiveData<>(initialValue);
         SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences,
                                                   @Nullable final String key) {
                 if (key != null && key.equals(settingKeys.toString())) {
-                    liveData.postValue(function.get());
+                    liveData.postValue(Optional.of(function.get()));
                 }
             }
         };
@@ -99,7 +105,7 @@ private String getStringSetting(SettingKeys key){
         return liveData;
     }
 
-    private LiveData<Long> getObservableLongSetting(SettingKeys settingKeys){
+    private LiveData<Optional<Long>> getObservableLongSetting(SettingKeys settingKeys){
         return getObservableSetting(settingKeys, listenerLongCache, new Supplier<>() {
             public Long get() {
                 return preferences.getLong(settingKeys.toString(), 0);
@@ -107,19 +113,19 @@ private String getStringSetting(SettingKeys key){
         });
     }
 
-    private LiveData<Boolean> getObservableBooleanSetting(SettingKeys settingKeys) {
+    private LiveData<Optional<Boolean>> getObservableBooleanSetting(SettingKeys settingKeys) {
         return getObservableSetting(settingKeys, listenerBooleanCache, () -> {
             return preferences.getBoolean(settingKeys.toString(), false);
         });
     }
 
-    private LiveData<String> getObservableStringSetting(SettingKeys settingKeys) {
+    private LiveData<Optional<String>> getObservableStringSetting(SettingKeys settingKeys) {
         return getObservableSetting(settingKeys, listenerStringCache, () -> {
             return preferences.getString(settingKeys.toString(), "");
         });
     }
 
-    private LiveData<Integer> getObservableIntSetting(SettingKeys settingKeys) {
+    private LiveData<Optional<Integer>> getObservableIntSetting(SettingKeys settingKeys) {
         return getObservableSetting(settingKeys, listenerIntCache, () -> {
             return preferences.getInt(settingKeys.toString(), 0);
         });
