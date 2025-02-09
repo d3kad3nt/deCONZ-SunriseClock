@@ -110,7 +110,7 @@ public class DbLightBuilder {
         return this;
     }
 
-    // Todo: Add javadoc to document allowed values for the color temperature.
+    // Todo: Add javadoc and @IntRange to document allowed values for the color temperature.
     public DbLightBuilder setColorTemperature(int colorTemperature) {
         this.colorTemperature = colorTemperature;
         return this;
@@ -125,7 +125,7 @@ public class DbLightBuilder {
         return this;
     }
 
-    // Todo: Add javadoc to document allowed values for the color.
+    // Todo: Add javadoc and @IntRange to document allowed values for the color.
     public DbLightBuilder setColor(int color) {
         this.color = color;
         return this;
