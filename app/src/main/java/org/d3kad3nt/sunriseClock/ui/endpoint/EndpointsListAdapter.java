@@ -1,9 +1,12 @@
 package org.d3kad3nt.sunriseClock.ui.endpoint;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
@@ -15,6 +18,10 @@ import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.databinding.EndpointListElementBinding;
 
 public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsListAdapter.ViewHolder> {
+
+    private static final String TAG = EndpointsListAdapter.class.getSimpleName();
+
+    private static RadioButton selectedRadioButton = null;
 
     public EndpointsListAdapter() {
         super(new EndpointDiffCallback());
@@ -39,7 +46,7 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
             .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointID));
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final EndpointListElementBinding binding;
 
@@ -51,7 +58,16 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
         void bind(View.OnClickListener listener, IEndpointUI item) {
             binding.setClickListener(listener);
             binding.setEndpoint(item);
+            binding.setRadioButtonClickListener(new RadioButtonClicked());
             binding.executePendingBindings();
+        }
+
+        public class RadioButtonClicked implements CompoundButton.OnCheckedChangeListener {
+
+            @Override
+            public void onCheckedChanged(final CompoundButton compoundButton, final boolean b) {
+                Log.d(TAG, b +" ");
+            }
         }
     }
 
