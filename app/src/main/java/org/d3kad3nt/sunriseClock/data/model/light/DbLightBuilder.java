@@ -1,5 +1,7 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
+import androidx.annotation.IntRange;
+
 public class DbLightBuilder {
 
     private static final String TAG = "DbLightBuilder";
@@ -94,7 +96,7 @@ public class DbLightBuilder {
      * @param brightness The current brightness of the light, where 0 is the lowest brightness or off (depending on
      *                   the light) and 100 is the highest brightness.
      */
-    public DbLightBuilder setBrightness(int brightness) {
+    public DbLightBuilder setBrightness(@IntRange(from = 0, to = 100) int brightness) {
         this.brightness = brightness;
         return this;
     }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -145,7 +146,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
     }
 
     @Override
-    public void onSliderTouch(final long lightId, final int brightness, final boolean state) {
+    public void onSliderTouch(final long lightId, @IntRange(from = 0, to = 100) final int brightness, final boolean state) {
         viewModel.setLightBrightness(lightId, brightness);
     }
 }
