@@ -7,6 +7,9 @@
             name="endpoint"
             type="org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI" />
         <variable
+            name="endpointSelected"
+            type="java.lang.Boolean" />
+        <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
         <variable
@@ -47,6 +50,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:checked="@{endpointSelected}"
                 android:onCheckedChanged="@{radioButtonClickListener}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

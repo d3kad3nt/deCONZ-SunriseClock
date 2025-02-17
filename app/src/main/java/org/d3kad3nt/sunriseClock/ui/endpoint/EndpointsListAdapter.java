@@ -20,11 +20,13 @@ import org.d3kad3nt.sunriseClock.databinding.EndpointListElementBinding;
 public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsListAdapter.ViewHolder> {
 
     private static final String TAG = EndpointsListAdapter.class.getSimpleName();
+    private final EndpointsViewModel viewModel;
 
-    private static RadioButton selectedRadioButton = null;
+    private CompoundButton selectedRadioButton = null;
 
-    public EndpointsListAdapter() {
+    public EndpointsListAdapter(final EndpointsViewModel viewModel) {
         super(new EndpointDiffCallback());
+        this.viewModel = viewModel;
     }
 
     @NonNull
@@ -38,7 +40,6 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         IEndpointUI endpoint = getItem(position);
         holder.bind(createOnClickListener(endpoint.getId()), endpoint);
-        holder.itemView.setTag(endpoint);
     }
 
     private View.OnClickListener createOnClickListener(long endpointID) {
@@ -46,9 +47,10 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
             .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointID));
     }
 
-    static public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final EndpointListElementBinding binding;
+        private IEndpointUI endpoint;
 
         ViewHolder(@NonNull EndpointListElementBinding binding) {
             super(binding.getRoot());
@@ -60,13 +62,24 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
             binding.setEndpoint(item);
             binding.setRadioButtonClickListener(new RadioButtonClicked());
             binding.executePendingBindings();
+            itemView.setTag(endpoint);
+            this.endpoint = item;
+            binding.setEndpointSelected(viewModel.isSelectedEndpoint(item.getId()));
         }
 
-        public class RadioButtonClicked implements CompoundButton.OnCheckedChangeListener {
+        public class RadioButtonClicked implements RadioButton.OnCheckedChangeListener {
 
             @Override
             public void onCheckedChanged(final CompoundButton compoundButton, final boolean b) {
                 Log.d(TAG, b +" ");
+                if (!b){
+                    return;
+                }
+                if (selectedRadioButton != null){
+                    selectedRadioButton.setChecked(false);
+                }
+                selectedRadioButton = compoundButton;
+                viewModel.setSelectedEndpoint(endpoint.getId());
             }
         }
     }

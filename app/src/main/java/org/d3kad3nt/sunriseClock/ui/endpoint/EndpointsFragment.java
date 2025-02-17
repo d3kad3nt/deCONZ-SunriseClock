@@ -37,9 +37,9 @@ public class EndpointsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         EndpointsFragmentBinding binding = EndpointsFragmentBinding.inflate(inflater, container, false);
-        adapter = new EndpointsListAdapter();
-        binding.recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointsViewModel.class);
+        adapter = new EndpointsListAdapter(viewModel);
+        binding.recyclerView.setAdapter(adapter);
         viewModel.getEndpoints().observe(getViewLifecycleOwner(), new Observer<List<IEndpointUI>>() {
             @Override
             public void onChanged(List<IEndpointUI> endpointConfigList) {
