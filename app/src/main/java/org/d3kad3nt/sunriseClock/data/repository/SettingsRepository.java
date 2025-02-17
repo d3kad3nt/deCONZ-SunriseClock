@@ -74,7 +74,7 @@ private String getStringSetting(SettingKeys key){
         return preferences.getString(key.toString(),"");
     }
     private void validateSettingExists(@NonNull final SettingKeys key) {
-        if (preferences.contains(key.toString())){
+        if (!preferences.contains(key.toString())){
             throw new IllegalStateException(String.format("Setting %s doesn't exists", key));
         }
     }
