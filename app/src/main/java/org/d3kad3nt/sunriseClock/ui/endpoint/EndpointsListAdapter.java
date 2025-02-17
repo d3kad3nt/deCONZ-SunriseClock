@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.endpoint;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,9 +69,8 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
         public class RadioButtonClicked implements RadioButton.OnCheckedChangeListener {
 
             @Override
-            public void onCheckedChanged(final CompoundButton compoundButton, final boolean b) {
-                Log.d(TAG, b +" ");
-                if (!b){
+            public void onCheckedChanged(final CompoundButton compoundButton, final boolean checkedState) {
+                if (!checkedState){
                     return;
                 }
                 if (selectedRadioButton != null){

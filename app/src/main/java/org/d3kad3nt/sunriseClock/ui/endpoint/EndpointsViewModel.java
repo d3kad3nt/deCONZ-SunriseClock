@@ -14,13 +14,13 @@ import java.util.List;
 
 public class EndpointsViewModel extends AndroidViewModel {
 
-    private final EndpointRepository endpointRepository =
-        EndpointRepository.getInstance(getApplication().getApplicationContext());
     private final LiveData<List<IEndpointUI>> endpoints;
     private final SettingsRepository settingsRepository;
 
     public EndpointsViewModel(@NonNull Application application) {
         super(application);
+        EndpointRepository endpointRepository =
+            EndpointRepository.getInstance(getApplication().getApplicationContext());
         endpoints = endpointRepository.getAllEndpoints();
         settingsRepository = SettingsRepository.getInstance(application.getApplicationContext());
     }
@@ -30,7 +30,6 @@ public class EndpointsViewModel extends AndroidViewModel {
     }
 
     public void setSelectedEndpoint(final long id) {
-        System.out.println("Selected: "+id );
         settingsRepository.setActiveEndpoint(id);
         System.out.println(settingsRepository.getActiveEndpoint());
     }
@@ -39,7 +38,6 @@ public class EndpointsViewModel extends AndroidViewModel {
         try {
             return settingsRepository.getActiveEndpoint() == id;
         } catch (IllegalStateException e){
-            System.out.println("Catch");
             return false;
         }
     }
