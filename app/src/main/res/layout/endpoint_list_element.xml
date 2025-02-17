@@ -10,8 +10,8 @@
             name="endpointSelected"
             type="java.lang.Boolean" />
         <variable
-            name="clickListener"
-            type="android.view.View.OnClickListener" />
+            name="cardClickListener"
+            type="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsListAdapter.ViewHolder.CardClickListener" />
         <variable
             name="radioCheckedChangeListener"
             type="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsListAdapter.ViewHolder.RadioCheckedChangeListener" />
@@ -23,7 +23,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"
-        android:onClick="@{clickListener}"
+        android:onClick="@{cardClickListener}"
         app:cardCornerRadius="5dp"
         tools:context="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment">
         <androidx.constraintlayout.widget.ConstraintLayout

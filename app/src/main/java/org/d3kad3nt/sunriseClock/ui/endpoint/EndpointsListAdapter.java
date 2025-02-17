@@ -23,9 +23,12 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
 
     private CompoundButton selectedRadioButton = null;
 
-    public EndpointsListAdapter(final EndpointsViewModel viewModel) {
+    private final ClickListeners clickListeners;
+
+    public EndpointsListAdapter(final EndpointsViewModel viewModel, final ClickListeners clickListeners) {
         super(new EndpointDiffCallback());
         this.viewModel = viewModel;
+        this.clickListeners = clickListeners;
     }
 
     @NonNull
@@ -38,12 +41,19 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         IEndpointUI endpoint = getItem(position);
-        holder.bind(createOnClickListener(endpoint.getId()), endpoint);
+        holder.bind(endpoint);
+        holder.itemView.setTag(endpoint);
     }
 
-    private View.OnClickListener createOnClickListener(long endpointID) {
-        return v -> Navigation.findNavController(v)
-            .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointID));
+    public interface ClickListeners {
+
+        /**
+         * Navigates to the endpoint detail screen, providing detailed information for this endpoint.
+         *
+         * @param view         View representing the endpoint card.
+         * @param endpointId   The unique identifier for this endpoint.
+         */
+        void onCardClick(View view, long endpointId);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -56,14 +66,22 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
             this.binding = binding;
         }
 
-        void bind(View.OnClickListener listener, IEndpointUI item) {
-            binding.setClickListener(listener);
+        void bind(IEndpointUI item) {
+            binding.setCardClickListener(new CardClickListener());
             binding.setEndpoint(item);
             binding.setRadioCheckedChangeListener(new RadioCheckedChangeListener());
             binding.executePendingBindings();
-            itemView.setTag(endpoint);
             this.endpoint = item;
             binding.setEndpointSelected(viewModel.isSelectedEndpoint(item.getId()));
+        }
+
+        public class CardClickListener implements View.OnClickListener {
+
+            @Override
+            public void onClick(final View view) {
+                IEndpointUI endpoint = getItem(getAbsoluteAdapterPosition());
+                clickListeners.onCardClick(view, endpoint.getId());
+            }
         }
 
         public class RadioCheckedChangeListener implements RadioButton.OnCheckedChangeListener {
