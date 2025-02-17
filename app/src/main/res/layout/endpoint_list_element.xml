@@ -13,8 +13,8 @@
             name="clickListener"
             type="android.view.View.OnClickListener" />
         <variable
-            name="radioButtonClickListener"
-            type="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsListAdapter.ViewHolder.RadioButtonClicked" />
+            name="radioCheckedChangeListener"
+            type="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsListAdapter.ViewHolder.RadioCheckedChangeListener" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:checked="@{endpointSelected}"
-                android:onCheckedChanged="@{radioButtonClickListener}"
+                android:onCheckedChanged="@{radioCheckedChangeListener}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/materialTextView"

@@ -59,14 +59,14 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
         void bind(View.OnClickListener listener, IEndpointUI item) {
             binding.setClickListener(listener);
             binding.setEndpoint(item);
-            binding.setRadioButtonClickListener(new RadioButtonClicked());
+            binding.setRadioCheckedChangeListener(new RadioCheckedChangeListener());
             binding.executePendingBindings();
             itemView.setTag(endpoint);
             this.endpoint = item;
             binding.setEndpointSelected(viewModel.isSelectedEndpoint(item.getId()));
         }
 
-        public class RadioButtonClicked implements RadioButton.OnCheckedChangeListener {
+        public class RadioCheckedChangeListener implements RadioButton.OnCheckedChangeListener {
 
             @Override
             public void onCheckedChanged(final CompoundButton compoundButton, final boolean checkedState) {
