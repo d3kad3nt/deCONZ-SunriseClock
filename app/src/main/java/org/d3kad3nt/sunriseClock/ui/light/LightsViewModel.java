@@ -22,8 +22,6 @@ import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import java.util.List;
 import java.util.Optional;
 
-import kotlin.jvm.functions.Function1;
-
 public class LightsViewModel extends AndroidViewModel {
 
     private static final String TAG = "LightsViewModel";
@@ -35,7 +33,6 @@ public class LightsViewModel extends AndroidViewModel {
         SettingsRepository.getInstance(getApplication().getApplicationContext());
     private final LiveData<Resource<List<UILight>>> lights;
     private final LiveData<List<IEndpointUI>> endpoints;
-    private final LiveData<IEndpointUI> selectedEndpoint;
 
     public ResourceVisibilityLiveData loadingIndicatorVisibility;
 
@@ -55,16 +52,6 @@ public class LightsViewModel extends AndroidViewModel {
             }
         });
         endpoints = endpointRepository.getAllEndpoints();
-        selectedEndpoint = Transformations.switchMap(endpointID, new Function1<>() {
-            @Override
-            public LiveData<IEndpointUI> invoke(Optional<Long> input) {
-                if (input.isEmpty()) {
-                    return new MutableLiveData<>();
-                } else {
-                    return endpointRepository.getEndpoint(input.get());
-                }
-            }
-        });
     }
 
     public LiveData<Resource<List<UILight>>> getLights() {
@@ -75,9 +62,6 @@ public class LightsViewModel extends AndroidViewModel {
         return endpoints;
     }
 
-    public LiveData<IEndpointUI> getSelectedEndpoint() {
-        return selectedEndpoint;
-    }
 
     public void setLightOnState(long lightId, boolean newState) {
         Log.d(TAG, String.format("User toggled setLightOnState with lightId %s to state %s.", lightId, newState));
