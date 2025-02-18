@@ -73,7 +73,7 @@ public class LightsViewModel extends AndroidViewModel {
     public void setLightBrightness(long lightId, int brightness) {
         Log.d(TAG,
             String.format("Slider for setLightBrightness for lightId %s was set to value %s.", lightId, brightness));
-        if (lights.isInitialized()) {
+        if (lights.isInitialized() && brightness > 0) {
             //This is always non null, because of the previous check
             List<UILight> lightList = Objects.requireNonNull(lights.getValue()).getData();
             //Find the Light by ID
