@@ -170,7 +170,7 @@ public class LightRepository {
 
     public LiveData<EmptyResource> setOnState(long lightId, boolean newState) {
 
-        return new NetworkUpdateResource<UILight, ResponseBody, DbLight>() {
+        return new NetworkUpdateResource<UILight, ResponseBody, DbLight>(true) {
 
             @Override
             protected LiveData<DbLight> loadFromDB() {

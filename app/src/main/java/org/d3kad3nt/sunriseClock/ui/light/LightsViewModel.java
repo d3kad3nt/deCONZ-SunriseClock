@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
@@ -21,6 +20,7 @@ import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class LightsViewModel extends AndroidViewModel {
@@ -74,18 +74,13 @@ public class LightsViewModel extends AndroidViewModel {
         Log.d(TAG,
             String.format("Slider for setLightBrightness for lightId %s was set to value %s.", lightId, brightness));
         if (lights.isInitialized()) {
-            Log.d(TAG, "initialized");
-            List<UILight> lightList = lights.getValue().getData();
+            //This is always non null, because of the previous check
+            List<UILight> lightList = Objects.requireNonNull(lights.getValue()).getData();
+            //Find the Light by ID
             Optional<UILight> light = lightList.stream().filter(uiLight -> uiLight.getLightId() == lightId).findFirst();
             if (light.isPresent() && !light.get().getIsOn()){
-                Log.d(TAG, "Turn on light");
-                //This has to be observed because otherwise the request wouldn't be performed
-                lightRepository.setOnState(lightId, true).observeForever(new Observer<>() {
-                    @Override
-                    public void onChanged(final EmptyResource emptyResource) {
-                        Log.d(TAG, emptyResource.getStatus().toString());
-                    }
-                });
+                //Enable the light if it was disabled
+                lightRepository.setOnState(lightId, true);
             }
         }
         LiveData<EmptyResource> state = lightRepository.setBrightness(lightId, brightness);
