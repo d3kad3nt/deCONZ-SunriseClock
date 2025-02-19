@@ -4,12 +4,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
+import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.slider.Slider;
 
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.databinding.LightListElementBinding;
@@ -18,8 +22,11 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
 
     private static final String TAG = "LightsListAdapter";
 
-    public LightsListAdapter() {
+    private final ClickListeners clickListeners;
+
+    public LightsListAdapter(final ClickListeners clickListeners) {
         super(new LightDiffCallback());
+        this.clickListeners = clickListeners;
     }
 
     @NonNull
@@ -32,29 +39,38 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UILight light = getItem(position);
-        holder.bind(createOnClickListener(light.getLightId(), light.getName()), light);
+        holder.bind(light);
         holder.itemView.setTag(light);
     }
 
-    private View.OnClickListener createOnClickListener(long lightID, String lightName) {
-        return v -> Navigation.findNavController(v)
-            .navigate(LightsFragmentDirections.actionLightsToLightDetail(lightID, lightName));
-    }
+    public interface ClickListeners {
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+        /**
+         * Navigates to the light detail screen, providing detailed information for this light.
+         *
+         * @param view      View representing the light card.
+         * @param lightId   The unique identifier for this light.
+         * @param lightName Name of the light.
+         */
+        void onCardClick(View view, long lightId, String lightName);
 
-        private final LightListElementBinding binding;
+        /**
+         * Turns the light on or off.
+         *
+         * @param lightId The unique identifier for this light.
+         * @param state   Whether the light should be turned on (true) or off (false).
+         */
+        void onSwitchCheckedChange(long lightId, boolean state);
 
-        ViewHolder(@NonNull LightListElementBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-
-        void bind(View.OnClickListener listener, UILight item) {
-            binding.setClickListener(listener);
-            binding.setLight(item);
-            binding.executePendingBindings();
-        }
+        /**
+         * Changes the brightness of the light, identified by the given lightId. If the light is not already on, it
+         * should be turned on before changing the brightness level.
+         *
+         * @param lightId    The unique identifier for this light.
+         * @param brightness Desired light brightness, ranging from 0 (lowest) to 100 (highest).
+         * @param state      Whether the light is on (true) or off (false).
+         */
+        void onSliderTouch(long lightId, @IntRange(from = 0, to = 100) int brightness, boolean state);
     }
 
     static class LightDiffCallback extends DiffUtil.ItemCallback<UILight> {
@@ -69,8 +85,7 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
 
         /**
          * Determines if the particular item was updated. Only called when
-         * {@link LightsListAdapter.LightDiffCallback#areItemsTheSame}
-         * returned true.
+         * {@link LightsListAdapter.LightDiffCallback#areItemsTheSame} returned true.
          */
         @Override
         public boolean areContentsTheSame(@NonNull UILight oldItem, @NonNull UILight newItem) {
@@ -83,5 +98,65 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         }
         // Optional getChangePayload() could be overwritten. This is called when areItemsTheSame() returns true for
         // two items and areContentsTheSame() returns false for them to get a payload about the change.
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        private final LightListElementBinding binding;
+
+        ViewHolder(@NonNull LightListElementBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        void bind(UILight item) {
+            binding.setCardClickListener(new CardClickListener());
+            binding.setSwitchCheckedChangeListener(new SwitchCheckedChangeListener());
+            binding.setSliderTouchListener(new SliderTouchListener());
+            binding.setLight(item);
+            binding.executePendingBindings();
+        }
+
+        public class CardClickListener implements View.OnClickListener {
+
+            @Override
+            public void onClick(final View view) {
+                UILight light = getItem(getAbsoluteAdapterPosition());
+                clickListeners.onCardClick(view, light.getLightId(), light.getName());
+            }
+        }
+
+        public class SwitchCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {
+
+            @Override
+            public void onCheckedChanged(final CompoundButton compoundButton, final boolean isChecked) {
+                UILight light = getItem(getAbsoluteAdapterPosition());
+                clickListeners.onSwitchCheckedChange(light.getLightId(), isChecked);
+            }
+        }
+
+        // An OnChangeListener would report every single change, even when still dragging.
+        // OnSliderTouchListener reports only once, after the slider touch is released.
+        public class SliderTouchListener implements Slider.OnSliderTouchListener {
+
+            /**
+             * Custom xml attribute (android:onSliderTouch) used for binding a Slider.OnSliderTouchListener to a
+             * slider.
+             */
+            @BindingAdapter(value = "android:onSliderTouch")
+            public static void setOnSliderTouchListener(Slider slider, SliderTouchListener sliderTouchListener) {
+                slider.addOnSliderTouchListener(sliderTouchListener);
+            }
+
+            @Override
+            public void onStartTrackingTouch(@NonNull final Slider slider) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull final Slider slider) {
+                UILight light = getItem(getAbsoluteAdapterPosition());
+                clickListeners.onSliderTouch(light.getLightId(), (int) slider.getValue(), light.getIsOn());
+            }
+        }
     }
 }

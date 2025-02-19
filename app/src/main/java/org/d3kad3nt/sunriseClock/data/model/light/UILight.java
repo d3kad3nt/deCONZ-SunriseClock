@@ -2,6 +2,7 @@ package org.d3kad3nt.sunriseClock.data.model.light;
 
 import android.util.Log;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.Contract;
@@ -33,7 +34,7 @@ public class UILight {
     private final boolean isReachable;
 
     private UILight(long lightId, long endpointId, String name, boolean isSwitchable, boolean isOn,
-                    boolean isDimmable, int brightness, boolean isTemperaturable/*, int colorTemperature*/,
+                    boolean isDimmable, @IntRange(from = 0, to = 100) int brightness, boolean isTemperaturable/*, int colorTemperature*/,
                     boolean isColorable/*, int color*/, boolean isReachable) {
         this.lightId = lightId;
         this.endpointId = endpointId;
@@ -88,6 +89,7 @@ public class UILight {
         return isDimmable;
     }
 
+    @IntRange(from = 0, to = 100)
     public int getBrightness() {
         return brightness;
     }

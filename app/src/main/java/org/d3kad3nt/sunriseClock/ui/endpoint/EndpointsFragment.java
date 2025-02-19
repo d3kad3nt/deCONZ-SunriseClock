@@ -22,7 +22,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass. Use the {@link EndpointsFragment#newInstance} factory method to create an
  * instance of this fragment.
  */
-public class EndpointsFragment extends Fragment {
+public class EndpointsFragment extends Fragment implements EndpointsListAdapter.ClickListeners {
 
     private static final String TAG = "EndpointsFragment";
     private EndpointsViewModel viewModel;
@@ -37,9 +37,9 @@ public class EndpointsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         EndpointsFragmentBinding binding = EndpointsFragmentBinding.inflate(inflater, container, false);
-        adapter = new EndpointsListAdapter();
-        binding.recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointsViewModel.class);
+        adapter = new EndpointsListAdapter(viewModel, this);
+        binding.recyclerView.setAdapter(adapter);
         viewModel.getEndpoints().observe(getViewLifecycleOwner(), new Observer<List<IEndpointUI>>() {
             @Override
             public void onChanged(List<IEndpointUI> endpointConfigList) {
@@ -62,5 +62,10 @@ public class EndpointsFragment extends Fragment {
                     .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointAddFragment());
             }
         });
+    }
+
+    @Override
+    public void onCardClick(final View view, final long endpointId) {
+        Navigation.findNavController(view).navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointId));
     }
 }

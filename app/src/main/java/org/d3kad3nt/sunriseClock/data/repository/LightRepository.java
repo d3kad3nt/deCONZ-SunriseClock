@@ -2,6 +2,7 @@ package org.d3kad3nt.sunriseClock.data.repository;
 
 import android.content.Context;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -195,7 +196,12 @@ public class LightRepository {
         };
     }
 
-    public LiveData<EmptyResource> setBrightness(long lightId, double brightness) {
+    public LiveData<EmptyResource> setBrightness(long lightId,  @IntRange(from = 0, to = 100) int brightness) {
+
+        if (brightness < 0 || brightness > 100) {
+            throw new IllegalStateException(
+                "The new brightness for light " + lightId + " has to be between 0 and 100 and not " + brightness);
+        }
 
         return new NetworkUpdateResource<UILight, ResponseBody, DbLight>() {
 

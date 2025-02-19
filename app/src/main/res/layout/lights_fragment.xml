@@ -7,24 +7,34 @@
         <variable
             name="lightsState"
             type="org.d3kad3nt.sunriseClock.ui.light.LightsState" />
+        <variable
+            name="viewModel"
+            type="org.d3kad3nt.sunriseClock.ui.light.LightsViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.LightsFragment">
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/light_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="@{viewModel.loadingIndicatorVisibility}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:clipToPadding="false"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp"
+            android:layout_height="wrap_content"
+            android:clipToPadding="true"
             android:visibility="@{lightsState.error ? View.GONE : View.VISIBLE}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/light_loading"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:itemCount="7"
             tools:listitem="@layout/light_list_element" />
         <com.google.android.material.textview.MaterialTextView
