@@ -43,6 +43,12 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         holder.itemView.setTag(light);
     }
 
+    @Override
+    public void onViewDetachedFromWindow(@NonNull final ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        holder.unbind();
+    }
+
     public interface ClickListeners {
 
         /**
@@ -114,6 +120,13 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
             binding.setSwitchCheckedChangeListener(new SwitchCheckedChangeListener());
             binding.setSliderTouchListener(new SliderTouchListener());
             binding.setLight(item);
+            binding.executePendingBindings();
+        }
+
+        void unbind(){
+            binding.materialSlider.clearOnSliderTouchListeners();
+            binding.materialSwitch2.setOnCheckedChangeListener(null);
+            binding.card.setOnClickListener(null);
             binding.executePendingBindings();
         }
 
