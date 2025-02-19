@@ -20,6 +20,15 @@
             android:text="@string/endpoint_type"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/label_endpointSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/endpoint_selected"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_endpointType" />
         <TextView
             android:id="@+id/text_endpointType"
             android:layout_width="wrap_content"
@@ -30,5 +39,15 @@
             app:layout_constraintBottom_toBottomOf="@+id/label_endpointType"
             app:layout_constraintStart_toEndOf="@+id/label_endpointType"
             app:layout_constraintTop_toTopOf="@+id/label_endpointType" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="12dp"
+            android:checked="@{viewModel.selected}"
+            app:chipIconVisible="false"
+            app:layout_constraintStart_toEndOf="@+id/label_endpointSelected"
+            app:layout_constraintTop_toBottomOf="@+id/text_endpointType" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
