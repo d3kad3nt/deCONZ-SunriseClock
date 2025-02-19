@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -35,8 +34,6 @@ public class EndpointDetailViewModel extends AndroidViewModel {
         selected = Transformations.map(settingsRepository.getActiveEndpointIdAsLivedata(), new Function1<>() {
             @Override
             public Boolean invoke(final Optional<Long> aLong) {
-                Log.d(TAG, "Transform: " + aLong + " for " + endpointId);
-                Log.d(TAG, "" + (aLong.isPresent() && aLong.get().equals(endpointId) ));
                 return aLong.isPresent() && aLong.get().equals(endpointId);
             }
         });
