@@ -20,7 +20,6 @@ import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class LightsViewModel extends AndroidViewModel {
@@ -70,18 +69,12 @@ public class LightsViewModel extends AndroidViewModel {
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 
-    public void setLightBrightness(long lightId, int brightness) {
+    public void setLightBrightness(long lightId, int brightness, final boolean onState) {
         Log.d(TAG,
             String.format("Slider for setLightBrightness for lightId %s was set to value %s.", lightId, brightness));
-        if (lights.isInitialized() && brightness > 0) {
-            //This is always non null, because of the previous check
-            List<UILight> lightList = Objects.requireNonNull(lights.getValue()).getData();
-            //Find the Light by ID
-            Optional<UILight> light = lightList.stream().filter(uiLight -> uiLight.getLightId() == lightId).findFirst();
-            if (light.isPresent() && !light.get().getIsOn()){
-                //Enable the light if it was disabled
+                        //Enable the light if it was disabled
+        if (brightness > 0 && !onState){
                 lightRepository.setOnState(lightId, true);
-            }
         }
         LiveData<EmptyResource> state = lightRepository.setBrightness(lightId, brightness);
         loadingIndicatorVisibility.addVisibilityProvider(state);
