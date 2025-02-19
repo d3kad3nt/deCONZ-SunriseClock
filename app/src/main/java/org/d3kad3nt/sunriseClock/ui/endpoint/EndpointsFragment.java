@@ -65,7 +65,8 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
     }
 
     @Override
-    public void onCardClick(final View view, final long endpointId) {
-        Navigation.findNavController(view).navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointId));
+    public void onCardClick(final View view, final IEndpointUI endpoint) {
+        Navigation.findNavController(view).navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpoint.getId(),
+            endpoint.getName()));
     }
 }
