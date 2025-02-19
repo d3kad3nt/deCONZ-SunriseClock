@@ -45,7 +45,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:layout_marginTop="12dp"
+            android:checkable="true"
             android:checked="@{viewModel.selected}"
+            android:clickable="false"
             app:chipIconVisible="false"
             app:layout_constraintStart_toEndOf="@+id/label_endpointSelected"
             app:layout_constraintTop_toBottomOf="@+id/text_endpointType" />
