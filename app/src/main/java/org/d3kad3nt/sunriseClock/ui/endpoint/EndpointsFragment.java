@@ -18,20 +18,12 @@ import org.d3kad3nt.sunriseClock.databinding.EndpointsFragmentBinding;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass. Use the {@link EndpointsFragment#newInstance} factory method to create an
- * instance of this fragment.
- */
 public class EndpointsFragment extends Fragment implements EndpointsListAdapter.ClickListeners {
 
     private static final String TAG = "EndpointsFragment";
     private EndpointsViewModel viewModel;
 
     private EndpointsListAdapter adapter;
-
-    public static EndpointsFragment newInstance() {
-        return new EndpointsFragment();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -65,7 +57,8 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
     }
 
     @Override
-    public void onCardClick(final View view, final long endpointId) {
-        Navigation.findNavController(view).navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointId));
+    public void onCardClick(final View view, final long endpointId, String endpointName) {
+        Navigation.findNavController(view).navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointId,
+           endpointName));
     }
 }

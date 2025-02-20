@@ -31,7 +31,6 @@ public class EndpointsViewModel extends AndroidViewModel {
 
     public void setSelectedEndpoint(final long id) {
         settingsRepository.setActiveEndpoint(id);
-        System.out.println(settingsRepository.getActiveEndpoint());
     }
 
     public boolean isSelectedEndpoint(final long id) {

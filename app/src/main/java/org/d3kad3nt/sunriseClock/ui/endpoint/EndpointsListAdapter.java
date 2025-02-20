@@ -8,7 +8,6 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,9 +50,10 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
          * Navigates to the endpoint detail screen, providing detailed information for this endpoint.
          *
          * @param view         View representing the endpoint card.
-         * @param endpointId   The unique identifier for this endpoint.
+         * @param endpointId   Id of the endpoint.
+         * @param endpointName Name of the endpoint.
          */
-        void onCardClick(View view, long endpointId);
+        void onCardClick(View view, long endpointId, String endpointName);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -80,7 +80,7 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
             @Override
             public void onClick(final View view) {
                 IEndpointUI endpoint = getItem(getAbsoluteAdapterPosition());
-                clickListeners.onCardClick(view, endpoint.getId());
+                clickListeners.onCardClick(view, endpoint.getId(), endpoint.getName());
             }
         }
 
