@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/lights">
+    app:startDestination="@id/lightsList">
     <fragment
-        android:id="@+id/lights"
+        android:id="@+id/lightsList"
         android:name="org.d3kad3nt.sunriseClock.ui.light.LightsFragment"
         android:label="@string/lights_title"
         tools:layout="@layout/lights_fragment">
@@ -62,7 +62,7 @@
         android:name="org.d3kad3nt.sunriseClock.ui.preference.InterfaceFragment"
         android:label="@string/interface_settings_title" />
     <fragment
-        android:id="@+id/endpoints"
+        android:id="@+id/endpointsList"
         android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment"
         android:label="@string/endpoint_list"
         tools:layout="@layout/endpoints_fragment">
