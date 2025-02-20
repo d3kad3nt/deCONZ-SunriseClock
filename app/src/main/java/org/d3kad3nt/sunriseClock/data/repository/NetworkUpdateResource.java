@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.data.repository;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
@@ -17,6 +18,24 @@ public abstract class NetworkUpdateResource <ResultType, RemoteType, DbType> ext
     protected DbType dbObject;
 
     public NetworkUpdateResource() {
+        init();
+    }
+
+    public NetworkUpdateResource(final boolean alwaysExecuted) {
+        init();
+        if (alwaysExecuted) {
+            observeForever(new Observer<>() {
+                @Override
+                public void onChanged(final EmptyResource emptyResource) {
+                    if (!emptyResource.getStatus().equals(Status.LOADING)) {
+                        removeObserver(this);
+                    }
+                }
+            });
+        }
+    }
+
+    private void init(){
         setValue(EmptyResource.loading(""));
         LiveData<DbType> resourceLoad = loadFromDB();
         addSource(resourceLoad, resource -> {

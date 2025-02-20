@@ -26,6 +26,7 @@
         app:cardCornerRadius="10dp"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.LightsFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp">
