@@ -17,5 +17,5 @@ public interface LightEndpoint {
 
     LiveData<ApiResponse<ResponseBody>> setOnState(String id, boolean newState);
 
-    LiveData<ApiResponse<ResponseBody>> setBrightness(String endpointLightId, double brightness);
+    LiveData<ApiResponse<ResponseBody>> setBrightness(String endpointLightId, int brightness);
 }

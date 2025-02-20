@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
         NavHostFragment navHostFragment =
             (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.main_activity_nav_fragment);
+        if (navHostFragment == null) {
+            throw new IllegalStateException("Could not get NavHostFragment");
+        }
         navController = navHostFragment.getNavController();
         appBarConfiguration =
             new AppBarConfiguration.Builder(navController.getGraph()).setOpenableLayout(binding.drawerLayout).build();

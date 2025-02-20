@@ -17,10 +17,6 @@ public class EndpointDetailFragment extends Fragment {
     private EndpointDetailFragmentBinding binding;
     private EndpointDetailViewModel viewModel;
 
-    public static EndpointDetailFragment newInstance() {
-        return new EndpointDetailFragment();
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {

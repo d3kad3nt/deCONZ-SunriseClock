@@ -2,6 +2,7 @@ package org.d3kad3nt.sunriseClock.data.model.light;
 
 import android.util.Log;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -193,6 +194,7 @@ public class DbLight {
      * @return The current brightness of the light, where 0 is the lowest brightness or off (depending on the light)
      * and 100 is the highest brightness.
      */
+    @IntRange(from = 0, to = 100)
     public int getBrightness() {
         return brightness;
     }

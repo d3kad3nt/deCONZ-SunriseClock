@@ -1,5 +1,7 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
+import androidx.annotation.IntRange;
+
 public class DbLightBuilder {
 
     private static final String TAG = "DbLightBuilder";
@@ -112,7 +114,7 @@ public class DbLightBuilder {
      * @param brightness The current brightness of the light, where 0 is the lowest brightness or off (depending on
      *                   the light) and 100 is the highest brightness.
      */
-    public DbLightBuilder setBrightness(int brightness) {
+    public DbLightBuilder setBrightness(@IntRange(from = 0, to = 100) int brightness) {
         this.brightness = brightness;
         return this;
     }
@@ -126,7 +128,7 @@ public class DbLightBuilder {
         return this;
     }
 
-    // Todo: Add javadoc to document allowed values for the color temperature.
+    // Todo: Add javadoc and @IntRange to document allowed values for the color temperature.
     public DbLightBuilder setColorTemperature(int colorTemperature) {
         this.colorTemperature = colorTemperature;
         return this;
@@ -141,7 +143,7 @@ public class DbLightBuilder {
         return this;
     }
 
-    // Todo: Add javadoc to document allowed values for the color.
+    // Todo: Add javadoc and @IntRange to document allowed values for the color.
     public DbLightBuilder setColor(int color) {
         this.color = color;
         return this;

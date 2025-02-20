@@ -76,11 +76,14 @@
     <fragment
         android:id="@+id/endpointDetail"
         android:name="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailFragment"
-        android:label="@string/endpoint"
+        android:label="{endpointName}"
         tools:layout="@layout/endpoint_detail_fragment">
         <argument
             android:name="endpointID"
             app:argType="long" />
+        <argument
+            android:name="endpointName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/endpointAddFragment"

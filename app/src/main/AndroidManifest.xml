@@ -24,6 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".deviceControl.ControlActivity"
+            android:exported="true" />
+
         <receiver
             android:name=".data.receiver.AlarmReceiver"
             android:enabled="true"
@@ -32,5 +36,15 @@
                 <action android:name="android.app.action.NEXT_ALARM_CLOCK_CHANGED" />
             </intent-filter>
         </receiver>
+        <service
+            tools:targetApi="r"
+            android:name=".deviceControl.ControlService"
+            android:exported="true"
+            android:label="Deconz Sunrise Clock"
+            android:permission="android.permission.BIND_CONTROLS">
+            <intent-filter>
+                <action android:name="android.service.controls.ControlsProviderService" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>
