@@ -31,6 +31,7 @@ import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
+import org.d3kad3nt.sunriseClock.util.Action;
 import org.d3kad3nt.sunriseClock.util.AsyncJoin;
 import org.d3kad3nt.sunriseClock.util.ExtendedPublisher;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
@@ -78,6 +79,7 @@ public class ControlService extends ControlsProviderService {
         AsyncJoin asyncHelper = new AsyncJoin();
 
         LiveDataUtil.observeOnce(allEndpoints, new AsyncJoin.Observer<>(asyncHelper) {
+
             @Override
             public void onChanged(final List<IEndpointUI> endpoints) {
                 for (IEndpointUI endpoint : endpoints) {
@@ -308,9 +310,9 @@ public class ControlService extends ControlsProviderService {
     }
 
     private void initEndpointNames() {
-        LiveDataUtil.observeOnce(getEndpointRepository().getAllEndpoints(), new Observer<>() {
+        LiveDataUtil.observeOnce(getEndpointRepository().getAllEndpoints(), new Action<>() {
             @Override
-            public void onChanged(final List<IEndpointUI> iEndpointUIS) {
+            public void execute(final List<IEndpointUI> iEndpointUIS) {
                 for (IEndpointUI endpoint : iEndpointUIS) {
                     endpointNames.put(endpoint.getId(), endpoint.getStringRepresentation());
                 }

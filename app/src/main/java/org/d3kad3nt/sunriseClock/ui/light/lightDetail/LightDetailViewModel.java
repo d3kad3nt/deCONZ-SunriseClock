@@ -18,6 +18,7 @@ import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.ui.util.BooleanVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
+import org.jetbrains.annotations.Contract;
 
 import kotlin.jvm.functions.Function1;
 
