@@ -126,7 +126,6 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         void unbind(){
             binding.materialSlider.clearOnSliderTouchListeners();
             binding.materialSwitch2.setOnCheckedChangeListener(null);
-            binding.card.setOnClickListener(null);
             binding.executePendingBindings();
         }
 
