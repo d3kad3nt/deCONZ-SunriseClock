@@ -60,8 +60,8 @@ public interface DbLightDao {
                 updateUsingEndpointIdAndEndpointLightId(obj.getEndpointId(), obj.getEndpointLightId(), obj.getName(),
                     obj.getIsSwitchable(), obj.getIsOn(), obj.getIsDimmable(), obj.getBrightness(),
                     obj.getIsTemperaturable(), obj.getColorTemperature(), obj.getIsColorable(), obj.getColor());
-            Log.d(TAG,
-                rowsUpdated + " rows updated by room. Updated DbLight with endpointId: " + obj.getEndpointId() +
+            Log.v(TAG,
+                rowsUpdated + " row(s) updated by room. Updated DbLight with endpointId: " + obj.getEndpointId() +
                     " and endpointLightId: " + obj.getEndpointLightId());
         } else {
             Log.w(TAG,
