@@ -46,10 +46,11 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
         return binding.getRoot();
     }
 
-    private void addAddEndpointListener(EndpointsFragmentBinding binding) {
+    private void addAddEndpointListener(@NonNull EndpointsFragmentBinding binding) {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Navigate to endpoint creation view");
                 Navigation.findNavController(v)
                     .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointAddFragment());
             }
@@ -58,6 +59,7 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
 
     @Override
     public void onCardClick(final View view, final long endpointId, String endpointName) {
+        Log.d(TAG, String.format("Navigate to endpoint detail view for endpoint %s (Id %d)", endpointName, endpointId));
         Navigation.findNavController(view).navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointId,
            endpointName));
     }

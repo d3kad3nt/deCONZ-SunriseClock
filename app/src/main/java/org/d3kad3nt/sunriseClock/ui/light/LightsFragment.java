@@ -46,7 +46,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
             @Override
             public void onChanged(Resource<List<UILight>> listResource) {
                 if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
-                    Log.d(TAG, listResource.getData().size() + " Lights received");
+                    Log.i(TAG, "Lights in list updated");
                     lightsState.clearError();
                     List<UILight> list = listResource.getData();
                     Collections.sort(list, new Comparator<>() {
@@ -84,6 +84,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
 
     @Override
     public void onCardClick(View view, final long lightId, final String lightName) {
+        Log.d(TAG, String.format("Navigate to light detail view for light %s (Id %d)", lightName, lightId));
         Navigation.findNavController(view).navigate(LightsFragmentDirections.actionLightsToLightDetail(lightId, lightName));
     }
 

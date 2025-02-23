@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.ui.endpoint;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ public class EndpointAddFragment extends Fragment {
 
     //Todo: This should definitely be removed (and replaced by setting the onClickListener inside of XML and
     // carrying over the logic to the viewmodel)
-    private void addCreateEndpointListener(EndpointAddFragmentBinding binding,
+    private void addCreateEndpointListener(@NonNull EndpointAddFragmentBinding binding,
                                            EndpointAddDeconzFragmentBinding specificBinding) {
         binding.createEndpoint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +60,7 @@ public class EndpointAddFragment extends Fragment {
                     settings.put(i.getTag().toString(), i.getText().toString());
                 }
                 if (viewModel.createEndpoint(settings)) {
+                    Log.v(TAG,"Endpoint created and navigate to endpoint list");
                     Navigation.findNavController(v).navigateUp();
                 }
             }

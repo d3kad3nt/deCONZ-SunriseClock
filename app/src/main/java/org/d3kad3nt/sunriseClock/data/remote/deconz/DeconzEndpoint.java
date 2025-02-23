@@ -82,7 +82,7 @@ public class DeconzEndpoint extends BaseEndpoint {
             public Response intercept(@NonNull Chain chain) throws IOException {
                 Request request = chain.request();
                 Response response = chain.proceed(request);
-                Log.d(TAG,
+                Log.v(TAG,
                     "HTTP interceptor: Intercepted request to: " + response.request().url() + " led to HTTP code: " +
                         response.code());
 
@@ -96,7 +96,7 @@ public class DeconzEndpoint extends BaseEndpoint {
                     // used to modify the JSON response from the
                     // Deconz endpoint and adds this light id.
                     if (request.header(IServices.endpointLightIdHeader) != null) {
-                        Log.d(TAG, "HTTP interceptor: Try to set light " + "id in JSON response as " + "workaround.");
+                        Log.v(TAG, "HTTP interceptor: Try to set light " + "id in JSON response as " + "workaround.");
 
                         assert response.body() != null;
                         String stringJson = response.body().string();
