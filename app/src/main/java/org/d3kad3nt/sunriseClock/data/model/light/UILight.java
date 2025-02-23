@@ -53,7 +53,6 @@ public class UILight {
     @NonNull
     @Contract("_ -> new")
     public static UILight from(@NonNull DbLight dbLight) {
-        Log.d(TAG, "Converting DbLight to UiLight...");
         // Place for conversion logic (if UI needs other data types or value ranges).
         UILight uiLight =
             new UILight(dbLight.getLightId(), dbLight.getEndpointId(), dbLight.getName(), dbLight.getIsSwitchable(),

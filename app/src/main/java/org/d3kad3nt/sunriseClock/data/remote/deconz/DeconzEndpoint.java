@@ -81,7 +81,8 @@ public class DeconzEndpoint extends BaseEndpoint {
             @Override
             public Response intercept(@NonNull Chain chain) throws IOException {
                 Request request = chain.request();
-                Response response = chain.proceed(request); Log.d(TAG,
+                Response response = chain.proceed(request);
+                Log.d(TAG,
                     "HTTP interceptor: Intercepted request to: " + response.request().url() + " led to HTTP code: " +
                         response.code());
 

@@ -1,7 +1,5 @@
 package org.d3kad3nt.sunriseClock.data.remote.deconz;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
@@ -50,13 +48,11 @@ class LiveDataCallAdapter <T> implements CallAdapter<T, LiveData<ApiResponse<T>>
                     call.enqueue(new Callback<T>() {
                         @Override
                         public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-                            Log.d(TAG, "onResponse() called.");
                             postValue(ApiResponse.create(response));
                         }
 
                         @Override
                         public void onFailure(@NonNull Call<T> call, @NonNull Throwable throwable) {
-                            Log.d(TAG, "onFailure() called.");
                             postValue(ApiResponse.create(throwable));
                         }
                     });

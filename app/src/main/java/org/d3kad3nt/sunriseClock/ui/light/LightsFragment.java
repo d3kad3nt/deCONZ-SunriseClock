@@ -45,8 +45,8 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
         viewModel.getLights().observe(getViewLifecycleOwner(), new Observer<Resource<List<UILight>>>() {
             @Override
             public void onChanged(Resource<List<UILight>> listResource) {
-                Log.d(TAG, listResource.getStatus().toString());
                 if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
+                    Log.d(TAG, listResource.getData().size() + " Lights received");
                     lightsState.clearError();
                     List<UILight> list = listResource.getData();
                     Collections.sort(list, new Comparator<>() {
@@ -57,6 +57,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
                     });
                     adapter.submitList(list);
                 } else if (listResource.getStatus().equals(Status.ERROR)) {
+                    Log.i(TAG, "No Lights found");
                     lightsState.setError(getResources().getString(R.string.noLights_title),
                         listResource.getMessage());
                     adapter.submitList(List.of());

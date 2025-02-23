@@ -226,7 +226,7 @@ public class ControlService extends ControlsProviderService {
     @Override
     public void performControlAction(@NonNull final String controlId, @NonNull final ControlAction action,
                                      @NonNull final Consumer<Integer> consumer) {
-        Log.d(TAG, "Received ControlAction request");
+        Log.d(TAG, "Received ControlAction request for controlId " + controlId);
         if (action instanceof BooleanAction) {
             // Inform SystemUI that the action has been received and is being processed
             consumer.accept(ControlAction.RESPONSE_OK);
@@ -256,7 +256,7 @@ public class ControlService extends ControlsProviderService {
     }
 
     public void performBooleanControlAction(@NonNull final String controlId, @NonNull final BooleanAction action) {
-        Log.d(TAG, "New On State: " + action.getNewState() + ", for LightID " + controlId);
+        Log.d(TAG, "New 'On' State: " + action.getNewState() + ", for LightID " + controlId);
         LiveData<EmptyResource> responseLiveData =
             getLightRepository().setOnState(Long.parseLong(controlId), action.getNewState());
         //The observer is needed because livedata executes only if it has a observer.
@@ -314,7 +314,7 @@ public class ControlService extends ControlsProviderService {
                 for (IEndpointUI endpoint : iEndpointUIS) {
                     endpointNames.put(endpoint.getId(), endpoint.getStringRepresentation());
                 }
-                Log.d(TAG, "Added Endpoint Names");
+                Log.d(TAG, "Updated List of endpoint names");
             }
         });
     }

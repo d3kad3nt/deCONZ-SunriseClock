@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.light.lightDetail;
 
 import android.app.Application;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.IntRange;
@@ -57,7 +56,6 @@ public class LightDetailViewModel extends AndroidViewModel {
     }
 
     public void setLightBrightness(@IntRange(from = 0, to = 100) int brightness, boolean changedByUser) {
-        Log.d(TAG, "Bright: " + brightness + " " + changedByUser);
         if (!changedByUser) {
             return;
         }

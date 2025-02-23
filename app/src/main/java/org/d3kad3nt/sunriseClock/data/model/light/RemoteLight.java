@@ -73,7 +73,6 @@ public class RemoteLight {
     @NonNull
     @Contract("_ -> new")
     static DbLight toDbLight(RemoteLight remoteLight) {
-        Log.d(TAG, "Converting RemoteLight to DbLight...");
         DbLightBuilder dbLightBuilder = new DbLightBuilder();
         //Logic to convert remote light to db light depending on the endpoint type this light originated from.
         DbLight dbLight = dbLightBuilder.setEndpointId(remoteLight.getEndpointId())

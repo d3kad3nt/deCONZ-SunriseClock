@@ -34,6 +34,6 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.d(TAG, key + " changed.");
+        Log.d(TAG, "Preference " + key + " changed.");
     }
 }
