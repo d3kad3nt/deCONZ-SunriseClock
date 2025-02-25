@@ -22,7 +22,6 @@ import retrofit2.Response;
  */
 class LiveDataCallAdapter <T> implements CallAdapter<T, LiveData<ApiResponse<T>>> {
 
-    private static final String TAG = "DeconzLiveDataCallA.";
     private final Type responseType;
 
     LiveDataCallAdapter(Type responseType) {

@@ -1,7 +1,5 @@
 package org.d3kad3nt.sunriseClock.data.local;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -12,13 +10,12 @@ import androidx.room.Transaction;
 import androidx.room.Update;
 
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.List;
 
 @Dao
 public interface DbLightDao {
-
-    String TAG = "DbLightDao";
 
     /**
      * Insert light object into the database (create) or update existing light object. Case 1: Insert if neither
@@ -34,7 +31,7 @@ public interface DbLightDao {
         // Case 1
         long rowId = save(obj);
         if (rowId != -1L) {
-            Log.d(TAG, "Inserted DbLight (row id: " + rowId + ") with endpointId " + obj.getEndpointId() + " and " +
+            LogUtil.d("Inserted DbLight (row id: " + rowId + ") with endpointId " + obj.getEndpointId() + " and " +
                 "endpointLightId: " + obj.getEndpointLightId());
             return;
         }
@@ -44,10 +41,9 @@ public interface DbLightDao {
         if (obj.getLightId() != 0L) {
             int rowsUpdated = updateUsingPrimaryKey(obj);
             if (rowsUpdated >= 1) {
-                Log.d(TAG, rowsUpdated + " rows updated by room. Updated DbLight with lightId: " + obj.getLightId());
+                LogUtil.d(rowsUpdated + " rows updated by room. Updated DbLight with lightId: " + obj.getLightId());
             } else if (rowsUpdated == 0) {
-                Log.w(TAG,
-                    "0 rows updated by room. This could mean that the primary key (lightId: " + obj.getLightId() +
+                LogUtil.w("0 rows updated by room. This could mean that the primary key (lightId: " + obj.getLightId() +
                         ") could not be found in the database table.");
             }
         }
@@ -60,12 +56,10 @@ public interface DbLightDao {
                 updateUsingEndpointIdAndEndpointLightId(obj.getEndpointId(), obj.getEndpointLightId(), obj.getName(),
                     obj.getIsSwitchable(), obj.getIsOn(), obj.getIsDimmable(), obj.getBrightness(),
                     obj.getIsTemperaturable(), obj.getColorTemperature(), obj.getIsColorable(), obj.getColor());
-            Log.d(TAG,
-                rowsUpdated + " rows updated by room. Updated DbLight with endpointId: " + obj.getEndpointId() +
+            LogUtil.d(rowsUpdated + " rows updated by room. Updated DbLight with endpointId: " + obj.getEndpointId() +
                     " and endpointLightId: " + obj.getEndpointLightId());
         } else {
-            Log.w(TAG,
-                "Neither lightId nor (endpointId and endpointLightId) were set. No update could be " + "performed" +
+            LogUtil.w("Neither lightId nor (endpointId and endpointLightId) were set. No update could be " + "performed" +
                     " by room!");
         }
     }

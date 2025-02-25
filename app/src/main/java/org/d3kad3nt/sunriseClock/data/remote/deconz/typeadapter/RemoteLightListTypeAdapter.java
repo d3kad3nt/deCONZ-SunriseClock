@@ -1,7 +1,5 @@
 package org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
@@ -14,14 +12,13 @@ import com.google.gson.JsonParseException;
 
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.IServices;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteLight>> {
-
-    private static final String TAG = "RemoteLightListTypeAda.";
 
     private final Gson gson;
 
@@ -43,7 +40,7 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
         JsonObject rawJson = json.getAsJsonObject();
         List<RemoteLight> lights = new ArrayList<>();
 
-        Log.v(TAG, "Parsing JSON for list of lights: " + rawJson.toString());
+        LogUtil.v("Parsing JSON for list of lights: " + rawJson.toString());
 
         for (String lightId : rawJson.keySet()) {
             JsonObject jsonLight = rawJson.get(lightId).getAsJsonObject();

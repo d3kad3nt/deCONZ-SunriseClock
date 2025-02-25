@@ -1,7 +1,5 @@
 package org.d3kad3nt.sunriseClock.data.remote.deconz;
 
-import android.util.Log;
-
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -18,6 +16,7 @@ import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.RemoteLightListTypeAdapter;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.RemoteLightTypeAdapter;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,8 +36,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DeconzEndpoint extends BaseEndpoint {
-
-    private static final String TAG = "DeconzEndpoint";
 
     /* Path to the deconz server (Phoscon Webapp), eg. 'deconz.example.org' */
     //TODO: Change back to Uri class and write custom TypeAdapter
@@ -82,8 +79,7 @@ public class DeconzEndpoint extends BaseEndpoint {
             public Response intercept(@NonNull Chain chain) throws IOException {
                 Request request = chain.request();
                 Response response = chain.proceed(request);
-                Log.v(TAG,
-                    "HTTP interceptor: Intercepted request to: " + response.request().url() + " led to HTTP code: " +
+                LogUtil.v("HTTP interceptor: Intercepted request to: " + response.request().url() + " led to HTTP code: " +
                         response.code());
 
                 if (response.code() >= 200 && response.code() <= 399 && response.body() != null) {
@@ -96,7 +92,7 @@ public class DeconzEndpoint extends BaseEndpoint {
                     // used to modify the JSON response from the
                     // Deconz endpoint and adds this light id.
                     if (request.header(IServices.endpointLightIdHeader) != null) {
-                        Log.v(TAG, "HTTP interceptor: Try to set light " + "id in JSON response as " + "workaround.");
+                        LogUtil.v("HTTP interceptor: Try to set light " + "id in JSON response as " + "workaround.");
 
                         assert response.body() != null;
                         String stringJson = response.body().string();
@@ -160,13 +156,13 @@ public class DeconzEndpoint extends BaseEndpoint {
 
     @Override
     public LiveData<ApiResponse<List<RemoteLight>>> getLights() {
-        Log.d(TAG, "Requesting all lights from endpoint: " + this.baseUrl);
+        LogUtil.d("Requesting all lights from endpoint: " + this.baseUrl);
         return this.retrofit.getLights();
     }
 
     @Override
     public LiveData<ApiResponse<RemoteLight>> getLight(String id) {
-        Log.d(TAG, "Requesting single light with id " + id + " from endpoint: " + this.baseUrl);
+        LogUtil.d("Requesting single light with id " + id + " from endpoint: " + this.baseUrl);
 
         // Workaround: Deconz endpoint does not return the id of a light when requesting a single
         // light. The Gson deserializer is automatically called and cannot access the id inside of

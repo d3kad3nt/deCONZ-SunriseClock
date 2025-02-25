@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.data.repository;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -19,6 +18,8 @@ import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
+import org.d3kad3nt.sunriseClock.util.Empty;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,7 +33,6 @@ import okhttp3.ResponseBody;
  */
 public class LightRepository {
 
-    private final static String TAG = "LightRepository";
     private static DbLightDao dbLightDao;
     private static volatile LightRepository INSTANCE;
     private final EndpointRepository endpointRepo;
@@ -56,6 +56,65 @@ public class LightRepository {
             }
         }
         return INSTANCE;
+    }
+
+    public LiveData<EmptyResource> refresh(long endpointId) {
+        try {
+            endpointRepo.getEndpoint(endpointId);
+        }
+        catch (NullPointerException e) {
+            EmptyResource resource = EmptyResource.error("Endpoint doesn't exist");
+            return new MutableLiveData<>(resource);
+        }
+        return Transformations.map(new NetworkBoundResource<Empty, List<RemoteLight>, List<DbLight>>() {
+
+            @Override
+            protected void saveResponseToDb(List<DbLight> items) {
+                for (DbLight light : items) {
+                    dbLightDao.upsert(light);
+                }
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<DbLight> data) {
+                //TODO
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getRepoEndpoint(endpointId);
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<List<DbLight>> loadFromDb() {
+                return Transformations.map(dbLightDao.loadAllForEndpoint(endpointId), input -> {
+                    return new ArrayList<>(input);
+                });
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<ApiResponse<List<RemoteLight>>> loadFromNetwork() {
+                return endpoint.getLights();
+            }
+
+            @Override
+            protected Empty convertDbTypeToResultType(List<DbLight> items) {
+               return new Empty();
+            }
+
+            @Override
+            protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteLight>> response) {
+                List<DbLight> lights = new ArrayList<>();
+                for (RemoteLight light : response.getBody()) {
+                    lights.add(DbLight.from(light));
+                }
+                return lights;
+            }
+        }, emptyResource -> EmptyResource.fromResource(emptyResource));
     }
 
     public LiveData<Resource<List<UILight>>> getLightsForEndpoint(long endpointId) {
@@ -171,9 +230,9 @@ public class LightRepository {
 
     public LiveData<EmptyResource> setOnState(long lightId, boolean newState) {
         if (newState){
-            Log.i(TAG, String.format("Enable Light with Id %d", lightId));
+            LogUtil.i("Enable Light with Id %d", lightId);
         }else {
-            Log.i(TAG, String.format("Disable Light with Id %d", lightId));
+            LogUtil.i("Disable Light with Id %d", lightId);
         }
 
         return new NetworkUpdateResource<UILight, ResponseBody, DbLight>(true) {
@@ -197,14 +256,14 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<Resource<UILight>> loadUpdatedVersion() {
-                Log.v(TAG, "Load updated light");
+                LogUtil.v("Load updated light");
                 return getLight(lightId);
             }
         };
     }
 
     public LiveData<EmptyResource> setBrightness(long lightId,  @IntRange(from = 0, to = 100) int brightness) {
-        Log.i(TAG, String.format("Set brightness to %d %% for light with id %d", brightness, lightId));
+        LogUtil.i("Set brightness to %d %% for light with id %d", brightness, lightId);
         if (brightness < 0 || brightness > 100) {
             throw new IllegalStateException(
                 "The new brightness for light " + lightId + " has to be between 0 and 100 and not " + brightness);
@@ -231,7 +290,7 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<Resource<UILight>> loadUpdatedVersion() {
-                Log.v(TAG, "Load updated light");
+                LogUtil.v("Load updated light");
                 return getLight(lightId);
             }
         };

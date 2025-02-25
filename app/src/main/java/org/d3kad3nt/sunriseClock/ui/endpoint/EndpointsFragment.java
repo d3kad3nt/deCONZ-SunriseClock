@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.endpoint;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,12 @@ import androidx.navigation.Navigation;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.databinding.EndpointsFragmentBinding;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.List;
 
 public class EndpointsFragment extends Fragment implements EndpointsListAdapter.ClickListeners {
 
-    private static final String TAG = "EndpointsFragment";
     private EndpointsViewModel viewModel;
 
     private EndpointsListAdapter adapter;
@@ -38,7 +37,7 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
                 if (!endpointConfigList.isEmpty()) {
                     adapter.submitList(endpointConfigList);
                 } else {
-                    Log.d(TAG, "No Endpoints found");
+                    LogUtil.d("No Endpoints found");
                 }
             }
         });
@@ -50,7 +49,7 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Navigate to endpoint creation view");
+                LogUtil.d("Navigate to endpoint creation view");
                 Navigation.findNavController(v)
                     .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointAddFragment());
             }
@@ -59,7 +58,7 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
 
     @Override
     public void onCardClick(final View view, final long endpointId, String endpointName) {
-        Log.d(TAG, String.format("Navigate to endpoint detail view for endpoint %s (Id %d)", endpointName, endpointId));
+        LogUtil.d("Navigate to endpoint detail view for endpoint %s (Id %d)", endpointName, endpointId);
         Navigation.findNavController(view).navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointId,
            endpointName));
     }

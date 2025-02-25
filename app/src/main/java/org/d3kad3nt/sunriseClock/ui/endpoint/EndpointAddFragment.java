@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.endpoint;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +15,12 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddDeconzFragmentBinding;
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddFragmentBinding;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class EndpointAddFragment extends Fragment {
-
-    private static final String TAG = "EndpointAddFragment";
 
     private EndpointAddViewModel viewModel;
 
@@ -33,6 +31,7 @@ public class EndpointAddFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        LogUtil.d("Show add Endpoint Fragment");
         EndpointAddFragmentBinding binding = EndpointAddFragmentBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointAddViewModel.class);
         //TODO select endpoint type
@@ -60,7 +59,7 @@ public class EndpointAddFragment extends Fragment {
                     settings.put(i.getTag().toString(), i.getText().toString());
                 }
                 if (viewModel.createEndpoint(settings)) {
-                    Log.v(TAG,"Endpoint created and navigate to endpoint list");
+                    LogUtil.v("Endpoint created");
                     Navigation.findNavController(v).navigateUp();
                 }
             }

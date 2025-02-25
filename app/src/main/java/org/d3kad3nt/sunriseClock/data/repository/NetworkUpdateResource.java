@@ -15,8 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class NetworkUpdateResource <ResultType, RemoteType, DbType> extends ExtendedMediatorLiveData<EmptyResource> {
 
-    private final static String TAG = NetworkUpdateResource.class.getSimpleName();
-
     protected DbType dbObject;
 
     public NetworkUpdateResource() {

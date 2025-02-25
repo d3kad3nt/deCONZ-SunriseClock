@@ -22,7 +22,6 @@ import kotlin.jvm.functions.Function1;
 
 public class LightDetailViewModel extends AndroidViewModel {
 
-    private final static String TAG = "LightDetailViewModel";
     private final LightRepository lightRepository =
         LightRepository.getInstance(getApplication().getApplicationContext());
     private final long lightID;

@@ -17,7 +17,6 @@ import java.util.Optional;
 
 public class SettingsRepository {
 
-    private static final String TAG = "SettingsRepository";
     private static volatile SettingsRepository INSTANCE;
     private final SharedPreferences preferences;
     private final Map<SettingKeys, Listener<Boolean>> listenerBooleanCache = new HashMap<>();

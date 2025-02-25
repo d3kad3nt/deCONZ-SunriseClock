@@ -1,7 +1,5 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
-import android.util.Log;
-
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -12,6 +10,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
 @Entity(tableName = DbLight.TABLENAME,
@@ -32,7 +31,6 @@ public class DbLight {
     @Ignore
     static final int BRIGHTNESS_MAX = 100;
     @Ignore
-    private static final String TAG = "DbLight";
     @ColumnInfo(name = "endpoint_id")
     private final long endpointId;
     @ColumnInfo(name = "endpoint_light_id")
@@ -88,14 +86,14 @@ public class DbLight {
         if (endpointId != 0L) {
             this.endpointId = endpointId;
         } else {
-            Log.e(TAG, "The given endpointId cannot be 0!");
+            LogUtil.e("The given endpointId cannot be 0!");
             throw new IllegalArgumentException("The given endpointId cannot be 0!");
         }
 
         if (!endpointLightId.isEmpty()) {
             this.endpointLightId = endpointLightId;
         } else {
-            Log.e(TAG, "The given endpointLightId string cannot be null or empty!");
+            LogUtil.e("The given endpointLightId string cannot be null or empty!");
             throw new IllegalArgumentException("The given endpointLightId string cannot be null or empty!");
         }
 

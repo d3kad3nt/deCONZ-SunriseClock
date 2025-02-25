@@ -15,7 +15,6 @@ import android.service.controls.templates.ControlTemplate;
 import android.service.controls.templates.RangeTemplate;
 import android.service.controls.templates.ToggleRangeTemplate;
 import android.service.controls.templates.ToggleTemplate;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +33,7 @@ import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.util.AsyncJoin;
 import org.d3kad3nt.sunriseClock.util.ExtendedPublisher;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,8 +44,6 @@ import java.util.function.Consumer;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class ControlService extends ControlsProviderService {
-
-    private static final String TAG = "ControlService";
 
     //This indicates if the device has to be unlocked to interact with the device Controls.
     //TODO: This could be specified in a setting.
@@ -94,9 +92,9 @@ public class ControlService extends ControlsProviderService {
                                     }
                                     removeObserver(this, lightResources, asyncHelper);
                                 case ERROR:
-                                    Log.w(TAG, String.format(
+                                    LogUtil.w(
                                         "Error occurred while loading Lights of Endpoint %s for DeviceControl",
-                                        endpoint.getStringRepresentation()));
+                                        endpoint.getStringRepresentation());
                                     removeObserver(this, lightResources, asyncHelper);
                                     break;
                                 case LOADING:
@@ -226,7 +224,7 @@ public class ControlService extends ControlsProviderService {
     @Override
     public void performControlAction(@NonNull final String controlId, @NonNull final ControlAction action,
                                      @NonNull final Consumer<Integer> consumer) {
-        Log.d(TAG, "Received ControlAction request for controlId " + controlId);
+        LogUtil.d("Received ControlAction request for controlId " + controlId);
         if (action instanceof BooleanAction) {
             // Inform SystemUI that the action has been received and is being processed
             consumer.accept(ControlAction.RESPONSE_OK);
@@ -235,13 +233,13 @@ public class ControlService extends ControlsProviderService {
             consumer.accept(ControlAction.RESPONSE_OK);
             performFloatControlAction(controlId, (FloatAction) action);
         } else {
-            Log.w(TAG, "Unknown Action " + action.getClass().getSimpleName() + " for id " + controlId);
+            LogUtil.w("Unknown Action %s for id %s", action.getClass().getSimpleName(), controlId);
             consumer.accept(ControlAction.RESPONSE_FAIL);
         }
     }
 
     private void performFloatControlAction(@NonNull final String controlId, @NonNull final FloatAction action) {
-        Log.d(TAG, "New brightness Value: " + action.getNewValue() + ", for LightID " + controlId);
+        LogUtil.d("New brightness Value: %.3f, for LightID %s", action.getNewValue(),  controlId);
         LiveData<EmptyResource> responseLiveData =
             getLightRepository().setBrightness(Long.parseLong(controlId), (int) action.getNewValue());
         //The observer is needed because livedata executes only if it has a observer.
@@ -256,7 +254,7 @@ public class ControlService extends ControlsProviderService {
     }
 
     public void performBooleanControlAction(@NonNull final String controlId, @NonNull final BooleanAction action) {
-        Log.d(TAG, "New 'On' State: " + action.getNewState() + ", for LightID " + controlId);
+        LogUtil.d("New 'On' State: %b, for LightID %s", action.getNewState(), controlId);
         LiveData<EmptyResource> responseLiveData =
             getLightRepository().setOnState(Long.parseLong(controlId), action.getNewState());
         //The observer is needed because livedata executes only if it has a observer.
@@ -314,7 +312,7 @@ public class ControlService extends ControlsProviderService {
                 for (IEndpointUI endpoint : iEndpointUIS) {
                     endpointNames.put(endpoint.getId(), endpoint.getStringRepresentation());
                 }
-                Log.d(TAG, "Updated List of endpoint names");
+                LogUtil.d("Updated List of endpoint names");
             }
         });
     }
@@ -323,7 +321,7 @@ public class ControlService extends ControlsProviderService {
         if (endpointNames.containsKey(endpointID)) {
             return endpointNames.get(endpointID);
         }
-        Log.w(TAG, "Endpoint Name for " + endpointID + " not loaded");
+        LogUtil.w("Endpoint Name for %d not loaded", endpointID);
         return "No Name";
     }
 

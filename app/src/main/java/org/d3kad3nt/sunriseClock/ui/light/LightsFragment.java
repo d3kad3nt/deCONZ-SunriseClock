@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.light;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,7 +26,6 @@ import java.util.List;
 
 public class LightsFragment extends Fragment implements LightsListAdapter.ClickListeners {
 
-    private static final String TAG = "LightsFragment";
     private final LightsState lightsState = new LightsState();
     private LightsFragmentBinding binding;
     private LightsViewModel viewModel;
@@ -46,7 +45,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
             @Override
             public void onChanged(Resource<List<UILight>> listResource) {
                 if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
-                    Log.i(TAG, "Lights in list updated");
+                    LogUtil.i("Lights in list updated");
                     lightsState.clearError();
                     List<UILight> list = listResource.getData();
                     Collections.sort(list, new Comparator<>() {
@@ -57,7 +56,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
                     });
                     adapter.submitList(list);
                 } else if (listResource.getStatus().equals(Status.ERROR)) {
-                    Log.i(TAG, "No Lights found");
+                    LogUtil.i("No Lights found");
                     lightsState.setError(getResources().getString(R.string.noLights_title),
                         listResource.getMessage());
                     adapter.submitList(List.of());
@@ -84,7 +83,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
 
     @Override
     public void onCardClick(View view, final long lightId, final String lightName) {
-        Log.d(TAG, String.format("Navigate to light detail view for light %s (Id %d)", lightName, lightId));
+        LogUtil.d("Navigate to light detail view for light %s (Id %d)", lightName, lightId);
         Navigation.findNavController(view).navigate(LightsFragmentDirections.actionLightsToLightDetail(lightId, lightName));
     }
 

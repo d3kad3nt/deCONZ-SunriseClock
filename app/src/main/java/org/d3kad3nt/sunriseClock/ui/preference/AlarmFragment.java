@@ -2,19 +2,17 @@ package org.d3kad3nt.sunriseClock.ui.preference;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.d3kad3nt.sunriseClock.R;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class AlarmFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final String TAG = "AlarmFragment";
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        Log.i("sunriseClock", "Settings");
+        LogUtil.i("Settings");
         setPreferencesFromResource(R.xml.preferences_alarm, rootKey);
     }
 
@@ -34,6 +32,6 @@ public class AlarmFragment extends PreferenceFragmentCompat implements SharedPre
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.d(TAG, "Preference " +  key + " changed.");
+        LogUtil.d("Preference " +  key + " changed.");
     }
 }

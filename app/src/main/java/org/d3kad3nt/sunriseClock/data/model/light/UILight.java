@@ -1,17 +1,14 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
-import android.util.Log;
-
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Objects;
 
 public class UILight {
-
-    private static final String TAG = "UiLight";
 
     private final long lightId;
     private final long endpointId;
@@ -58,8 +55,7 @@ public class UILight {
             new UILight(dbLight.getLightId(), dbLight.getEndpointId(), dbLight.getName(), dbLight.getIsSwitchable(),
                 dbLight.getIsOn(), dbLight.getIsDimmable(), dbLight.getBrightness(), dbLight.getIsTemperaturable(),
                 dbLight.getIsColorable(), dbLight.getIsReachable());
-        Log.v(TAG,
-            "Converted DbLight with lightId " + dbLight.getLightId() + " (endpointId " + dbLight.getEndpointId() +
+        LogUtil.v("Converted DbLight with lightId " + dbLight.getLightId() + " (endpointId " + dbLight.getEndpointId() +
                 ", endpointLightId " + dbLight.getEndpointLightId() + ") to UILight.");
         return uiLight;
     }
