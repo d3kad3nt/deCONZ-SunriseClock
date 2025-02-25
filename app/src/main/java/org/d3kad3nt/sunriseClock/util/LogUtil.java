@@ -7,7 +7,7 @@ public class LogUtil {
         Log.v(getCallerClassName(), message);
     }
 
-    public static void v(String message, String ... parameters){
+    public static void v(String message, Object ... parameters){
         v(String.format(message, (Object[]) parameters));
     }
 
@@ -15,7 +15,7 @@ public class LogUtil {
         Log.d(getCallerClassName(), message);
     }
 
-    public static void d(String message, String ... parameters){
+    public static void d(String message, Object ... parameters){
         d(String.format(message, (Object[]) parameters));
     }
 
@@ -23,7 +23,7 @@ public class LogUtil {
         Log.i(getCallerClassName(), message);
     }
 
-    public static void i(String message, String ... parameters){
+    public static void i(String message, Object... parameters){
         i(String.format(message, (Object[]) parameters));
     }
 
@@ -31,7 +31,7 @@ public class LogUtil {
         Log.w(getCallerClassName(), message);
     }
 
-    public static void w(String message, String ... parameters){
+    public static void w(String message, Object... parameters){
         w(String.format(message, (Object[]) parameters));
     }
 
@@ -39,7 +39,7 @@ public class LogUtil {
         Log.e(getCallerClassName(), message);
     }
 
-    public static void e(String message, String ... parameters){
+    public static void e(String message, Object... parameters){
         e(String.format(message, (Object[]) parameters));
     }
 
