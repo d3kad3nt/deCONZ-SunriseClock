@@ -8,6 +8,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
@@ -29,9 +30,21 @@ public class LightDetailViewModel extends AndroidViewModel {
     private final long lightID;
 
     public LiveData<Resource<UILight>> light;
+
+    /**
+     * Whether the loading indicator should be shown by the fragment.
+     */
     public ResourceVisibilityLiveData loadingIndicatorVisibility;
 
+    /**
+     * Visual indication that a light is not reachable.
+     */
     public BooleanVisibilityLiveData notReachableCardVisibility;
+
+    /**
+     * Whether the loading indicator of the swipeRefreshLayout should be shown by the fragment.
+     */
+    public MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
 
     public LightDetailViewModel(@NonNull Application application, long lightId) {
         super(application);
@@ -44,6 +57,26 @@ public class LightDetailViewModel extends AndroidViewModel {
         notReachableCardVisibility =
             new BooleanVisibilityLiveData(View.GONE).setTrueVisibility(View.GONE).setFalseVisibility(View.VISIBLE)
                 .addVisibilityProvider(getIsReachable());
+    }
+
+    public void refreshLight() {
+        Log.d(TAG, String.format("User requested refresh of light with lightId %s.", lightID));
+
+        LiveData<EmptyResource> state = lightRepository.refreshLight(lightID);
+
+        swipeRefreshing.addSource(state, emptyResource -> {
+            switch (emptyResource.getStatus()) {
+                case SUCCESS, ERROR -> {
+                    Log.v(TAG, "Stopping swipeRefresh animation.");
+                    swipeRefreshing.setValue(false);
+                    swipeRefreshing.removeSource(state);
+                }
+                case LOADING -> {
+                    Log.v(TAG, "Starting swipeRefresh animation.");
+                    swipeRefreshing.setValue(true);
+                }
+            }
+        });
     }
 
     public void setLightOnState(boolean newState) {
