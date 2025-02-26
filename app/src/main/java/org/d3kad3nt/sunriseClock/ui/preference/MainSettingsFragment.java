@@ -16,7 +16,7 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        LogUtil.i("Settings");
+        LogUtil.d("Show settings view");
         setPreferencesFromResource(R.xml.preferences_main, rootKey);
         Map<String, Integer> links =
             Map.of("pref_connectivity_category", R.id.action_mainSettingsFragment_to_connectivityFragment,
