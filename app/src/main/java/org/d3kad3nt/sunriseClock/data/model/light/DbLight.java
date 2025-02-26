@@ -30,7 +30,6 @@ public class DbLight {
     static final int BRIGHTNESS_MIN = 0;
     @Ignore
     static final int BRIGHTNESS_MAX = 100;
-    @Ignore
     @ColumnInfo(name = "endpoint_id")
     private final long endpointId;
     @ColumnInfo(name = "endpoint_light_id")
