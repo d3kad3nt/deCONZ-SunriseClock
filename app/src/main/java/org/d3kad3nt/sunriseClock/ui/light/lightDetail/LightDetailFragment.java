@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import org.d3kad3nt.sunriseClock.databinding.LightDetailFragmentBinding;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class LightDetailFragment extends Fragment {
 
@@ -20,6 +21,7 @@ public class LightDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        LogUtil.d("Show light detail view");
         long lightID = LightDetailFragmentArgs.fromBundle(requireArguments()).getLight(); // id from navigation
         // Use custom factory to initialize viewModel with light id (instead of using new ViewModelProvider(this)
         // .get(LightDetailViewModel.class))

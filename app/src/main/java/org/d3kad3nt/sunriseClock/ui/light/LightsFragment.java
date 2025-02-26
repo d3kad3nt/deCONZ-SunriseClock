@@ -34,6 +34,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        LogUtil.d("Show light list view");
         viewModel = new ViewModelProvider(requireActivity()).get(LightsViewModel.class);
         adapter = new LightsListAdapter(this);
 

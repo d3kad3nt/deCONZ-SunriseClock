@@ -27,6 +27,7 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        LogUtil.d("Show endpoint list view");
         EndpointsFragmentBinding binding = EndpointsFragmentBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointsViewModel.class);
         adapter = new EndpointsListAdapter(viewModel, this);
