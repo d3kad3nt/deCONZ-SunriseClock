@@ -20,6 +20,7 @@ import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class LightsViewModel extends AndroidViewModel {
@@ -31,6 +32,9 @@ public class LightsViewModel extends AndroidViewModel {
         EndpointRepository.getInstance(getApplication().getApplicationContext());
     private final SettingsRepository settingsRepository =
         SettingsRepository.getInstance(getApplication().getApplicationContext());
+
+    private final LiveData<Optional<Long>> endpointId;
+
     private final LiveData<Resource<List<UILight>>> lights;
     private final LiveData<List<IEndpointUI>> endpoints;
 
@@ -43,12 +47,13 @@ public class LightsViewModel extends AndroidViewModel {
         loadingIndicatorVisibility = new ResourceVisibilityLiveData(View.INVISIBLE).setLoadingVisibility(View.VISIBLE)
             .setSuccessVisibility(View.INVISIBLE).setErrorVisibility(View.INVISIBLE);
 
-        LiveData<Optional<Long>>endpointID = settingsRepository.getActiveEndpointIdAsLivedata();
-        lights = Transformations.switchMap(endpointID, endpointId -> {
-            if (endpointId.isEmpty()){
+        endpointId = settingsRepository.getActiveEndpointIdAsLivedata();
+
+        lights = Transformations.switchMap(endpointId, id -> {
+            if (id.isEmpty()){
                 return new MutableLiveData<>(Resource.success(List.of()));
             } else {
-                return lightRepository.getLightsForEndpoint(endpointId.get());
+                return lightRepository.getLightsForEndpoint(id.get());
             }
         });
         endpoints = endpointRepository.getAllEndpoints();
@@ -62,6 +67,15 @@ public class LightsViewModel extends AndroidViewModel {
         return endpoints;
     }
 
+    public void toggleLightsOnState() {
+        Log.d(TAG, "User requested all lights to be turned on or off.");
+        if (!endpointId.isInitialized() || Objects.requireNonNull(endpointId.getValue().isEmpty())) {
+            Log.w(TAG, "No active endpoint found.");
+            return;
+        }
+        LiveData<EmptyResource> state = lightRepository.toggleOnStateForEndpoint(endpointId.getValue().get());
+        loadingIndicatorVisibility.addVisibilityProvider(state);
+    }
 
     public void setLightOnState(long lightId, boolean newState) {
         Log.d(TAG, String.format("User toggled setLightOnState with lightId %s to state %s.", lightId, newState));

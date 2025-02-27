@@ -73,4 +73,5 @@
     <string name="light_not_reachable">Light is not reachable</string>
     <string name="endpoint_type">Endpoint Type</string>
     <string name="endpoint_selected">Selected</string>
+    <string name="lights_toggle_power">power toggle</string>
 </resources>
