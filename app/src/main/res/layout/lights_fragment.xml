@@ -22,42 +22,42 @@
             android:indeterminate="true"
             android:visibility="@{viewModel.loadingIndicatorVisibility}"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+            app:layout_constraintBottom_toTopOf="@+id/swipe_refresh" />
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="true"
-            android:visibility="@{lightsState.error ? View.GONE : View.VISIBLE}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:onRefreshListener="@{()-> viewModel.refreshLights()}"
+            app:refreshing="@{viewModel.swipeRefreshing}"
             app:layout_constraintTop_toBottomOf="@id/light_loading"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:itemCount="7"
-            tools:listitem="@layout/light_list_element" />
+            app:layout_constraintBottom_toBottomOf="parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="true"
+                android:visibility="@{lightsState.error ? View.GONE : View.VISIBLE}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="7"
+                tools:listitem="@layout/light_list_element" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/errorTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@{lightsState.errorTitle}"
             android:visibility="@{lightsState.error ? View.VISIBLE : View.GONE}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/errorText"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="48dp"
             android:text="@{lightsState.errorMessage}"
             android:visibility="@{lightsState.error ? View.VISIBLE : View.GONE}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/errorTitle" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
