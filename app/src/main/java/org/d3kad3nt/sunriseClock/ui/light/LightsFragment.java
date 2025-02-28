@@ -1,5 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.light;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
+import org.d3kad3nt.sunriseClock.ui.MainActivity;
+import org.jetbrains.annotations.Contract;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -57,8 +60,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
             @Override
             public void onChanged(Resource<List<UILight>> listResource) {
                 Log.d(TAG, listResource.getStatus().toString());
-                if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
-                    lightsState.clearError();
+                if (listResource.getData() != null){
                     List<UILight> list = listResource.getData();
                     Collections.sort(list, new Comparator<>() {
                         @Override
@@ -67,10 +69,16 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
                         }
                     });
                     adapter.submitList(list);
-                } else if (listResource.getStatus().equals(Status.ERROR)) {
-                    lightsState.setError(getResources().getString(R.string.noLights_title),
-                        listResource.getMessage());
+                } else {
                     adapter.submitList(List.of());
+                }
+                switch (listResource.getStatus()){
+                    case SUCCESS:
+                        lightsState.clearError();
+                        break;
+                    case ERROR:
+                        String errorMsg = getResources().getString(R.string.noLights_title);
+                        lightsState.setError(errorMsg, listResource.getMessage());
                 }
             }
         });
