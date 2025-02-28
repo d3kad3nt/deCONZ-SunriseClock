@@ -2,12 +2,17 @@ package org.d3kad3nt.sunriseClock.ui.light;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,7 +29,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class LightsFragment extends Fragment implements LightsListAdapter.ClickListeners {
+public class LightsFragment extends Fragment implements LightsListAdapter.ClickListeners, MenuProvider {
 
     private final LightsState lightsState = new LightsState();
     private LightsFragmentBinding binding;
@@ -36,11 +41,17 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
                              @Nullable Bundle savedInstanceState) {
         LogUtil.d("Show light list view");
         viewModel = new ViewModelProvider(requireActivity()).get(LightsViewModel.class);
-        adapter = new LightsListAdapter(this);
 
         binding = LightsFragmentBinding.inflate(inflater, container, false);
+
         binding.setLightsState(lightsState);
+
+        adapter = new LightsListAdapter(this);
         binding.recyclerView.setAdapter(adapter);
+
+        // Initialize the options menu (toolbar menu).
+        MenuHost menuHost = requireActivity();
+        menuHost.addMenuProvider(this, getViewLifecycleOwner());
 
         viewModel.getLights().observe(getViewLifecycleOwner(), new Observer<Resource<List<UILight>>>() {
             @Override
@@ -96,5 +107,24 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
     @Override
     public void onSliderTouch(final long lightId, @IntRange(from = 0, to = 100) final int brightness, final boolean state) {
         viewModel.setLightBrightness(lightId, brightness, state);
+    }
+
+    @Override
+    public void onCreateMenu(@NonNull final Menu menu, @NonNull final MenuInflater menuInflater) {
+        // XML menu resources do not support view or data binding: We have to use the R class.
+        Log.d(TAG, "Adding menu options to the toolbar.");
+        menuInflater.inflate(R.menu.menu_lights, menu);
+    }
+
+    @Override
+    public boolean onMenuItemSelected(@NonNull final MenuItem menuItem) {
+        // The SwipeRefreshLayout does not provide accessibility events.
+        // Instead, a menu item should be provided to allow refresh of the content wherever this gesture is used.
+        if (menuItem.getItemId() == R.id.menu_lights_refresh) {
+            Log.d(TAG, "User requested refresh of all lights by clicking the toolbar menu option.");
+            viewModel.refreshLights();
+            return true;
+        }
+        return false;
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Always show menu item inside the overflow menu because this is just an (accessible) alternative to the SwipeRefreshLayout. -->
+    <item
+        android:id="@+id/menu_light_details_refresh"
+        android:title="@string/refresh"
+        app:showAsAction="never" />
+</menu>
