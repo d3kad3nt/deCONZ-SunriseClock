@@ -22,7 +22,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         this.context = context;
 
         if (!Objects.equals(intent.getAction(), "android.app.action.NEXT_ALARM_CLOCK_CHANGED")) {
-            LogUtil.w("The received Broadcast had the wrong action: " + intent.getAction());
+            LogUtil.w("The received Broadcast had the wrong action: %s", intent.getAction());
             return;
         }
         AlarmManager alarm = (AlarmManager) this.context.getSystemService(Context.ALARM_SERVICE);
@@ -54,7 +54,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (wifiManager.isWifiEnabled()) {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             String bssid = wifiInfo.getBSSID();
-            LogUtil.d("Currently connected to BSSID: " + bssid);
+            LogUtil.d("Currently connected to BSSID: %s", bssid);
             //TODO: Only execute if in defined wifi connection (TODO: settings element).
             return true;
         } else {

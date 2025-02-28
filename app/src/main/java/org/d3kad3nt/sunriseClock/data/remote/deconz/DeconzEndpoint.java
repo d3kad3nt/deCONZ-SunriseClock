@@ -79,8 +79,8 @@ public class DeconzEndpoint extends BaseEndpoint {
             public Response intercept(@NonNull Chain chain) throws IOException {
                 Request request = chain.request();
                 Response response = chain.proceed(request);
-                LogUtil.v("HTTP interceptor: Intercepted request to: " + response.request().url() + " led to HTTP code: " +
-                        response.code());
+                LogUtil.v("HTTP interceptor: Intercepted request to: %s led to HTTP code: %d",
+                    response.request().url(), response.code());
 
                 if (response.code() >= 200 && response.code() <= 399 && response.body() != null) {
 
@@ -92,7 +92,7 @@ public class DeconzEndpoint extends BaseEndpoint {
                     // used to modify the JSON response from the
                     // Deconz endpoint and adds this light id.
                     if (request.header(IServices.endpointLightIdHeader) != null) {
-                        LogUtil.v("HTTP interceptor: Try to set light " + "id in JSON response as " + "workaround.");
+                        LogUtil.v("HTTP interceptor: Try to set light id in JSON response as workaround.");
 
                         assert response.body() != null;
                         String stringJson = response.body().string();
@@ -156,13 +156,13 @@ public class DeconzEndpoint extends BaseEndpoint {
 
     @Override
     public LiveData<ApiResponse<List<RemoteLight>>> getLights() {
-        LogUtil.d("Requesting all lights from endpoint: " + this.baseUrl);
+        LogUtil.d("Requesting all lights from endpoint: %s", this.baseUrl);
         return this.retrofit.getLights();
     }
 
     @Override
     public LiveData<ApiResponse<RemoteLight>> getLight(String id) {
-        LogUtil.d("Requesting single light with id " + id + " from endpoint: " + this.baseUrl);
+        LogUtil.d("Requesting single light with id %s from endpoint: %s", id, this.baseUrl);
 
         // Workaround: Deconz endpoint does not return the id of a light when requesting a single
         // light. The Gson deserializer is automatically called and cannot access the id inside of

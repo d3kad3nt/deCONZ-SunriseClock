@@ -32,6 +32,6 @@ public class AlarmFragment extends PreferenceFragmentCompat implements SharedPre
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        LogUtil.d("Preference " +  key + " changed.");
+        LogUtil.d("Preference %s changed.", key);
     }
 }

@@ -35,7 +35,7 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
         RemoteLightBuilder remoteLightBuilder =
             new RemoteLightBuilder().setEndpointType(EndpointType.DECONZ).setEndpointId(this.endpointId);
 
-        LogUtil.d("Parsing JSON for single light: " + json.toString());
+        LogUtil.d("Parsing JSON for single light: %s", json.toString());
 
         JsonObject rawJson = json.getAsJsonObject();
         JsonObject rawJsonState = rawJson.getAsJsonObject("state");

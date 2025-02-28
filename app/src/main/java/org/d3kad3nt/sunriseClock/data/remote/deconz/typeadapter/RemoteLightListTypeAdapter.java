@@ -40,7 +40,7 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
         JsonObject rawJson = json.getAsJsonObject();
         List<RemoteLight> lights = new ArrayList<>();
 
-        LogUtil.v("Parsing JSON for list of lights: " + rawJson.toString());
+        LogUtil.v("Parsing JSON for list of lights: %s", rawJson.toString());
 
         for (String lightId : rawJson.keySet()) {
             JsonObject jsonLight = rawJson.get(lightId).getAsJsonObject();

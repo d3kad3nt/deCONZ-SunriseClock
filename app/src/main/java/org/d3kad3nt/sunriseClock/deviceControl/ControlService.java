@@ -224,7 +224,7 @@ public class ControlService extends ControlsProviderService {
     @Override
     public void performControlAction(@NonNull final String controlId, @NonNull final ControlAction action,
                                      @NonNull final Consumer<Integer> consumer) {
-        LogUtil.d("Received ControlAction request for controlId " + controlId);
+        LogUtil.d("Received ControlAction request for controlId %s", controlId);
         if (action instanceof BooleanAction) {
             // Inform SystemUI that the action has been received and is being processed
             consumer.accept(ControlAction.RESPONSE_OK);
