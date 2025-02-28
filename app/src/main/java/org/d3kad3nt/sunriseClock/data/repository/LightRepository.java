@@ -18,7 +18,6 @@ import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
-import org.d3kad3nt.sunriseClock.util.Empty;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,65 +55,6 @@ public class LightRepository {
             }
         }
         return INSTANCE;
-    }
-
-    public LiveData<EmptyResource> refresh(long endpointId) {
-        try {
-            endpointRepo.getEndpoint(endpointId);
-        }
-        catch (NullPointerException e) {
-            EmptyResource resource = EmptyResource.error("Endpoint doesn't exist");
-            return new MutableLiveData<>(resource);
-        }
-        return Transformations.map(new NetworkBoundResource<Empty, List<RemoteLight>, List<DbLight>>() {
-
-            @Override
-            protected void saveResponseToDb(List<DbLight> items) {
-                for (DbLight light : items) {
-                    dbLightDao.upsert(light);
-                }
-            }
-
-            @Override
-            protected boolean shouldFetch(@Nullable List<DbLight> data) {
-                //TODO
-                return true;
-            }
-
-            @NonNull
-            @Override
-            protected LiveData<BaseEndpoint> loadEndpoint() {
-                return endpointRepo.getRepoEndpoint(endpointId);
-            }
-
-            @NotNull
-            @Override
-            protected LiveData<List<DbLight>> loadFromDb() {
-                return Transformations.map(dbLightDao.loadAllForEndpoint(endpointId), input -> {
-                    return new ArrayList<>(input);
-                });
-            }
-
-            @NotNull
-            @Override
-            protected LiveData<ApiResponse<List<RemoteLight>>> loadFromNetwork() {
-                return endpoint.getLights();
-            }
-
-            @Override
-            protected Empty convertDbTypeToResultType(List<DbLight> items) {
-               return new Empty();
-            }
-
-            @Override
-            protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteLight>> response) {
-                List<DbLight> lights = new ArrayList<>();
-                for (RemoteLight light : response.getBody()) {
-                    lights.add(DbLight.from(light));
-                }
-                return lights;
-            }
-        }, emptyResource -> EmptyResource.fromResource(emptyResource));
     }
 
     public LiveData<Resource<List<UILight>>> getLightsForEndpoint(long endpointId) {
