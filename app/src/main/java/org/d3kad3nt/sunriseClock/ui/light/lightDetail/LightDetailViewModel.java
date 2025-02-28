@@ -1,14 +1,16 @@
 package org.d3kad3nt.sunriseClock.ui.light.lightDetail;
 
-import android.app.Application;
 import android.view.View;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.viewmodel.CreationExtras;
+import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
@@ -22,10 +24,12 @@ import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import kotlin.jvm.functions.Function1;
 
-public class LightDetailViewModel extends AndroidViewModel {
+public class LightDetailViewModel extends ViewModel {
 
-    private final LightRepository lightRepository =
-        LightRepository.getInstance(getApplication().getApplicationContext());
+    public static final CreationExtras.Key<LightRepository> LIGHT_REPOSITORY_KEY = new CreationExtras.Key<>() {};
+    private final LightRepository lightRepository;
+
+    public final static CreationExtras.Key<Long> LIGHT_ID_KEY = new CreationExtras.Key<>() {};
     private final long lightID;
 
     public LiveData<Resource<UILight>> light;
@@ -45,10 +49,12 @@ public class LightDetailViewModel extends AndroidViewModel {
      */
     public MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
 
-    public LightDetailViewModel(@NonNull Application application, long lightId) {
-        super(application);
+    public LightDetailViewModel(@NonNull LightRepository lightRepository, long lightId) {
+        super();
+        this.lightRepository = lightRepository;
         this.lightID = lightId;
-        light = getLight(lightId);
+
+        this.light = getLight(lightId);
 
         loadingIndicatorVisibility = new ResourceVisibilityLiveData(View.VISIBLE).setLoadingVisibility(View.VISIBLE)
             .setSuccessVisibility(View.INVISIBLE).setErrorVisibility(View.INVISIBLE).addVisibilityProvider(light);
@@ -111,4 +117,13 @@ public class LightDetailViewModel extends AndroidViewModel {
             }
         });
     }
+
+    static final ViewModelInitializer<LightDetailViewModel> initializer = new ViewModelInitializer<>(
+        LightDetailViewModel.class,
+        creationExtras -> {
+            LightRepository lightRepository = creationExtras.get(LIGHT_REPOSITORY_KEY);
+            Long lightId = creationExtras.get(LIGHT_ID_KEY);
+            return new LightDetailViewModel(lightRepository, lightId);
+        }
+    );
 }

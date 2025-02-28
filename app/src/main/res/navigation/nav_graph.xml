@@ -11,19 +11,7 @@
         tools:layout="@layout/lights_fragment">
         <action
             android:id="@+id/action_lights_to_lightDetail"
-            app:destination="@id/lightDetail" />
-    </fragment>
-    <fragment
-        android:id="@+id/lightDetail"
-        android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment"
-        android:label="{LightName}"
-        tools:layout="@layout/light_detail_fragment">
-        <argument
-            android:name="Light"
-            app:argType="long" />
-        <argument
-            android:name="LightName"
-            app:argType="string" />
+            app:destination="@id/nav_graph_light_detail" />
     </fragment>
     <fragment
         android:id="@+id/mainSettingsFragment"
@@ -90,4 +78,29 @@
         android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointAddFragment"
         android:label="Add Endpoint"
         tools:layout="@layout/endpoint_add_fragment" />
+    <!--
+    Create nested nav graph to be able to scope a single viewmodel to all fragments in this graph.
+    These fragments are tightly coupled.
+    -->
+    <navigation android:id="@+id/nav_graph_light_detail"
+        app:startDestination="@id/lightDetail">
+    <argument
+        android:name="Light"
+        app:argType="long" />
+    <argument
+        android:name="LightName"
+        app:argType="string" />
+        <fragment
+            android:id="@+id/lightDetail"
+            android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment"
+            android:label="{LightName}"
+            tools:layout="@layout/light_detail_fragment">
+            <argument
+                android:name="Light"
+                app:argType="long" />
+            <argument
+                android:name="LightName"
+                app:argType="string" />
+        </fragment>
+    </navigation>
 </navigation>
