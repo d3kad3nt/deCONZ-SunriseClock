@@ -112,7 +112,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
     @Override
     public void onCreateMenu(@NonNull final Menu menu, @NonNull final MenuInflater menuInflater) {
         // XML menu resources do not support view or data binding: We have to use the R class.
-        Log.d(TAG, "Adding menu options to the toolbar.");
+        LogUtil.d("Adding menu options to the toolbar.");
         menuInflater.inflate(R.menu.menu_lights, menu);
     }
 
@@ -121,7 +121,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
         // The SwipeRefreshLayout does not provide accessibility events.
         // Instead, a menu item should be provided to allow refresh of the content wherever this gesture is used.
         if (menuItem.getItemId() == R.id.menu_lights_refresh) {
-            Log.d(TAG, "User requested refresh of all lights by clicking the toolbar menu option.");
+            LogUtil.d("User requested refresh of all lights by clicking the toolbar menu option.");
             viewModel.refreshLights();
             return true;
         }

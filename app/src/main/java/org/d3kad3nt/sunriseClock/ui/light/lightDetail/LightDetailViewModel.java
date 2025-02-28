@@ -18,6 +18,7 @@ import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.ui.util.BooleanVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import kotlin.jvm.functions.Function1;
 
@@ -58,19 +59,19 @@ public class LightDetailViewModel extends AndroidViewModel {
     }
 
     public void refreshLight() {
-        Log.d(TAG, String.format("User requested refresh of light with lightId %s.", lightID));
+        LogUtil.d("User requested refresh of light with lightId %s.", lightID);
 
         LiveData<EmptyResource> state = lightRepository.refreshLight(lightID);
 
         swipeRefreshing.addSource(state, emptyResource -> {
             switch (emptyResource.getStatus()) {
                 case SUCCESS, ERROR -> {
-                    Log.v(TAG, "Stopping swipeRefresh animation.");
+                    LogUtil.v("Stopping swipeRefresh animation.");
                     swipeRefreshing.setValue(false);
                     swipeRefreshing.removeSource(state);
                 }
                 case LOADING -> {
-                    Log.v(TAG, "Starting swipeRefresh animation.");
+                    LogUtil.v("Starting swipeRefresh animation.");
                     swipeRefreshing.setValue(true);
                 }
             }
