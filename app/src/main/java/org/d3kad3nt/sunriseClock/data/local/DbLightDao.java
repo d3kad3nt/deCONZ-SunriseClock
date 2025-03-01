@@ -31,8 +31,8 @@ public interface DbLightDao {
         // Case 1
         long rowId = save(obj);
         if (rowId != -1L) {
-            LogUtil.d("Inserted DbLight (row id: " + rowId + ") with endpointId " + obj.getEndpointId() + " and " +
-                "endpointLightId: " + obj.getEndpointLightId());
+            LogUtil.d("Inserted DbLight (row id: %d) with endpointId %d and endpointLightId: %s", rowId,
+                obj.getEndpointId(), obj.getEndpointLightId());
             return;
         }
 
@@ -56,7 +56,7 @@ public interface DbLightDao {
                 updateUsingEndpointIdAndEndpointLightId(obj.getEndpointId(), obj.getEndpointLightId(), obj.getName(),
                     obj.getIsSwitchable(), obj.getIsOn(), obj.getIsDimmable(), obj.getBrightness(),
                     obj.getIsTemperaturable(), obj.getColorTemperature(), obj.getIsColorable(), obj.getColor());
-            LogUtil.d("%d rows updated by room. Updated DbLight with endpointId: %d" + " and endpointLightId: %d",
+            LogUtil.d("%d rows updated by room. Updated DbLight with endpointId: %d" + " and endpointLightId: %s",
                 rowsUpdated, obj.getEndpointId(), obj.getEndpointLightId());
         } else {
             LogUtil.w("Neither lightId nor (endpointId and endpointLightId) were set. No update could be performed" +

@@ -55,7 +55,7 @@ public class UILight {
             new UILight(dbLight.getLightId(), dbLight.getEndpointId(), dbLight.getName(), dbLight.getIsSwitchable(),
                 dbLight.getIsOn(), dbLight.getIsDimmable(), dbLight.getBrightness(), dbLight.getIsTemperaturable(),
                 dbLight.getIsColorable(), dbLight.getIsReachable());
-        LogUtil.v("Converted DbLight with lightId %d (endpointId %d  endpointLightId %d) to UILight.",
+        LogUtil.v("Converted DbLight with lightId %d (endpointId %d  endpointLightId %s) to UILight.",
             dbLight.getLightId(), dbLight.getEndpointId(), dbLight.getEndpointLightId());
         return uiLight;
     }
