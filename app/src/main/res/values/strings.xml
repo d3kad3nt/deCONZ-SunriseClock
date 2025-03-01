@@ -74,4 +74,5 @@
     <string name="endpoint_type">Endpoint Type</string>
     <string name="endpoint_selected">Selected</string>
     <string name="lights_toggle_power">power toggle</string>
+    <string name="refresh">Refresh</string>
 </resources>

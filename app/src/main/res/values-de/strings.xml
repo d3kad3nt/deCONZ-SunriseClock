@@ -67,4 +67,5 @@
     <string name="endpoint_type">Endpoint Typ</string>
     <string name="endpoint_selected">Ausgewählt</string>
     <string name="lights_toggle_power">Ein/Aus-Schalter</string>
+    <string name="refresh">Aktualisieren</string>
 </resources>

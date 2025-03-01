@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import org.d3kad3nt.sunriseClock.databinding.EndpointDetailFragmentBinding;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class EndpointDetailFragment extends Fragment {
 
@@ -20,6 +21,7 @@ public class EndpointDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        LogUtil.d("Show endpoint detail view");
         long endpointID =
             EndpointDetailFragmentArgs.fromBundle(requireArguments()).getEndpointID(); // id from navigation
         // Use custom factory to initialize viewModel with endpoint id (instead of using new ViewModelProvider

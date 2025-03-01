@@ -21,8 +21,6 @@ import org.d3kad3nt.sunriseClock.databinding.ActivityDeviceControlBinding;
  */
 public class ControlActivity extends AppCompatActivity {
 
-    private static final String TAG = "ControlActivity";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
