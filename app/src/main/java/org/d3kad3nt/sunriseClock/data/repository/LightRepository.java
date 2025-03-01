@@ -221,14 +221,6 @@ public class LightRepository {
         };
     }
 
-    /**
-     * Turns the light on or off.
-     *
-     * @param lightId   The light to be turned on or off. The given ID must already exist in the database.
-     *                  Note that this ID is independent from the identifier that the backing endpoint uses internally.
-     * @param newState  Whether the light should be turned on (true) or off (false).
-     * @return Resource representing the status of the request.
-     */
     public LiveData<EmptyResource> refreshLight(long lightId) {
         return Transformations.map(new NetworkBoundResource<Empty, RemoteLight, DbLight>() {
 
@@ -276,6 +268,14 @@ public class LightRepository {
         }, emptyResource -> EmptyResource.fromResource(emptyResource));
     }
 
+    /**
+     * Turns the light on or off.
+     *
+     * @param lightId  The light to be turned on or off. The given ID must already exist in the database. Note that
+     *                 this ID is independent from the identifier that the backing endpoint uses internally.
+     * @param newState Whether the light should be turned on (true) or off (false).
+     * @return Resource representing the status of the request.
+     */
     public LiveData<EmptyResource> setOnState(long lightId, boolean newState) {
         if (newState){
             LogUtil.i("Enable Light with Id %d", lightId);
