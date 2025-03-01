@@ -59,6 +59,8 @@ public class LightRepository {
     }
 
     public LiveData<Resource<List<UILight>>> getLightsForEndpoint(long endpointId) {
+        LogUtil.i("Requesting and returning all lights for endpoint with id %d", endpointId);
+
         try {
             endpointRepo.getEndpoint(endpointId);
         }
@@ -122,6 +124,7 @@ public class LightRepository {
     }
 
     public LiveData<EmptyResource> refreshLightsForEndpoint(long endpointId) {
+        LogUtil.i("Refreshing all lights for endpoint with id %d", endpointId);
 
         return Transformations.map(new NetworkBoundResource<Empty, List<RemoteLight>, List<DbLight>>() {
 
@@ -174,6 +177,8 @@ public class LightRepository {
     }
 
     public LiveData<Resource<UILight>> getLight(long lightId) {
+        LogUtil.i("Requesting and returning single light with id %d", lightId);
+
         return new NetworkBoundResource<UILight, RemoteLight, DbLight>() {
 
             @Override
@@ -222,6 +227,8 @@ public class LightRepository {
     }
 
     public LiveData<EmptyResource> refreshLight(long lightId) {
+        LogUtil.i("Refreshing single light with id %d", lightId);
+
         return Transformations.map(new NetworkBoundResource<Empty, RemoteLight, DbLight>() {
 
             @Override
@@ -270,9 +277,9 @@ public class LightRepository {
 
     public LiveData<EmptyResource> setOnState(long lightId, boolean newState) {
         if (newState){
-            LogUtil.i("Enable Light with Id %d", lightId);
+            LogUtil.i("Enabling single light with id %d", lightId);
         }else {
-            LogUtil.i("Disable Light with Id %d", lightId);
+            LogUtil.i("Disabling single light with id %d", lightId);
         }
 
         return new NetworkUpdateResource<UILight, ResponseBody, DbLight>(true) {
@@ -296,14 +303,14 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<Resource<UILight>> loadUpdatedVersion() {
-                LogUtil.v("Load updated light");
+                LogUtil.d("Loading updated light with id %d after successful setOn change", lightId);
                 return getLight(lightId);
             }
         };
     }
 
     public LiveData<EmptyResource> setBrightness(long lightId,  @IntRange(from = 0, to = 100) int brightness) {
-        LogUtil.i("Set brightness to %d %% for light with id %d", brightness, lightId);
+        LogUtil.i("Setting brightness to %d %% for single light with id %d", brightness, lightId);
         if (brightness < 0 || brightness > 100) {
             throw new IllegalStateException(
                 "The new brightness for light " + lightId + " has to be between 0 and 100 and not " + brightness);
@@ -330,7 +337,7 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<Resource<UILight>> loadUpdatedVersion() {
-                LogUtil.v("Load updated light");
+                LogUtil.d("Loading updated light with id %d after successful brightness change", lightId);
                 return getLight(lightId);
             }
         };
