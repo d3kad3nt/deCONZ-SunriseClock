@@ -4,8 +4,6 @@ import androidx.annotation.IntRange;
 
 public class DbLightBuilder {
 
-    private static final String TAG = "DbLightBuilder";
-
     private long endpointId;
     private String endpointLightId;
 

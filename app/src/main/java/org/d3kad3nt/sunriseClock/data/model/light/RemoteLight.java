@@ -1,15 +1,12 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
 public class RemoteLight {
-
-    private static final String TAG = "RemoteLight";
 
     private final EndpointType endpointType;
 
@@ -39,14 +36,14 @@ public class RemoteLight {
         if (endpointId != 0L) {
             this.endpointId = endpointId;
         } else {
-            Log.e(TAG, "The given endpointId cannot be 0!");
+            LogUtil.e("The given endpointId cannot be 0!");
             throw new IllegalArgumentException("The given endpointId cannot be 0!");
         }
 
         if (endpointLightId != null && !endpointLightId.isEmpty()) {
             this.endpointLightId = endpointLightId;
         } else {
-            Log.e(TAG, "The given endpointLightId string cannot be null or empty!");
+            LogUtil.e("The given endpointLightId string cannot be null or empty!");
             throw new IllegalArgumentException("The given endpointLightId string cannot be null or empty!");
         }
 
@@ -73,7 +70,6 @@ public class RemoteLight {
     @NonNull
     @Contract("_ -> new")
     static DbLight toDbLight(RemoteLight remoteLight) {
-        Log.d(TAG, "Converting RemoteLight to DbLight...");
         DbLightBuilder dbLightBuilder = new DbLightBuilder();
         //Logic to convert remote light to db light depending on the endpoint type this light originated from.
         DbLight dbLight = dbLightBuilder.setEndpointId(remoteLight.getEndpointId())
@@ -87,8 +83,8 @@ public class RemoteLight {
             .setColor(remoteLight.getColor()) //Todo: Implement conversion
             .setIsReachable(remoteLight.getIsReachable())
             .build();
-        Log.d(TAG, "Converted RemoteLight with endpointId " + remoteLight.getEndpointId() + " and endpointLightId " +
-            remoteLight.getEndpointLightId() + " to DbLight.");
+        LogUtil.v("Converted RemoteLight with endpointId %d and endpointLightId %s to DbLight.",
+            remoteLight.getEndpointId(), remoteLight.getEndpointLightId());
         return dbLight;
     }
 

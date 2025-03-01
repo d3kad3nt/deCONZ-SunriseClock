@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.light;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +23,7 @@ import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,7 +31,6 @@ import java.util.List;
 
 public class LightsFragment extends Fragment implements LightsListAdapter.ClickListeners, MenuProvider {
 
-    private static final String TAG = "LightsFragment";
     private final LightsState lightsState = new LightsState();
     private LightsFragmentBinding binding;
     private LightsViewModel viewModel;
@@ -40,6 +39,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        LogUtil.d("Show light list view");
         viewModel = new ViewModelProvider(requireActivity()).get(LightsViewModel.class);
 
         binding = LightsFragmentBinding.inflate(inflater, container, false);
@@ -56,8 +56,8 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
         viewModel.getLights().observe(getViewLifecycleOwner(), new Observer<Resource<List<UILight>>>() {
             @Override
             public void onChanged(Resource<List<UILight>> listResource) {
-                Log.d(TAG, listResource.getStatus().toString());
                 if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
+                    LogUtil.i("Lights in list updated");
                     lightsState.clearError();
                     List<UILight> list = listResource.getData();
                     Collections.sort(list, new Comparator<>() {
@@ -68,6 +68,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
                     });
                     adapter.submitList(list);
                 } else if (listResource.getStatus().equals(Status.ERROR)) {
+                    LogUtil.i("No Lights found");
                     lightsState.setError(getResources().getString(R.string.noLights_title),
                         listResource.getMessage());
                     adapter.submitList(List.of());
@@ -94,6 +95,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
 
     @Override
     public void onCardClick(View view, final long lightId, final String lightName) {
+        LogUtil.d("Navigate to light detail view for light %s (Id %d)", lightName, lightId);
         Navigation.findNavController(view).navigate(LightsFragmentDirections.actionLightsToLightDetail(lightId, lightName));
     }
 
@@ -110,7 +112,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
     @Override
     public void onCreateMenu(@NonNull final Menu menu, @NonNull final MenuInflater menuInflater) {
         // XML menu resources do not support view or data binding: We have to use the R class.
-        Log.d(TAG, "Adding menu options to the toolbar.");
+        LogUtil.d("Adding menu options to the toolbar.");
         menuInflater.inflate(R.menu.menu_lights, menu);
     }
 
@@ -119,7 +121,7 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
         // The SwipeRefreshLayout does not provide accessibility events.
         // Instead, a menu item should be provided to allow refresh of the content wherever this gesture is used.
         if (menuItem.getItemId() == R.id.menu_lights_refresh) {
-            Log.d(TAG, "User requested refresh of all lights by clicking the toolbar menu option.");
+            LogUtil.d("User requested refresh of all lights by clicking the toolbar menu option.");
             viewModel.refreshLights();
             return true;
         }

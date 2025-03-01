@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.light;
 
 import android.app.Application;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -17,6 +16,7 @@ import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,7 +24,6 @@ import java.util.Optional;
 
 public class LightsViewModel extends AndroidViewModel {
 
-    private static final String TAG = "LightsViewModel";
     private final LightRepository lightRepository =
         LightRepository.getInstance(getApplication().getApplicationContext());
     private final SettingsRepository settingsRepository =
@@ -63,10 +62,10 @@ public class LightsViewModel extends AndroidViewModel {
     }
 
     public void refreshLights() {
-        Log.d(TAG, "User requested refresh of all lights.");
+        LogUtil.d("User requested refresh of all lights.");
 
         if (!endpointId.isInitialized() || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
-            Log.w(TAG, "No active endpoint found.");
+            LogUtil.w("No active endpoint found.");
             return;
         }
 
@@ -75,12 +74,12 @@ public class LightsViewModel extends AndroidViewModel {
         swipeRefreshing.addSource(state, emptyResource -> {
             switch (emptyResource.getStatus()) {
                 case SUCCESS, ERROR -> {
-                    Log.v(TAG, "Stopping swipeRefresh animation.");
+                    LogUtil.v("Stopping swipeRefresh animation.");
                     swipeRefreshing.setValue(false);
                     swipeRefreshing.removeSource(state);
                 }
                 case LOADING -> {
-                    Log.v(TAG, "Starting swipeRefresh animation.");
+                    LogUtil.v("Starting swipeRefresh animation.");
                     swipeRefreshing.setValue(true);
                 }
             }
@@ -92,14 +91,13 @@ public class LightsViewModel extends AndroidViewModel {
     }
 
     public void setLightOnState(long lightId, boolean newState) {
-        Log.d(TAG, String.format("User toggled setLightOnState with lightId %s to state %s.", lightId, newState));
+        LogUtil.d("User toggled setLightOnState with lightId %s to state %s.", lightId, newState);
         LiveData<EmptyResource> state = lightRepository.setOnState(lightId, newState);
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 
     public void setLightBrightness(long lightId, int brightness, final boolean onState) {
-        Log.d(TAG,
-            String.format("Slider for setLightBrightness for lightId %s was set to value %s.", lightId, brightness));
+        LogUtil.d("Slider for setLightBrightness for lightId %s was set to value %s.", lightId, brightness);
         //Enable the light if it was disabled
         if (brightness > 0 && !onState){
                 lightRepository.setOnState(lightId, true);

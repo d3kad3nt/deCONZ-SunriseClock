@@ -2,15 +2,13 @@ package org.d3kad3nt.sunriseClock.ui.preference;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.d3kad3nt.sunriseClock.R;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class ConnectivityFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
-
-    private static final String TAG = "ConnectivityFragment";
 
     @Override
     public void onResume() {
@@ -28,12 +26,12 @@ public class ConnectivityFragment extends PreferenceFragmentCompat implements Sh
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        Log.i("sunriseClock", "Settings");
+        LogUtil.i("Settings");
         setPreferencesFromResource(R.xml.preferences_connectivity, rootKey);
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.d(TAG, key + " changed.");
+        LogUtil.d("Preference %s changed.", key);
     }
 }

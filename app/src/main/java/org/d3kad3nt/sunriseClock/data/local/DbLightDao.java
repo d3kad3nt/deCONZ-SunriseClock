@@ -1,7 +1,5 @@
 package org.d3kad3nt.sunriseClock.data.local;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -12,13 +10,12 @@ import androidx.room.Transaction;
 import androidx.room.Update;
 
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.List;
 
 @Dao
 public interface DbLightDao {
-
-    String TAG = "DbLightDao";
 
     /**
      * Insert light object into the database (create) or update existing light object. Case 1: Insert if neither
@@ -34,8 +31,8 @@ public interface DbLightDao {
         // Case 1
         long rowId = save(obj);
         if (rowId != -1L) {
-            Log.d(TAG, "Inserted DbLight (row id: " + rowId + ") with endpointId " + obj.getEndpointId() + " and " +
-                "endpointLightId: " + obj.getEndpointLightId());
+            LogUtil.d("Inserted DbLight (row id: %d) with endpointId %d and endpointLightId: %s", rowId,
+                obj.getEndpointId(), obj.getEndpointLightId());
             return;
         }
 
@@ -44,11 +41,10 @@ public interface DbLightDao {
         if (obj.getLightId() != 0L) {
             int rowsUpdated = updateUsingPrimaryKey(obj);
             if (rowsUpdated >= 1) {
-                Log.d(TAG, rowsUpdated + " rows updated by room. Updated DbLight with lightId: " + obj.getLightId());
+                LogUtil.d("%d rows updated by room. Updated DbLight with lightId: %d", rowsUpdated, obj.getLightId());
             } else if (rowsUpdated == 0) {
-                Log.w(TAG,
-                    "0 rows updated by room. This could mean that the primary key (lightId: " + obj.getLightId() +
-                        ") could not be found in the database table.");
+                LogUtil.w("0 rows updated by room. This could mean that the primary key (lightId: %d) " +
+                    "could not be found in the database table.", obj.getLightId());
             }
         }
         // Case 3
@@ -60,13 +56,12 @@ public interface DbLightDao {
                 updateUsingEndpointIdAndEndpointLightId(obj.getEndpointId(), obj.getEndpointLightId(), obj.getName(),
                     obj.getIsSwitchable(), obj.getIsOn(), obj.getIsDimmable(), obj.getBrightness(),
                     obj.getIsTemperaturable(), obj.getColorTemperature(), obj.getIsColorable(), obj.getColor());
-            Log.d(TAG,
-                rowsUpdated + " rows updated by room. Updated DbLight with endpointId: " + obj.getEndpointId() +
-                    " and endpointLightId: " + obj.getEndpointLightId());
+            LogUtil.d("%d rows updated by room. Updated DbLight with endpointId: %d and endpointLightId: %s",
+                rowsUpdated, obj.getEndpointId(), obj.getEndpointLightId());
         } else {
-            Log.w(TAG,
-                "Neither lightId nor (endpointId and endpointLightId) were set. No update could be " + "performed" +
-                    " by room!");
+            LogUtil.w(
+                "Neither lightId nor (endpointId and endpointLightId) were set. No update could be performed by " +
+                    "room!");
         }
     }
 

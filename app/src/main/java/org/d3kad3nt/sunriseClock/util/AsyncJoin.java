@@ -18,7 +18,6 @@ import java.util.Set;
  */
 public class AsyncJoin {
 
-    private final static String TAG = "AsyncJoinHelper";
     private final MutableLiveData<Boolean> joinState = new MutableLiveData<>();
     private final Set<Object> observers = new HashSet<>();
     private boolean somethingObserved = false;

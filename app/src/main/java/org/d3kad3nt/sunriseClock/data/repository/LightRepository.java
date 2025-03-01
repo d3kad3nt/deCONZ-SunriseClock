@@ -19,6 +19,7 @@ import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
 import org.d3kad3nt.sunriseClock.util.Empty;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,7 +33,6 @@ import okhttp3.ResponseBody;
  */
 public class LightRepository {
 
-    private final static String TAG = "LightRepository";
     private static DbLightDao dbLightDao;
     private static volatile LightRepository INSTANCE;
     private final EndpointRepository endpointRepo;
@@ -269,6 +269,11 @@ public class LightRepository {
     }
 
     public LiveData<EmptyResource> setOnState(long lightId, boolean newState) {
+        if (newState){
+            LogUtil.i("Enable Light with Id %d", lightId);
+        }else {
+            LogUtil.i("Disable Light with Id %d", lightId);
+        }
 
         return new NetworkUpdateResource<UILight, ResponseBody, DbLight>(true) {
 
@@ -291,13 +296,14 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<Resource<UILight>> loadUpdatedVersion() {
+                LogUtil.v("Load updated light");
                 return getLight(lightId);
             }
         };
     }
 
     public LiveData<EmptyResource> setBrightness(long lightId,  @IntRange(from = 0, to = 100) int brightness) {
-
+        LogUtil.i("Set brightness to %d %% for light with id %d", brightness, lightId);
         if (brightness < 0 || brightness > 100) {
             throw new IllegalStateException(
                 "The new brightness for light " + lightId + " has to be between 0 and 100 and not " + brightness);
@@ -324,6 +330,7 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<Resource<UILight>> loadUpdatedVersion() {
+                LogUtil.v("Load updated light");
                 return getLight(lightId);
             }
         };
