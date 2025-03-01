@@ -1,7 +1,5 @@
 package org.d3kad3nt.sunriseClock.util;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -10,8 +8,8 @@ public class LiveDataUtil {
 
     public static <T> void logChanges(String TAG, @NonNull LiveData<T> liveData) {
         liveData.observeForever(t -> {
-            Log.d("LiveDataUtil", "Log Change");
-            Log.d(TAG, t.toString());
+            LogUtil.d("LiveDataUtil log Change");
+            LogUtil.d(t.toString());
         });
     }
 
