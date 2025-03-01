@@ -1,13 +1,9 @@
 package org.d3kad3nt.sunriseClock.serviceLocator;
 
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.Map;
 
 abstract class Cache <K, T> {
-
-    private static final String TAG = "Cache";
 
     private final Map<K, T> instances = new HashMap<>();
 
@@ -17,7 +13,6 @@ abstract class Cache <K, T> {
 
     public boolean addInstance(K key, T instance) {
         if (instances.containsKey(key)) {
-            Log.d(TAG, "addService: ");
             return false;
         }
         instances.put(key, instance);

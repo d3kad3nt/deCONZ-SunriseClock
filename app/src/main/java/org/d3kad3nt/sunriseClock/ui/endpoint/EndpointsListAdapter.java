@@ -17,7 +17,6 @@ import org.d3kad3nt.sunriseClock.databinding.EndpointListElementBinding;
 
 public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsListAdapter.ViewHolder> {
 
-    private static final String TAG = EndpointsListAdapter.class.getSimpleName();
     private final EndpointsViewModel viewModel;
 
     private CompoundButton selectedRadioButton = null;

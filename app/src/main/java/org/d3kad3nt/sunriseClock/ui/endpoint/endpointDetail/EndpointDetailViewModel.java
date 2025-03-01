@@ -17,7 +17,6 @@ import kotlin.jvm.functions.Function1;
 
 public class EndpointDetailViewModel extends AndroidViewModel {
 
-    private final static String TAG = "EndpointDetailViewModel";
     private final EndpointRepository endpointRepository =
         EndpointRepository.getInstance(getApplication().getApplicationContext());
 

@@ -1,6 +1,5 @@
 package org.d3kad3nt.sunriseClock.ui.light;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +16,9 @@ import com.google.android.material.slider.Slider;
 
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.databinding.LightListElementBinding;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.ViewHolder> {
-
-    private static final String TAG = "LightsListAdapter";
 
     private final ClickListeners clickListeners;
 
@@ -97,8 +95,8 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         public boolean areContentsTheSame(@NonNull UILight oldItem, @NonNull UILight newItem) {
             boolean result = oldItem.equals(newItem);
             if (!result) {
-                Log.d(TAG, "Recyclerview determined that light with lightId " + oldItem.getLightId() + " was " +
-                    "changed and its ViewHolder content must be updated.");
+                LogUtil.d("Recyclerview determined that light with lightId %d was " +
+                    "changed and its ViewHolder content must be updated.", oldItem.getLightId() );
             }
             return result;
         }

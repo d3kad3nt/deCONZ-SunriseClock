@@ -6,27 +6,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 
-import org.d3kad3nt.sunriseClock.R;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.Objects;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private final String TAG = "AlarmReceiver";
-
     private Context context;
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
-        Log.i(TAG, "Received intent.");
+        LogUtil.i("Received intent.");
 
         this.context = context;
 
         if (!Objects.equals(intent.getAction(), "android.app.action.NEXT_ALARM_CLOCK_CHANGED")) {
-            Log.w(context.getString(R.string.app_name),
-                "The received Broadcast had the wrong action: " + intent.getAction());
+            LogUtil.w("The received Broadcast had the wrong action: %s", intent.getAction());
             return;
         }
         AlarmManager alarm = (AlarmManager) this.context.getSystemService(Context.ALARM_SERVICE);
@@ -58,11 +54,11 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (wifiManager.isWifiEnabled()) {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             String bssid = wifiInfo.getBSSID();
-            Log.d(TAG, "Currently connected to BSSID: " + bssid);
+            LogUtil.d("Currently connected to BSSID: %s", bssid);
             //TODO: Only execute if in defined wifi connection (TODO: settings element).
             return true;
         } else {
-            Log.d(TAG, "WiFi is not enabled.");
+            LogUtil.d("WiFi is not enabled.");
             return false;
         }
     }

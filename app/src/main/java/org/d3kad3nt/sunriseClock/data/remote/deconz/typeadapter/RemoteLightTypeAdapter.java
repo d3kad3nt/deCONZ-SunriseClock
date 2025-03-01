@@ -1,7 +1,5 @@
 package org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter;
 
-import android.util.Log;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -12,12 +10,11 @@ import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLightBuilder;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.IServices;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.lang.reflect.Type;
 
 public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
-
-    private static final String TAG = "RemoteLightTypeAdapter";
 
     private final long endpointId;
 
@@ -38,7 +35,7 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
         RemoteLightBuilder remoteLightBuilder =
             new RemoteLightBuilder().setEndpointType(EndpointType.DECONZ).setEndpointId(this.endpointId);
 
-        Log.d(TAG, "Parsing JSON for single light: " + json.toString());
+        LogUtil.d("Parsing JSON for single light: %s", json.toString());
 
         JsonObject rawJson = json.getAsJsonObject();
         JsonObject rawJsonState = rawJson.getAsJsonObject("state");

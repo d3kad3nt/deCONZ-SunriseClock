@@ -16,8 +16,6 @@ public class ExtendedPublisher <T> implements Flow.Publisher<T> {
 
     private final List<ExtendedSubscription> subscriptionList = new LinkedList<>();
 
-    private final static String TAG = "ExtendedPublisher";
-
     private final boolean cache_publish_values;
 
     private final List<T> cache = new ArrayList<>();

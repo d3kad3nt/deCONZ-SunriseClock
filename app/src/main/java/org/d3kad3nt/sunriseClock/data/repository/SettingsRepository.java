@@ -10,6 +10,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.preference.PreferenceManager;
 
+import org.d3kad3nt.sunriseClock.util.LogUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -17,7 +19,6 @@ import java.util.Optional;
 
 public class SettingsRepository {
 
-    private static final String TAG = "SettingsRepository";
     private static volatile SettingsRepository INSTANCE;
     private final SharedPreferences preferences;
     private final Map<SettingKeys, Listener<Boolean>> listenerBooleanCache = new HashMap<>();
@@ -51,6 +52,7 @@ public class SettingsRepository {
     }
 
     public void setActiveEndpoint(long value){
+        LogUtil.i("Set active Endpoint to id %d", value);
         setLongSetting(SettingKeys.ACTIVE_ENDPOINT_ID, value);
     }
 
