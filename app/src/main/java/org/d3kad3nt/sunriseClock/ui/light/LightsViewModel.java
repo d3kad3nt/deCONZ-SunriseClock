@@ -87,9 +87,9 @@ public class LightsViewModel extends AndroidViewModel {
     }
 
     public void toggleLightsOnState() {
-        Log.d(TAG, "User requested all lights to be turned on or off.");
-        if (!endpointId.isInitialized() || Objects.requireNonNull(endpointId.getValue().isEmpty())) {
-            Log.w(TAG, "No active endpoint found.");
+        LogUtil.d("User requested all lights to be turned on or off.");
+        if (!endpointId.isInitialized() || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
+            LogUtil.w("No active endpoint found.");
             return;
         }
         LiveData<EmptyResource> state = lightRepository.toggleOnStateForEndpoint(endpointId.getValue().get());
