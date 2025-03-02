@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.viewmodel.MutableCreationExtras;
 import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import org.d3kad3nt.sunriseClock.R;
@@ -94,7 +95,13 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
             LogUtil.d("User requested a light refresh by clicking the toolbar menu option.");
             viewModel.refreshLight();
             return true;
+        } else if (menuItem.getItemId() == R.id.menu_light_details_info) {
+            LogUtil.d("User requested to show light info screen by clicking the toolbar menu option.");
+            Navigation.findNavController(binding.getRoot())
+                .navigate(LightDetailFragmentDirections.actionLightDetailToLightDetailInfoDialogFragment());
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 }

@@ -101,6 +101,13 @@
             <argument
                 android:name="LightName"
                 app:argType="string" />
+            <action
+                android:id="@+id/action_lightDetail_to_lightDetailInfoDialogFragment"
+                app:destination="@id/lightDetailInfoDialogFragment" />
         </fragment>
+        <dialog
+            android:id="@+id/lightDetailInfoDialogFragment"
+            android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailInfoDialogFragment"
+            android:label="LightDetailInfoDialogFragment" />
     </navigation>
 </navigation>

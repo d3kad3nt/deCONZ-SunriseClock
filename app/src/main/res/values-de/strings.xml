@@ -67,4 +67,6 @@
     <string name="endpoint_type">Endpoint Typ</string>
     <string name="endpoint_selected">Ausgewählt</string>
     <string name="refresh">Aktualisieren</string>
+    <string name="light_name_label">Name</string>
+    <string name="light_identifier_label">Identifikator</string>
 </resources>
