@@ -6,20 +6,27 @@
         <variable
             name="viewModel"
             type="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailViewModel" />
+        <variable
+            name="okClickListener"
+            type="org.d3kad3nt.sunriseClock.ui.util.DialogOkClickListener" />
     </data>
+    <!-- strokeWidth=0: Disable default border. -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:strokeWidth="0dp"
+        app:cardCornerRadius="32dp"
+        tools:context="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailInfoDialogFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp">
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/info_icon"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp"
-                android:src="@drawable/info_24dp"
+                app:srcCompat="@drawable/info_24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -67,6 +74,23 @@
                 app:layout_constraintStart_toEndOf="@id/guideline"
                 app:layout_constraintTop_toBottomOf="@+id/barrier_between_name_and_id"
                 tools:text="@sample/sample.json/lights/name" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_between_id_and_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="light_id_label, light_id_value" />
+            <!-- minWidth: Position button to the right. -->
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.Material3.Button.TextButton"
+                android:id="@+id/button_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:text="@string/ok_action"
+                android:onClickListener="@{()-> okClickListener.onOkClick()}"
+                app:layout_constraintTop_toBottomOf="@id/barrier_between_id_and_ok"
+                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

@@ -76,4 +76,5 @@
     <string name="refresh">Refresh</string>
     <string name="light_name_label">Name</string>
     <string name="light_identifier_label">Identifier</string>
+    <string name="ok_action">OK</string>
 </resources>

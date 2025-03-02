@@ -17,11 +17,12 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.databinding.LightDetailInfoDialogFragmentBinding;
+import org.d3kad3nt.sunriseClock.ui.util.DialogOkClickListener;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.Objects;
 
-public class LightDetailInfoDialogFragment extends DialogFragment {
+public class LightDetailInfoDialogFragment extends DialogFragment implements DialogOkClickListener {
 
     private LightDetailInfoDialogFragmentBinding binding;
 
@@ -49,9 +50,15 @@ public class LightDetailInfoDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         binding.setViewModel(viewModel);
+        binding.setOkClickListener(this);
         //  When subscribing to lifecycle-aware components such as LiveData,
         //  never use viewLifecycleOwner as the LifecycleOwner in a DialogFragment that uses Dialog objects.
         //  Instead, use the DialogFragment itself, or, if you're using Jetpack Navigation, use the NavBackStackEntry.
         binding.setLifecycleOwner(NavHostFragment.findNavController(this).getCurrentBackStackEntry());
+    }
+
+    @Override
+    public void onOkClick() {
+        dismiss();
     }
 }
