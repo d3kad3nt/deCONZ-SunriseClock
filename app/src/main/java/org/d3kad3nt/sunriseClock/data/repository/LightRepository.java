@@ -275,6 +275,14 @@ public class LightRepository {
         }, emptyResource -> EmptyResource.fromResource(emptyResource));
     }
 
+    /**
+     * Turns the light on or off.
+     *
+     * @param lightId  The light to be turned on or off. The given ID must already exist in the database. Note that
+     *                 this ID is independent from the identifier that the backing endpoint uses internally.
+     * @param newState Whether the light should be turned on (true) or off (false).
+     * @return Resource representing the status of the request.
+     */
     public LiveData<EmptyResource> setOnState(long lightId, boolean newState) {
         if (newState){
             LogUtil.i("Enabling single light with id %d", lightId);
@@ -309,6 +317,51 @@ public class LightRepository {
         };
     }
 
+    /**
+     * Toggle all lights from on to off or vice versa.
+     * <p>
+     * If one or more lights are currently turned on, those are turned off.
+     * If all lights are currently turned off, all lights are turned on.
+     *
+     * @param endpointId The endpoint on which to execute the action. The given ID must already exist in the database.
+     * @return Resource representing the status of the request.
+     */
+    public LiveData<EmptyResource> toggleOnStateForEndpoint(long endpointId) {
+
+        return new NetworkUpdateResource<List<UILight>, ResponseBody, List<DbLight>>(true) {
+
+            @Override
+            protected LiveData<List<DbLight>> loadFromDB() {
+                return dbLightDao.loadAllForEndpoint(endpointId);
+            }
+
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getRepoEndpoint(endpointId);
+            }
+
+            @NonNull
+            @Override
+            protected @NotNull LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
+                return baseEndpoint.toggleOnState();
+            }
+
+            @Override
+            protected @NotNull LiveData<Resource<List<UILight>>> loadUpdatedVersion() {
+                return getLightsForEndpoint(endpointId);
+            }
+        };
+    }
+
+    /**
+     * Changes the brightness of the light.
+     *
+     * @param lightId   The light that this action executes on. The given ID must already exist in the database.
+     *                  Note that this ID is independent from the identifier that the backing endpoint uses internally.
+     * @param brightness  Desired light brightness, ranging from 0 (lowest) to 100 (highest).
+     *                    TODO: Define whether 0 means off or lowest brightness (but still on).
+     * @return Resource representing the status of the request.
+     */
     public LiveData<EmptyResource> setBrightness(long lightId,  @IntRange(from = 0, to = 100) int brightness) {
         LogUtil.i("Setting brightness to %d %% for single light with id %d", brightness, lightId);
         if (brightness < 0 || brightness > 100) {

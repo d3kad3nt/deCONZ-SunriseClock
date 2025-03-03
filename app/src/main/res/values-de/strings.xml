@@ -66,6 +66,7 @@
     <string name="light_not_reachable">Licht kann nicht erreicht werden</string>
     <string name="endpoint_type">Endpoint Typ</string>
     <string name="endpoint_selected">Ausgewählt</string>
+    <string name="lights_toggle_power">Ein/Aus-Schalter</string>
     <string name="refresh">Aktualisieren</string>
     <string name="light_name_label">Name</string>
     <string name="light_identifier_label">Identifikator</string>
