@@ -104,10 +104,17 @@
             <action
                 android:id="@+id/action_lightDetail_to_lightDetailInfoDialogFragment"
                 app:destination="@id/lightDetailInfoDialogFragment" />
+            <action
+                android:id="@+id/action_lightDetail_to_lightDetailNameEditDialogFragment"
+                app:destination="@id/lightDetailNameEditDialogFragment" />
         </fragment>
         <dialog
             android:id="@+id/lightDetailInfoDialogFragment"
             android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailInfoDialogFragment"
             android:label="LightDetailInfoDialogFragment" />
+        <dialog
+            android:id="@+id/lightDetailNameEditDialogFragment"
+            android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailNameEditDialogFragment"
+            android:label="LightDetailNameEditDialogFragment" />
     </navigation>
 </navigation>

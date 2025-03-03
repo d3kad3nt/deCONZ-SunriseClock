@@ -6,6 +6,11 @@
         android:icon="@drawable/info_24dp"
         android:title="TODO"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_light_details_name_edit"
+        android:icon="@drawable/edit_24dp"
+        android:title="TODO"
+        app:showAsAction="ifRoom" />
     <!-- Always show menu item inside the overflow menu because this is just an (accessible) alternative to the SwipeRefreshLayout. -->
     <item
         android:id="@+id/menu_light_details_refresh"

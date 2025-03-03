@@ -100,7 +100,14 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
             Navigation.findNavController(binding.getRoot())
                 .navigate(LightDetailFragmentDirections.actionLightDetailToLightDetailInfoDialogFragment());
             return true;
-        } else {
+        }
+        else if (menuItem.getItemId() == R.id.menu_light_details_name_edit) {
+            LogUtil.d("User requested to show light name edit screen by clicking the toolbar menu option.");
+            Navigation.findNavController(binding.getRoot())
+                .navigate(LightDetailFragmentDirections.actionLightDetailToLightDetailNameEditDialogFragment());
+            return true;
+        }
+        else {
             return false;
         }
     }

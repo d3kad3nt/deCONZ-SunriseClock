@@ -1,0 +1,49 @@
+package org.d3kad3nt.sunriseClock.ui.light.lightDetail;
+
+import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+import androidx.navigation.fragment.NavHostFragment;
+
+import org.d3kad3nt.sunriseClock.R;
+import org.d3kad3nt.sunriseClock.databinding.LightDetailNameEditDialogFragmentBinding;
+import org.d3kad3nt.sunriseClock.ui.util.BaseDialogFragment;
+import org.d3kad3nt.sunriseClock.ui.util.DialogOkClickListener;
+
+public class LightDetailNameEditDialogFragment extends BaseDialogFragment<LightDetailNameEditDialogFragmentBinding, LightDetailViewModel> implements DialogOkClickListener {
+
+    @Override
+    protected LightDetailNameEditDialogFragmentBinding getViewBinding() {
+        return LightDetailNameEditDialogFragmentBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
+    protected Class<LightDetailViewModel> getViewModelClass() {
+        return LightDetailViewModel.class;
+    }
+
+    @Override
+    protected void bindVars() {
+        binding.setViewModel(viewModel);
+        binding.setOkClickListener(this);
+    }
+
+    @Override
+    protected void observeData() {
+        //  When subscribing to lifecycle-aware components such as LiveData,
+        //  never use viewLifecycleOwner as the LifecycleOwner in a DialogFragment that uses Dialog objects.
+        //  Instead, use the DialogFragment itself, or, if you're using Jetpack Navigation, use the NavBackStackEntry.
+        binding.setLifecycleOwner(NavHostFragment.findNavController(this).getCurrentBackStackEntry());
+    }
+
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(STYLE_NORMAL, R.style.DialogStyle);
+    }
+
+    @Override
+    public void onOkClick() {
+        dismiss();
+    }
+}
