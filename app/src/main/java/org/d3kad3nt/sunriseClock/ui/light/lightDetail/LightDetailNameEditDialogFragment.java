@@ -48,13 +48,9 @@ public class LightDetailNameEditDialogFragment extends BaseDialogFragment<LightD
     }
 
     @Override
-    public void onCreate(@Nullable final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(STYLE_NORMAL, R.style.DialogStyle);
-    }
-
-    @Override
     public void onOkClick() {
         dismiss();
+        // TODO: Good style? Move to XML?
+        viewModel.setLightName(String.valueOf(binding.textinputtext.getText()));
     }
 }

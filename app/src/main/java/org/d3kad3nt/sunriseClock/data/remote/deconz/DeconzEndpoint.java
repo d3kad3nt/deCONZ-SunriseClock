@@ -186,4 +186,11 @@ public class DeconzEndpoint extends BaseEndpoint {
         requestBody.add("bri", new JsonPrimitive(deconzBrightness));
         return this.retrofit.updateLightState(endpointLightId, requestBody);
     }
+
+    @Override
+    public LiveData<ApiResponse<ResponseBody>> setName(String endpointLightId, String newName) {
+        JsonObject requestBody = new JsonObject();
+        requestBody.add("name", new JsonPrimitive(newName));
+        return this.retrofit.updateLightAttributes(endpointLightId, requestBody);
+    }
 }

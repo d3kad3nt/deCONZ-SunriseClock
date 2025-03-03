@@ -342,4 +342,34 @@ public class LightRepository {
             }
         };
     }
+
+    public LiveData<EmptyResource> setName(long lightId, String newName) {
+        LogUtil.i("Setting name to %s for single light with id %d", newName, lightId);
+
+        return new NetworkUpdateResource<UILight, ResponseBody, DbLight>() {
+
+            @Override
+            protected LiveData<DbLight> loadFromDB() {
+                return dbLightDao.load(lightId);
+            }
+
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
+                return baseEndpoint.setName(dbObject.getEndpointLightId(), newName);
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<Resource<UILight>> loadUpdatedVersion() {
+                LogUtil.d("Loading updated light with id %d after successful name change", lightId);
+                return getLight(lightId);
+            }
+        };
+    }
 }

@@ -77,4 +77,5 @@
     <string name="light_name_label">Name</string>
     <string name="light_identifier_label">Identifier</string>
     <string name="ok_action">OK</string>
+    <string name="light_rename_heading">Rename light</string>
 </resources>

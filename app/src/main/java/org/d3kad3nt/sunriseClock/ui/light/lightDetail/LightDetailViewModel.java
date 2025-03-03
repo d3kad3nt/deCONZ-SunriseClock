@@ -6,7 +6,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.CreationExtras;
@@ -49,6 +49,8 @@ public class LightDetailViewModel extends ViewModel {
      */
     public MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
 
+    public MutableLiveData<String> lightNameEditText = new MutableLiveData<>();
+
     public LightDetailViewModel(@NonNull LightRepository lightRepository, long lightId) {
         super();
         this.lightRepository = lightRepository;
@@ -62,6 +64,13 @@ public class LightDetailViewModel extends ViewModel {
         notReachableCardVisibility =
             new BooleanVisibilityLiveData(View.GONE).setTrueVisibility(View.GONE).setFalseVisibility(View.VISIBLE)
                 .addVisibilityProvider(getIsReachable());
+
+        lightNameEditText = (MutableLiveData<String>) Transformations.map(light, uiLightResource -> {
+            if (uiLightResource.getStatus() == Status.SUCCESS) {
+                return uiLightResource.getData().getName();
+            }
+            return "";
+        });
     }
 
     public void refreshLight() {
@@ -99,6 +108,11 @@ public class LightDetailViewModel extends ViewModel {
             return;
         }
         LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightness);
+        loadingIndicatorVisibility.addVisibilityProvider(state);
+    }
+
+    public void setLightName(String newName) {
+        LiveData<EmptyResource> state = lightRepository.setName(lightID, newName);
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 
