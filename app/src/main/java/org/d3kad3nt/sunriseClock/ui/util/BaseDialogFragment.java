@@ -30,12 +30,7 @@ public abstract class BaseDialogFragment<DataBindingT extends ViewDataBinding, V
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container,
                              @Nullable final Bundle savedInstanceState) {
         binding = getViewBinding();
-
-        // NavBackStackEntry and viewModel scoped to our nested nav graph (containing all light detail screens).
-        NavController navController = NavHostFragment.findNavController(this);
-        // Todo: Generic creation of viewModel (instead of hardcoded resource).
-        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_light_detail);
-        viewModel = new ViewModelProvider(backStackEntry).get(getViewModelClass());
+        viewModel = getViewModelProvider().get(getViewModelClass());
 
         return binding.getRoot();
     }
@@ -62,6 +57,11 @@ public abstract class BaseDialogFragment<DataBindingT extends ViewDataBinding, V
      * the LiveData will not be observed and updates to it will not be propagated to the UI.
      */
     protected abstract void observeData();
+
+    /**
+     * Creates ViewModelProvider, used to create VM instances and retain them in the ViewModelStore of the given ViewModelStoreOwner.
+     */
+    protected abstract ViewModelProvider getViewModelProvider();
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
