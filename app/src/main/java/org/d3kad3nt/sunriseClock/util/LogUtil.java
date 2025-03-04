@@ -96,15 +96,28 @@ public class LogUtil {
         return "No Class Found";
     }
 
+    /**
+     * Remove the logging prefix for the current class (if one exists)
+     */
     public static void removePrefix() {
-        String className = getCallerClassName();
-        prefixCache.remove(className);
+        prefixCache.remove(getCallerClassName());
     }
 
+    /**
+     * Add a prefix before every Log Message that is created by this class until the prefix is changed or removed.
+     *
+     * @param prefix The Prefix that should be added
+     */
     public static void setPrefix(final @NonNull String prefix) {
         prefixCache.put(getCallerClassName(), prefix);
     }
 
+    /**
+     * Add a prefix before every Log Message that is created by this class until the prefix is changed or removed.
+     *
+     * @param prefix     The Prefix that should be added with String.format specifiers
+     * @param parameters The Parameters for String.format
+     */
     public static void setPrefix(final @NonNull String prefix, Object... parameters) {
         setPrefix(String.format(prefix, parameters));
     }
