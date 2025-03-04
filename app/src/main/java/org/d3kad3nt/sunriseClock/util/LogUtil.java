@@ -14,9 +14,9 @@ public class LogUtil {
     public static void v(String message){
         String callerClass = getCallerClassName();
         if (prefixCache.containsKey(callerClass)) {
-            Log.v(getCallerClassSimpleName(), prefixCache.get(callerClass) + message);
+            Log.v(getSimpleClassName(callerClass), prefixCache.get(callerClass) + message);
         } else {
-            Log.v(getCallerClassSimpleName(), message);
+            Log.v(getSimpleClassName(callerClass), message);
         }
     }
 
@@ -27,9 +27,9 @@ public class LogUtil {
     public static void d(String message){
         String callerClass = getCallerClassName();
         if (prefixCache.containsKey(callerClass)) {
-            Log.d(getCallerClassSimpleName(), prefixCache.get(callerClass) + message);
+            Log.d(getSimpleClassName(callerClass), prefixCache.get(callerClass) + message);
         } else {
-            Log.d(getCallerClassSimpleName(), message);
+            Log.d(getSimpleClassName(callerClass), message);
         }
     }
 
@@ -40,9 +40,9 @@ public class LogUtil {
     public static void i(String message){
         String callerClass = getCallerClassName();
         if (prefixCache.containsKey(callerClass)) {
-            Log.i(getCallerClassSimpleName(), prefixCache.get(callerClass) + message);
+            Log.i(getSimpleClassName(callerClass), prefixCache.get(callerClass) + message);
         } else {
-            Log.i(getCallerClassSimpleName(), message);
+            Log.i(getSimpleClassName(callerClass), message);
         }
     }
 
@@ -53,9 +53,9 @@ public class LogUtil {
     public static void w(String message){
         String callerClass = getCallerClassName();
         if (prefixCache.containsKey(callerClass)) {
-            Log.w(getCallerClassSimpleName(), prefixCache.get(callerClass) + message);
+            Log.w(getSimpleClassName(callerClass), prefixCache.get(callerClass) + message);
         } else {
-            Log.w(getCallerClassSimpleName(), message);
+            Log.w(getSimpleClassName(callerClass), message);
         }
     }
 
@@ -66,9 +66,9 @@ public class LogUtil {
     public static void e(String message){
         String callerClass = getCallerClassName();
         if (prefixCache.containsKey(callerClass)) {
-            Log.e(getCallerClassSimpleName(), prefixCache.get(callerClass) + message);
+            Log.e(getSimpleClassName(callerClass), prefixCache.get(callerClass) + message);
         } else {
-            Log.e(getCallerClassSimpleName(), message);
+            Log.e(getSimpleClassName(callerClass), message);
         }
     }
 
@@ -76,10 +76,15 @@ public class LogUtil {
         e(String.format(message, parameters));
     }
 
-    private static String getCallerClassSimpleName() {
-        String[] splitClassName = getCallerClassName().split("\\.");
+    private static String getSimpleClassName(@NonNull String className) {
+        String[] splitClassName = className.split("\\.");
         return splitClassName[splitClassName.length - 1];
     }
+
+    private static String getCallerClassSimpleName() {
+        return getSimpleClassName(getCallerClassName());
+    }
+
     private static String getCallerClassName() {
         StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
         for (int i=1; i<stElements.length; i++) {
