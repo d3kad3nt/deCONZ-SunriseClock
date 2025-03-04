@@ -2,6 +2,8 @@ package org.d3kad3nt.sunriseClock.util;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,11 +91,16 @@ public class LogUtil {
         return "No Class Found";
     }
 
-    public static void setPrefix(final String prefix) {
+    public static void removePrefix() {
+        String className = getCallerClassName();
+        prefixCache.remove(className);
+    }
+
+    public static void setPrefix(final @NonNull String prefix) {
         prefixCache.put(getCallerClassName(), prefix);
     }
 
-    public static void setPrefix(final String prefix, Object... parameters) {
+    public static void setPrefix(final @NonNull String prefix, Object... parameters) {
         setPrefix(String.format(prefix, parameters));
     }
 }
