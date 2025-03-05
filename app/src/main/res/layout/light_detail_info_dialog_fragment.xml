@@ -73,24 +73,19 @@
                 android:text="@{String.valueOf(viewModel.light.data.lightId)}"
                 app:layout_constraintStart_toEndOf="@id/guideline"
                 app:layout_constraintTop_toBottomOf="@+id/barrier_between_name_and_id"
-                tools:text="@sample/sample.json/lights/name" />
+                tools:text="@sample/sample.json/lights/lightId" />
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/barrier_between_id_and_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
                 app:constraint_referenced_ids="light_id_label, light_id_value" />
-            <!-- minWidth: Position button to the right. -->
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.Material3.Button.TextButton"
-                android:id="@+id/button_ok"
+            <include layout="@layout/common_dialog_ok_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="0dp"
-                android:text="@string/ok_action"
-                android:onClickListener="@{()-> okClickListener.onOkClick()}"
                 app:layout_constraintTop_toBottomOf="@id/barrier_between_id_and_ok"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:okClickListener="@{okClickListener}"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

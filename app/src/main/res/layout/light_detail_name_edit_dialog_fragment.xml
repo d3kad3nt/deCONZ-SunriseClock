@@ -7,6 +7,9 @@
             name="viewModel"
             type="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailViewModel" />
         <variable
+            name="cancelClickListener"
+            type="org.d3kad3nt.sunriseClock.ui.util.DialogCancelClickListener" />
+        <variable
             name="okClickListener"
             type="org.d3kad3nt.sunriseClock.ui.util.DialogOkClickListener" />
     </data>
@@ -25,7 +28,7 @@
                 android:id="@+id/heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/light_rename_heading"
+                android:text="@string/light_rename"
                 android:paddingBottom="16dp"
                 android:textSize="20sp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -39,26 +42,26 @@
                 app:startIconDrawable="@drawable/edit_24dp"
                 app:endIconMode="clear_text"
                 app:counterEnabled="true"
-                app:counterMaxLength="32">
+                app:counterMaxLength="32"
+                app:helperTextEnabled="true"
+                app:helperText="@string/light_rename_explanation">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textinputtext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:text="@={viewModel.lightNameEditText}" />
+                    android:text="@={viewModel.lightNameEditText}"
+                    tools:text="@sample/sample.json/lights/name"/>
             </com.google.android.material.textfield.TextInputLayout>
-            <!-- minWidth: Position button to the right. -->
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.Material3.Button.TextButton"
-                android:id="@+id/button_ok"
+            <include layout="@layout/common_dialog_ok_cancel_buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="0dp"
-                android:text="@string/ok_action"
-                android:onClickListener="@{()-> okClickListener.onOkClick()}"
                 app:layout_constraintTop_toBottomOf="@id/textinputlayout"
-                app:layout_constraintEnd_toEndOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:okClickListener="@{okClickListener}"
+                app:cancelClickListener="@{cancelClickListener}">
+            </include>
+            </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

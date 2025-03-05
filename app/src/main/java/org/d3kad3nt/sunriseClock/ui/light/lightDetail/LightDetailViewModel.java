@@ -49,6 +49,10 @@ public class LightDetailViewModel extends ViewModel {
      */
     public MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
 
+    /**
+     * Text that is shown in the light rename dialog.
+     * The user types the desired new name into a text field backed by this LiveData.
+     */
     public MutableLiveData<String> lightNameEditText = new MutableLiveData<>();
 
     public LightDetailViewModel(@NonNull LightRepository lightRepository, long lightId) {
@@ -65,6 +69,7 @@ public class LightDetailViewModel extends ViewModel {
             new BooleanVisibilityLiveData(View.GONE).setTrueVisibility(View.GONE).setFalseVisibility(View.VISIBLE)
                 .addVisibilityProvider(getIsReachable());
 
+        // If the light name changes upstream, we update the name that the user is getting shown in the rename dialog.
         lightNameEditText = (MutableLiveData<String>) Transformations.map(light, uiLightResource -> {
             if (uiLightResource.getStatus() == Status.SUCCESS) {
                 return uiLightResource.getData().getName();
@@ -109,6 +114,10 @@ public class LightDetailViewModel extends ViewModel {
         }
         LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightness);
         loadingIndicatorVisibility.addVisibilityProvider(state);
+    }
+
+    public void setLightNameFromEditText() {
+        setLightName(lightNameEditText.getValue());
     }
 
     public void setLightName(String newName) {

@@ -1,5 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.light.lightDetail;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
@@ -37,11 +38,8 @@ public class LightDetailInfoDialogFragment extends BaseDialogFragment<LightDetai
     }
 
     @Override
-    protected void observeData() {
-        //  When subscribing to lifecycle-aware components such as LiveData,
-        //  never use viewLifecycleOwner as the LifecycleOwner in a DialogFragment that uses Dialog objects.
-        //  Instead, use the DialogFragment itself, or, if you're using Jetpack Navigation, use the NavBackStackEntry.
-        binding.setLifecycleOwner(NavHostFragment.findNavController(this).getCurrentBackStackEntry());
+    protected LifecycleOwner observeData() {
+        return NavHostFragment.findNavController(this).getCurrentBackStackEntry();
     }
 
     @Override

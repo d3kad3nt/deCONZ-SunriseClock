@@ -1,8 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.light.lightDetail;
 
-import android.os.Bundle;
-
-import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
@@ -11,9 +9,10 @@ import androidx.navigation.fragment.NavHostFragment;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.databinding.LightDetailNameEditDialogFragmentBinding;
 import org.d3kad3nt.sunriseClock.ui.util.BaseDialogFragment;
+import org.d3kad3nt.sunriseClock.ui.util.DialogCancelClickListener;
 import org.d3kad3nt.sunriseClock.ui.util.DialogOkClickListener;
 
-public class LightDetailNameEditDialogFragment extends BaseDialogFragment<LightDetailNameEditDialogFragmentBinding, LightDetailViewModel> implements DialogOkClickListener {
+public class LightDetailNameEditDialogFragment extends BaseDialogFragment<LightDetailNameEditDialogFragmentBinding, LightDetailViewModel> implements DialogCancelClickListener, DialogOkClickListener {
 
     @Override
     protected LightDetailNameEditDialogFragmentBinding getViewBinding() {
@@ -36,21 +35,24 @@ public class LightDetailNameEditDialogFragment extends BaseDialogFragment<LightD
     @Override
     protected void bindVars() {
         binding.setViewModel(viewModel);
+        binding.setCancelClickListener(this);
         binding.setOkClickListener(this);
     }
 
     @Override
-    protected void observeData() {
-        //  When subscribing to lifecycle-aware components such as LiveData,
-        //  never use viewLifecycleOwner as the LifecycleOwner in a DialogFragment that uses Dialog objects.
-        //  Instead, use the DialogFragment itself, or, if you're using Jetpack Navigation, use the NavBackStackEntry.
-        binding.setLifecycleOwner(NavHostFragment.findNavController(this).getCurrentBackStackEntry());
+    protected LifecycleOwner observeData() {
+        return NavHostFragment.findNavController(this).getCurrentBackStackEntry();
+    }
+
+    @Override
+    public void onCancelClick() {
+        dismiss();
     }
 
     @Override
     public void onOkClick() {
+        // Todo: Update toolbar title to reflect light name change.
+        viewModel.setLightNameFromEditText();
         dismiss();
-        // TODO: Good style? Move to XML?
-        viewModel.setLightName(String.valueOf(binding.textinputtext.getText()));
     }
 }
