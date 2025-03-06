@@ -30,9 +30,6 @@ public class SettingsRepository {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    record Listener <T>(SharedPreferences.OnSharedPreferenceChangeListener listener,
-                        MutableLiveData<Optional<T>> liveData) {}
-
     public static SettingsRepository getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (LightRepository.class) {
@@ -168,4 +165,7 @@ public class SettingsRepository {
             return name;
         }
     }
+
+    record Listener <T>(SharedPreferences.OnSharedPreferenceChangeListener listener,
+                        MutableLiveData<Optional<T>> liveData) {}
 }

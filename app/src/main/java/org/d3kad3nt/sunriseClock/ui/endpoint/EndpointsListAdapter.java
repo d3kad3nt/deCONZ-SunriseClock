@@ -18,10 +18,8 @@ import org.d3kad3nt.sunriseClock.databinding.EndpointListElementBinding;
 public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsListAdapter.ViewHolder> {
 
     private final EndpointsViewModel viewModel;
-
-    private CompoundButton selectedRadioButton = null;
-
     private final ClickListeners clickListeners;
+    private CompoundButton selectedRadioButton = null;
 
     public EndpointsListAdapter(final EndpointsViewModel viewModel, final ClickListeners clickListeners) {
         super(new EndpointDiffCallback());
@@ -53,6 +51,21 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
          * @param endpointName Name of the endpoint.
          */
         void onCardClick(View view, long endpointId, String endpointName);
+    }
+
+    static class EndpointDiffCallback extends DiffUtil.ItemCallback<IEndpointUI> {
+
+        @Override
+        public boolean areItemsTheSame(@NonNull IEndpointUI oldItem, @NonNull IEndpointUI newItem) {
+            //TODO: use real UUID
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @SuppressLint("DiffUtilEquals")
+        @Override
+        public boolean areContentsTheSame(@NonNull IEndpointUI oldItem, @NonNull IEndpointUI newItem) {
+            return oldItem == newItem;
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -96,21 +109,6 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
                 selectedRadioButton = compoundButton;
                 viewModel.setSelectedEndpoint(endpoint.getId());
             }
-        }
-    }
-
-    static class EndpointDiffCallback extends DiffUtil.ItemCallback<IEndpointUI> {
-
-        @Override
-        public boolean areItemsTheSame(@NonNull IEndpointUI oldItem, @NonNull IEndpointUI newItem) {
-            //TODO: use real UUID
-            return oldItem.getId() == newItem.getId();
-        }
-
-        @SuppressLint("DiffUtilEquals")
-        @Override
-        public boolean areContentsTheSame(@NonNull IEndpointUI oldItem, @NonNull IEndpointUI newItem) {
-            return oldItem == newItem;
         }
     }
 }

@@ -27,6 +27,17 @@ public class UIEndpoint implements IEndpointUI {
             EndpointType.DECONZ);
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return stringRepresentation;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
     @Override
     public String getStringRepresentation() {
         return stringRepresentation;
@@ -40,16 +51,5 @@ public class UIEndpoint implements IEndpointUI {
     @Override
     public EndpointType getType() {
         return type;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return stringRepresentation;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 }
