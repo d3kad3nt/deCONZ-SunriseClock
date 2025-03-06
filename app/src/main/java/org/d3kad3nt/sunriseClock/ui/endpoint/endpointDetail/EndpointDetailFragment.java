@@ -34,7 +34,9 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        LogUtil.setPrefix("EndpointID %d: ", endpointID);
         LogUtil.d("Show endpoint detail view");
+
         long endpointID = EndpointDetailFragmentArgs.fromBundle(requireArguments()).getEndpointID(); // id from navigation
 
         // We are using a nested navigation graph.

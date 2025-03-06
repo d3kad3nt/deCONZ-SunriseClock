@@ -4,6 +4,7 @@ import android.view.View;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -21,6 +22,7 @@ import org.d3kad3nt.sunriseClock.ui.util.BooleanVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
+import org.jetbrains.annotations.Contract;
 
 import kotlin.jvm.functions.Function1;
 
@@ -57,6 +59,7 @@ public class LightDetailViewModel extends ViewModel {
 
     public LightDetailViewModel(@NonNull LightRepository lightRepository, long lightId) {
         super();
+        LogUtil.setPrefix("LightID %d: ", lightId);
         this.lightRepository = lightRepository;
         this.lightID = lightId;
 
@@ -79,7 +82,7 @@ public class LightDetailViewModel extends ViewModel {
     }
 
     public void refreshLight() {
-        LogUtil.d("User requested refresh of light with lightId %s.", lightID);
+        LogUtil.d("User requested refresh of light");
 
         LiveData<EmptyResource> state = lightRepository.refreshLight(lightID);
 
@@ -129,6 +132,8 @@ public class LightDetailViewModel extends ViewModel {
         return lightRepository.getLight(lightID);
     }
 
+    @NonNull
+    @Contract(" -> new")
     private LiveData<Boolean> getIsReachable() {
         return Transformations.map(light, new Function1<>() {
             @Override

@@ -33,7 +33,9 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        LogUtil.setPrefix("LightID %d: ", lightID);
         LogUtil.d("Show light detail view");
+
         long lightID = LightDetailFragmentArgs.fromBundle(requireArguments()).getLight(); // id from navigation
 
         // We are using a nested navigation graph.
