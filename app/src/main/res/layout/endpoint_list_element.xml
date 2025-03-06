@@ -16,15 +16,13 @@
             name="radioCheckedChangeListener"
             type="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsListAdapter.ViewHolder.RadioCheckedChangeListener" />
     </data>
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="10dp"
         android:onClick="@{cardClickListener}"
-        app:cardCornerRadius="5dp"
         tools:context="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -57,5 +55,5 @@
                 app:layout_constraintStart_toEndOf="@+id/materialTextView"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>
