@@ -19,6 +19,7 @@
       <option name="DO_NOT_WRAP_AFTER_SINGLE_ANNOTATION_IN_PARAMETER" value="true" />
       <option name="ANNOTATION_PARAMETER_WRAP" value="1" />
       <option name="ALIGN_MULTILINE_ANNOTATION_PARAMETERS" value="true" />
+      <option name="NEW_LINE_WHEN_BODY_IS_PRESENTED" value="true" />
       <option name="JD_ADD_BLANK_AFTER_RETURN" value="true" />
       <option name="JD_KEEP_INVALID_TAGS" value="false" />
       <option name="JD_PRESERVE_LINE_FEEDS" value="true" />
@@ -39,11 +40,15 @@
       <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
       <option name="BLANK_LINES_AFTER_CLASS_HEADER" value="1" />
       <option name="WHILE_ON_NEW_LINE" value="true" />
+      <option name="ALIGN_MULTILINE_FOR" value="false" />
       <option name="ALIGN_MULTILINE_ASSIGNMENT" value="true" />
       <option name="ALIGN_MULTILINE_PARENTHESIZED_EXPRESSION" value="true" />
       <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true" />
       <option name="CALL_PARAMETERS_WRAP" value="1" />
       <option name="METHOD_PARAMETERS_WRAP" value="1" />
+      <option name="EXTENDS_LIST_WRAP" value="1" />
+      <option name="THROWS_LIST_WRAP" value="1" />
+      <option name="EXTENDS_KEYWORD_WRAP" value="1" />
       <option name="METHOD_CALL_CHAIN_WRAP" value="1" />
       <option name="WRAP_FIRST_METHOD_IN_CALL_CHAIN" value="true" />
       <option name="BINARY_OPERATION_WRAP" value="1" />

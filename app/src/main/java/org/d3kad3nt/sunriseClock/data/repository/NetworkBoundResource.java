@@ -38,7 +38,8 @@ import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
  * <p>
  * You can read more about it in the [Architecture Guide](https://developer.android.com/arch).
  */
-public abstract class NetworkBoundResource <ResultType, RemoteType, DbType> extends ExtendedMediatorLiveData<Resource<ResultType>> {
+public abstract class NetworkBoundResource <ResultType, RemoteType, DbType>
+    extends ExtendedMediatorLiveData<Resource<ResultType>> {
 
     private final LiveData<DbType> dbSource;
     protected BaseEndpoint endpoint = null;
