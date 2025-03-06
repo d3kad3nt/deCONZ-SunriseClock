@@ -34,10 +34,10 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        long endpointID = EndpointDetailFragmentArgs.fromBundle(requireArguments()).getEndpointID(); // id from navigation
+
         LogUtil.setPrefix("EndpointID %d: ", endpointID);
         LogUtil.d("Show endpoint detail view");
-
-        long endpointID = EndpointDetailFragmentArgs.fromBundle(requireArguments()).getEndpointID(); // id from navigation
 
         // We are using a nested navigation graph.
         // From https://developer.android.com/guide/navigation/use-graph/programmatic#share_ui-related_data_between_destinations_with_viewmodel:

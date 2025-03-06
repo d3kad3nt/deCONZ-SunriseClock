@@ -33,10 +33,10 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        long lightID = LightDetailFragmentArgs.fromBundle(requireArguments()).getLight(); // id from navigation
+
         LogUtil.setPrefix("LightID %d: ", lightID);
         LogUtil.d("Show light detail view");
-
-        long lightID = LightDetailFragmentArgs.fromBundle(requireArguments()).getLight(); // id from navigation
 
         // We are using a nested navigation graph.
         // From https://developer.android.com/guide/navigation/use-graph/programmatic#share_ui-related_data_between_destinations_with_viewmodel:
