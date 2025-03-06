@@ -75,4 +75,15 @@
     <string name="endpoint_selected">Selected</string>
     <string name="lights_toggle_power">power toggle</string>
     <string name="refresh">Refresh</string>
+    <string name="light_name_label">Name</string>
+    <string name="light_identifier_label">Identifier</string>
+    <string name="ok_action">OK</string>
+    <string name="light_rename">Rename light</string>
+    <string name="cancel_action">Cancel</string>
+    <string name="light_rename_explanation">New name</string>
+    <string name="endpoint_rename">Rename endpoint</string>
+    <string name="endpoint_rename_explanation">New name</string>
+    <string name="endpoint_name_label">Name</string>
+    <string name="endpoint_identifier_label">Identifier</string>
+    <string name="endpointDetail_title">Endpoint info</string>
 </resources>

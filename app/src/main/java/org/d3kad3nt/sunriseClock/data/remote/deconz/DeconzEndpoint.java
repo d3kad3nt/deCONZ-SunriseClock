@@ -203,4 +203,13 @@ public class DeconzEndpoint extends BaseEndpoint {
         requestBody.add("toggle", new JsonPrimitive(true));
         return this.retrofit.updateGroupState(String.valueOf(GROUP_ALL_ID), requestBody);
     }
+
+    @Override
+    public LiveData<ApiResponse<ResponseBody>> setName(String endpointLightId, String newName) {
+        LogUtil.d("Setting light name for id %s to %s on endpoint: %s", endpointLightId, newName,
+            this.baseUrl);
+        JsonObject requestBody = new JsonObject();
+        requestBody.add("name", new JsonPrimitive(newName));
+        return this.retrofit.updateLightAttributes(endpointLightId, requestBody);
+    }
 }
