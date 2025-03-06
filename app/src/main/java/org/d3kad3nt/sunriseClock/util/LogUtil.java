@@ -81,10 +81,6 @@ public class LogUtil {
         return splitClassName[splitClassName.length - 1];
     }
 
-    private static String getCallerClassSimpleName() {
-        return getSimpleClassName(getCallerClassName());
-    }
-
     private static String getCallerClassName() {
         StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
         for (int i=1; i<stElements.length; i++) {
@@ -105,6 +101,8 @@ public class LogUtil {
 
     /**
      * Add a prefix before every Log Message that is created by this class until the prefix is changed or removed.
+     * <p>
+     * Info: The Prefix is class specific. This means, that different instances of the class use the same prefix
      *
      * @param prefix The Prefix that should be added
      */
@@ -114,6 +112,8 @@ public class LogUtil {
 
     /**
      * Add a prefix before every Log Message that is created by this class until the prefix is changed or removed.
+     * <p>
+     * Info: The Prefix is class specific. This means, that different instances of the class use the same prefix
      *
      * @param prefix     The Prefix that should be added with String.format specifiers
      * @param parameters The Parameters for String.format
