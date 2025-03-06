@@ -19,6 +19,7 @@ import org.d3kad3nt.sunriseClock.ui.util.BooleanVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
+import org.jetbrains.annotations.Contract;
 
 import kotlin.jvm.functions.Function1;
 
@@ -47,6 +48,7 @@ public class LightDetailViewModel extends AndroidViewModel {
 
     public LightDetailViewModel(@NonNull Application application, long lightId) {
         super(application);
+        LogUtil.setPrefix("LightID %d: ", lightId);
         this.lightID = lightId;
         light = getLight(lightId);
 
@@ -59,7 +61,7 @@ public class LightDetailViewModel extends AndroidViewModel {
     }
 
     public void refreshLight() {
-        LogUtil.d("User requested refresh of light with lightId %s.", lightID);
+        LogUtil.d("User requested refresh of light");
 
         LiveData<EmptyResource> state = lightRepository.refreshLight(lightID);
 
@@ -100,6 +102,8 @@ public class LightDetailViewModel extends AndroidViewModel {
         return lightRepository.getLight(lightID);
     }
 
+    @NonNull
+    @Contract(" -> new")
     private LiveData<Boolean> getIsReachable() {
         return Transformations.map(light, new Function1<>() {
             @Override
