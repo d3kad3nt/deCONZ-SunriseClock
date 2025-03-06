@@ -12,7 +12,9 @@ import org.d3kad3nt.sunriseClock.ui.util.BaseDialogFragment;
 import org.d3kad3nt.sunriseClock.ui.util.DialogCancelClickListener;
 import org.d3kad3nt.sunriseClock.ui.util.DialogOkClickListener;
 
-public class EndpointDetailNameEditDialogFragment extends BaseDialogFragment<EndpointDetailNameEditDialogFragmentBinding, EndpointDetailViewModel> implements DialogCancelClickListener, DialogOkClickListener {
+public class EndpointDetailNameEditDialogFragment
+    extends BaseDialogFragment<EndpointDetailNameEditDialogFragmentBinding, EndpointDetailViewModel>
+    implements DialogCancelClickListener, DialogOkClickListener {
 
     @Override
     protected EndpointDetailNameEditDialogFragmentBinding getViewBinding() {
@@ -25,14 +27,6 @@ public class EndpointDetailNameEditDialogFragment extends BaseDialogFragment<End
     }
 
     @Override
-    protected ViewModelProvider getViewModelProvider() {
-        // NavBackStackEntry and viewModel scoped to our nested nav graph (containing all endpoint detail screens).
-        NavController navController = NavHostFragment.findNavController(this);
-        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_endpoint_detail);
-        return new ViewModelProvider(backStackEntry);
-    }
-
-    @Override
     protected void bindVars() {
         binding.setViewModel(viewModel);
         binding.setCancelClickListener(this);
@@ -42,6 +36,14 @@ public class EndpointDetailNameEditDialogFragment extends BaseDialogFragment<End
     @Override
     protected LifecycleOwner observeData() {
         return NavHostFragment.findNavController(this).getCurrentBackStackEntry();
+    }
+
+    @Override
+    protected ViewModelProvider getViewModelProvider() {
+        // NavBackStackEntry and viewModel scoped to our nested nav graph (containing all endpoint detail screens).
+        NavController navController = NavHostFragment.findNavController(this);
+        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_endpoint_detail);
+        return new ViewModelProvider(backStackEntry);
     }
 
     @Override

@@ -11,7 +11,7 @@ public class LogUtil {
 
     private static final Map<String, String> prefixCache = new HashMap<>();
 
-    public static void v(String message){
+    public static void v(String message) {
         String callerClass = getCallerClassName();
         if (prefixCache.containsKey(callerClass)) {
             Log.v(getSimpleClassName(callerClass), prefixCache.get(callerClass) + message);
@@ -20,11 +20,11 @@ public class LogUtil {
         }
     }
 
-    public static void v(String message, Object ... parameters){
+    public static void v(String message, Object... parameters) {
         v(String.format(message, parameters));
     }
 
-    public static void d(String message){
+    public static void d(String message) {
         String callerClass = getCallerClassName();
         if (prefixCache.containsKey(callerClass)) {
             Log.d(getSimpleClassName(callerClass), prefixCache.get(callerClass) + message);
@@ -33,11 +33,11 @@ public class LogUtil {
         }
     }
 
-    public static void d(String message, Object ... parameters){
+    public static void d(String message, Object... parameters) {
         d(String.format(message, parameters));
     }
 
-    public static void i(String message){
+    public static void i(String message) {
         String callerClass = getCallerClassName();
         if (prefixCache.containsKey(callerClass)) {
             Log.i(getSimpleClassName(callerClass), prefixCache.get(callerClass) + message);
@@ -46,11 +46,11 @@ public class LogUtil {
         }
     }
 
-    public static void i(String message, Object... parameters){
+    public static void i(String message, Object... parameters) {
         i(String.format(message, parameters));
     }
 
-    public static void w(String message){
+    public static void w(String message) {
         String callerClass = getCallerClassName();
         if (prefixCache.containsKey(callerClass)) {
             Log.w(getSimpleClassName(callerClass), prefixCache.get(callerClass) + message);
@@ -59,11 +59,11 @@ public class LogUtil {
         }
     }
 
-    public static void w(String message, Object... parameters){
+    public static void w(String message, Object... parameters) {
         w(String.format(message, parameters));
     }
 
-    public static void e(String message){
+    public static void e(String message) {
         String callerClass = getCallerClassName();
         if (prefixCache.containsKey(callerClass)) {
             Log.e(getSimpleClassName(callerClass), prefixCache.get(callerClass) + message);
@@ -72,7 +72,7 @@ public class LogUtil {
         }
     }
 
-    public static void e(String message, Object... parameters){
+    public static void e(String message, Object... parameters) {
         e(String.format(message, parameters));
     }
 
@@ -83,9 +83,10 @@ public class LogUtil {
 
     private static String getCallerClassName() {
         StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
-        for (int i=1; i<stElements.length; i++) {
+        for (int i = 1; i < stElements.length; i++) {
             StackTraceElement ste = stElements[i];
-            if (!ste.getClassName().equals(LogUtil.class.getName()) && ste.getClassName().indexOf("java.lang.Thread")!=0) {
+            if (!ste.getClassName().equals(LogUtil.class.getName()) &&
+                ste.getClassName().indexOf("java.lang.Thread") != 0) {
                 return ste.getClassName();
             }
         }

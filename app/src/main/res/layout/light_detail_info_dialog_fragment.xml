@@ -14,8 +14,8 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:strokeWidth="0dp"
         app:cardCornerRadius="32dp"
+        app:strokeWidth="0dp"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailInfoDialogFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -26,10 +26,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp"
-                app:srcCompat="@drawable/info_24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/info_24dp" />
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
                 android:layout_width="match_parent"
@@ -80,12 +80,13 @@
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
                 app:constraint_referenced_ids="light_id_label, light_id_value" />
-            <include layout="@layout/common_dialog_ok_button"
+            <include
+                layout="@layout/common_dialog_ok_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/barrier_between_id_and_ok"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:okClickListener="@{okClickListener}"/>
+                app:layout_constraintTop_toBottomOf="@id/barrier_between_id_and_ok"
+                app:okClickListener="@{okClickListener}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

@@ -185,7 +185,8 @@ public class DeconzEndpoint extends BaseEndpoint {
     }
 
     @Override
-    public LiveData<ApiResponse<ResponseBody>> setBrightness(String endpointLightId, @IntRange(from = 0, to = 100) int brightness) {
+    public LiveData<ApiResponse<ResponseBody>> setBrightness(String endpointLightId,
+                                                             @IntRange(from = 0, to = 100) int brightness) {
         LogUtil.d("Setting light brightness for id %s to %d", endpointLightId, brightness);
         JsonObject requestBody = new JsonObject();
         //Deconz takes values from 0 to 255 for the brightness

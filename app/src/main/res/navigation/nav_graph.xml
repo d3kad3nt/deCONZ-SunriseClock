@@ -70,14 +70,15 @@
     Create nested nav graph to be able to scope a single viewmodel to all fragments in this graph.
     These fragments are tightly coupled.
     -->
-    <navigation android:id="@+id/nav_graph_light_detail"
+    <navigation
+        android:id="@+id/nav_graph_light_detail"
         app:startDestination="@id/lightDetail">
-    <argument
-        android:name="Light"
-        app:argType="long" />
-    <argument
-        android:name="LightName"
-        app:argType="string" />
+        <argument
+            android:name="Light"
+            app:argType="long" />
+        <argument
+            android:name="LightName"
+            app:argType="string" />
         <fragment
             android:id="@+id/lightDetail"
             android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment"
@@ -109,7 +110,8 @@
     Create nested nav graph to be able to scope a single viewmodel to all fragments in this graph.
     These fragments are tightly coupled.
     -->
-    <navigation android:id="@+id/nav_graph_endpoint_detail"
+    <navigation
+        android:id="@+id/nav_graph_endpoint_detail"
         app:startDestination="@id/endpointDetail">
         <fragment
             android:id="@+id/endpointDetail"

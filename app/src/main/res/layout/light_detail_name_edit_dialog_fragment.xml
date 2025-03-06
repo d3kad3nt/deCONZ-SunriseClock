@@ -17,8 +17,8 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:strokeWidth="0dp"
         app:cardCornerRadius="32dp"
+        app:strokeWidth="0dp"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailNameEditDialogFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -28,23 +28,23 @@
                 android:id="@+id/heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/light_rename"
                 android:paddingBottom="16dp"
+                android:text="@string/light_rename"
                 android:textSize="20sp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textinputlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/heading"
-                app:startIconDrawable="@drawable/edit_24dp"
-                app:endIconMode="clear_text"
                 app:counterEnabled="true"
                 app:counterMaxLength="32"
+                app:endIconMode="clear_text"
+                app:helperText="@string/light_rename_explanation"
                 app:helperTextEnabled="true"
-                app:helperText="@string/light_rename_explanation">
+                app:layout_constraintTop_toBottomOf="@id/heading"
+                app:startIconDrawable="@drawable/edit_24dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textinputtext"
                     android:layout_width="match_parent"
@@ -52,16 +52,16 @@
                     android:inputType="text"
                     android:maxLines="1"
                     android:text="@={viewModel.lightNameEditText}"
-                    tools:text="@sample/sample.json/lights/name"/>
+                    tools:text="@sample/sample.json/lights/name" />
             </com.google.android.material.textfield.TextInputLayout>
-            <include layout="@layout/common_dialog_ok_cancel_buttons"
+            <include
+                layout="@layout/common_dialog_ok_cancel_buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/textinputlayout"
+                app:cancelClickListener="@{cancelClickListener}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:okClickListener="@{okClickListener}"
-                app:cancelClickListener="@{cancelClickListener}">
-            </include>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toBottomOf="@id/textinputlayout"
+                app:okClickListener="@{okClickListener}"></include>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>
