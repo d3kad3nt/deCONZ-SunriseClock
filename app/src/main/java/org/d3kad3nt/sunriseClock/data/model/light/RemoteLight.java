@@ -81,8 +81,7 @@ public class RemoteLight {
             .setColorTemperature(remoteLight.getColorTemperature()) //Todo: Implement conversion
             .setIsColorable(remoteLight.getIsColorable())
             .setColor(remoteLight.getColor()) //Todo: Implement conversion
-            .setIsReachable(remoteLight.getIsReachable())
-            .build();
+            .setIsReachable(remoteLight.getIsReachable()).build();
         LogUtil.v("Converted RemoteLight with endpointId %d and endpointLightId %s to DbLight.",
             remoteLight.getEndpointId(), remoteLight.getEndpointLightId());
         return dbLight;

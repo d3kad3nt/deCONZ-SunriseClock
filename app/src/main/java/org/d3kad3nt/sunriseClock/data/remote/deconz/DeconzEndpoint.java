@@ -114,8 +114,7 @@ public class DeconzEndpoint extends BaseEndpoint {
                             ResponseBody body = ResponseBody.create(contentType, String.valueOf(jsonObject));
 
                             return response.newBuilder().body(body).build();
-                        }
-                        catch (JSONException ignored) {
+                        } catch (JSONException ignored) {
 
                         }
                     }
@@ -155,8 +154,7 @@ public class DeconzEndpoint extends BaseEndpoint {
         String path = String.format("/api/%s/", apiKey);
         try {
             return new URI(scheme, null, host, port, path, null, null);
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
             throw new IllegalArgumentException("URI can't be parsed", e);
         }
     }

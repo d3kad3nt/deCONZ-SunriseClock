@@ -40,8 +40,7 @@ public abstract class ApiResponse <T> {
             if (response.errorBody() != null) {
                 try {
                     msg = response.errorBody().string();
-                }
-                catch (IOException ignored) {
+                } catch (IOException ignored) {
                 }
             }
             final String errorMsg;
