@@ -41,8 +41,6 @@
                 app:layout_constraintTop_toBottomOf="@id/heading"
                 app:startIconDrawable="@drawable/edit_24dp"
                 app:endIconMode="clear_text"
-                app:counterEnabled="true"
-                app:counterMaxLength="32"
                 app:helperTextEnabled="true"
                 app:helperText="@string/endpoint_rename_explanation">
                 <com.google.android.material.textfield.TextInputEditText
