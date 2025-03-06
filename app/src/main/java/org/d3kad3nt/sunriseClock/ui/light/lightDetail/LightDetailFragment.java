@@ -14,8 +14,14 @@ import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.viewmodel.MutableCreationExtras;
+import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import org.d3kad3nt.sunriseClock.R;
+import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.databinding.LightDetailFragmentBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
@@ -27,13 +33,31 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        LogUtil.d("Show light detail view");
         long lightID = LightDetailFragmentArgs.fromBundle(requireArguments()).getLight(); // id from navigation
-        // Use custom factory to initialize viewModel with light id (instead of using new ViewModelProvider(this)
-        // .get(LightDetailViewModel.class))
-        viewModel = new ViewModelProvider(this,
-            new LightDetailViewModelFactory(requireActivity().getApplication(), lightID)).get(
-            LightDetailViewModel.class);
+
+        LogUtil.setPrefix("LightID %d: ", lightID);
+        LogUtil.d("Show light detail view");
+
+        // We are using a nested navigation graph.
+        // From https://developer.android.com/guide/navigation/use-graph/programmatic#share_ui-related_data_between_destinations_with_viewmodel:
+        // The Navigation back stack stores a NavBackStackEntry not only for each individual destination,
+        // but also for each parent navigation graph that contains the individual destination.
+        // This allows you to retrieve a NavBackStackEntry that is scoped to a navigation graph.
+        // A navigation graph-scoped NavBackStackEntry provides a way to create a ViewModel that's scoped to a navigation graph,
+        // enabling you to share UI-related data between the graph's destinations.
+        NavController navController = NavHostFragment.findNavController(this);
+        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_light_detail);
+
+        // Initialize viewModel with light id and inject the light repository.
+        // By injecting the repository, the viewModel no longer needs the Application or Context.
+        MutableCreationExtras viewModelDependencies = new MutableCreationExtras();
+        viewModelDependencies.set(LightDetailViewModel.LIGHT_REPOSITORY_KEY, LightRepository.getInstance(requireContext()));
+        viewModelDependencies.set(LightDetailViewModel.LIGHT_ID_KEY, lightID);
+
+        // Use custom factory to initialize the viewModel (instead of using new ViewModelProvider(this).get(LightDetailViewModel.class)).
+        // For viewModel older than 2.5.0 ViewModelProvider.Factory had to be extended.
+        viewModel = new ViewModelProvider(backStackEntry.getViewModelStore(),
+            ViewModelProvider.Factory.from(LightDetailViewModel.initializer), viewModelDependencies).get(LightDetailViewModel.class);
 
         binding = LightDetailFragmentBinding.inflate(inflater, container, false);
 
@@ -73,7 +97,20 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
             LogUtil.d("User requested a light refresh by clicking the toolbar menu option.");
             viewModel.refreshLight();
             return true;
+        } else if (menuItem.getItemId() == R.id.menu_light_details_info) {
+            LogUtil.d("User requested to show light info screen by clicking the toolbar menu option.");
+            Navigation.findNavController(binding.getRoot())
+                .navigate(LightDetailFragmentDirections.actionLightDetailToLightDetailInfoDialogFragment());
+            return true;
         }
-        return false;
+        else if (menuItem.getItemId() == R.id.menu_light_details_name_edit) {
+            LogUtil.d("User requested to show light name edit screen by clicking the toolbar menu option.");
+            Navigation.findNavController(binding.getRoot())
+                .navigate(LightDetailFragmentDirections.actionLightDetailToLightDetailNameEditDialogFragment());
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
