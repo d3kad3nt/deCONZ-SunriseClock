@@ -56,22 +56,10 @@
         tools:layout="@layout/endpoints_fragment">
         <action
             android:id="@+id/action_endpoints_to_endpointDetail"
-            app:destination="@id/endpointDetail" />
+            app:destination="@id/nav_graph_endpoint_detail" />
         <action
             android:id="@+id/action_endpoints_to_endpointAddFragment"
             app:destination="@id/endpointAddFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/endpointDetail"
-        android:name="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailFragment"
-        android:label="{endpointName}"
-        tools:layout="@layout/endpoint_detail_fragment">
-        <argument
-            android:name="endpointID"
-            app:argType="long" />
-        <argument
-            android:name="endpointName"
-            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/endpointAddFragment"
@@ -116,5 +104,44 @@
             android:id="@+id/lightDetailNameEditDialogFragment"
             android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailNameEditDialogFragment"
             android:label="LightDetailNameEditDialogFragment" />
+    </navigation>
+    <!--
+    Create nested nav graph to be able to scope a single viewmodel to all fragments in this graph.
+    These fragments are tightly coupled.
+    -->
+    <navigation android:id="@+id/nav_graph_endpoint_detail"
+        app:startDestination="@id/endpointDetail">
+        <fragment
+            android:id="@+id/endpointDetail"
+            android:name="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailFragment"
+            android:label="{endpointName}"
+            tools:layout="@layout/endpoint_detail_fragment">
+            <argument
+                android:name="endpointID"
+                app:argType="long" />
+            <argument
+                android:name="endpointName"
+                app:argType="string" />
+            <action
+                android:id="@+id/action_endpointDetail_to_endpointDetailInfoDialogFragment"
+                app:destination="@id/endpointDetailInfoDialogFragment" />
+            <action
+                android:id="@+id/action_endpointDetail_to_endpointDetailNameEditDialogFragment"
+                app:destination="@id/endpointDetailNameEditDialogFragment" />
+        </fragment>
+        <dialog
+            android:id="@+id/endpointDetailInfoDialogFragment"
+            android:name="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailInfoDialogFragment"
+            android:label="EndpointDetailInfoDialogFragment" />
+        <dialog
+            android:id="@+id/endpointDetailNameEditDialogFragment"
+            android:name="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailNameEditDialogFragment"
+            android:label="EndpointDetailNameEditDialogFragment" />
+        <argument
+            android:name="endpointID"
+            app:argType="long" />
+        <argument
+            android:name="endpointName"
+            app:argType="string" />
     </navigation>
 </navigation>

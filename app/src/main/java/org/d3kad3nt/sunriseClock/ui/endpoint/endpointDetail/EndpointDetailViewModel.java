@@ -2,6 +2,7 @@ package org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.CreationExtras;
@@ -30,6 +31,12 @@ public class EndpointDetailViewModel extends ViewModel {
 
     public LiveData<Boolean> selected;
 
+    /**
+     * Text that is shown in the endpoint rename dialog.
+     * The user types the desired new name into a text field backed by this LiveData.
+     */
+    public MutableLiveData<String> endpointNameEditText = new MutableLiveData<>();
+
     public EndpointDetailViewModel(@NonNull EndpointRepository endpointRepository, @NonNull SettingsRepository settingsRepository, long endpointId) {
         super();
         this.endpointRepository = endpointRepository;
@@ -44,10 +51,23 @@ public class EndpointDetailViewModel extends ViewModel {
                 return aLong.isPresent() && aLong.get().equals(endpointId);
             }
         });
+
+        // If the endpoint name changes upstream, we update the name that the user is getting shown in the rename dialog.
+        endpointNameEditText = (MutableLiveData<String>) Transformations.map(endpointConfig, endpointUI -> {
+            return endpointUI.getName();
+        });
     }
 
     private LiveData<IEndpointUI> getEndpoint(long endpointID) {
         return endpointRepository.getEndpoint(endpointID);
+    }
+
+    public void setEndpointNameFromEditText() {
+        setEndpointName(endpointNameEditText.getValue());
+    }
+
+    public void setEndpointName(String newName) {
+        endpointRepository.setName(endpointID, newName);
     }
 
     static final ViewModelInitializer<EndpointDetailViewModel> initializer = new ViewModelInitializer<>(

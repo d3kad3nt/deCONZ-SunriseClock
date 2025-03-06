@@ -32,10 +32,12 @@
   ],
   "endpoints": [
     {
-      "name": "Gateway Hamburg"
+      "name": "Gateway Hamburg",
+      "endpointId": 1
     },
     {
-      "name": "Gateway Ferienwohnung"
+      "name": "Gateway Ferienwohnung",
+      "endpointId": 2
     }
   ]
 }

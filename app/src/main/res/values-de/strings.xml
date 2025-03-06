@@ -74,4 +74,9 @@
     <string name="light_rename">Licht umbenennen</string>
     <string name="cancel_action">Abbrechen</string>
     <string name="light_rename_explanation">Neuer Name</string>
+    <string name="endpoint_rename">Endpoint umbenennen</string>
+    <string name="endpoint_rename_explanation">Neuer Name</string>
+    <string name="endpoint_name_label">Name</string>
+    <string name="endpoint_identifier_label">Identifikator</string>
+    <string name="endpointDetail_title">Infos zum Endpoint</string>
 </resources>
