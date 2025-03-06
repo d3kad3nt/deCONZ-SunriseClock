@@ -27,7 +27,6 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        LogUtil.d("Show light detail view");
         long lightID = LightDetailFragmentArgs.fromBundle(requireArguments()).getLight(); // id from navigation
         // Use custom factory to initialize viewModel with light id (instead of using new ViewModelProvider(this)
         // .get(LightDetailViewModel.class))
