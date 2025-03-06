@@ -31,8 +31,9 @@ public class UILight {
     private final boolean isReachable;
 
     private UILight(long lightId, long endpointId, String name, boolean isSwitchable, boolean isOn,
-                    boolean isDimmable, @IntRange(from = 0, to = 100) int brightness, boolean isTemperaturable/*, int colorTemperature*/,
-                    boolean isColorable/*, int color*/, boolean isReachable) {
+                    boolean isDimmable, @IntRange(from = 0, to = 100) int brightness,
+                    boolean isTemperaturable/*, int colorTemperature*/, boolean isColorable/*, int color*/,
+                    boolean isReachable) {
         this.lightId = lightId;
         this.endpointId = endpointId;
         this.name = name;

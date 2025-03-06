@@ -35,7 +35,7 @@ import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
  * official Google architecture-components github-sample under https://github
  * .com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android
  * /example/github/repository/NetworkBoundResource.kt
- *
+ * <p>
  * You can read more about it in the [Architecture Guide](https://developer.android.com/arch).
  */
 public abstract class NetworkBoundResource <ResultType, RemoteType, DbType> extends ExtendedMediatorLiveData<Resource<ResultType>> {

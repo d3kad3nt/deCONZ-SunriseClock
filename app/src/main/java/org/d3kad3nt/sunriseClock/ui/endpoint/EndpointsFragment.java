@@ -60,7 +60,7 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
     @Override
     public void onCardClick(final View view, final long endpointId, String endpointName) {
         LogUtil.d("Navigate to endpoint detail view for endpoint %s (Id %d)", endpointName, endpointId);
-        Navigation.findNavController(view).navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointId,
-           endpointName));
+        Navigation.findNavController(view)
+            .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointId, endpointName));
     }
 }

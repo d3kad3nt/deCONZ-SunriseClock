@@ -36,7 +36,8 @@ public class EndpointsViewModel extends AndroidViewModel {
     public boolean isSelectedEndpoint(final long id) {
         try {
             return settingsRepository.getActiveEndpoint() == id;
-        } catch (IllegalStateException e){
+        }
+        catch (IllegalStateException e) {
             return false;
         }
     }

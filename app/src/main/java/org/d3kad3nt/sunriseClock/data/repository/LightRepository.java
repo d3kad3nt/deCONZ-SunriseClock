@@ -61,8 +61,7 @@ public class LightRepository {
     public LiveData<Resource<List<UILight>>> getLightsForEndpoint(long endpointId) {
         try {
             endpointRepo.getEndpoint(endpointId);
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             Resource<List<UILight>> resource = Resource.error("Endpoint doesn't exist", null);
             return new MutableLiveData<>(resource);
         }
@@ -277,9 +276,9 @@ public class LightRepository {
      * @return Resource representing the status of the request.
      */
     public LiveData<EmptyResource> setOnState(long lightId, boolean newState) {
-        if (newState){
+        if (newState) {
             LogUtil.i("Enable Light with Id %d", lightId);
-        }else {
+        } else {
             LogUtil.i("Disable Light with Id %d", lightId);
         }
 
@@ -316,7 +315,8 @@ public class LightRepository {
      * If one or more lights are currently turned on, those are turned off.
      * If all lights are currently turned off, all lights are turned on.
      *
-     * @param endpointId The endpoint on which to execute the action. The given ID must already exist in the database.
+     * @param endpointId The endpoint on which to execute the action. The given ID must already exist in the
+     *                   database.
      * @return Resource representing the status of the request.
      */
     public LiveData<EmptyResource> toggleOnStateForEndpoint(long endpointId) {
@@ -348,14 +348,14 @@ public class LightRepository {
 
     /**
      * Changes the brightness of the light.
+     * TODO: Define whether a brightness of 0 means off or lowest brightness (but still on).
      *
-     * @param lightId   The light that this action executes on. The given ID must already exist in the database.
-     *                  Note that this ID is independent from the identifier that the backing endpoint uses internally.
-     * @param brightness  Desired light brightness, ranging from 0 (lowest) to 100 (highest).
-     *                    TODO: Define whether 0 means off or lowest brightness (but still on).
+     * @param lightId    The light that this action executes on. The given ID must already exist in the database. Note
+     *                   that this ID is independent from the identifier that the backing endpoint uses internally.
+     * @param brightness Desired light brightness, ranging from 0 (lowest) to 100 (highest).
      * @return Resource representing the status of the request.
      */
-    public LiveData<EmptyResource> setBrightness(long lightId,  @IntRange(from = 0, to = 100) int brightness) {
+    public LiveData<EmptyResource> setBrightness(long lightId, @IntRange(from = 0, to = 100) int brightness) {
         LogUtil.i("Set brightness to %d %% for light with id %d", brightness, lightId);
         if (brightness < 0 || brightness > 100) {
             throw new IllegalStateException(

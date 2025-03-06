@@ -25,18 +25,21 @@ public interface LightEndpoint {
 
     /**
      * Turn the light on or off.
+     *
      * @param endpointLightId String identifying the light on this endpoint.
-     * @param newState Whether the light should be turned on (true) or off (false).
+     * @param newState        Whether the light should be turned on (true) or off (false).
      */
     LiveData<ApiResponse<ResponseBody>> setOnState(String endpointLightId, boolean newState);
 
     /**
      * Set the brightness of the light.
+     * TODO: Define whether a brightness value 0 means off or lowest brightness (but still on).
+     *
      * @param endpointLightId String identifying the light on this endpoint.
-     * @param brightness Desired light brightness, ranging from 0 (lowest) to 100 (highest).
-     *                   TODO: Define whether 0 means off or lowest brightness (but still on).
+     * @param brightness      Desired light brightness, ranging from 0 (lowest) to 100 (highest).
      */
-    LiveData<ApiResponse<ResponseBody>> setBrightness(String endpointLightId, @IntRange(from = 0, to = 100) int brightness);
+    LiveData<ApiResponse<ResponseBody>> setBrightness(String endpointLightId,
+                                                      @IntRange(from = 0, to = 100) int brightness);
 
     /**
      * Toggle all lights from on to off or vice versa.

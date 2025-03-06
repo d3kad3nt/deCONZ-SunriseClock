@@ -15,7 +15,7 @@ import org.d3kad3nt.sunriseClock.databinding.ActivityDeviceControlBinding;
 /**
  * This Activity is used for the Device Control Service. A own service for this is needed, because it uses a own
  * navgraph and a own fragment for the activity without a drawer.
- *
+ * <p>
  * It is possible that this can also be archived purely by using Navigation functions, but i didn't find a way to do
  * that.
  */

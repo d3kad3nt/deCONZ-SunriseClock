@@ -43,7 +43,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     }
 
-
     /**
      * Checks whether WiFi is enabled and device is connected to to a specific BSSID (from settings).
      *

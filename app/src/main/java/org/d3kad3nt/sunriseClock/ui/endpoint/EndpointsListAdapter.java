@@ -87,10 +87,10 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
 
             @Override
             public void onCheckedChanged(final CompoundButton compoundButton, final boolean checkedState) {
-                if (!checkedState){
+                if (!checkedState) {
                     return;
                 }
-                if (selectedRadioButton != null){
+                if (selectedRadioButton != null) {
                     selectedRadioButton.setChecked(false);
                 }
                 selectedRadioButton = compoundButton;

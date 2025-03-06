@@ -34,8 +34,7 @@ public class EndpointConfig {
     @TypeConverters(EndpointTypeConverter.class)
     public EndpointType type;
     @SuppressWarnings("NotNullFieldNotInitialized")
-    @ColumnInfo(name = "name",
-        defaultValue = "Unnamed Endpoint")
+    @ColumnInfo(name = "name", defaultValue = "Unnamed Endpoint")
     @NonNull
     private String name;
 

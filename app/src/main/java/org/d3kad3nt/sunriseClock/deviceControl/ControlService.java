@@ -92,8 +92,7 @@ public class ControlService extends ControlsProviderService {
                                     }
                                     removeObserver(this, lightResources, asyncHelper);
                                 case ERROR:
-                                    LogUtil.w(
-                                        "Error occurred while loading Lights of Endpoint %s for DeviceControl",
+                                    LogUtil.w("Error occurred while loading Lights of Endpoint %s for DeviceControl",
                                         endpoint.getStringRepresentation());
                                     removeObserver(this, lightResources, asyncHelper);
                                     break;
@@ -239,7 +238,7 @@ public class ControlService extends ControlsProviderService {
     }
 
     private void performFloatControlAction(@NonNull final String controlId, @NonNull final FloatAction action) {
-        LogUtil.d("New brightness Value: %.3f, for LightID %s", action.getNewValue(),  controlId);
+        LogUtil.d("New brightness Value: %.3f, for LightID %s", action.getNewValue(), controlId);
         LiveData<EmptyResource> responseLiveData =
             getLightRepository().setBrightness(Long.parseLong(controlId), (int) action.getNewValue());
         //The observer is needed because livedata executes only if it has a observer.

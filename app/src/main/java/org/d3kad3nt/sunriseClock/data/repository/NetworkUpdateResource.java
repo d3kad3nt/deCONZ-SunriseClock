@@ -35,7 +35,7 @@ public abstract class NetworkUpdateResource <ResultType, RemoteType, DbType> ext
         }
     }
 
-    private void init(){
+    private void init() {
         setValue(EmptyResource.loading(""));
         LiveData<DbType> resourceLoad = loadFromDB();
         addSource(resourceLoad, resource -> {
