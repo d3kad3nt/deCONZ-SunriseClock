@@ -2,9 +2,7 @@ package org.d3kad3nt.sunriseClock.ui.light.lightDetail;
 
 import android.view.View;
 
-import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -23,6 +21,8 @@ import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
+
+import java.util.Objects;
 
 import kotlin.jvm.functions.Function1;
 
@@ -111,12 +111,21 @@ public class LightDetailViewModel extends ViewModel {
         });
     }
 
-    public void setLightBrightness(@IntRange(from = 0, to = 100) int brightness, boolean changedByUser) {
-        if (!changedByUser) {
-            return;
-        }
-        LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightness);
-        loadingIndicatorVisibility.addVisibilityProvider(state);
+    public void setLightBrightness(int brightness) {
+        LogUtil.d("Slider for setLightBrightness was set to value %s.", brightness);
+
+        LiveDataUtil.observeOnce(light, lightResource -> {
+            if (lightResource == null || lightResource.getStatus() == Status.LOADING) {
+                return;
+            }
+
+            //Enable the light if it was disabled
+            if (brightness > 0 && !(Objects.requireNonNull(light.getValue()).getData().getIsOn())) {
+                setLightOnState(true);
+            }
+            LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightness);
+            loadingIndicatorVisibility.addVisibilityProvider(state);
+        });
     }
 
     public void setLightNameFromEditText() {
