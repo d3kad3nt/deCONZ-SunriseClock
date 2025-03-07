@@ -79,4 +79,6 @@
     <string name="endpoint_name_label">Name</string>
     <string name="endpoint_identifier_label">Identifikator</string>
     <string name="endpointDetail_title">Infos zum Endpoint</string>
+    <string name="light_on_action">An</string>
+    <string name="light_off_action">Aus</string>
 </resources>
