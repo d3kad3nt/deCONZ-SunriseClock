@@ -123,7 +123,7 @@ public class LightDetailViewModel extends ViewModel {
 
             //Enable the light if it was disabled.
             if (brightness > 0 && !(Objects.requireNonNull(light.getValue()).getData().getIsOn())) {
-                LogUtil.d("The brightness was changed while the light was on. Turning on light...");
+                LogUtil.d("The brightness was changed while the light was off. Turning on light...");
                 setLightOnState(true);
             }
             LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightness);
