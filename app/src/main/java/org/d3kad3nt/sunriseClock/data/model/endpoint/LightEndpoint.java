@@ -1,6 +1,5 @@
 package org.d3kad3nt.sunriseClock.data.model.endpoint;
 
-import androidx.annotation.IntRange;
 import androidx.lifecycle.LiveData;
 
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
@@ -25,16 +24,18 @@ public interface LightEndpoint {
 
     /**
      * Turn the light on or off.
+     *
      * @param endpointLightId String identifying the light on this endpoint.
-     * @param newState Whether the light should be turned on (true) or off (false).
+     * @param newState        Whether the light should be turned on (true) or off (false).
      */
     LiveData<ApiResponse<ResponseBody>> setOnState(String endpointLightId, boolean newState);
 
     /**
      * Set the brightness of the light.
+     * TODO: Define whether a brightness of 0 means off or lowest brightness (but still on).
+     *
      * @param endpointLightId String identifying the light on this endpoint.
-     * @param brightness Desired light brightness, ranging from 0 (lowest) to 100 (highest).
-     *                   TODO: Define whether 0 means off or lowest brightness (but still on).
+     * @param brightness      Desired light brightness, ranging from 0 (lowest) to 100 (highest).
      */
     LiveData<ApiResponse<ResponseBody>> setBrightness(String endpointLightId, int brightness);
 
@@ -49,8 +50,9 @@ public interface LightEndpoint {
     /**
      * Change the name of the light.
      * <p>
+     *
      * @param endpointLightId String identifying the light on this endpoint.
-     * @param newName Desired name for this light.
+     * @param newName         Desired name for this light.
      * @return
      */
     LiveData<ApiResponse<ResponseBody>> setName(String endpointLightId, String newName);

@@ -27,13 +27,14 @@ public interface EndpointConfigDao {
     @Update(entity = EndpointConfig.class)
     void updateName(NameUpdate obj);
 
+    @Delete(entity = EndpointConfig.class)
+    void delete(EndpointConfig obj);
+
     class NameUpdate {
+
         @ColumnInfo(name = "endpointId")
         public long endpointId;
         @ColumnInfo(name = "name")
         public String name;
     }
-
-    @Delete(entity = EndpointConfig.class)
-    void delete(EndpointConfig obj);
 }

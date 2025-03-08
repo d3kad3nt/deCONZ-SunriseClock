@@ -92,8 +92,7 @@ public class ControlService extends ControlsProviderService {
                                     }
                                     removeObserver(this, lightResources, asyncHelper);
                                 case ERROR:
-                                    LogUtil.w(
-                                        "Error occurred while loading Lights of Endpoint %s for DeviceControl",
+                                    LogUtil.w("Error occurred while loading Lights of Endpoint %s for DeviceControl",
                                         endpoint.getStringRepresentation());
                                     removeObserver(this, lightResources, asyncHelper);
                                     break;
@@ -127,6 +126,30 @@ public class ControlService extends ControlsProviderService {
             observeChanges(controlId, flow);
         }
         return flow;
+    }
+
+    /**
+     * This gets called by the Android Device Controls, when someone interacts with a device control.
+     *
+     * @param controlId The Id of the Device Control
+     * @param action    The Action that was performed
+     * @param consumer  A Consumer that gets informed, when the response gets processed.
+     */
+    @Override
+    public void performControlAction(@NonNull final String controlId, @NonNull final ControlAction action,
+                                     @NonNull final Consumer<Integer> consumer) {
+        LogUtil.d("Received ControlAction request for controlId %s", controlId);
+        if (action instanceof BooleanAction) {
+            // Inform SystemUI that the action has been received and is being processed
+            consumer.accept(ControlAction.RESPONSE_OK);
+            performBooleanControlAction(controlId, (BooleanAction) action);
+        } else if (action instanceof FloatAction) {
+            consumer.accept(ControlAction.RESPONSE_OK);
+            performFloatControlAction(controlId, (FloatAction) action);
+        } else {
+            LogUtil.w("Unknown Action %s for id %s", action.getClass().getSimpleName(), controlId);
+            consumer.accept(ControlAction.RESPONSE_FAIL);
+        }
     }
 
     private <T> void removeObserver(final AsyncJoin.Observer<T> observer, @NonNull final LiveData<T> livedata,
@@ -214,32 +237,8 @@ public class ControlService extends ControlsProviderService {
         return Objects.requireNonNull(controlFlows.get(flowKey));
     }
 
-    /**
-     * This gets called by the Android Device Controls, when someone interacts with a device control.
-     *
-     * @param controlId The Id of the Device Control
-     * @param action    The Action that was performed
-     * @param consumer  A Consumer that gets informed, when the response gets processed.
-     */
-    @Override
-    public void performControlAction(@NonNull final String controlId, @NonNull final ControlAction action,
-                                     @NonNull final Consumer<Integer> consumer) {
-        LogUtil.d("Received ControlAction request for controlId %s", controlId);
-        if (action instanceof BooleanAction) {
-            // Inform SystemUI that the action has been received and is being processed
-            consumer.accept(ControlAction.RESPONSE_OK);
-            performBooleanControlAction(controlId, (BooleanAction) action);
-        } else if (action instanceof FloatAction) {
-            consumer.accept(ControlAction.RESPONSE_OK);
-            performFloatControlAction(controlId, (FloatAction) action);
-        } else {
-            LogUtil.w("Unknown Action %s for id %s", action.getClass().getSimpleName(), controlId);
-            consumer.accept(ControlAction.RESPONSE_FAIL);
-        }
-    }
-
     private void performFloatControlAction(@NonNull final String controlId, @NonNull final FloatAction action) {
-        LogUtil.d("New brightness Value: %.3f, for LightID %s", action.getNewValue(),  controlId);
+        LogUtil.d("New brightness Value: %.3f, for LightID %s", action.getNewValue(), controlId);
         LiveData<EmptyResource> responseLiveData =
             getLightRepository().setBrightness(Long.parseLong(controlId), (int) action.getNewValue());
         //The observer is needed because livedata executes only if it has a observer.

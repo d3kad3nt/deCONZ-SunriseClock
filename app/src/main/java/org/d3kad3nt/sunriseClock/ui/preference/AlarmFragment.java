@@ -8,7 +8,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-public class AlarmFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class AlarmFragment extends PreferenceFragmentCompat
+    implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

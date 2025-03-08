@@ -53,7 +53,7 @@ public class LightsViewModel extends AndroidViewModel {
         endpointId = settingsRepository.getActiveEndpointIdAsLivedata();
 
         lights = Transformations.switchMap(endpointId, id -> {
-            if (id.isEmpty()){
+            if (id.isEmpty()) {
                 return new MutableLiveData<>(Resource.success(List.of()));
             } else {
                 return lightRepository.getLightsForEndpoint(id.get());
@@ -95,7 +95,7 @@ public class LightsViewModel extends AndroidViewModel {
         LiveData<EmptyResource> state = lightRepository.toggleOnStateForEndpoint(endpointId.getValue().get());
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
- 
+
     public LiveData<Resource<List<UILight>>> getLights() {
         return lights;
     }
@@ -109,8 +109,8 @@ public class LightsViewModel extends AndroidViewModel {
     public void setLightBrightness(long lightId, int brightness, final boolean onState) {
         LogUtil.d("Slider for setLightBrightness for lightId %s was set to value %s.", lightId, brightness);
         //Enable the light if it was disabled
-        if (brightness > 0 && !onState){
-                lightRepository.setOnState(lightId, true);
+        if (brightness > 0 && !onState) {
+            lightRepository.setOnState(lightId, true);
         }
         LiveData<EmptyResource> state = lightRepository.setBrightness(lightId, brightness);
         loadingIndicatorVisibility.addVisibilityProvider(state);

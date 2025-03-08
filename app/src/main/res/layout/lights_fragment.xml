@@ -21,16 +21,16 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="@{viewModel.loadingIndicatorVisibility}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/swipe_refresh" />
+            app:layout_constraintBottom_toTopOf="@+id/swipe_refresh"
+            app:layout_constraintTop_toTopOf="parent" />
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:onRefreshListener="@{()-> viewModel.refreshLights()}"
-            app:refreshing="@{viewModel.swipeRefreshing}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/light_loading"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:onRefreshListener="@{()-> viewModel.refreshLights()}"
+            app:refreshing="@{viewModel.swipeRefreshing}">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
@@ -67,8 +67,8 @@
             android:layout_marginBottom="16dp"
             android:contentDescription="@string/lights_toggle_power"
             android:src="@drawable/powerbutton_24dp"
-            app:onClickListener="@{()-> viewModel.toggleLightsOnState()}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:onClickListener="@{()-> viewModel.toggleLightsOnState()}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
