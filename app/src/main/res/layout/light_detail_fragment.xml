@@ -15,8 +15,6 @@
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/light_loading"
         app:setOnRefreshListener="@{()-> viewModel.refreshLight()}"
         app:refreshing="@{viewModel.swipeRefreshing}">
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,11 +23,10 @@
             tools:context="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment">
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/progress_indicator_light_loading"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
                 android:visibility="@{viewModel.loadingIndicatorVisibility}"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
             <!-- Todo: Could show different images depending on the type of light (isSwitchable, isDimmable, ...) -->
             <!-- Todo: Make image size dynamic to better match differing screen sizes and landscape mode. -->
