@@ -82,7 +82,7 @@ public class LightDetailViewModel extends ViewModel {
     }
 
     public void refreshLight() {
-        LogUtil.d("User requested refresh of light");
+        LogUtil.i("User requested refresh of light.");
 
         LiveData<EmptyResource> state = lightRepository.refreshLight(lightID);
 
@@ -102,6 +102,8 @@ public class LightDetailViewModel extends ViewModel {
     }
 
     public void setLightOnState(boolean newState) {
+        LogUtil.i("User requested the light's state to be set to %s.", newState);
+
         LiveDataUtil.observeOnce(light, lightResource -> {
             if (lightResource == null || lightResource.getStatus() == Status.LOADING) {
                 return;
@@ -112,15 +114,16 @@ public class LightDetailViewModel extends ViewModel {
     }
 
     public void setLightBrightness(int brightness) {
-        LogUtil.d("Slider for setLightBrightness was set to value %s.", brightness);
+        LogUtil.i("User requested the light's brightness to be set to %d%%.", brightness);
 
         LiveDataUtil.observeOnce(light, lightResource -> {
             if (lightResource == null || lightResource.getStatus() == Status.LOADING) {
                 return;
             }
 
-            //Enable the light if it was disabled
+            //Enable the light if it was disabled.
             if (brightness > 0 && !(Objects.requireNonNull(light.getValue()).getData().getIsOn())) {
+                LogUtil.d("The brightness was changed while the light was on. Turning on light...");
                 setLightOnState(true);
             }
             LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightness);
@@ -133,6 +136,8 @@ public class LightDetailViewModel extends ViewModel {
     }
 
     public void setLightName(String newName) {
+        LogUtil.i("User requested the light's name to be set to %s.", newName);
+
         LiveData<EmptyResource> state = lightRepository.setName(lightID, newName);
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }

@@ -72,7 +72,7 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        binding.setSliderTouchListener(new SliderTouchListener());
+        binding.setBrightnessSliderTouchListener(new BrightnessSliderTouchListener());
         binding.setViewModel(viewModel);
         // Specify the fragment view as the lifecycle owner of the binding. This is used so that the binding can
         // observe LiveData updates.
@@ -119,7 +119,7 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
 
     // An OnChangeListener would report every single change, even when still dragging.
     // OnSliderTouchListener reports only once, after the slider touch is released.
-    public class SliderTouchListener implements Slider.OnSliderTouchListener {
+    public class BrightnessSliderTouchListener implements Slider.OnSliderTouchListener {
 
         @Override
         public void onStartTrackingTouch(@NonNull final Slider slider) {
