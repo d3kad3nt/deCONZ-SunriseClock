@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="cancelClickListener"
@@ -12,28 +11,28 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.Material3.Button.TextButton"
             android:id="@+id/button_cancel"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel_action"
             android:onClickListener="@{()-> cancelClickListener.onCancelClick()}"
-            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/cancel_action"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/button_ok" />
+            app:layout_constraintEnd_toStartOf="@id/button_ok"
+            app:layout_constraintTop_toTopOf="parent" />
         <!-- minWidth: Position button to the right. -->
         <com.google.android.material.button.MaterialButton
-            style="@style/Widget.Material3.Button.TextButton"
             android:id="@+id/button_ok"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="0dp"
-            android:text="@string/ok_action"
             android:onClickListener="@{()-> okClickListener.onOkClick()}"
-            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/ok_action"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -29,8 +29,8 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
     }
 
     @Override
-    public RemoteLight deserialize(JsonElement json, Type typeOfT,
-                                   JsonDeserializationContext context) throws JsonParseException {
+    public RemoteLight deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws
+        JsonParseException {
 
         RemoteLightBuilder remoteLightBuilder =
             new RemoteLightBuilder().setEndpointType(EndpointType.DECONZ).setEndpointId(this.endpointId);

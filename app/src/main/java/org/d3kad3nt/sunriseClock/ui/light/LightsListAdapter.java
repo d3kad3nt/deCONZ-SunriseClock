@@ -96,7 +96,7 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
             boolean result = oldItem.equals(newItem);
             if (!result) {
                 LogUtil.d("Recyclerview determined that light with lightId %d was " +
-                    "changed and its ViewHolder content must be updated.", oldItem.getLightId() );
+                    "changed and its ViewHolder content must be updated.", oldItem.getLightId());
             }
             return result;
         }
@@ -121,7 +121,7 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
             binding.executePendingBindings();
         }
 
-        void unbind(){
+        void unbind() {
             binding.materialSlider.clearOnSliderTouchListeners();
             binding.materialSwitch2.setOnCheckedChangeListener(null);
             binding.executePendingBindings();

@@ -11,7 +11,9 @@ import org.d3kad3nt.sunriseClock.databinding.LightDetailInfoDialogFragmentBindin
 import org.d3kad3nt.sunriseClock.ui.util.BaseDialogFragment;
 import org.d3kad3nt.sunriseClock.ui.util.DialogOkClickListener;
 
-public class LightDetailInfoDialogFragment extends BaseDialogFragment<LightDetailInfoDialogFragmentBinding, LightDetailViewModel> implements DialogOkClickListener {
+public class LightDetailInfoDialogFragment
+    extends BaseDialogFragment<LightDetailInfoDialogFragmentBinding, LightDetailViewModel>
+    implements DialogOkClickListener {
 
     @Override
     protected LightDetailInfoDialogFragmentBinding getViewBinding() {
@@ -24,14 +26,6 @@ public class LightDetailInfoDialogFragment extends BaseDialogFragment<LightDetai
     }
 
     @Override
-    protected ViewModelProvider getViewModelProvider() {
-        // NavBackStackEntry and viewModel scoped to our nested nav graph (containing all light detail screens).
-        NavController navController = NavHostFragment.findNavController(this);
-        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_light_detail);
-        return new ViewModelProvider(backStackEntry);
-    }
-
-    @Override
     protected void bindVars() {
         binding.setViewModel(viewModel);
         binding.setOkClickListener(this);
@@ -40,6 +34,14 @@ public class LightDetailInfoDialogFragment extends BaseDialogFragment<LightDetai
     @Override
     protected LifecycleOwner observeData() {
         return NavHostFragment.findNavController(this).getCurrentBackStackEntry();
+    }
+
+    @Override
+    protected ViewModelProvider getViewModelProvider() {
+        // NavBackStackEntry and viewModel scoped to our nested nav graph (containing all light detail screens).
+        NavController navController = NavHostFragment.findNavController(this);
+        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_light_detail);
+        return new ViewModelProvider(backStackEntry);
     }
 
     @Override

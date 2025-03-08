@@ -12,7 +12,7 @@ import retrofit2.Response;
 
 /**
  * Common class used by API responses.
- *
+ * <p>
  * Adapted from the official Google architecture-components github-sample app under
  * https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com
  * /android/example/github/api/ApiResponse.kt.
@@ -40,8 +40,7 @@ public abstract class ApiResponse <T> {
             if (response.errorBody() != null) {
                 try {
                     msg = response.errorBody().string();
-                }
-                catch (IOException ignored) {
+                } catch (IOException ignored) {
                 }
             }
             final String errorMsg;

@@ -29,28 +29,31 @@ import kotlin.jvm.functions.Function1;
 public class LightDetailViewModel extends ViewModel {
 
     public static final CreationExtras.Key<LightRepository> LIGHT_REPOSITORY_KEY = new CreationExtras.Key<>() {};
-    private final LightRepository lightRepository;
-
     public final static CreationExtras.Key<Long> LIGHT_ID_KEY = new CreationExtras.Key<>() {};
+
+    static final ViewModelInitializer<LightDetailViewModel> initializer = new ViewModelInitializer<>(
+        LightDetailViewModel.class,
+        creationExtras -> {
+            LightRepository lightRepository = creationExtras.get(LIGHT_REPOSITORY_KEY);
+            Long lightId = creationExtras.get(LIGHT_ID_KEY);
+            return new LightDetailViewModel(lightRepository, lightId);
+        }
+    );
+    private final LightRepository lightRepository;
     private final long lightID;
-
     public LiveData<Resource<UILight>> light;
-
     /**
      * Whether the loading indicator should be shown by the fragment.
      */
     public ResourceVisibilityLiveData loadingIndicatorVisibility;
-
     /**
      * Visual indication that a light is not reachable.
      */
     public BooleanVisibilityLiveData notReachableCardVisibility;
-
     /**
      * Whether the loading indicator of the swipeRefreshLayout should be shown by the fragment.
      */
     public MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
-
     /**
      * Text that is shown in the light rename dialog.
      * The user types the desired new name into a text field backed by this LiveData.
@@ -159,13 +162,4 @@ public class LightDetailViewModel extends ViewModel {
             }
         });
     }
-
-    static final ViewModelInitializer<LightDetailViewModel> initializer = new ViewModelInitializer<>(
-        LightDetailViewModel.class,
-        creationExtras -> {
-            LightRepository lightRepository = creationExtras.get(LIGHT_REPOSITORY_KEY);
-            Long lightId = creationExtras.get(LIGHT_ID_KEY);
-            return new LightDetailViewModel(lightRepository, lightId);
-        }
-    );
 }

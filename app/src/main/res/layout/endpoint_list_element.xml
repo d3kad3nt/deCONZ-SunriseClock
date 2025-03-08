@@ -20,8 +20,8 @@
         style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
         android:onClick="@{cardClickListener}"
         tools:context="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment">
         <androidx.constraintlayout.widget.ConstraintLayout

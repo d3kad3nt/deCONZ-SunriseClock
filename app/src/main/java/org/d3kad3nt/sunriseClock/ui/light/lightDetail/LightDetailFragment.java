@@ -45,7 +45,8 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
         // The Navigation back stack stores a NavBackStackEntry not only for each individual destination,
         // but also for each parent navigation graph that contains the individual destination.
         // This allows you to retrieve a NavBackStackEntry that is scoped to a navigation graph.
-        // A navigation graph-scoped NavBackStackEntry provides a way to create a ViewModel that's scoped to a navigation graph,
+        // A navigation graph-scoped NavBackStackEntry provides a way to create a ViewModel that's scoped to a
+        // navigation graph,
         // enabling you to share UI-related data between the graph's destinations.
         NavController navController = NavHostFragment.findNavController(this);
         NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_light_detail);
@@ -53,13 +54,16 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
         // Initialize viewModel with light id and inject the light repository.
         // By injecting the repository, the viewModel no longer needs the Application or Context.
         MutableCreationExtras viewModelDependencies = new MutableCreationExtras();
-        viewModelDependencies.set(LightDetailViewModel.LIGHT_REPOSITORY_KEY, LightRepository.getInstance(requireContext()));
+        viewModelDependencies.set(LightDetailViewModel.LIGHT_REPOSITORY_KEY,
+            LightRepository.getInstance(requireContext()));
         viewModelDependencies.set(LightDetailViewModel.LIGHT_ID_KEY, lightID);
 
-        // Use custom factory to initialize the viewModel (instead of using new ViewModelProvider(this).get(LightDetailViewModel.class)).
+        // Use custom factory to initialize the viewModel (instead of using new ViewModelProvider(this).get
+        // (LightDetailViewModel.class)).
         // For viewModel older than 2.5.0 ViewModelProvider.Factory had to be extended.
         viewModel = new ViewModelProvider(backStackEntry.getViewModelStore(),
-            ViewModelProvider.Factory.from(LightDetailViewModel.initializer), viewModelDependencies).get(LightDetailViewModel.class);
+            ViewModelProvider.Factory.from(LightDetailViewModel.initializer), viewModelDependencies).get(
+            LightDetailViewModel.class);
 
         binding = LightDetailFragmentBinding.inflate(inflater, container, false);
 
@@ -105,14 +109,12 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
             Navigation.findNavController(binding.getRoot())
                 .navigate(LightDetailFragmentDirections.actionLightDetailToLightDetailInfoDialogFragment());
             return true;
-        }
-        else if (menuItem.getItemId() == R.id.menu_light_details_name_edit) {
+        } else if (menuItem.getItemId() == R.id.menu_light_details_name_edit) {
             LogUtil.d("User requested to show light name edit screen by clicking the toolbar menu option.");
             Navigation.findNavController(binding.getRoot())
                 .navigate(LightDetailFragmentDirections.actionLightDetailToLightDetailNameEditDialogFragment());
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
