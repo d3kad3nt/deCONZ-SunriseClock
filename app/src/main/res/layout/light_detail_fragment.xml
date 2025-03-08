@@ -46,6 +46,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/progress_indicator_light_loading"
                     app:srcCompat="@drawable/lightbulb_24dp" />
+                <!-- The android:checkedButton attribute was not working with databinding, use the check() method on the group instead. -->
                 <!-- Todo: Enable/disable control based on reachability. Last time, sometimes checked buttons were no longer show for active lights.-->
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/button_toggle_group_light_state"
@@ -56,7 +57,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageview_light"
-                    app:singleSelection="true">
+                    app:singleSelection="true"
+                    tools:checkedButton="@id/button_on">
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_off"
                         style="?attr/materialButtonOutlinedStyle"
@@ -101,7 +103,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/label_brightness"
-                    app:tickVisible="false" />
+                    app:tickVisible="false"
+                    tools:value="80" />
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_not_reachable"
                     style="@style/Widget.Material3.CardView.Filled"
