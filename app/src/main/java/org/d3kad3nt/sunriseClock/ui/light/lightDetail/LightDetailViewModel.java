@@ -2,7 +2,6 @@ package org.d3kad3nt.sunriseClock.ui.light.lightDetail;
 
 import android.view.View;
 
-import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -22,6 +21,8 @@ import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
+
+import java.util.Objects;
 
 import kotlin.jvm.functions.Function1;
 
@@ -84,7 +85,7 @@ public class LightDetailViewModel extends ViewModel {
     }
 
     public void refreshLight() {
-        LogUtil.d("User requested refresh of light");
+        LogUtil.i("User requested refresh of light.");
 
         LiveData<EmptyResource> state = lightRepository.refreshLight(lightID);
 
@@ -104,6 +105,8 @@ public class LightDetailViewModel extends ViewModel {
     }
 
     public void setLightOnState(boolean newState) {
+        LogUtil.i("User requested the light's state to be set to %s.", newState);
+
         LiveDataUtil.observeOnce(light, lightResource -> {
             if (lightResource == null || lightResource.getStatus() == Status.LOADING) {
                 return;
@@ -113,12 +116,22 @@ public class LightDetailViewModel extends ViewModel {
         });
     }
 
-    public void setLightBrightness(@IntRange(from = 0, to = 100) int brightness, boolean changedByUser) {
-        if (!changedByUser) {
-            return;
-        }
-        LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightness);
-        loadingIndicatorVisibility.addVisibilityProvider(state);
+    public void setLightBrightness(int brightness) {
+        LogUtil.i("User requested the light's brightness to be set to %d%%.", brightness);
+
+        LiveDataUtil.observeOnce(light, lightResource -> {
+            if (lightResource == null || lightResource.getStatus() == Status.LOADING) {
+                return;
+            }
+
+            //Enable the light if it was disabled.
+            if (brightness > 0 && !(Objects.requireNonNull(light.getValue()).getData().getIsOn())) {
+                LogUtil.d("The brightness was changed while the light was off. Turning on light...");
+                setLightOnState(true);
+            }
+            LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightness);
+            loadingIndicatorVisibility.addVisibilityProvider(state);
+        });
     }
 
     public void setLightNameFromEditText() {
@@ -126,6 +139,8 @@ public class LightDetailViewModel extends ViewModel {
     }
 
     public void setLightName(String newName) {
+        LogUtil.i("User requested the light's name to be set to %s.", newName);
+
         LiveData<EmptyResource> state = lightRepository.setName(lightID, newName);
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }

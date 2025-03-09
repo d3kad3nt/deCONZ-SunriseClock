@@ -20,6 +20,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.slider.Slider;
+
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.databinding.LightDetailFragmentBinding;
@@ -74,6 +76,7 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        binding.setBrightnessSliderTouchListener(new BrightnessSliderTouchListener());
         binding.setViewModel(viewModel);
         // Specify the fragment view as the lifecycle owner of the binding. This is used so that the binding can
         // observe LiveData updates.
@@ -113,6 +116,20 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
             return true;
         } else {
             return false;
+        }
+    }
+
+    // An OnChangeListener would report every single change, even when still dragging.
+    // OnSliderTouchListener reports only once, after the slider touch is released.
+    public class BrightnessSliderTouchListener implements Slider.OnSliderTouchListener {
+
+        @Override
+        public void onStartTrackingTouch(@NonNull final Slider slider) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(@NonNull final Slider slider) {
+            viewModel.setLightBrightness((int) slider.getValue());
         }
     }
 }

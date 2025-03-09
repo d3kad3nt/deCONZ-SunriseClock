@@ -86,4 +86,6 @@
     <string name="endpoint_name_label">Name</string>
     <string name="endpoint_identifier_label">Identifier</string>
     <string name="endpointDetail_title">Endpoint info</string>
+    <string name="light_on_action">On</string>
+    <string name="light_off_action">Off</string>
 </resources>

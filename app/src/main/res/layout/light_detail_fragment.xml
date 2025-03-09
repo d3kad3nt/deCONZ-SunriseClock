@@ -3,92 +3,132 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View" />
         <variable
             name="viewModel"
             type="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailViewModel" />
+        <variable
+            name="brightnessSliderTouchListener"
+            type="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment.BrightnessSliderTouchListener" />
     </data>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/light_loading"
-        app:onRefreshListener="@{()-> viewModel.refreshLight()}"
+        android:layout_height="match_parent"
+        app:setOnRefreshListener="@{()-> viewModel.refreshLight()}"
         app:refreshing="@{viewModel.swipeRefreshing}">
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- Scrolling might be necessary on smaller display sizes or when in landscape mode. -->
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment">
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/list_light_loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:visibility="@{viewModel.loadingIndicatorVisibility}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_not_reachable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardBackgroundColor="@color/md_theme_light_error"
-                app:contentPaddingBottom="8dp"
-                app:contentPaddingLeft="16dp"
-                app:contentPaddingRight="16dp"
-                app:contentPaddingTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="@{viewModel.notReachableCardVisibility}">
-                <TextView
-                    android:id="@+id/label_not_reachable"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="16dp"
+                tools:context="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment">
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progress_indicator_light_loading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:visibility="@{viewModel.loadingIndicatorVisibility}"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <!-- Todo: Could show different images depending on the type of light (isSwitchable, isDimmable, ...) -->
+                <!-- Todo: Make image size dynamic to better match differing screen sizes and landscape mode. -->
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imageview_light"
+                    android:layout_width="96dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/progress_indicator_light_loading"
+                    app:srcCompat="@drawable/lightbulb_24dp" />
+                <!-- The android:checkedButton attribute was not working with databinding, use the check() method on the group instead. -->
+                <!-- Todo: Enable/disable control based on reachability. Last time, sometimes checked buttons were no longer show for active lights.-->
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/button_toggle_group_light_state"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/light_not_reachable"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </androidx.cardview.widget.CardView>
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/switch_on_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:checked="@{viewModel.light.data.isOn}"
-                android:onCheckedChanged="@{(switch, checked) -> viewModel.setLightOnState(checked)}"
-                app:layout_constraintBottom_toBottomOf="@+id/label_on_state"
-                app:layout_constraintStart_toEndOf="@+id/label_on_state"
-                app:layout_constraintTop_toTopOf="@+id/label_on_state" />
-            <!--Todo: Change to material slider (slider does not support onProgressChanged, therefore custom databinding adapter for setLightBrightness has to be written)-->
-            <androidx.appcompat.widget.AppCompatSeekBar
-                android:id="@+id/slider"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
-                android:max="100"
-                android:onProgressChanged="@{(seekBar, progress, changedFromUser ) -> viewModel.setLightBrightness(progress, changedFromUser)}"
-                android:progress="@{viewModel.light.data.brightness}"
-                app:layout_constraintBottom_toBottomOf="@+id/label_brightness"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/switch_on_state"
-                app:layout_constraintTop_toTopOf="@+id/label_brightness" />
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/label_on_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
-                android:text="@string/light_on_state_label"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_not_reachable" />
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/label_brightness"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="@string/light_brightness_label"
-                app:layout_constraintStart_toStartOf="@+id/label_on_state"
-                app:layout_constraintTop_toBottomOf="@+id/label_on_state" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_marginTop="20dp"
+                    app:check="@{viewModel.light.data.isOn ? @id/button_on : @id/button_off}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageview_light"
+                    app:singleSelection="true"
+                    tools:checkedButton="@id/button_on">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_off"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> viewModel.setLightOnState(false)}"
+                        android:text="@string/light_off_action" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_on"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> viewModel.setLightOnState(true)}"
+                        android:text="@string/light_on_action" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+                <androidx.constraintlayout.widget.Group
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{viewModel.light.data.isDimmable ? View.VISIBLE : View.GONE}"
+                    app:constraint_referenced_ids="label_brightness, slider_brightness" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/label_brightness"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:labelFor="@id/slider_brightness"
+                    android:text="@string/light_brightness_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/button_toggle_group_light_state" />
+                <!-- OnSliderTouchListener contains two methods and therefore cannot be used with lambda expressions from databinding.  -->
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/slider_brightness"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="@{viewModel.light.data.isReachable}"
+                    android:stepSize="1"
+                    android:value="@{viewModel.light.data.brightness}"
+                    android:valueFrom="0"
+                    android:valueTo="100"
+                    app:addOnSliderTouchListener="@{brightnessSliderTouchListener}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/label_brightness"
+                    app:tickVisible="false"
+                    tools:value="80" />
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_not_reachable"
+                    style="@style/Widget.Material3.CardView.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:visibility="@{viewModel.notReachableCardVisibility}"
+                    app:cardBackgroundColor="@color/md_theme_light_error"
+                    app:contentPaddingBottom="8dp"
+                    app:contentPaddingLeft="16dp"
+                    app:contentPaddingRight="16dp"
+                    app:contentPaddingTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/slider_brightness">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/label_not_reachable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/light_not_reachable"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </com.google.android.material.card.MaterialCardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
