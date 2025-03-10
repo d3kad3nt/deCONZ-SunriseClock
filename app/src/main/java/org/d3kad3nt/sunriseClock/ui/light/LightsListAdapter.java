@@ -66,8 +66,7 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
                 LogUtil.v("Triggering partial rebind of light brightness for lightId %d.",
                     getItem(position).getLightId());
                 holder.bindBrightness(light.brightness);
-            }
-            else {
+            } else {
                 LogUtil.w("Requested partial rebind of light data but updating this field is not yet implemented.");
             }
             holder.binding.executePendingBindings();
