@@ -26,41 +26,40 @@
         android:onClick="@{cardClickListener}"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.LightsFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp">
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/materialTextView2"
+                android:id="@+id/textview_light_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
                 android:text="@{light.name}"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@id/materialSlider"
-                app:layout_constraintEnd_toStartOf="@+id/materialSwitch2"
+                app:layout_constraintBottom_toTopOf="@id/slider_light_brightness"
+                app:layout_constraintEnd_toStartOf="@+id/switch_light_state"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@sample/sample.json/lights/name" />
             <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/materialSwitch2"
+                android:id="@+id/switch_light_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="@{light.isOn}"
                 android:enabled="@{light.isReachable}"
                 android:onCheckedChanged="@{switchCheckedChangeListener}"
                 android:visibility="@{light.isSwitchable ? View.VISIBLE : View.INVISIBLE}"
-                app:layout_constraintBottom_toTopOf="@id/materialSlider"
+                app:layout_constraintBottom_toTopOf="@id/slider_light_brightness"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintStart_toEndOf="@+id/materialTextView2"
+                app:layout_constraintStart_toEndOf="@+id/textview_light_name"
                 app:layout_constraintTop_toTopOf="parent" />
             <com.google.android.material.slider.Slider
-                android:id="@+id/materialSlider"
+                android:id="@+id/slider_light_brightness"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/light_brightness_label"
                 android:enabled="@{light.isReachable}"
                 android:stepSize="1"
                 android:value="@{light.brightness}"
@@ -71,7 +70,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/materialTextView2"
+                app:layout_constraintTop_toBottomOf="@id/textview_light_name"
                 app:tickVisible="false" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
