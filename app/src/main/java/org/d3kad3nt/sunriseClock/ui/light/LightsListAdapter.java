@@ -7,7 +7,6 @@ import android.widget.CompoundButton;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
-import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -138,15 +137,6 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         // An OnChangeListener would report every single change, even when still dragging.
         // OnSliderTouchListener reports only once, after the slider touch is released.
         public class SliderTouchListener implements Slider.OnSliderTouchListener {
-
-            /**
-             * Custom xml attribute (android:onSliderTouch) used for binding a Slider.OnSliderTouchListener to a
-             * slider.
-             */
-            @BindingAdapter(value = "android:onSliderTouch")
-            public static void setOnSliderTouchListener(Slider slider, SliderTouchListener sliderTouchListener) {
-                slider.addOnSliderTouchListener(sliderTouchListener);
-            }
 
             @Override
             public void onStartTrackingTouch(@NonNull final Slider slider) {
