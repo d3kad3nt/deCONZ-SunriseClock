@@ -6,6 +6,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.DbGroupDao;
@@ -237,7 +238,7 @@ public class LightRepository {
                 // The primary key lightId is not known to the remote endpoint, but it is known to us.
                 // Set the lightId to enable direct update/insert via primary key (instead of endpointId and
                 // endpointLightId) through Room.
-                item.setLightId(lightId);
+                item.setId(lightId);
                 dbLightDao.upsert(item);
             }
 
@@ -261,7 +262,7 @@ public class LightRepository {
             @NotNull
             @Override
             protected LiveData<ApiResponse<RemoteLight>> loadFromNetwork() {
-                return endpoint.getLight(dbObject.getEndpointLightId());
+                return endpoint.getLight(dbObject.getEndpointEntityId());
             }
 
             @Override

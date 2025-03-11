@@ -221,7 +221,7 @@ public class DeconzEndpoint extends BaseEndpoint {
 
     @Override
     public LiveData<ApiResponse<List<RemoteGroup>>> getGroups() {
-        LogUtil.d(TAG, "Requesting all groups from endpoint.");
+        LogUtil.d("Requesting all groups from endpoint.");
         return this.retrofit.getGroups();
     }
 }
