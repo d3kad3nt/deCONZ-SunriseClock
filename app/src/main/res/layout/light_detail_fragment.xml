@@ -23,17 +23,30 @@
             android:layout_height="match_parent"
             android:fillViewport="true">
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/light_details_constraint_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="16dp"
                 tools:context="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment">
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/light_details_appbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true"
+                    app:layout_constraintTop_toTopOf="@id/light_details_constraint_layout">
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:id="@+id/light_details_toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:menu="@menu/menu_light_details"/>
+                </com.google.android.material.appbar.AppBarLayout>
                 <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/progress_indicator_light_loading"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:indeterminate="true"
                     android:visibility="@{viewModel.loadingIndicatorVisibility}"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/light_details_appbar" />
                 <!-- Todo: Could show different images depending on the type of light (isSwitchable, isDimmable, ...) -->
                 <!-- Todo: Make image size dynamic to better match differing screen sizes and landscape mode. -->
                 <androidx.appcompat.widget.AppCompatImageView
