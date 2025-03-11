@@ -4,8 +4,6 @@ import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 
 public class RemoteLightBuilder {
 
-    private static final String TAG = "RemoteLightBuilder";
-
     private EndpointType endpointType;
 
     private long endpointId;

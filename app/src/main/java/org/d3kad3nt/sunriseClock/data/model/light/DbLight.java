@@ -1,5 +1,6 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -9,6 +10,7 @@ import androidx.room.Index;
 
 import org.d3kad3nt.sunriseClock.data.model.DbEndpointEntity;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
 @Entity(tableName = DbLight.TABLENAME,
@@ -36,33 +38,22 @@ public class DbLight extends DbEndpointEntity {
     @ColumnInfo(name = "is_switchable",
         defaultValue = "false")
     private final boolean isSwitchable;
-    @ColumnInfo(name = "is_on",
-        defaultValue = "false")
+    @ColumnInfo(name = "is_on", defaultValue = "false")
     private final boolean isOn;
-
-    @ColumnInfo(name = "is_dimmable",
-        defaultValue = "false")
+    @ColumnInfo(name = "is_dimmable", defaultValue = "false")
     private final boolean isDimmable;
-    @ColumnInfo(name = "brightness",
-        defaultValue = "0")
+    @ColumnInfo(name = "brightness", defaultValue = "0")
     private final int brightness;
-
-    @ColumnInfo(name = "is_temperaturable",
-        defaultValue = "false")
+    @ColumnInfo(name = "is_temperaturable", defaultValue = "false")
     private final boolean isTemperaturable;
-    @ColumnInfo(name = "colortemperature",
-        defaultValue = "0")
+    @ColumnInfo(name = "colortemperature", defaultValue = "0")
     private final int colorTemperature;
-
-    @ColumnInfo(name = "is_colorable",
-        defaultValue = "false")
+    @ColumnInfo(name = "is_colorable", defaultValue = "false")
     private final boolean isColorable;
-    @ColumnInfo(name = "color",
-        defaultValue = "0")
+    @ColumnInfo(name = "color", defaultValue = "0")
     private final int color;
 
-    @ColumnInfo(name = "is_reachable",
-        defaultValue = "true")
+    @ColumnInfo(name = "is_reachable", defaultValue = "true")
     private final boolean isReachable;
 
     /**
@@ -124,6 +115,7 @@ public class DbLight extends DbEndpointEntity {
      * @return The current brightness of the light, where 0 is the lowest brightness or off (depending on the light)
      * and 100 is the highest brightness.
      */
+    @IntRange(from = 0, to = 100)
     public int getBrightness() {
         return brightness;
     }

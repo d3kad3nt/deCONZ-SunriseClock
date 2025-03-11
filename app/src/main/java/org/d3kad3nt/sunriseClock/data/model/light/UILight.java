@@ -1,16 +1,14 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
-import android.util.Log;
-
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Objects;
 
 public class UILight {
-
-    private static final String TAG = "UiLight";
 
     private final long lightId;
     private final long endpointId;
@@ -33,8 +31,9 @@ public class UILight {
     private final boolean isReachable;
 
     private UILight(long lightId, long endpointId, String name, boolean isSwitchable, boolean isOn,
-                    boolean isDimmable, int brightness, boolean isTemperaturable/*, int colorTemperature*/,
-                    boolean isColorable/*, int color*/, boolean isReachable) {
+                    boolean isDimmable, @IntRange(from = 0, to = 100) int brightness,
+                    boolean isTemperaturable/*, int colorTemperature*/, boolean isColorable/*, int color*/,
+                    boolean isReachable) {
         this.lightId = lightId;
         this.endpointId = endpointId;
         this.name = name;
@@ -52,14 +51,13 @@ public class UILight {
     @NonNull
     @Contract("_ -> new")
     public static UILight from(@NonNull DbLight dbLight) {
-        Log.d(TAG, "Converting DbLight to UiLight...");
         // Place for conversion logic (if UI needs other data types or value ranges).
         UILight uiLight =
             new UILight(dbLight.getId(), dbLight.getEndpointId(), dbLight.getName(), dbLight.getIsSwitchable(),
                 dbLight.getIsOn(), dbLight.getIsDimmable(), dbLight.getBrightness(), dbLight.getIsTemperaturable(),
                 dbLight.getIsColorable(), dbLight.getIsReachable());
-        Log.d(TAG, "Converted DbLight with lightId " + dbLight.getId() + " (endpointId " + dbLight.getEndpointId() +
-            ", endpointLightId " + dbLight.getEndpointEntityId() + ") to UILight.");
+        LogUtil.v("Converted DbLight with lightId %d (endpointId %d, endpointLightId %s) to UILight.",
+            dbLight.getId(), dbLight.getEndpointId(), dbLight.getEndpointEntityId());
         return uiLight;
     }
 
@@ -87,6 +85,7 @@ public class UILight {
         return isDimmable;
     }
 
+    @IntRange(from = 0, to = 100)
     public int getBrightness() {
         return brightness;
     }

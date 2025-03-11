@@ -1,16 +1,13 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import org.d3kad3nt.sunriseClock.data.model.RemoteEndpointEntity;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
 public class RemoteLight extends RemoteEndpointEntity {
-
-    private static final String TAG = "RemoteLight";
 
     private final boolean isSwitchable;
     private final boolean isOn;
@@ -52,7 +49,6 @@ public class RemoteLight extends RemoteEndpointEntity {
     @NonNull
     @Contract("_ -> new")
     static DbLight toDbLight(RemoteLight remoteLight) {
-        Log.d(TAG, "Converting RemoteLight to DbLight...");
         DbLightBuilder dbLightBuilder = new DbLightBuilder();
         // Logic to convert remote light to db light depending on the endpoint type this light originated from.
         // The endpoint type could be used to implement conversions depending on the type of the remote endpoint
@@ -67,8 +63,8 @@ public class RemoteLight extends RemoteEndpointEntity {
             .setIsColorable(remoteLight.getIsColorable())
             .setColor(remoteLight.getColor()) //Todo: Implement conversion
             .setIsReachable(remoteLight.getIsReachable()).build();
-        Log.d(TAG, "Converted RemoteLight with endpointId " + remoteLight.getEndpointId() + " and endpointLightId " +
-            remoteLight.getEndpointEntityId() + " to DbLight.");
+        LogUtil.v("Converted RemoteLight with endpointId %d and endpointLightId %s to DbLight.",
+            remoteLight.getEndpointId(), remoteLight.getEndpointEntityId());
         return dbLight;
     }
 

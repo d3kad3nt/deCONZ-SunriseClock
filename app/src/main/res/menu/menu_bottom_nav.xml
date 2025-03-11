@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Destination ids for menu items have to match destinations in the nav graph.-->
     <item
-        android:id="@+id/lights"
+        android:id="@+id/lightsList"
+        android:icon="@drawable/lightbulb_24dp"
         android:title="@string/lights_title" />
     <item
-        android:id="@+id/endpoints"
+        android:id="@+id/endpointsList"
+        android:icon="@drawable/router_24dp"
         android:title="@string/endpoint" />
     <item
         android:id="@+id/mainSettingsFragment"
+        android:icon="@drawable/settings_24dp"
         android:title="@string/preferences_title" />
 </menu>

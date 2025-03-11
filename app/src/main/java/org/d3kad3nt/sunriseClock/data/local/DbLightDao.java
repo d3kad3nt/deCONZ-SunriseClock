@@ -13,8 +13,6 @@ import java.util.List;
 @Dao
 public interface DbLightDao extends DbEndpointEntityDao<DbLight> {
 
-    String TAG = "DbLightDao";
-
     @Transaction
     default int updateUsingEndpointIdAndEndpointEntityId(@NonNull DbLight light) {
         return updateUsingEndpointIdAndEndpointLightId(light.getEndpointId(), light.getEndpointEntityId(),
