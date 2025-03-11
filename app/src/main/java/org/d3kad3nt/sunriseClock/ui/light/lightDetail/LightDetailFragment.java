@@ -19,6 +19,8 @@ import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.slider.Slider;
 
@@ -68,14 +70,17 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
         binding = LightDetailFragmentBinding.inflate(inflater, container, false);
 
         // Initialize the options menu (toolbar menu).
-        MenuHost menuHost = requireActivity();
-        menuHost.addMenuProvider(this, getViewLifecycleOwner());
+        binding.lightDetailsToolbar.addMenuProvider(this, getViewLifecycleOwner());
 
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        NavController navController = Navigation.findNavController(view);
+        NavigationUI.setupWithNavController(binding.lightDetailsToolbar, navController,
+            new AppBarConfiguration.Builder(navController.getGraph()).build());
+
         binding.setBrightnessSliderTouchListener(new BrightnessSliderTouchListener());
         binding.setViewModel(viewModel);
         // Specify the fragment view as the lifecycle owner of the binding. This is used so that the binding can

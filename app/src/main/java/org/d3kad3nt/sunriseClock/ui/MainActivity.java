@@ -37,8 +37,7 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration =
             new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
 
-        setSupportActionBar(binding.mainToolbar);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.mainBottomNavigation, navController);
     }
 
