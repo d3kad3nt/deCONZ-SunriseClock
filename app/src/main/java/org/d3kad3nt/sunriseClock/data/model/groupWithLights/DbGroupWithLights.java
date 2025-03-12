@@ -1,5 +1,6 @@
 package org.d3kad3nt.sunriseClock.data.model.groupWithLights;
 
+import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Junction;
 import androidx.room.Relation;
@@ -15,9 +16,11 @@ public class DbGroupWithLights {
     @Embedded
     public DbGroup dbGroup;
 
-    @Relation(parentColumn = "group_id",
-              entityColumn = "light_id",
-              associateBy = @Junction(DbGroupLightCrossref.class))
+    @Relation(parentColumn = "id",
+              entityColumn = "id",
+              entity = DbLight.class,
+              associateBy = @Junction(value = DbGroupLightCrossref.class, parentColumn = "group_id", entityColumn =
+                  "light_id"))
     public List<DbLight> dbLights;
 
     public static DbGroupWithLights from(final DbGroup group, final List<DbLight> groupLights) {
@@ -27,9 +30,10 @@ public class DbGroupWithLights {
         return result;
     }
 
+    @NonNull
     public String toString() {
         if (dbLights == null) {
-            return String.format("Group %s without lights", dbGroup.getName());
+            return String.format(Locale.ENGLISH, "Group %s (%d) without lights", dbGroup.getName(), dbGroup.getId());
         }
         return String.format(Locale.ENGLISH, "Group: %s with %d lights", dbGroup.getName(), dbLights.size());
     }
