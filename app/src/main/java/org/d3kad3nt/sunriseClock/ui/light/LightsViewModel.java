@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.light;
 
 import android.app.Application;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -11,13 +10,11 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
-import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
-import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
@@ -75,7 +72,17 @@ public class LightsViewModel extends AndroidViewModel {
                 LogUtil.d(listResource.getData().get(2).getName());
             }
         });
-
+        var groups2 = Transformations.switchMap(endpointId, endpointId -> {
+            return lightRepository.getGroupsWithLightsForEndpoint(endpointId.get());
+        });
+        groups2.observeForever(listResource -> {
+            if (listResource.getStatus() == Status.SUCCESS) {
+                LogUtil.d("%d", listResource.getData().size());
+                for (var i : listResource.getData()) {
+                    LogUtil.d(i.toString());
+                }
+            }
+        });
     }
 
     public void refreshLights() {

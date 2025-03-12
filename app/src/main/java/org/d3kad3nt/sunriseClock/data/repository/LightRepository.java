@@ -16,6 +16,7 @@ import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
 import org.d3kad3nt.sunriseClock.data.model.group.RemoteGroup;
 import org.d3kad3nt.sunriseClock.data.model.groupWithLights.DbGroupLightCrossref;
+import org.d3kad3nt.sunriseClock.data.model.groupWithLights.DbGroupWithLights;
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
@@ -433,11 +434,92 @@ public class LightRepository {
         };
     }
 
+    public LiveData<Resource<List<DbGroupWithLights>>> getGroupsWithLightsForEndpoint(long endpointId) {
+        try {
+            endpointRepo.getEndpoint(endpointId);
+        } catch (NullPointerException e) {
+            Resource<List<DbGroupWithLights>> resource = Resource.error("Endpoint doesn't exist", null);
+            return new MutableLiveData<>(resource);
+        }
+        return new BiNetworkBoundResource<List<DbGroupWithLights>, List<RemoteGroup>, List<RemoteLight>,
+            List<DbGroupWithLights>>() {
+
+            @Override
+            protected void saveResponseToDb(List<DbGroupWithLights> items) {
+                for (DbGroupWithLights groupWithLights : items) {
+                    //Todo: Work with @Ignore to extract lightIds from object and manually insert them into the
+                    // crossref table
+                    for (DbLight light : groupWithLights.dbLights) {
+                        dbLightDao.upsert(light);
+                    }
+                    dbGroupDao.upsert(groupWithLights.dbGroup);
+
+                    DbGroupLightCrossref test = new DbGroupLightCrossref();
+                    test.groupId = 1;
+                    test.lightId = 1;
+                    // dbGroupLightCrossrefDao.save(test);
+                }
+            }
+
+            @Override
+            protected boolean shouldFetch(List<DbGroupWithLights> data) {
+                //TODO
+                return true;
+            }
+
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getRepoEndpoint(endpointId);
+            }
+
+            @Override
+            protected LiveData<List<DbGroupWithLights>> loadFromDb() {
+                //TODO add endpoint ID
+                return dbGroupLightCrossrefDao.loadGroupsWithLights();
+            }
+
+            @Override
+            protected LiveData<ApiResponse<List<RemoteGroup>>> loadFromNetwork1() {
+                return endpoint.getGroups();
+            }
+
+            @Override
+            protected LiveData<ApiResponse<List<RemoteLight>>> loadFromNetwork2() {
+                return endpoint.getLights();
+            }
+
+            @Override
+            protected List<DbGroupWithLights> convertDbTypeToResultType(List<DbGroupWithLights> item) {
+                //Todo: Convert to UI type
+                return item;
+            }
+
+            @Override
+            protected List<DbGroupWithLights> convertRemoteTypeToDbType(
+                ApiSuccessResponse<List<RemoteGroup>> remoteGroups,
+                ApiSuccessResponse<List<RemoteLight>> remoteLights) {
+                List<DbLight> lights = new ArrayList<>();
+                for (RemoteLight light : remoteLights.getBody()) {
+                    lights.add(DbLight.from(light));
+                }
+                List<DbGroupWithLights> groupWithLights = new ArrayList<>();
+                for (RemoteGroup group : remoteGroups.getBody()) {
+                    DbGroup dbGroup = DbGroup.from(group);
+                    List<DbLight> groupLights =
+                        lights.stream()
+                            .filter(dbLight -> group.getEndpointLightIds().contains(dbLight.getEndpointEntityId()))
+                            .toList();
+                    groupWithLights.add(DbGroupWithLights.from(dbGroup, groupLights));
+                }
+                return groupWithLights;
+            }
+        };
+    }
+
     public LiveData<Resource<List<DbGroup>>> getGroupsForEndpoint(long endpointId) {
         try {
             endpointRepo.getEndpoint(endpointId);
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             Resource<List<DbGroup>> resource = Resource.error("Endpoint doesn't exist", null);
             return new MutableLiveData<>(resource);
         }
