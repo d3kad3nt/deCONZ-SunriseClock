@@ -97,5 +97,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract DbGroupDao dbGroupDao();
 
+    public abstract DbGroupLightCrossrefDao dbGroupLightCrossrefDao();
+
     public abstract EndpointConfigDao endpointConfigDao();
 }

@@ -10,10 +10,12 @@ import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.DbGroupDao;
+import org.d3kad3nt.sunriseClock.data.local.DbGroupLightCrossrefDao;
 import org.d3kad3nt.sunriseClock.data.local.DbLightDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
 import org.d3kad3nt.sunriseClock.data.model.group.RemoteGroup;
+import org.d3kad3nt.sunriseClock.data.model.groupWithLights.DbGroupLightCrossref;
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
@@ -38,6 +40,7 @@ public class LightRepository {
 
     private static DbLightDao dbLightDao;
     private static DbGroupDao dbGroupDao;
+    private static DbGroupLightCrossrefDao dbGroupLightCrossrefDao;
     private static volatile LightRepository INSTANCE;
     private final EndpointRepository endpointRepo;
 
@@ -49,6 +52,7 @@ public class LightRepository {
     private LightRepository(Context context) {
         dbLightDao = AppDatabase.getInstance(context.getApplicationContext()).dbLightDao();
         dbGroupDao = AppDatabase.getInstance(context.getApplicationContext()).dbGroupDao();
+        dbGroupLightCrossrefDao = AppDatabase.getInstance(context.getApplicationContext()).dbGroupLightCrossrefDao();
         endpointRepo = EndpointRepository.getInstance(context);
     }
 
