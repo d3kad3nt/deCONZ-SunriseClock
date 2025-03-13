@@ -16,13 +16,16 @@ public interface DbEndpointEntityDao <T extends DbEndpointEntity> {
     String TAG = "DbEndpointEntityDao";
 
     /**
-     * Insert an endpoint entity (e.g. group or light) into the database (create) or update existing entity. Case 1:
-     * Insert if neither id (primary key) nor (endpointId and endpointEntityId) are found inside the database. Case 2:
-     * Update if id (primary key) is given in the object. An entity with this id must already exist inside the
-     * database. Case 3: Update if endpointId and endpointEntityId are given in the object. An entity with this
+     * Insert an endpoint entity (e.g. group or light) into the database (create) or update existing entity.
+     * <li>Case 1: Insert if neither id (primary key) nor (endpointId and endpointEntityId, the composite primary
+     * key) are found inside the database.
+     * <li>Case 2: Update if id (primary key) is given in the object. An entity with this id must already exist inside
+     * the database.
+     * <li>Case 3: Update if endpointId and endpointEntityId are given in the object. An entity with this
      * endpointId and endpointEntityId must already exist inside the database.
      *
-     * @param dbEndpointEntity The dbEndpointEntity with the id OR (endpointId and endpointEntityId) set.
+     * @param dbEndpointEntity The endpoint entity with the id OR (endpointId and endpointEntityId, the composite
+     *                         primary key) set.
      */
     @Transaction
     default void upsert(T dbEndpointEntity) {
