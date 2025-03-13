@@ -2,9 +2,12 @@ package org.d3kad3nt.sunriseClock.data.model;
 
 import android.util.Log;
 
+import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
+
+import java.util.Objects;
 
 public abstract class DbEndpointEntity {
 
@@ -94,4 +97,24 @@ public abstract class DbEndpointEntity {
      * @return Name of the table containing these entities in the database.
      */
     public abstract String getTABLENAME();
+
+    @Override
+    @CallSuper
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof final DbEndpointEntity that)) {
+            return false;
+        }
+        return endpointId == that.endpointId && id == that.id &&
+            Objects.equals(endpointEntityId, that.endpointEntityId) &&
+            Objects.equals(name, that.name);
+    }
+
+    @Override
+    @CallSuper
+    public int hashCode() {
+        return Objects.hash(endpointId, endpointEntityId, name, id);
+    }
 }

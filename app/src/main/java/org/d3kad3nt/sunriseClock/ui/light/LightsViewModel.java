@@ -75,12 +75,13 @@ public class LightsViewModel extends AndroidViewModel {
         var groups2 = Transformations.switchMap(endpointId, endpointId -> {
             return lightRepository.getGroupsWithLightsForEndpoint(endpointId.get());
         });
-        groups2.observeForever(listResource -> {
-            if (listResource.getStatus() == Status.SUCCESS) {
-                LogUtil.d("%d", listResource.getData().size());
-                for (var i : listResource.getData()) {
-                    LogUtil.d(i.toString());
-                }
+        groups2.observeForever(mapResource -> {
+            if (mapResource.getStatus() == Status.SUCCESS) {
+                LogUtil.d("Size of GroupsWithLights map: %d", mapResource.getData().size());
+                mapResource.getData().forEach((dbGroup, dbLights) -> {
+                    LogUtil.d("GroupWithLights map with groupId %s and lightIds list %s!", dbGroup.getId(),
+                        dbLights.toString());
+                });
             }
         });
     }

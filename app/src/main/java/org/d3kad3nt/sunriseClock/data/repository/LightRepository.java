@@ -10,13 +10,12 @@ import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.DbGroupDao;
-import org.d3kad3nt.sunriseClock.data.local.DbGroupLightCrossrefDao;
+import org.d3kad3nt.sunriseClock.data.local.DbLightGroupingDao;
 import org.d3kad3nt.sunriseClock.data.local.DbLightDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
 import org.d3kad3nt.sunriseClock.data.model.group.RemoteGroup;
-import org.d3kad3nt.sunriseClock.data.model.groupWithLights.DbGroupLightCrossref;
-import org.d3kad3nt.sunriseClock.data.model.groupWithLights.DbGroupWithLights;
+import org.d3kad3nt.sunriseClock.data.model.DbGroupLightCrossref;
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
@@ -30,7 +29,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 
@@ -41,7 +42,7 @@ public class LightRepository {
 
     private static DbLightDao dbLightDao;
     private static DbGroupDao dbGroupDao;
-    private static DbGroupLightCrossrefDao dbGroupLightCrossrefDao;
+    private static DbLightGroupingDao dbLightGroupingDao;
     private static volatile LightRepository INSTANCE;
     private final EndpointRepository endpointRepo;
 
@@ -53,7 +54,7 @@ public class LightRepository {
     private LightRepository(Context context) {
         dbLightDao = AppDatabase.getInstance(context.getApplicationContext()).dbLightDao();
         dbGroupDao = AppDatabase.getInstance(context.getApplicationContext()).dbGroupDao();
-        dbGroupLightCrossrefDao = AppDatabase.getInstance(context.getApplicationContext()).dbGroupLightCrossrefDao();
+        dbLightGroupingDao = AppDatabase.getInstance(context.getApplicationContext()).dbGroupLightCrossrefDao();
         endpointRepo = EndpointRepository.getInstance(context);
     }
 
@@ -434,35 +435,34 @@ public class LightRepository {
         };
     }
 
-    public LiveData<Resource<List<DbGroupWithLights>>> getGroupsWithLightsForEndpoint(long endpointId) {
+    public LiveData<Resource<Map<DbGroup, List<DbLight>>>> getGroupsWithLightsForEndpoint(long endpointId) {
         try {
             endpointRepo.getEndpoint(endpointId);
         } catch (NullPointerException e) {
-            Resource<List<DbGroupWithLights>> resource = Resource.error("Endpoint doesn't exist", null);
+            Resource<Map<DbGroup, List<DbLight>>> resource = Resource.error("Endpoint doesn't exist", null);
             return new MutableLiveData<>(resource);
         }
-        return new BiNetworkBoundResource<List<DbGroupWithLights>, List<RemoteGroup>, List<RemoteLight>,
-            List<DbGroupWithLights>>() {
+        return new BiNetworkBoundResource<Map<DbGroup, List<DbLight>>, List<RemoteGroup>, List<RemoteLight>,
+            Map<DbGroup, List<DbLight>>>() {
 
             @Override
-            protected void saveResponseToDb(List<DbGroupWithLights> items) {
-                for (DbGroupWithLights groupWithLights : items) {
-                    //Todo: Work with @Ignore to extract lightIds from object and manually insert them into the
-                    // crossref table
-                    for (DbLight light : groupWithLights.dbLights) {
-                        dbLightDao.upsert(light);
-                    }
-                    dbGroupDao.upsert(groupWithLights.dbGroup);
+            protected void saveResponseToDb(Map<DbGroup, List<DbLight>> items) {
+                items.forEach((dbGroup, dbLights) -> {
+                    dbGroupDao.upsert(dbGroup);
+                    dbLights.forEach(dbLight -> {
+                        dbLightDao.upsert(dbLight);
+                    });
 
+                    // Todo: Insert relations into crossref table.
                     DbGroupLightCrossref test = new DbGroupLightCrossref();
                     test.groupId = 1;
                     test.lightId = 1;
                     // dbGroupLightCrossrefDao.save(test);
-                }
+                });
             }
 
             @Override
-            protected boolean shouldFetch(List<DbGroupWithLights> data) {
+            protected boolean shouldFetch(Map<DbGroup, List<DbLight>> data) {
                 //TODO
                 return true;
             }
@@ -473,9 +473,8 @@ public class LightRepository {
             }
 
             @Override
-            protected LiveData<List<DbGroupWithLights>> loadFromDb() {
-                //TODO add endpoint ID
-                return dbGroupLightCrossrefDao.loadGroupsWithLights();
+            protected LiveData<Map<DbGroup, List<DbLight>>> loadFromDb() {
+                return dbGroupDao.loadGroupsWithLightsForEndpoint(endpointId);
             }
 
             @Override
@@ -489,29 +488,31 @@ public class LightRepository {
             }
 
             @Override
-            protected List<DbGroupWithLights> convertDbTypeToResultType(List<DbGroupWithLights> item) {
+            protected Map<DbGroup, List<DbLight>> convertDbTypeToResultType(Map<DbGroup, List<DbLight>> item) {
                 //Todo: Convert to UI type
                 return item;
             }
 
             @Override
-            protected List<DbGroupWithLights> convertRemoteTypeToDbType(
+            protected Map<DbGroup, List<DbLight>> convertRemoteTypeToDbType(
                 ApiSuccessResponse<List<RemoteGroup>> remoteGroups,
                 ApiSuccessResponse<List<RemoteLight>> remoteLights) {
                 List<DbLight> lights = new ArrayList<>();
+                Map<DbGroup, List<DbLight>> groupsWithLights = new HashMap<>();
+
                 for (RemoteLight light : remoteLights.getBody()) {
                     lights.add(DbLight.from(light));
                 }
-                List<DbGroupWithLights> groupWithLights = new ArrayList<>();
+
                 for (RemoteGroup group : remoteGroups.getBody()) {
                     DbGroup dbGroup = DbGroup.from(group);
                     List<DbLight> groupLights =
                         lights.stream()
                             .filter(dbLight -> group.getEndpointLightIds().contains(dbLight.getEndpointEntityId()))
                             .toList();
-                    groupWithLights.add(DbGroupWithLights.from(dbGroup, groupLights));
+                    groupsWithLights.put(dbGroup, groupLights);
                 }
-                return groupWithLights;
+                return groupsWithLights;
             }
         };
     }

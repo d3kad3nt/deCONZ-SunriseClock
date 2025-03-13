@@ -10,8 +10,9 @@ import androidx.room.Index;
 
 import org.d3kad3nt.sunriseClock.data.model.DbEndpointEntity;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
-import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
+
+import java.util.Objects;
 
 @Entity(tableName = DbLight.TABLENAME,
     indices = {@Index(value = {"endpoint_id", "id_on_endpoint"},
@@ -153,5 +154,29 @@ public class DbLight extends DbEndpointEntity {
     @Override
     public String getTABLENAME() {
         return DbLight.TABLENAME;
+    }
+
+    // Room requires equals() and hashcode() to be implemented:
+    // The key of the provided method's multimap return type must implement equals() and hashCode().
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof final DbLight dbLight)) {
+            return false;
+        }
+        return super.equals(dbLight) && (isSwitchable == dbLight.isSwitchable && isOn == dbLight.isOn && isDimmable == dbLight.isDimmable &&
+            brightness == dbLight.brightness && isTemperaturable == dbLight.isTemperaturable &&
+            colorTemperature == dbLight.colorTemperature && isColorable == dbLight.isColorable &&
+            color == dbLight.color && isReachable == dbLight.isReachable);
+    }
+
+    // Room requires equals() and hashcode() to be implemented:
+    // The key of the provided method's multimap return type must implement equals() and hashCode().
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), isSwitchable, isOn, isDimmable, brightness, isTemperaturable,
+            colorTemperature, isColorable, color, isReachable);
     }
 }

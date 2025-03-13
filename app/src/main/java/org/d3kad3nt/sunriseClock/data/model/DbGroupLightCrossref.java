@@ -1,4 +1,4 @@
-package org.d3kad3nt.sunriseClock.data.model.groupWithLights;
+package org.d3kad3nt.sunriseClock.data.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

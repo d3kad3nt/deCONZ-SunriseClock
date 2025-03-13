@@ -10,6 +10,8 @@ import org.d3kad3nt.sunriseClock.data.model.DbEndpointEntity;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
 import org.jetbrains.annotations.Contract;
 
+import java.util.Objects;
+
 @Entity(tableName = DbGroup.TABLENAME,
     indices = {@Index(value = {"endpoint_id", "id_on_endpoint"},
         unique = true)},
@@ -44,5 +46,25 @@ public class DbGroup extends DbEndpointEntity {
     @Contract("_ -> new")
     public static DbGroup from(@NonNull RemoteGroup remoteGroup) {
         return RemoteGroup.toDbGroup(remoteGroup);
+    }
+
+    // Room requires equals() and hashcode() to be implemented:
+    // The key of the provided method's multimap return type must implement equals() and hashCode().
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof final DbGroup dbGroup)) {
+            return false;
+        }
+        return super.equals(dbGroup);
+    }
+
+    // Room requires equals() and hashcode() to be implemented:
+    // The key of the provided method's multimap return type must implement equals() and hashCode().
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode());
     }
 }
