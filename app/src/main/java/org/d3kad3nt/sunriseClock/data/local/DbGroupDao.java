@@ -16,17 +16,24 @@ import java.util.Map;
 @Dao
 public interface DbGroupDao extends DbEndpointEntityDao<DbGroup> {
 
-    String TAG = "DbGroupDao";
+    @Transaction
+    default long getIdForEndpointIdAndEndpointEntityId(long endpointId, String endpointEntityId) {
+        return getIdForEndpointIdAndEndpointGroupId(endpointId, endpointEntityId);
+    }
 
-    @Query("UPDATE '" + DbGroup.TABLENAME + "' SET name = :name WHERE endpoint_id = " +
-        ":endpointId AND id_on_endpoint = :endpointGroupId")
-    int updateUsingEndpointIdAndEndpointGroupId(long endpointId, String endpointGroupId, String name);
+    @Query(value = "SELECT id FROM '" + DbGroup.TABLENAME + "' WHERE endpoint_id = :endpointId AND id_on_endpoint =" +
+        " :endpointGroupId")
+    long getIdForEndpointIdAndEndpointGroupId(long endpointId, String endpointGroupId);
 
     @Transaction
     default int updateUsingEndpointIdAndEndpointEntityId(@NonNull DbGroup group) {
         return updateUsingEndpointIdAndEndpointGroupId(group.getEndpointId(), group.getEndpointEntityId(),
             group.getName());
     }
+
+    @Query("UPDATE '" + DbGroup.TABLENAME + "' SET name = :name WHERE endpoint_id = " +
+        ":endpointId AND id_on_endpoint = :endpointGroupId")
+    int updateUsingEndpointIdAndEndpointGroupId(long endpointId, String endpointGroupId, String name);
 
     @Query(value = "SELECT * FROM '" + DbGroup.TABLENAME + "' WHERE endpoint_id = :endpointId")
     LiveData<List<DbGroup>> loadAllForEndpoint(long endpointId);

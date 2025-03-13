@@ -25,8 +25,13 @@ public class DbGroupLightCrossref {
     public static final String TABLENAME = "light_grouping";
 
     @ColumnInfo(name = "group_id")
-    public long groupId;
+    public final long groupId;
 
     @ColumnInfo(name = "light_id")
-    public long lightId;
+    public final long lightId;
+
+    public DbGroupLightCrossref(final long groupId, final long lightId) {
+        this.groupId = groupId;
+        this.lightId = lightId;
+    }
 }

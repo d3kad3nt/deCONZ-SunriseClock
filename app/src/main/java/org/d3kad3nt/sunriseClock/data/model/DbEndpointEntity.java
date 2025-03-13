@@ -1,17 +1,15 @@
 package org.d3kad3nt.sunriseClock.data.model;
 
-import android.util.Log;
-
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
+import org.d3kad3nt.sunriseClock.util.LogUtil;
+
 import java.util.Objects;
 
 public abstract class DbEndpointEntity {
-
-    private static final String TAG = "DbEndpointEntity";
 
     @ColumnInfo(name = "endpoint_id")
     private final long endpointId;
@@ -34,14 +32,14 @@ public abstract class DbEndpointEntity {
         if (endpointId != 0L) {
             this.endpointId = endpointId;
         } else {
-            Log.e(TAG, "The given endpointId cannot be 0!");
+            LogUtil.e("The given endpointId cannot be 0!");
             throw new IllegalArgumentException("The given endpointId cannot be 0!");
         }
 
         if (endpointEntityId != null && !endpointEntityId.isEmpty()) {
             this.endpointEntityId = endpointEntityId;
         } else {
-            Log.e(TAG, "The given endpointEntityId string cannot be null or empty!");
+            LogUtil.e("The given endpointEntityId string cannot be null or empty!");
             throw new IllegalArgumentException("The given endpointEntityId string cannot be null or empty!");
         }
 
@@ -95,6 +93,7 @@ public abstract class DbEndpointEntity {
 
     /**
      * @return Name of the table containing these entities in the database.
+     * @noinspection SpellCheckingInspection
      */
     public abstract String getTABLENAME();
 

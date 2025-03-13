@@ -16,6 +16,15 @@ import java.util.Map;
 @Dao
 public interface DbLightDao extends DbEndpointEntityDao<DbLight> {
 
+    @Override
+    default long getIdForEndpointIdAndEndpointEntityId(long endpointId, String endpointEntityId) {
+        return getIdForEndpointIdAndEndpointLightId(endpointId, endpointEntityId);
+    }
+
+    @Query(value = "SELECT id FROM '" + DbLight.TABLENAME + "' WHERE endpoint_id = :endpointId AND id_on_endpoint =" +
+        " :endpointLightId")
+    long getIdForEndpointIdAndEndpointLightId(long endpointId, String endpointLightId);
+
     @Transaction
     default int updateUsingEndpointIdAndEndpointEntityId(@NonNull DbLight light) {
         return updateUsingEndpointIdAndEndpointLightId(light.getEndpointId(), light.getEndpointEntityId(),

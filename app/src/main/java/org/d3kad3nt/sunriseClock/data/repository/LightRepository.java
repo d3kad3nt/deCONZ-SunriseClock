@@ -448,16 +448,11 @@ public class LightRepository {
             @Override
             protected void saveResponseToDb(Map<DbGroup, List<DbLight>> items) {
                 items.forEach((dbGroup, dbLights) -> {
-                    dbGroupDao.upsert(dbGroup);
+                    long dbGroupPk = dbGroupDao.upsert(dbGroup);
                     dbLights.forEach(dbLight -> {
-                        dbLightDao.upsert(dbLight);
+                        long dbLightPk = dbLightDao.upsert(dbLight);
+                        dbLightGroupingDao.save(new DbGroupLightCrossref(dbGroupPk, dbLightPk));
                     });
-
-                    // Todo: Insert relations into crossref table.
-                    DbGroupLightCrossref test = new DbGroupLightCrossref();
-                    test.groupId = 1;
-                    test.lightId = 1;
-                    // dbGroupLightCrossrefDao.save(test);
                 });
             }
 
