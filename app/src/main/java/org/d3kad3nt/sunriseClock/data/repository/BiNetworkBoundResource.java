@@ -1,26 +1,8 @@
-/*
- * Copyright (C) 2017 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.d3kad3nt.sunriseClock.data.repository;
 
 import androidx.annotation.MainThread;
-import androidx.annotation.WorkerThread;
 import androidx.lifecycle.LiveData;
 
-import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiEmptyResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiErrorResponse;
@@ -28,65 +10,26 @@ import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
 import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
-import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
 
 /**
- * A generic class that can provide a resource backed by both the sqlite database and the network. Copied from the
- * official Google architecture-components github-sample under https://github
- * .com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android
- * /example/github/repository/NetworkBoundResource.kt
- * <p>
- * You can read more about it in the [Architecture Guide](https://developer.android.com/arch).
+ * A generic class that can provide a resource backed by both the sqlite database and TWO network operations.
  */
-public abstract class BiNetworkBoundResource <ResultType, RemoteType1, RemoteType2, DbType>
-    extends ExtendedMediatorLiveData<Resource<ResultType>> {
+abstract class BiNetworkBoundResource <ResultType, RemoteType1, RemoteType2, DbType>
+    extends NetworkBoundResource<ResultType, RemoteType1, DbType> {
 
-    private final LiveData<DbType> dbSource;
-    protected BaseEndpoint endpoint = null;
-    protected DbType dbObject = null;
     private ApiResponse<RemoteType1> data1;
     private ApiResponse<RemoteType2> data2;
 
+    /**
+     * A generic class that can provide a resource backed by both the sqlite database and TWO network operations.
+     */
     public BiNetworkBoundResource() {
-        this.setValue(Resource.loading(null));
-
-        dbSource = loadFromDb();
-        this.addSource(dbSource, dbObject -> {
-            dbSourceObserver(dbObject, dbSource);
-        });
+        super();
     }
 
-    private void dbSourceObserver(DbType data, LiveData<DbType> dbSourceLiveData) {
-        if (data == null) {
-            updateValue(Resource.loading(null));
-        } else {
-            dbObject = data;
-            removeSource(dbSourceLiveData);
-            if (shouldFetch(dbObject)) {
-                LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
-                addSource(endpointLiveData, baseEndpoint -> {
-                    endpointLiveDataObserver(baseEndpoint, endpointLiveData);
-                });
-            } else {
-                addSource(dbSource, newData -> {
-                    updateValue(Resource.success(convertDbTypeToResultType(newData)));
-                });
-            }
-        }
-    }
-
-    private void endpointLiveDataObserver(BaseEndpoint endpoint, LiveData<BaseEndpoint> endpointLiveData) {
-        if (endpoint == null) {
-            updateValue(Resource.loading(null));
-        } else {
-            this.endpoint = endpoint;
-            fetchFromNetwork(dbSource);
-            removeSource(endpointLiveData);
-        }
-    }
-
-    private void fetchFromNetwork(LiveData<DbType> dbSource) {
-        LiveData<ApiResponse<RemoteType1>> apiResponse1 = loadFromNetwork1();
+    @Override
+    protected void fetchFromNetwork(LiveData<DbType> dbSource) {
+        LiveData<ApiResponse<RemoteType1>> apiResponse1 = loadFromNetwork();
         LiveData<ApiResponse<RemoteType2>> apiResponse2 = loadFromNetwork2();
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
         addSource(dbSource, newData -> {
@@ -96,19 +39,27 @@ public abstract class BiNetworkBoundResource <ResultType, RemoteType1, RemoteTyp
             data1 = response;
             removeSource(apiResponse1);
             if (data2 != null) {
-                extracted(dbSource);
+                combineNetworkResults(dbSource);
             }
         });
         addSource(apiResponse2, response -> {
             data2 = response;
             removeSource(apiResponse2);
             if (data1 != null) {
-                extracted(dbSource);
+                combineNetworkResults(dbSource);
             }
         });
     }
 
-    private void extracted(final LiveData<DbType> dbSource) {
+    @Deprecated
+    @Override
+    protected DbType convertRemoteTypeToDbType(final ApiSuccessResponse<RemoteType1> response) {
+        throw new UnsupportedOperationException("The method convertRemoteTypeToDbType() should not be called on " +
+            "BiNetworkBoundResource because this method cannot handle multiple network responses as required by " +
+            "BiNetworkBoundResource.");
+    }
+
+    private void combineNetworkResults(final LiveData<DbType> dbSource) {
         removeSource(dbSource);
         Class<? extends ApiResponse> aClass = data1.getClass();
         Class<? extends ApiResponse> bClass = data2.getClass();
@@ -139,33 +90,31 @@ public abstract class BiNetworkBoundResource <ResultType, RemoteType1, RemoteTyp
                     convertDbTypeToResultType(newData)));
             });
         } else if (ApiEmptyResponse.class.equals(aClass) || ApiEmptyResponse.class.equals(bClass)) {
-            throw new UnsupportedOperationException("Empty Responses not implemented");
+            throw new UnsupportedOperationException("Empty responses not implemented");
         }
     }
 
-    protected void onFetchFailed() {
-    }
-
-    @WorkerThread
-    protected abstract void saveResponseToDb(DbType item);
-
-    @MainThread
-    protected abstract boolean shouldFetch(DbType data);
-
-    @MainThread
-    protected abstract LiveData<BaseEndpoint> loadEndpoint();
-
-    @MainThread
-    protected abstract LiveData<DbType> loadFromDb();
-
-    @MainThread
-    protected abstract LiveData<ApiResponse<RemoteType1>> loadFromNetwork1();
-
+    /**
+     * Load additional fresh data from the network, for example by calling methods on the endpoint (backed e.g. by
+     * Retrofit
+     * network requests):
+     * <p>
+     * {@code return endpoint.getGroup(dbObject.getEndpointEntityId());}
+     * <p>
+     * This is the second remote request and triggered right after {@link #loadFromNetwork()}. The result of both
+     * methods can be used to construct a unified database entity in
+     * {@link #convertRemoteTypeToDbType(ApiSuccessResponse, ApiSuccessResponse)}.
+     */
     @MainThread
     protected abstract LiveData<ApiResponse<RemoteType2>> loadFromNetwork2();
 
-    protected abstract ResultType convertDbTypeToResultType(DbType item);
-
+    /**
+     * Convert from two remote (network) data transfer objects to a object suitable for database inserts or updates.
+     * This 'combined data' is given directly to {@link #saveResponseToDb(DbType)}.
+     *
+     * @param response  The response for the first network request, triggered in {@link #loadFromNetwork()}.
+     * @param response2 The response for the second network request, triggered in {@link #loadFromNetwork2()}.
+     */
     protected abstract DbType convertRemoteTypeToDbType(ApiSuccessResponse<RemoteType1> response,
-                                                        final ApiSuccessResponse<RemoteType2> data2);
+                                                        final ApiSuccessResponse<RemoteType2> response2);
 }

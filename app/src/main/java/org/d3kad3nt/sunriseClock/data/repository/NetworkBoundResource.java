@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2017 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.d3kad3nt.sunriseClock.data.repository;
 
 import androidx.annotation.MainThread;
@@ -30,13 +14,10 @@ import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
 import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
 
+// Copied from the official Google architecture-components github-sample (https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/repository/NetworkBoundResource.kt).
+
 /**
- * A generic class that can provide a resource backed by both the sqlite database and the network. Copied from the
- * official Google architecture-components github-sample under https://github
- * .com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android
- * /example/github/repository/NetworkBoundResource.kt
- * <p>
- * You can read more about it in the [Architecture Guide](https://developer.android.com/arch).
+ * A generic class that can provide a resource backed by both the sqlite database and the network.
  */
 public abstract class NetworkBoundResource <ResultType, RemoteType, DbType>
     extends ExtendedMediatorLiveData<Resource<ResultType>> {
@@ -83,7 +64,7 @@ public abstract class NetworkBoundResource <ResultType, RemoteType, DbType>
         }
     }
 
-    private void fetchFromNetwork(LiveData<DbType> dbSource) {
+    protected void fetchFromNetwork(LiveData<DbType> dbSource) {
         LiveData<ApiResponse<RemoteType>> apiResponse = loadFromNetwork();
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
         addSource(dbSource, newData -> {
@@ -126,6 +107,11 @@ public abstract class NetworkBoundResource <ResultType, RemoteType, DbType>
     protected void onFetchFailed() {
     }
 
+    /**
+     * Insert data into the database, for example by calling insert or update methods on Room's DAO classes:
+     * <p>
+     * {@code dbLightDao.upsert(item);}
+     */
     @WorkerThread
     protected abstract void saveResponseToDb(DbType item);
 
@@ -138,10 +124,33 @@ public abstract class NetworkBoundResource <ResultType, RemoteType, DbType>
     @MainThread
     protected abstract LiveData<DbType> loadFromDb();
 
+    /**
+     * Load fresh data from the network, for example by calling methods on the endpoint (backed e.g. by Retrofit
+     * network requests):
+     * <p>
+     * {@code return endpoint.getLight(dbObject.getEndpointEntityId());}
+     */
     @MainThread
     protected abstract LiveData<ApiResponse<RemoteType>> loadFromNetwork();
 
+    /**
+     * Convert from database data transfer objects to the desired result type (e.g. for use in the GUI), for
+     * example:
+     * <p>
+     * {@code return UILight.from(item);}
+     *
+     * @param item The entity/data returned by the database.
+     */
     protected abstract ResultType convertDbTypeToResultType(DbType item);
 
+    /**
+     * Convert from remote (network) data transfer objects to a object suitable for database inserts or updates. This
+     * is given directly to {@link #saveResponseToDb(DbType)}.
+     * For example:
+     * <p>
+     * {@code return DbLight.from(response.getBody());}
+     *
+     * @param response The data returned by the remote (network).
+     */
     protected abstract DbType convertRemoteTypeToDbType(ApiSuccessResponse<RemoteType> response);
 }

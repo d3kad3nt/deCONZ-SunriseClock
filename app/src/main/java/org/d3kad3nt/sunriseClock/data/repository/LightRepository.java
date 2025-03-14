@@ -473,7 +473,7 @@ public class LightRepository {
             }
 
             @Override
-            protected LiveData<ApiResponse<List<RemoteGroup>>> loadFromNetwork1() {
+            protected LiveData<ApiResponse<List<RemoteGroup>>> loadFromNetwork() {
                 return endpoint.getGroups();
             }
 
@@ -491,11 +491,11 @@ public class LightRepository {
             @Override
             protected Map<DbGroup, List<DbLight>> convertRemoteTypeToDbType(
                 ApiSuccessResponse<List<RemoteGroup>> remoteGroups,
-                ApiSuccessResponse<List<RemoteLight>> remoteLights) {
+                ApiSuccessResponse<List<RemoteLight>> response2) {
                 List<DbLight> lights = new ArrayList<>();
                 Map<DbGroup, List<DbLight>> groupsWithLights = new HashMap<>();
 
-                for (RemoteLight light : remoteLights.getBody()) {
+                for (RemoteLight light : response2.getBody()) {
                     lights.add(DbLight.from(light));
                 }
 
