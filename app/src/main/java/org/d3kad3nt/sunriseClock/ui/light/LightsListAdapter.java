@@ -58,15 +58,14 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         if (!payloads.isEmpty()) {
             LogUtil.d("Triggering partial instead of full rebind of light data for lightId %d.",
                 getItem(position).getLightId());
-            for (var payload : payloads) {
-                if (payload instanceof final UILight.UILightChangePayload light) {
-                    LogUtil.v("Triggering partial rebind of light isOn state for lightId %d.",
-                        getItem(position).getLightId());
-                    light.bindVariable((id, value) -> holder.binding.setVariable(id, value));
-                } else {
-                    LogUtil.w(
-                        "Requested partial rebind of light data but updating this field is not yet implemented.");
+            for (Object payload : payloads) {
+                if (!(payload instanceof final UILight.UILightChangePayload lightPayload)) {
+                    LogUtil.w("Unexpected payload type: %s", payload.getClass().getName());
+                    continue;
                 }
+                LogUtil.v("Triggering partial rebind of %s state for lightId %d.",
+                    lightPayload.getType().name(), getItem(position).getLightId());
+                lightPayload.bindVariable((id, value) -> holder.binding.setVariable(id, value));
             }
             holder.binding.executePendingBindings();
         } else {
@@ -156,39 +155,15 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
             binding.setSliderTouchListener(new SliderTouchListener());
         }
 
-        void bind(UILight item) {
-            bindName(item.getName());
-            bindIsReachable(item.getIsReachable());
-            bindIsSwitchable(item.getIsSwitchable());
-            bindIsOn(item.getIsOn());
-            bindIsDimmable(item.getIsDimmable());
-            bindBrightness(item.getBrightness());
+        void bind(@NonNull UILight item) {
+            binding.setLightName(item.getName());
+            binding.setLightIsReachable(item.getIsReachable());
+            binding.setLightIsSwitchable(item.getIsSwitchable());
+            binding.setLightIsOn(item.getIsOn());
+            binding.setLightIsDimmable(item.getIsDimmable());
+            binding.setLightBrightness(item.getBrightness());
 
             binding.executePendingBindings();
-        }
-
-        void bindName(String name) {
-            binding.setLightName(name);
-        }
-
-        void bindIsReachable(boolean isOn) {
-            binding.setLightIsReachable(isOn);
-        }
-
-        void bindIsSwitchable(boolean isSwitchable) {
-            binding.setLightIsSwitchable(isSwitchable);
-        }
-
-        void bindIsOn(boolean isOn) {
-            binding.setLightIsOn(isOn);
-        }
-
-        void bindIsDimmable(boolean isDimmable) {
-            binding.setLightIsDimmable(isDimmable);
-        }
-
-        void bindBrightness(int brightness) {
-            binding.setLightBrightness(brightness);
         }
 
         public class CardClickListener implements View.OnClickListener {
