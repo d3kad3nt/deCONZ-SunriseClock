@@ -1,7 +1,5 @@
 package org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -13,10 +11,9 @@ import androidx.lifecycle.viewmodel.ViewModelInitializer;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
-import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import kotlin.jvm.functions.Function1;
 
@@ -28,23 +25,21 @@ public class EndpointDetailViewModel extends ViewModel {
         new CreationExtras.Key<>() {};
     public final static CreationExtras.Key<Long> ENDPOINT_ID_KEY = new CreationExtras.Key<>() {};
 
-    static final ViewModelInitializer<EndpointDetailViewModel> initializer = new ViewModelInitializer<>(
-        EndpointDetailViewModel.class,
-        creationExtras -> {
+    static final ViewModelInitializer<EndpointDetailViewModel> initializer =
+        new ViewModelInitializer<>(EndpointDetailViewModel.class, creationExtras -> {
             EndpointRepository endpointRepository = creationExtras.get(ENDPOINT_REPOSITORY_KEY);
             SettingsRepository settingsRepository = creationExtras.get(SETTINGS_REPOSITORY_KEY);
             Long endpointId = creationExtras.get(ENDPOINT_ID_KEY);
             return new EndpointDetailViewModel(endpointRepository, settingsRepository, endpointId);
-        }
-    );
+        });
     private final EndpointRepository endpointRepository;
     private final SettingsRepository settingsRepository;
     private final long endpointID;
     public LiveData<IEndpointUI> endpointConfig;
     public LiveData<Boolean> selected;
     /**
-     * Text that is shown in the endpoint rename dialog.
-     * The user types the desired new name into a text field backed by this LiveData.
+     * Text that is shown in the endpoint rename dialog. The user types the desired new name into a text field backed
+     * by this LiveData.
      */
     public MutableLiveData<String> endpointNameEditText = new MutableLiveData<>();
 
@@ -84,16 +79,16 @@ public class EndpointDetailViewModel extends ViewModel {
     }
 
     public boolean deleteEndpoint() {
-        final AtomicBoolean result = new AtomicBoolean(false);
-        LivePreference<Long> selectedEndpoint = settingsRepository.getLongSetting("endpoint_id", 0);
-        LiveDataUtil.observeOnce(selectedEndpoint, selectedEndpointId -> {
-            Log.d(TAG, "selected id: " + selectedEndpointId + " current id:" + endpointId);
-            if (selectedEndpointId != endpointId){
-                Log.d(TAG, "delete endpoint");
-                endpointRepository.deleteEndpoint(endpointId);
-                result.set(true);
-            }
-        });
-        return result.get();
+        boolean result = false;
+        long selectedEndpointId = settingsRepository.getActiveEndpoint();
+        LogUtil.d("selected id: %d current id: ", selectedEndpointId, endpointID);
+        if (selectedEndpointId != endpointID) {
+            LogUtil.d("Delete endpoint %d", selectedEndpointId);
+            endpointRepository.deleteEndpoint(endpointID);
+            result = true;
+        } else {
+            LogUtil.i("Endpoint %d can't be deleted, because it is currently active");
+        }
+        return result;
     }
 }
