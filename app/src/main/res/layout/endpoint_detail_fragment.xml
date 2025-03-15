@@ -6,6 +6,9 @@
         <variable
             name="viewModel"
             type="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailViewModel" />
+        <variable
+            name="onDeleteEndpointClickListener"
+            type="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailFragment.DeleteEndpointClickListener" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -59,6 +62,7 @@
             android:layout_margin="16dp"
             android:contentDescription="@string/delete"
             android:text="@string/delete"
+            android:onClickListener="@{onDeleteEndpointClickListener}"
             app:icon="@drawable/ic_plus"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

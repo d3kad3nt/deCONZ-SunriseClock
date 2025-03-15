@@ -24,8 +24,8 @@ import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.databinding.EndpointDetailFragmentBinding;
-import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class EndpointDetailFragment extends Fragment implements MenuProvider {
 
@@ -69,27 +69,30 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
             EndpointDetailViewModel.class);
 
         binding = EndpointDetailFragmentBinding.inflate(inflater, container, false);
-        addDeleteEndpointListener(binding);
+        binding.setOnDeleteEndpointClickListener(new DeleteEndpointClickListener());
 
         // Initialize the options menu (toolbar menu).
         MenuHost menuHost = requireActivity();
         menuHost.addMenuProvider(this, getViewLifecycleOwner());
 
-
         return binding.getRoot();
     }
 
-    private void addDeleteEndpointListener(final EndpointDetailFragmentBinding binding) {
-        binding.deleteEndpoint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LiveDataUtil.observeOnce(viewModel.endpointConfig,iEndpointUI -> {
-                    if (viewModel.deleteEndpoint()) {
-                        Navigation.findNavController(v).navigateUp();
-                    }
-                });
-            }
-        });
+    @Override
+    public boolean onMenuItemSelected(@NonNull final MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.menu_endpoint_details_info) {
+            LogUtil.d("User requested to show endpoint info screen by clicking the toolbar menu option.");
+            Navigation.findNavController(binding.getRoot())
+                .navigate(EndpointDetailFragmentDirections.actionEndpointDetailToEndpointDetailInfoDialogFragment());
+            return true;
+        } else if (menuItem.getItemId() == R.id.menu_endpoint_details_name_edit) {
+            LogUtil.d("User requested to show endpoint name edit screen by clicking the toolbar menu option.");
+            Navigation.findNavController(binding.getRoot()).navigate(
+                EndpointDetailFragmentDirections.actionEndpointDetailToEndpointDetailNameEditDialogFragment());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -113,21 +116,15 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
         menuInflater.inflate(R.menu.menu_endpoint_details, menu);
     }
 
-    @Override
-    public boolean onMenuItemSelected(@NonNull final MenuItem menuItem) {
-        if (menuItem.getItemId() == R.id.menu_endpoint_details_info) {
-            LogUtil.d("User requested to show endpoint info screen by clicking the toolbar menu option.");
-            Navigation.findNavController(binding.getRoot())
-                .navigate(EndpointDetailFragmentDirections.actionEndpointDetailToEndpointDetailInfoDialogFragment());
-            return true;
-        } else if (menuItem.getItemId() == R.id.menu_endpoint_details_name_edit) {
-            LogUtil.d("User requested to show endpoint name edit screen by clicking the toolbar menu option.");
-            Navigation.findNavController(binding.getRoot())
-                .navigate(
-                    EndpointDetailFragmentDirections.actionEndpointDetailToEndpointDetailNameEditDialogFragment());
-            return true;
-        } else {
-            return false;
+    public class DeleteEndpointClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            LiveDataUtil.observeOnce(viewModel.endpointConfig, iEndpointUI -> {
+                if (viewModel.deleteEndpoint()) {
+                    Navigation.findNavController(v).navigateUp();
+                }
+            });
         }
     }
 }
