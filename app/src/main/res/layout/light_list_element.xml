@@ -11,18 +11,22 @@
             name="cardClickListener"
             type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.ViewHolder.CardClickListener" />
         <variable
-            name="switchCheckedChangedListener"
-            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.ViewHolder.SwitchCheckedChangedListener" />
+            name="switchCheckedChangeListener"
+            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.ViewHolder.SwitchCheckedChangeListener" />
+        <variable
+            name="sliderTouchListener"
+            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.ViewHolder.SliderTouchListener" />
     </data>
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
         android:onClick="@{cardClickListener}"
-        app:cardCornerRadius="10dp"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.LightsFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp">
@@ -30,11 +34,11 @@
                 android:id="@+id/materialTextView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:lines="1"
                 android:text="@{light.name}"
                 android:textSize="20sp"
-                android:ellipsize="end"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/materialSlider"
                 app:layout_constraintEnd_toStartOf="@+id/materialSwitch2"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
@@ -46,13 +50,29 @@
                 android:layout_height="wrap_content"
                 android:checked="@{light.isOn}"
                 android:enabled="@{light.isReachable}"
+                android:onCheckedChanged="@{switchCheckedChangeListener}"
                 android:visibility="@{light.isSwitchable ? View.VISIBLE : View.INVISIBLE}"
-                android:onCheckedChanged="@{switchCheckedChangedListener}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/materialSlider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toEndOf="@+id/materialTextView2"
                 app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.slider.Slider
+                android:id="@+id/materialSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="@{light.isReachable}"
+                android:onSliderTouch="@{sliderTouchListener}"
+                android:stepSize="1"
+                android:value="@{light.brightness}"
+                android:valueFrom="0"
+                android:valueTo="100"
+                android:visibility="@{light.isDimmable ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/materialTextView2"
+                app:tickVisible="false" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

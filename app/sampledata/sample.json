@@ -2,33 +2,42 @@
   "comment": "Sample data structure for use with the Android Studio layout editor. Additional attributes (like type of the light) can be added in the future.",
   "lights": [
     {
-      "name": "Deckenlampe Wohnzimmer"
+      "name": "Deckenlampe Wohnzimmer",
+      "lightId": 1
     },
     {
-      "name": "Badezimmerlicht"
+      "name": "Badezimmerlicht",
+      "lightId": 2
     },
     {
-      "name": "Stehlampe Esszimmer"
+      "name": "Stehlampe Esszimmer",
+      "lightId": 3
     },
     {
-      "name": "Fernsehbeleuchtung"
+      "name": "Fernsehbeleuchtung",
+      "lightId": 4
     },
     {
-      "name": "Strahler Küche 1"
+      "name": "Strahler Küche 1",
+      "lightId": 5
     },
     {
-      "name": "Strahler Küche 2"
+      "name": "Strahler Küche 2",
+      "lightId": 6
     },
     {
-      "name": "Seeeeeeeeeeeeeeeeeeeeeeeehr langer Lichtname"
+      "name": "Seeeeeeeeeeeeeeeeeeeeeeeehr langer Lichtname",
+      "lightId": 7
     }
   ],
   "endpoints": [
     {
-      "name": "Gateway Hamburg"
+      "name": "Gateway Hamburg",
+      "endpointId": 1
     },
     {
-      "name": "Gateway Ferienwohnung"
+      "name": "Gateway Ferienwohnung",
+      "endpointId": 2
     }
   ]
 }

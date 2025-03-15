@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_endpoint_details_info"
+        android:icon="@drawable/info_24dp"
+        android:title="@string/endpointDetail_title"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_endpoint_details_name_edit"
+        android:icon="@drawable/edit_24dp"
+        android:title="@string/endpoint_rename"
+        app:showAsAction="ifRoom" />
+</menu>

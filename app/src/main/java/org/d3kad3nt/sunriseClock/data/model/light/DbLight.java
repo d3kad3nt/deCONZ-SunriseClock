@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
-import android.util.Log;
-
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -11,17 +10,15 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
 @Entity(tableName = DbLight.TABLENAME,
-    indices = {@Index(value = {"endpoint_id", "endpoint_light_id"},
-        unique = true)},
-    // A DbLight is always bound to a single endpoint. It cannot exist without one:
-    // Therefore Room is instructed to delete this DbLight if the endpoint gets deleted.
-    foreignKeys = @ForeignKey(entity = EndpointConfig.class,
-        parentColumns = "endpointId",
-        childColumns = "endpoint_id",
-        onDelete = ForeignKey.CASCADE))
+        indices = {@Index(value = {"endpoint_id", "endpoint_light_id"}, unique = true)},
+        // A DbLight is always bound to a single endpoint. It cannot exist without one:
+        // Therefore Room is instructed to delete this DbLight if the endpoint gets deleted.
+        foreignKeys = @ForeignKey(entity = EndpointConfig.class, parentColumns = "endpointId",
+                                  childColumns = "endpoint_id", onDelete = ForeignKey.CASCADE))
 public class DbLight {
 
     @Ignore
@@ -30,46 +27,34 @@ public class DbLight {
     static final int BRIGHTNESS_MIN = 0;
     @Ignore
     static final int BRIGHTNESS_MAX = 100;
-    @Ignore
-    private static final String TAG = "DbLight";
     @ColumnInfo(name = "endpoint_id")
     private final long endpointId;
     @ColumnInfo(name = "endpoint_light_id")
     @NonNull
     // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string).
     private final String endpointLightId;
-    @ColumnInfo(name = "name",
-        defaultValue = "No Name")
+    @ColumnInfo(name = "name", defaultValue = "No Name")
     @NonNull
     // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string).
     private final String name;
-    @ColumnInfo(name = "is_switchable",
-        defaultValue = "false")
+    @ColumnInfo(name = "is_switchable", defaultValue = "false")
     private final boolean isSwitchable;
-    @ColumnInfo(name = "is_on",
-        defaultValue = "false")
+    @ColumnInfo(name = "is_on", defaultValue = "false")
     private final boolean isOn;
-    @ColumnInfo(name = "is_dimmable",
-        defaultValue = "false")
+    @ColumnInfo(name = "is_dimmable", defaultValue = "false")
     private final boolean isDimmable;
-    @ColumnInfo(name = "brightness",
-        defaultValue = "0")
+    @ColumnInfo(name = "brightness", defaultValue = "0")
     private final int brightness;
-    @ColumnInfo(name = "is_temperaturable",
-        defaultValue = "false")
+    @ColumnInfo(name = "is_temperaturable", defaultValue = "false")
     private final boolean isTemperaturable;
-    @ColumnInfo(name = "colortemperature",
-        defaultValue = "0")
+    @ColumnInfo(name = "colortemperature", defaultValue = "0")
     private final int colorTemperature;
-    @ColumnInfo(name = "is_colorable",
-        defaultValue = "false")
+    @ColumnInfo(name = "is_colorable", defaultValue = "false")
     private final boolean isColorable;
-    @ColumnInfo(name = "color",
-        defaultValue = "0")
+    @ColumnInfo(name = "color", defaultValue = "0")
     private final int color;
 
-    @ColumnInfo(name = "is_reachable",
-        defaultValue = "true")
+    @ColumnInfo(name = "is_reachable", defaultValue = "true")
     private final boolean isReachable;
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "light_id")
@@ -87,14 +72,14 @@ public class DbLight {
         if (endpointId != 0L) {
             this.endpointId = endpointId;
         } else {
-            Log.e(TAG, "The given endpointId cannot be 0!");
+            LogUtil.e("The given endpointId cannot be 0!");
             throw new IllegalArgumentException("The given endpointId cannot be 0!");
         }
 
         if (!endpointLightId.isEmpty()) {
             this.endpointLightId = endpointLightId;
         } else {
-            Log.e(TAG, "The given endpointLightId string cannot be null or empty!");
+            LogUtil.e("The given endpointLightId string cannot be null or empty!");
             throw new IllegalArgumentException("The given endpointLightId string cannot be null or empty!");
         }
 
@@ -193,6 +178,7 @@ public class DbLight {
      * @return The current brightness of the light, where 0 is the lowest brightness or off (depending on the light)
      * and 100 is the highest brightness.
      */
+    @IntRange(from = 0, to = 100)
     public int getBrightness() {
         return brightness;
     }

@@ -32,6 +32,8 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility = 21
         targetCompatibility = 21
     }
@@ -66,7 +68,7 @@ dependencies {
     // GUI
     implementation 'com.google.android.material:material:1.12.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.2.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.2.1"
     implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation "androidx.cardview:cardview:1.0.0"
@@ -79,11 +81,13 @@ dependencies {
     // Preference
     implementation 'androidx.preference:preference:1.2.1'
 
-    implementation 'com.github.ibrahimsn98:live-preferences:1.9'
-
     // Tests
     androidTestImplementation 'androidx.test:runner:1.6.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+
+    // Allow use of newer Java Features
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+
 }

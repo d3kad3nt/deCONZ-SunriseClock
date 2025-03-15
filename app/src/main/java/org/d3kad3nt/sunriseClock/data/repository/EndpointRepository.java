@@ -20,6 +20,7 @@ import org.d3kad3nt.sunriseClock.data.remote.common.EndpointBuilder;
 import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,6 +112,18 @@ public class EndpointRepository {
         });
         type.getBuilder().setConfig(endpointConfig).build();
         return UIEndpoint.from(endpointConfig);
+    }
+
+    public void setName(long endpointId, String newName) {
+        LogUtil.i("Setting name to %s for endpoint with id %d", newName, endpointId);
+
+        EndpointConfigDao.NameUpdate update = new EndpointConfigDao.NameUpdate();
+        update.endpointId = endpointId;
+        update.name = newName;
+
+        ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
+            endpointConfigDao.updateName(update);
+        });
     }
 
     public void deleteEndpoint(long endpoint) {

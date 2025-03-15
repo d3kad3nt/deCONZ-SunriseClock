@@ -32,6 +32,14 @@ public interface IServices {
                                                 @Header(endpointLightIdHeader) String headerLightId);
 
     @Headers("Content-Type: application/json")
+    @PUT("lights/{lightId}")
+    LiveData<ApiResponse<ResponseBody>> updateLightAttributes(@Path("lightId") String lightId, @Body JsonObject body);
+
+    @Headers("Content-Type: application/json")
     @PUT("lights/{lightId}/state")
     LiveData<ApiResponse<ResponseBody>> updateLightState(@Path("lightId") String lightId, @Body JsonObject body);
+
+    @Headers("Content-Type: application/json")
+    @PUT("groups/{groupId}/action")
+    LiveData<ApiResponse<ResponseBody>> updateGroupState(@Path("groupId") String groupId, @Body JsonObject body);
 }
