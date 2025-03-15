@@ -8,6 +8,8 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.Objects;
 
+import kotlin.jvm.functions.Function2;
+
 public class UILight {
 
     private final long lightId;
@@ -148,7 +150,11 @@ public class UILight {
             Objects.equals(isReachable, otherLight.isReachable);
     }
 
+    public interface UpdateBinderVariable extends Function2<Integer, Object, Boolean> {}
+
     public interface UILightChangePayload {
+
+        void bindVariable(UpdateBinderVariable updateBinderVariable);
 
         class LightId implements UILightChangePayload {
 
@@ -156,6 +162,12 @@ public class UILight {
 
             LightId(long lightId) {
                 this.lightId = lightId;
+            }
+
+            @Override
+            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
+
+                throw new UnsupportedOperationException("Not yet implemented");
             }
         }
 
@@ -166,6 +178,12 @@ public class UILight {
             EndpointId(long endpointId) {
                 this.endpointId = endpointId;
             }
+
+            @Override
+            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
+
+                throw new UnsupportedOperationException("Not yet implemented");
+            }
         }
 
         class LightName implements UILightChangePayload {
@@ -174,6 +192,12 @@ public class UILight {
 
             LightName(String lightName) {
                 this.lightName = lightName;
+            }
+
+            @Override
+            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
+
+                throw new UnsupportedOperationException("Not yet implemented");
             }
         }
 
@@ -184,6 +208,12 @@ public class UILight {
             LightIsSwitchable(boolean isSwitchable) {
                 this.isSwitchable = isSwitchable;
             }
+
+            @Override
+            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
+
+                throw new UnsupportedOperationException("Not yet implemented");
+            }
         }
 
         class LightOn implements UILightChangePayload {
@@ -192,6 +222,12 @@ public class UILight {
 
             LightOn(boolean isOn) {
                 this.isOn = isOn;
+            }
+
+            @Override
+            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
+
+                throw new UnsupportedOperationException("Not yet implemented");
             }
         }
 
@@ -202,6 +238,12 @@ public class UILight {
             LightIsDimmable(boolean isDimmable) {
                 this.isDimmable = isDimmable;
             }
+
+            @Override
+            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
+
+                throw new UnsupportedOperationException("Not yet implemented");
+            }
         }
 
         class LightBrightness implements UILightChangePayload {
@@ -210,6 +252,12 @@ public class UILight {
 
             LightBrightness(int brightness) {
                 this.brightness = brightness;
+            }
+
+            @Override
+            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
+
+                throw new UnsupportedOperationException("Not yet implemented");
             }
         }
 
@@ -220,6 +268,11 @@ public class UILight {
             LightIsTemperaturable(boolean isTemperaturable) {
                 this.isTemperaturable = isTemperaturable;
             }
+
+            @Override
+            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
+                throw new UnsupportedOperationException("Not yet implemented");
+            }
         }
 
         class LightIsColorable implements UILightChangePayload {
@@ -229,6 +282,11 @@ public class UILight {
             LightIsColorable(boolean isColorable) {
                 this.isColorable = isColorable;
             }
+
+            @Override
+            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
+                throw new UnsupportedOperationException("Not yet implemented");
+            }
         }
 
         class LightIsReachable implements UILightChangePayload {
@@ -237,6 +295,11 @@ public class UILight {
 
             LightIsReachable(boolean isReachable) {
                 this.isReachable = isReachable;
+            }
+
+            @Override
+            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
+                throw new UnsupportedOperationException("Not yet implemented");
             }
         }
     }

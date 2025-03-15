@@ -58,16 +58,15 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         if (!payloads.isEmpty()) {
             LogUtil.d("Triggering partial instead of full rebind of light data for lightId %d.",
                 getItem(position).getLightId());
-            if (payloads.get(0) instanceof final UILight.UILightChangePayload.LightOn light) {
-                LogUtil.v("Triggering partial rebind of light isOn state for lightId %d.",
-                    getItem(position).getLightId());
-                holder.bindIsOn(light.isOn);
-            } else if (payloads.get(0) instanceof final UILight.UILightChangePayload.LightBrightness light) {
-                LogUtil.v("Triggering partial rebind of light brightness for lightId %d.",
-                    getItem(position).getLightId());
-                holder.bindBrightness(light.brightness);
-            } else {
-                LogUtil.w("Requested partial rebind of light data but updating this field is not yet implemented.");
+            for (var payload : payloads) {
+                if (payload instanceof final UILight.UILightChangePayload light) {
+                    LogUtil.v("Triggering partial rebind of light isOn state for lightId %d.",
+                        getItem(position).getLightId());
+                    light.bindVariable((id, value) -> holder.binding.setVariable(id, value));
+                } else {
+                    LogUtil.w(
+                        "Requested partial rebind of light data but updating this field is not yet implemented.");
+                }
             }
             holder.binding.executePendingBindings();
         } else {
