@@ -12,7 +12,7 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:context="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailFragment">
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/label_endpointType"
@@ -61,9 +61,9 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
             android:contentDescription="@string/delete"
-            android:text="@string/delete"
             android:onClickListener="@{onDeleteEndpointClickListener}"
-            app:icon="@drawable/ic_plus"
+            android:text="@string/delete"
+            app:icon="@drawable/delete_24px"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
