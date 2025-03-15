@@ -65,6 +65,7 @@ public class UILight {
         return uiLight;
     }
 
+    @Nullable
     public static UILightChangePayload getSingleChangePayload(@NonNull UILight oldItem, @NonNull UILight newItem) {
         if (!Objects.equals(oldItem.getLightId(), newItem.getLightId())) {
             return new UILightChangePayload(UILightChangePayload.Type.lightId, newItem.getLightId());
