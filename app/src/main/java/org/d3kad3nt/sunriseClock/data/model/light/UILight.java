@@ -173,7 +173,11 @@ public class UILight {
             }
         }
 
-        enum Type {
+        public Type getType() {
+            return type;
+        }
+
+        public enum Type {
             endpointId(null),
             lightId(null),
             lightIsSwitchable(BR.lightIsSwitchable),
