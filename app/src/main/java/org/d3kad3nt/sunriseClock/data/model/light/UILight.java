@@ -2,6 +2,8 @@ package org.d3kad3nt.sunriseClock.data.model.light;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.library.baseAdapters.BR;
 
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
@@ -65,25 +67,26 @@ public class UILight {
 
     public static UILightChangePayload getSingleChangePayload(@NonNull UILight oldItem, @NonNull UILight newItem) {
         if (!Objects.equals(oldItem.getLightId(), newItem.getLightId())) {
-            return new UILightChangePayload.LightId(newItem.getLightId());
+            return new UILightChangePayload(UILightChangePayload.Type.lightId, newItem.getLightId());
         } else if (!Objects.equals(oldItem.getEndpointId(), newItem.getEndpointId())) {
-            return new UILightChangePayload.EndpointId(newItem.getEndpointId());
+            return new UILightChangePayload(UILightChangePayload.Type.endpointId, newItem.getEndpointId());
         } else if (!Objects.equals(oldItem.getName(), newItem.getName())) {
-            return new UILightChangePayload.LightName(newItem.getName());
+            return new UILightChangePayload(UILightChangePayload.Type.lightName, newItem.getName());
         } else if (!Objects.equals(oldItem.getIsSwitchable(), newItem.getIsSwitchable())) {
-            return new UILightChangePayload.LightIsSwitchable(newItem.getIsSwitchable());
+            return new UILightChangePayload(UILightChangePayload.Type.lightIsSwitchable, newItem.getIsSwitchable());
         } else if (!Objects.equals(oldItem.getIsOn(), newItem.getIsOn())) {
-            return new UILightChangePayload.LightOn(newItem.getIsOn());
+            return new UILightChangePayload(UILightChangePayload.Type.lightIsOn, newItem.getIsOn());
         } else if (!Objects.equals(oldItem.getIsDimmable(), newItem.getIsDimmable())) {
-            return new UILightChangePayload.LightIsDimmable(newItem.getIsDimmable());
+            return new UILightChangePayload(UILightChangePayload.Type.lightIsDimmable, newItem.getIsDimmable());
         } else if (!Objects.equals(oldItem.getBrightness(), newItem.getBrightness())) {
-            return new UILightChangePayload.LightBrightness(newItem.getBrightness());
+            return new UILightChangePayload(UILightChangePayload.Type.lightBrightness, newItem.getBrightness());
         } else if (!Objects.equals(oldItem.getIsTemperaturable(), newItem.getIsTemperaturable())) {
-            return new UILightChangePayload.LightIsTemperaturable(newItem.getIsTemperaturable());
+            return new UILightChangePayload(UILightChangePayload.Type.lightIsTemperaturable,
+                newItem.getIsTemperaturable());
         } else if (!Objects.equals(oldItem.getIsColorable(), newItem.getIsColorable())) {
-            return new UILightChangePayload.LightIsColorable(newItem.getIsColorable());
+            return new UILightChangePayload(UILightChangePayload.Type.lightIsColorable, newItem.getIsColorable());
         } else if (!Objects.equals(oldItem.getIsReachable(), newItem.getIsReachable())) {
-            return new UILightChangePayload.LightIsReachable(newItem.getIsReachable());
+            return new UILightChangePayload(UILightChangePayload.Type.lightIsReachable, newItem.getIsReachable());
         }
         return null;
     }
@@ -152,154 +155,41 @@ public class UILight {
 
     public interface UpdateBinderVariable extends Function2<Integer, Object, Boolean> {}
 
-    public interface UILightChangePayload {
+    public static class UILightChangePayload {
 
-        void bindVariable(UpdateBinderVariable updateBinderVariable);
+        private final Type type;
+        private final Object value;
 
-        class LightId implements UILightChangePayload {
+        UILightChangePayload(Type type, Object value) {
+            this.type = type;
+            this.value = value;
+        }
 
-            public final long lightId;
-
-            LightId(long lightId) {
-                this.lightId = lightId;
-            }
-
-            @Override
-            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
-
-                throw new UnsupportedOperationException("Not yet implemented");
+        public void bindVariable(UpdateBinderVariable updateBinderVariable) {
+            if (type.id != null) {
+                updateBinderVariable.invoke(type.id, value);
+            } else {
+                LogUtil.d("Changing of the %s value isn't supported yet", type.name());
             }
         }
 
-        class EndpointId implements UILightChangePayload {
+        enum Type {
+            endpointId(null),
+            lightId(null),
+            lightIsSwitchable(BR.lightIsSwitchable),
+            lightIsOn(BR.lightIsOn),
+            lightIsDimmable(BR.lightIsDimmable),
+            lightBrightness(BR.lightBrightness),
+            lightIsTemperaturable(null),
+            lightIsColorable(null),
+            lightIsReachable(BR.lightIsReachable),
+            lightName(BR.lightName);
 
-            public final long endpointId;
+            @Nullable
+            private final Integer id;
 
-            EndpointId(long endpointId) {
-                this.endpointId = endpointId;
-            }
-
-            @Override
-            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
-
-                throw new UnsupportedOperationException("Not yet implemented");
-            }
-        }
-
-        class LightName implements UILightChangePayload {
-
-            public final String lightName;
-
-            LightName(String lightName) {
-                this.lightName = lightName;
-            }
-
-            @Override
-            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
-
-                throw new UnsupportedOperationException("Not yet implemented");
-            }
-        }
-
-        class LightIsSwitchable implements UILightChangePayload {
-
-            public final boolean isSwitchable;
-
-            LightIsSwitchable(boolean isSwitchable) {
-                this.isSwitchable = isSwitchable;
-            }
-
-            @Override
-            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
-
-                throw new UnsupportedOperationException("Not yet implemented");
-            }
-        }
-
-        class LightOn implements UILightChangePayload {
-
-            public final boolean isOn;
-
-            LightOn(boolean isOn) {
-                this.isOn = isOn;
-            }
-
-            @Override
-            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
-
-                throw new UnsupportedOperationException("Not yet implemented");
-            }
-        }
-
-        class LightIsDimmable implements UILightChangePayload {
-
-            public final boolean isDimmable;
-
-            LightIsDimmable(boolean isDimmable) {
-                this.isDimmable = isDimmable;
-            }
-
-            @Override
-            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
-
-                throw new UnsupportedOperationException("Not yet implemented");
-            }
-        }
-
-        class LightBrightness implements UILightChangePayload {
-
-            public final int brightness;
-
-            LightBrightness(int brightness) {
-                this.brightness = brightness;
-            }
-
-            @Override
-            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
-
-                throw new UnsupportedOperationException("Not yet implemented");
-            }
-        }
-
-        class LightIsTemperaturable implements UILightChangePayload {
-
-            public final boolean isTemperaturable;
-
-            LightIsTemperaturable(boolean isTemperaturable) {
-                this.isTemperaturable = isTemperaturable;
-            }
-
-            @Override
-            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
-                throw new UnsupportedOperationException("Not yet implemented");
-            }
-        }
-
-        class LightIsColorable implements UILightChangePayload {
-
-            public final boolean isColorable;
-
-            LightIsColorable(boolean isColorable) {
-                this.isColorable = isColorable;
-            }
-
-            @Override
-            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
-                throw new UnsupportedOperationException("Not yet implemented");
-            }
-        }
-
-        class LightIsReachable implements UILightChangePayload {
-
-            public final boolean isReachable;
-
-            LightIsReachable(boolean isReachable) {
-                this.isReachable = isReachable;
-            }
-
-            @Override
-            public void bindVariable(final UpdateBinderVariable updateBinderVariable) {
-                throw new UnsupportedOperationException("Not yet implemented");
+            Type(@Nullable final Integer id) {
+                this.id = id;
             }
         }
     }
