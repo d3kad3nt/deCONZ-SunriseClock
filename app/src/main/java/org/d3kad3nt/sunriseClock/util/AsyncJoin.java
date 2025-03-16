@@ -36,16 +36,15 @@ public class AsyncJoin {
     }
 
     public void executeWhenJoined(Action action) {
-        joinState.observeForever(
-                new androidx.lifecycle.Observer<>() {
-                    @Override
-                    public void onChanged(final Boolean completed) {
-                        if (completed) {
-                            action.apply();
-                            joinState.removeObserver(this);
-                        }
-                    }
-                });
+        joinState.observeForever(new androidx.lifecycle.Observer<>() {
+            @Override
+            public void onChanged(final Boolean completed) {
+                if (completed) {
+                    action.apply();
+                    joinState.removeObserver(this);
+                }
+            }
+        });
     }
 
     @FunctionalInterface

@@ -55,8 +55,7 @@ public class RemoteLight {
             this.endpointLightId = endpointLightId;
         } else {
             LogUtil.e("The given endpointLightId string cannot be null or empty!");
-            throw new IllegalArgumentException(
-                    "The given endpointLightId string cannot be null or empty!");
+            throw new IllegalArgumentException("The given endpointLightId string cannot be null or empty!");
         }
 
         this.name = name;
@@ -64,23 +63,20 @@ public class RemoteLight {
         this.isOn = isOn;
         this.isDimmable = isDimmable;
 
-        if (brightness >= endpointType.getMinBrightness()
-                && brightness <= endpointType.getMaxBrightness()) {
+        if (brightness >= endpointType.getMinBrightness() && brightness <= endpointType.getMaxBrightness()) {
             this.brightness = brightness;
         } else {
-            throw new IllegalArgumentException(
-                    "The given brightness of a light (endpoint type "
-                            + endpointType.name()
-                            + ") must be between "
-                            + endpointType.getMinBrightness()
-                            + " and "
-                            + endpointType.getMaxBrightness()
-                            + "!");
+            throw new IllegalArgumentException("The given brightness of a light (endpoint type "
+                    + endpointType.name()
+                    + ") must be between "
+                    + endpointType.getMinBrightness()
+                    + " and "
+                    + endpointType.getMaxBrightness()
+                    + "!");
         }
 
         this.isTemperaturable = isTemperaturable;
-        this.colorTemperature =
-                colorTemperature; // Todo: Define which values are allowed for each endpoint type
+        this.colorTemperature = colorTemperature; // Todo: Define which values are allowed for each endpoint type
         this.isColorable = isColorable;
         this.color = color; // Todo: Define which values are allowed for each endpoint type
         this.isReachable = isReachable;
@@ -92,24 +88,22 @@ public class RemoteLight {
         DbLightBuilder dbLightBuilder = new DbLightBuilder();
         // Logic to convert remote light to db light depending on the endpoint type this light
         // originated from.
-        DbLight dbLight =
-                dbLightBuilder
-                        .setEndpointId(remoteLight.getEndpointId())
-                        .setEndpointLightId(remoteLight.getEndpointLightId())
-                        .setName(remoteLight.getName())
-                        .setIsSwitchable(remoteLight.getIsSwitchable())
-                        .setIsOn(remoteLight.getIsOn())
-                        .setIsDimmable(remoteLight.getIsDimmable())
-                        // Convert brightness via linear conversion (copied from
-                        // https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio)
-                        .setBrightness(calculateBrightness(remoteLight))
-                        .setIsTemperaturable(remoteLight.getIsTemperaturable())
-                        .setColorTemperature(
-                                remoteLight.getColorTemperature()) // Todo: Implement conversion
-                        .setIsColorable(remoteLight.getIsColorable())
-                        .setColor(remoteLight.getColor()) // Todo: Implement conversion
-                        .setIsReachable(remoteLight.getIsReachable())
-                        .build();
+        DbLight dbLight = dbLightBuilder
+                .setEndpointId(remoteLight.getEndpointId())
+                .setEndpointLightId(remoteLight.getEndpointLightId())
+                .setName(remoteLight.getName())
+                .setIsSwitchable(remoteLight.getIsSwitchable())
+                .setIsOn(remoteLight.getIsOn())
+                .setIsDimmable(remoteLight.getIsDimmable())
+                // Convert brightness via linear conversion (copied from
+                // https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio)
+                .setBrightness(calculateBrightness(remoteLight))
+                .setIsTemperaturable(remoteLight.getIsTemperaturable())
+                .setColorTemperature(remoteLight.getColorTemperature()) // Todo: Implement conversion
+                .setIsColorable(remoteLight.getIsColorable())
+                .setColor(remoteLight.getColor()) // Todo: Implement conversion
+                .setIsReachable(remoteLight.getIsReachable())
+                .build();
         LogUtil.v(
                 "Converted RemoteLight with endpointId %d and endpointLightId %s to DbLight.",
                 remoteLight.getEndpointId(), remoteLight.getEndpointLightId());

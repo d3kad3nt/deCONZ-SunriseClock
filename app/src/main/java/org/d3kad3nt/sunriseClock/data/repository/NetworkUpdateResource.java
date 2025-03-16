@@ -25,26 +25,23 @@ public abstract class NetworkUpdateResource<ResultType, RemoteType, DbType>
     public NetworkUpdateResource(final boolean alwaysExecuted) {
         init();
         if (alwaysExecuted) {
-            observeForever(
-                    new Observer<>() {
-                        @Override
-                        public void onChanged(final EmptyResource emptyResource) {
-                            if (!emptyResource.getStatus().equals(Status.LOADING)) {
-                                removeObserver(this);
-                            }
-                        }
-                    });
+            observeForever(new Observer<>() {
+                @Override
+                public void onChanged(final EmptyResource emptyResource) {
+                    if (!emptyResource.getStatus().equals(Status.LOADING)) {
+                        removeObserver(this);
+                    }
+                }
+            });
         }
     }
 
     private void init() {
         setValue(EmptyResource.loading(""));
         LiveData<DbType> resourceLoad = loadFromDB();
-        addSource(
-                resourceLoad,
-                resource -> {
-                    dbObjectLoadObserver(resource, resourceLoad);
-                });
+        addSource(resourceLoad, resource -> {
+            dbObjectLoadObserver(resource, resourceLoad);
+        });
     }
 
     private void dbObjectLoadObserver(DbType resource, LiveData<DbType> resourceLiveData) {
@@ -53,44 +50,35 @@ public abstract class NetworkUpdateResource<ResultType, RemoteType, DbType>
         } else {
             this.dbObject = resource;
             LiveData<BaseEndpoint> endpointLiveData = loadEndpoint();
-            addSource(
-                    endpointLiveData,
-                    endpoint -> {
-                        endpointLiveDataObserver(endpoint, endpointLiveData);
-                    });
+            addSource(endpointLiveData, endpoint -> {
+                endpointLiveDataObserver(endpoint, endpointLiveData);
+            });
             removeSource(resourceLiveData);
         }
     }
 
-    private void endpointLiveDataObserver(
-            BaseEndpoint baseEndpoint, LiveData<BaseEndpoint> endpointLiveData) {
+    private void endpointLiveDataObserver(BaseEndpoint baseEndpoint, LiveData<BaseEndpoint> endpointLiveData) {
         if (baseEndpoint == null) {
             updateValue(EmptyResource.loading("Endpoints loads"));
         } else {
-            LiveData<ApiResponse<RemoteType>> networkResponseLivedata =
-                    this.sendNetworkRequest(baseEndpoint);
-            addSource(
-                    networkResponseLivedata,
-                    response -> {
-                        networkResponseObserver(response, networkResponseLivedata);
-                    });
+            LiveData<ApiResponse<RemoteType>> networkResponseLivedata = this.sendNetworkRequest(baseEndpoint);
+            addSource(networkResponseLivedata, response -> {
+                networkResponseObserver(response, networkResponseLivedata);
+            });
             removeSource(endpointLiveData);
         }
     }
 
     private void networkResponseObserver(
-            ApiResponse<RemoteType> response,
-            LiveData<ApiResponse<RemoteType>> networkResponseLivedata) {
+            ApiResponse<RemoteType> response, LiveData<ApiResponse<RemoteType>> networkResponseLivedata) {
         EmptyResource resource = toResource(response);
         if (resource.getStatus() != Status.SUCCESS) {
             updateValue(resource);
         } else {
             LiveData<Resource<ResultType>> updateResponseLivedata = loadUpdatedVersion();
-            addSource(
-                    updateResponseLivedata,
-                    updateResponse -> {
-                        resourceUpdateObserver(updateResponse);
-                    });
+            addSource(updateResponseLivedata, updateResponse -> {
+                resourceUpdateObserver(updateResponse);
+            });
             removeSource(networkResponseLivedata);
         }
     }
@@ -117,8 +105,7 @@ public abstract class NetworkUpdateResource<ResultType, RemoteType, DbType>
     protected abstract LiveData<BaseEndpoint> loadEndpoint();
 
     @NotNull
-    protected abstract LiveData<ApiResponse<RemoteType>> sendNetworkRequest(
-            BaseEndpoint baseEndpoint);
+    protected abstract LiveData<ApiResponse<RemoteType>> sendNetworkRequest(BaseEndpoint baseEndpoint);
 
     @NotNull
     protected abstract LiveData<Resource<ResultType>> loadUpdatedVersion();

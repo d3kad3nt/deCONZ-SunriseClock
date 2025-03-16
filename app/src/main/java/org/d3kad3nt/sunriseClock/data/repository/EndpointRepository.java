@@ -53,46 +53,40 @@ public class EndpointRepository {
     LiveData<BaseEndpoint> getRepoEndpoint(long id) {
         if (!endpointLiveDataCache.containsKey(id)) {
             LiveData<BaseEndpoint> endpointTransformation =
-                    Transformations.switchMap(
-                            endpointConfigDao.load(id),
-                            input -> {
-                                if (input == null) {
-                                    return new MutableLiveData<>();
-                                } else {
-                                    return new MutableLiveData<>(createEndpoint(input));
-                                }
-                            });
+                    Transformations.switchMap(endpointConfigDao.load(id), input -> {
+                        if (input == null) {
+                            return new MutableLiveData<>();
+                        } else {
+                            return new MutableLiveData<>(createEndpoint(input));
+                        }
+                    });
             endpointLiveDataCache.put(id, endpointTransformation);
         }
         return endpointLiveDataCache.get(id);
     }
 
     public LiveData<IEndpointUI> getEndpoint(long id) {
-        return Transformations.map(
-                endpointConfigDao.load(id),
-                endpointConfig -> {
-                    if (endpointConfig == null) {
-                        return null;
-                    } else {
-                        return UIEndpoint.from(endpointConfig);
-                    }
-                });
+        return Transformations.map(endpointConfigDao.load(id), endpointConfig -> {
+            if (endpointConfig == null) {
+                return null;
+            } else {
+                return UIEndpoint.from(endpointConfig);
+            }
+        });
     }
 
     public LiveData<List<IEndpointUI>> getAllEndpoints() {
-        return Transformations.switchMap(
-                endpointConfigDao.loadAll(),
-                input -> {
-                    if (input == null) {
-                        return new MutableLiveData<>(Collections.emptyList());
-                    } else {
-                        List<IEndpointUI> list = new ArrayList<>();
-                        for (EndpointConfig config : input) {
-                            list.add(UIEndpoint.from(config));
-                        }
-                        return new MutableLiveData<>(list);
-                    }
-                });
+        return Transformations.switchMap(endpointConfigDao.loadAll(), input -> {
+            if (input == null) {
+                return new MutableLiveData<>(Collections.emptyList());
+            } else {
+                List<IEndpointUI> list = new ArrayList<>();
+                for (EndpointConfig config : input) {
+                    list.add(UIEndpoint.from(config));
+                }
+                return new MutableLiveData<>(list);
+            }
+        });
     }
 
     private BaseEndpoint createEndpoint(EndpointConfig config) {
@@ -112,11 +106,9 @@ public class EndpointRepository {
         Gson gson = new Gson();
         JsonObject jsonConfig = gson.toJsonTree(config).getAsJsonObject();
         EndpointConfig endpointConfig = new EndpointConfig(type, name, new Date(), jsonConfig);
-        ServiceLocator.getExecutor(ExecutorType.IO)
-                .execute(
-                        () -> {
-                            endpointConfigDao.save(endpointConfig);
-                        });
+        ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
+            endpointConfigDao.save(endpointConfig);
+        });
         type.getBuilder().setConfig(endpointConfig).build();
         return UIEndpoint.from(endpointConfig);
     }
@@ -128,10 +120,8 @@ public class EndpointRepository {
         update.endpointId = endpointId;
         update.name = newName;
 
-        ServiceLocator.getExecutor(ExecutorType.IO)
-                .execute(
-                        () -> {
-                            endpointConfigDao.updateName(update);
-                        });
+        ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
+            endpointConfigDao.updateName(update);
+        });
     }
 }

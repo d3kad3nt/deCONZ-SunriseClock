@@ -59,18 +59,17 @@ public class UILight {
     @Contract("_ -> new")
     public static UILight from(@NonNull DbLight dbLight) {
         // Place for conversion logic (if UI needs other data types or value ranges).
-        UILight uiLight =
-                new UILight(
-                        dbLight.getLightId(),
-                        dbLight.getEndpointId(),
-                        dbLight.getName(),
-                        dbLight.getIsSwitchable(),
-                        dbLight.getIsOn(),
-                        dbLight.getIsDimmable(),
-                        dbLight.getBrightness(),
-                        dbLight.getIsTemperaturable(),
-                        dbLight.getIsColorable(),
-                        dbLight.getIsReachable());
+        UILight uiLight = new UILight(
+                dbLight.getLightId(),
+                dbLight.getEndpointId(),
+                dbLight.getName(),
+                dbLight.getIsSwitchable(),
+                dbLight.getIsOn(),
+                dbLight.getIsDimmable(),
+                dbLight.getBrightness(),
+                dbLight.getIsTemperaturable(),
+                dbLight.getIsColorable(),
+                dbLight.getIsReachable());
         LogUtil.v(
                 "Converted DbLight with lightId %d (endpointId %d, endpointLightId %s) to UILight.",
                 dbLight.getLightId(), dbLight.getEndpointId(), dbLight.getEndpointLightId());

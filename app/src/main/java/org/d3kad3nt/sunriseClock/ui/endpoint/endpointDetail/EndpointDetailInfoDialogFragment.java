@@ -41,8 +41,7 @@ public class EndpointDetailInfoDialogFragment
         // NavBackStackEntry and viewModel scoped to our nested nav graph (containing all endpoint
         // detail screens).
         NavController navController = NavHostFragment.findNavController(this);
-        NavBackStackEntry backStackEntry =
-                navController.getBackStackEntry(R.id.nav_graph_endpoint_detail);
+        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_endpoint_detail);
         return new ViewModelProvider(backStackEntry);
     }
 
