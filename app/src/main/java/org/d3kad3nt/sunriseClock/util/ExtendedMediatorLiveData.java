@@ -4,9 +4,9 @@ import androidx.lifecycle.MediatorLiveData;
 
 public class ExtendedMediatorLiveData<T> extends MediatorLiveData<T> {
 
-  public void updateValue(T newValue) {
-    if (this.getValue() != newValue) {
-      this.setValue(newValue);
+    public void updateValue(T newValue) {
+        if (this.getValue() != newValue) {
+            this.setValue(newValue);
+        }
     }
-  }
 }

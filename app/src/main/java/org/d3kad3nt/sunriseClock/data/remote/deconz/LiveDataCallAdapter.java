@@ -2,13 +2,16 @@ package org.d3kad3nt.sunriseClock.data.remote.deconz;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import java.lang.reflect.Type;
-import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
+
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import java.lang.reflect.Type;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A Retrofit adapter that converts the Call into a LiveData of ApiResponse.
@@ -19,42 +22,44 @@ import retrofit2.Response;
  */
 class LiveDataCallAdapter<T> implements CallAdapter<T, LiveData<ApiResponse<T>>> {
 
-  private final Type responseType;
+    private final Type responseType;
 
-  LiveDataCallAdapter(Type responseType) {
-    this.responseType = responseType;
-  }
+    LiveDataCallAdapter(Type responseType) {
+        this.responseType = responseType;
+    }
 
-  @NonNull
-  @Override
-  public Type responseType() {
-    return responseType;
-  }
+    @NonNull
+    @Override
+    public Type responseType() {
+        return responseType;
+    }
 
-  @NonNull
-  @Override
-  public LiveData<ApiResponse<T>> adapt(@NonNull Call<T> call) {
-    return new LiveData<ApiResponse<T>>() {
-      final AtomicBoolean started = new AtomicBoolean(false);
+    @NonNull
+    @Override
+    public LiveData<ApiResponse<T>> adapt(@NonNull Call<T> call) {
+        return new LiveData<ApiResponse<T>>() {
+            final AtomicBoolean started = new AtomicBoolean(false);
 
-      @Override
-      protected void onActive() {
-        super.onActive();
-        if (started.compareAndSet(false, true)) {
-          call.enqueue(
-              new Callback<T>() {
-                @Override
-                public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-                  postValue(ApiResponse.create(response));
+            @Override
+            protected void onActive() {
+                super.onActive();
+                if (started.compareAndSet(false, true)) {
+                    call.enqueue(
+                            new Callback<T>() {
+                                @Override
+                                public void onResponse(
+                                        @NonNull Call<T> call, @NonNull Response<T> response) {
+                                    postValue(ApiResponse.create(response));
+                                }
+
+                                @Override
+                                public void onFailure(
+                                        @NonNull Call<T> call, @NonNull Throwable throwable) {
+                                    postValue(ApiResponse.create(throwable));
+                                }
+                            });
                 }
-
-                @Override
-                public void onFailure(@NonNull Call<T> call, @NonNull Throwable throwable) {
-                  postValue(ApiResponse.create(throwable));
-                }
-              });
-        }
-      }
-    };
-  }
+            }
+        };
+    }
 }

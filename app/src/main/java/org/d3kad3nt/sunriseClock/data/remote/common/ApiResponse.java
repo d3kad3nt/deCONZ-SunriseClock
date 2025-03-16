@@ -1,7 +1,8 @@
 package org.d3kad3nt.sunriseClock.data.remote.common;
 
-import java.io.IOException;
 import retrofit2.Response;
+
+import java.io.IOException;
 
 // TODO: Make this class more generic / usable for other endpoints (instead of only supporting
 // retrofit's Response type). This could be achieved by shifting the logic to decide whether
@@ -18,41 +19,41 @@ import retrofit2.Response;
  */
 public abstract class ApiResponse<T> {
 
-  public static <T> ApiResponse<T> create(Throwable error) {
-    if (error.getMessage() != null) {
-      return new ApiErrorResponse<>(error.getMessage());
-    } else {
-      return new ApiErrorResponse<>("Unknown error!");
-    }
-  }
-
-  public static <T> ApiResponse<T> create(final Response<T> response) {
-    if (response.isSuccessful()) {
-      final T body = response.body();
-      if (body == null || response.code() == 204) {
-        return new ApiEmptyResponse<>();
-      } else {
-        return new ApiSuccessResponse<>(body);
-      }
-    } else {
-      String msg = null;
-      if (response.errorBody() != null) {
-        try {
-          msg = response.errorBody().string();
-        } catch (IOException ignored) {
-        }
-      }
-      final String errorMsg;
-      if ((msg == null) || msg.isEmpty()) {
-        if (response.message().isEmpty()) {
-          errorMsg = "Unknown error!";
+    public static <T> ApiResponse<T> create(Throwable error) {
+        if (error.getMessage() != null) {
+            return new ApiErrorResponse<>(error.getMessage());
         } else {
-          errorMsg = response.message();
+            return new ApiErrorResponse<>("Unknown error!");
         }
-      } else {
-        errorMsg = msg;
-      }
-      return new ApiErrorResponse<>(errorMsg);
     }
-  }
+
+    public static <T> ApiResponse<T> create(final Response<T> response) {
+        if (response.isSuccessful()) {
+            final T body = response.body();
+            if (body == null || response.code() == 204) {
+                return new ApiEmptyResponse<>();
+            } else {
+                return new ApiSuccessResponse<>(body);
+            }
+        } else {
+            String msg = null;
+            if (response.errorBody() != null) {
+                try {
+                    msg = response.errorBody().string();
+                } catch (IOException ignored) {
+                }
+            }
+            final String errorMsg;
+            if ((msg == null) || msg.isEmpty()) {
+                if (response.message().isEmpty()) {
+                    errorMsg = "Unknown error!";
+                } else {
+                    errorMsg = response.message();
+                }
+            } else {
+                errorMsg = msg;
+            }
+            return new ApiErrorResponse<>(errorMsg);
+        }
+    }
 }

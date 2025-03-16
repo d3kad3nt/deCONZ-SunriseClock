@@ -4,15 +4,15 @@ import androidx.annotation.NonNull;
 
 public class Empty {
 
-  static Empty instance = new Empty();
+    static Empty instance = new Empty();
 
-  public static Empty getInstance() {
-    return instance;
-  }
+    public static Empty getInstance() {
+        return instance;
+    }
 
-  @NonNull
-  @Override
-  public String toString() {
-    return "Empty{}";
-  }
+    @NonNull
+    @Override
+    public String toString() {
+        return "Empty{}";
+    }
 }

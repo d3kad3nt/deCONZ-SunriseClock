@@ -1,12 +1,14 @@
 package org.d3kad3nt.sunriseClock.deviceControl;
 
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.databinding.ActivityDeviceControlBinding;
 
@@ -19,26 +21,27 @@ import org.d3kad3nt.sunriseClock.databinding.ActivityDeviceControlBinding;
  */
 public class ControlActivity extends AppCompatActivity {
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    ActivityDeviceControlBinding binding =
-        DataBindingUtil.setContentView(this, R.layout.activity_device_control);
-    setContentView(binding.getRoot());
-    NavHostFragment navHostFragment =
-        (NavHostFragment)
-            getSupportFragmentManager().findFragmentById(R.id.device_control_activity_nav_fragment);
-    if (navHostFragment == null) {
-      throw new IllegalStateException("Could not get NavHostFragment");
+        ActivityDeviceControlBinding binding =
+                DataBindingUtil.setContentView(this, R.layout.activity_device_control);
+        setContentView(binding.getRoot());
+        NavHostFragment navHostFragment =
+                (NavHostFragment)
+                        getSupportFragmentManager()
+                                .findFragmentById(R.id.device_control_activity_nav_fragment);
+        if (navHostFragment == null) {
+            throw new IllegalStateException("Could not get NavHostFragment");
+        }
+        NavController navController = navHostFragment.getNavController();
+
+        navController.setGraph(R.navigation.nav_graph_device_control, getIntent().getExtras());
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(navController.getGraph()).build();
+
+        setSupportActionBar(binding.toolbar);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
     }
-    NavController navController = navHostFragment.getNavController();
-
-    navController.setGraph(R.navigation.nav_graph_device_control, getIntent().getExtras());
-    AppBarConfiguration appBarConfiguration =
-        new AppBarConfiguration.Builder(navController.getGraph()).build();
-
-    setSupportActionBar(binding.toolbar);
-    NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-  }
 }

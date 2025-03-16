@@ -5,17 +5,17 @@ import java.util.Map;
 
 abstract class Cache<K, T> {
 
-  private final Map<K, T> instances = new HashMap<>();
+    private final Map<K, T> instances = new HashMap<>();
 
-  public T getInstance(K instanceName) {
-    return instances.get(instanceName);
-  }
-
-  public boolean addInstance(K key, T instance) {
-    if (instances.containsKey(key)) {
-      return false;
+    public T getInstance(K instanceName) {
+        return instances.get(instanceName);
     }
-    instances.put(key, instance);
-    return true;
-  }
+
+    public boolean addInstance(K key, T instance) {
+        if (instances.containsKey(key)) {
+            return false;
+        }
+        instances.put(key, instance);
+        return true;
+    }
 }

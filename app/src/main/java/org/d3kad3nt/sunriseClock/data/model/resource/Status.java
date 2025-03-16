@@ -10,7 +10,7 @@ package org.d3kad3nt.sunriseClock.data.model.resource;
  * to pass back the latest data to the UI with its fetch status.
  */
 public enum Status {
-  SUCCESS,
-  ERROR,
-  LOADING
+    SUCCESS,
+    ERROR,
+    LOADING
 }

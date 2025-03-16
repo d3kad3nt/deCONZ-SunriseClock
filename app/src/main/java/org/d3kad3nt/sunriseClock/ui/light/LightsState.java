@@ -5,32 +5,32 @@ import androidx.databinding.Bindable;
 
 public class LightsState extends BaseObservable {
 
-  private boolean error = false;
-  private String errorTitle = "";
-  private String errorMessage = "";
+    private boolean error = false;
+    private String errorTitle = "";
+    private String errorMessage = "";
 
-  public void clearError() {
-    this.error = false;
-  }
+    public void clearError() {
+        this.error = false;
+    }
 
-  public void setError(String errorTitle, String errorMessage) {
-    this.error = true;
-    this.errorTitle = errorTitle;
-    this.errorMessage = errorMessage;
-  }
+    public void setError(String errorTitle, String errorMessage) {
+        this.error = true;
+        this.errorTitle = errorTitle;
+        this.errorMessage = errorMessage;
+    }
 
-  @Bindable
-  public boolean isError() {
-    return error;
-  }
+    @Bindable
+    public boolean isError() {
+        return error;
+    }
 
-  @Bindable
-  public String getErrorTitle() {
-    return errorTitle;
-  }
+    @Bindable
+    public String getErrorTitle() {
+        return errorTitle;
+    }
 
-  @Bindable
-  public String getErrorMessage() {
-    return errorMessage;
-  }
+    @Bindable
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 }
