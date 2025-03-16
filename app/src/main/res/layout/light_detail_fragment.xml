@@ -15,8 +15,8 @@
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:setOnRefreshListener="@{()-> viewModel.refreshLight()}"
-        app:refreshing="@{viewModel.swipeRefreshing}">
+        app:refreshing="@{viewModel.swipeRefreshing}"
+        app:setOnRefreshListener="@{()-> viewModel.refreshLight()}">
         <!-- Scrolling might be necessary on smaller display sizes or when in landscape mode. -->
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
