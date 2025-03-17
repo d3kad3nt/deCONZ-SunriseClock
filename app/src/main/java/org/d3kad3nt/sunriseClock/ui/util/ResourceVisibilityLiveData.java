@@ -14,9 +14,12 @@ import java.util.Set;
 public class ResourceVisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Integer> {
 
     private final LiveData<Integer> initialVisibilityLivedata;
-    //This uses a raw instance of Resource because the real type is only known in addVisibilityProvider
+
+    // This uses a raw instance of Resource because the real type is only known in
+    // addVisibilityProvider
     @SuppressWarnings("rawtypes")
     private final Set<LiveData<? extends Resource>> loading = new HashSet<>();
+
     private Integer loadingVisibility = View.INVISIBLE;
     private Integer successVisibility = View.VISIBLE;
     private Integer errorVisibility = View.VISIBLE;
@@ -26,31 +29,34 @@ public class ResourceVisibilityLiveData extends androidx.lifecycle.MediatorLiveD
         this.addSource(initialVisibilityLivedata, integer -> this.setValue(integer));
     }
 
-    public <T> ResourceVisibilityLiveData addVisibilityProvider(LiveData<? extends Resource<T>> liveData) {
+    public <T> ResourceVisibilityLiveData addVisibilityProvider(
+            LiveData<? extends Resource<T>> liveData) {
         this.removeSource(this.initialVisibilityLivedata);
         ResourceVisibilityLiveData resourceVisibilityLivedata = this;
-        this.addSource(liveData, new Observer<Resource<T>>() {
-            @Override
-            public void onChanged(Resource<T> resource) {
-                switch (resource.getStatus()) {
-                    case LOADING:
-                        loading.add(liveData);
-                        resourceVisibilityLivedata.setValue(loadingVisibility);
-                        break;
-                    case SUCCESS:
-                        loading.remove(liveData);
-                        if (loading.isEmpty()) {
-                            resourceVisibilityLivedata.setValue(successVisibility);
+        this.addSource(
+                liveData,
+                new Observer<Resource<T>>() {
+                    @Override
+                    public void onChanged(Resource<T> resource) {
+                        switch (resource.getStatus()) {
+                            case LOADING:
+                                loading.add(liveData);
+                                resourceVisibilityLivedata.setValue(loadingVisibility);
+                                break;
+                            case SUCCESS:
+                                loading.remove(liveData);
+                                if (loading.isEmpty()) {
+                                    resourceVisibilityLivedata.setValue(successVisibility);
+                                }
+                                resourceVisibilityLivedata.removeSource(liveData);
+                                break;
+                            case ERROR:
+                                resourceVisibilityLivedata.setValue(errorVisibility);
+                                resourceVisibilityLivedata.removeSource(liveData);
+                                break;
                         }
-                        resourceVisibilityLivedata.removeSource(liveData);
-                        break;
-                    case ERROR:
-                        resourceVisibilityLivedata.setValue(errorVisibility);
-                        resourceVisibilityLivedata.removeSource(liveData);
-                        break;
-                }
-            }
-        });
+                    }
+                });
         return this;
     }
 

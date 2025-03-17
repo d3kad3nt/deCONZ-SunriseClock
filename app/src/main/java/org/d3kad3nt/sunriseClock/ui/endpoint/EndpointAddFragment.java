@@ -29,40 +29,50 @@ public class EndpointAddFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         LogUtil.d("Show add endpoint view");
-        EndpointAddFragmentBinding binding = EndpointAddFragmentBinding.inflate(inflater, container, false);
+        EndpointAddFragmentBinding binding =
+                EndpointAddFragmentBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointAddViewModel.class);
-        //TODO select endpoint type
+        // TODO select endpoint type
         EndpointAddDeconzFragmentBinding deconzBinding =
-            EndpointAddDeconzFragmentBinding.inflate(inflater, binding.constraintLayoutSpecificEndpoint, true);
+                EndpointAddDeconzFragmentBinding.inflate(
+                        inflater, binding.constraintLayoutSpecificEndpoint, true);
         addCreateEndpointListener(binding, deconzBinding);
         return binding.getRoot();
     }
 
-    //Todo: This should definitely be removed (and replaced by setting the onClickListener inside of XML and
+    // Todo: This should definitely be removed (and replaced by setting the onClickListener inside
+    // of
+    // XML and
     // carrying over the logic to the viewmodel)
-    private void addCreateEndpointListener(@NonNull EndpointAddFragmentBinding binding,
-                                           EndpointAddDeconzFragmentBinding specificBinding) {
-        binding.createEndpoint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, String> settings = new HashMap<>();
-                settings.put("name", binding.endpointName.getText().toString());
-                settings.put("type", specificBinding.getRoot().getTag().toString());
-                ViewGroup rootLinearLayout = (ViewGroup) specificBinding.getRoot();
-                TextInputEditText[] input =
-                    {rootLinearLayout.findViewWithTag("baseUrl"), rootLinearLayout.findViewWithTag(
-                        "port"), rootLinearLayout.findViewWithTag("apiKey")};
-                for (TextInputEditText i : input) {
-                    settings.put(i.getTag().toString(), i.getText().toString());
-                }
-                if (viewModel.createEndpoint(settings)) {
-                    LogUtil.v("Endpoint created");
-                    Navigation.findNavController(v).navigateUp();
-                }
-            }
-        });
+    private void addCreateEndpointListener(
+            @NonNull EndpointAddFragmentBinding binding,
+            EndpointAddDeconzFragmentBinding specificBinding) {
+        binding.createEndpoint.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Map<String, String> settings = new HashMap<>();
+                        settings.put("name", binding.endpointName.getText().toString());
+                        settings.put("type", specificBinding.getRoot().getTag().toString());
+                        ViewGroup rootLinearLayout = (ViewGroup) specificBinding.getRoot();
+                        TextInputEditText[] input = {
+                            rootLinearLayout.findViewWithTag("baseUrl"),
+                            rootLinearLayout.findViewWithTag("port"),
+                            rootLinearLayout.findViewWithTag("apiKey")
+                        };
+                        for (TextInputEditText i : input) {
+                            settings.put(i.getTag().toString(), i.getText().toString());
+                        }
+                        if (viewModel.createEndpoint(settings)) {
+                            LogUtil.v("Endpoint created");
+                            Navigation.findNavController(v).navigateUp();
+                        }
+                    }
+                });
     }
 }

@@ -17,9 +17,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-/**
- * Defines all relevant deconz API endpoint addresses for usage with the retrofit library.
- */
+/** Defines all relevant deconz API endpoint addresses for usage with the retrofit library. */
 public interface IServices {
 
     String endpointLightIdHeader = "X-Deconz-EndpointLightId";
@@ -28,18 +26,21 @@ public interface IServices {
     LiveData<ApiResponse<List<RemoteLight>>> getLights();
 
     @GET("lights/{lightId}/")
-    LiveData<ApiResponse<RemoteLight>> getLight(@Path("lightId") String lightId,
-                                                @Header(endpointLightIdHeader) String headerLightId);
+    LiveData<ApiResponse<RemoteLight>> getLight(
+            @Path("lightId") String lightId, @Header(endpointLightIdHeader) String headerLightId);
 
     @Headers("Content-Type: application/json")
     @PUT("lights/{lightId}")
-    LiveData<ApiResponse<ResponseBody>> updateLightAttributes(@Path("lightId") String lightId, @Body JsonObject body);
+    LiveData<ApiResponse<ResponseBody>> updateLightAttributes(
+            @Path("lightId") String lightId, @Body JsonObject body);
 
     @Headers("Content-Type: application/json")
     @PUT("lights/{lightId}/state")
-    LiveData<ApiResponse<ResponseBody>> updateLightState(@Path("lightId") String lightId, @Body JsonObject body);
+    LiveData<ApiResponse<ResponseBody>> updateLightState(
+            @Path("lightId") String lightId, @Body JsonObject body);
 
     @Headers("Content-Type: application/json")
     @PUT("groups/{groupId}/action")
-    LiveData<ApiResponse<ResponseBody>> updateGroupState(@Path("groupId") String groupId, @Body JsonObject body);
+    LiveData<ApiResponse<ResponseBody>> updateGroupState(
+            @Path("groupId") String groupId, @Body JsonObject body);
 }

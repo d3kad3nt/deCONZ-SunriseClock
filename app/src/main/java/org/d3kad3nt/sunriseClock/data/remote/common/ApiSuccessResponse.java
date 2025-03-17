@@ -1,6 +1,6 @@
 package org.d3kad3nt.sunriseClock.data.remote.common;
 
-public class ApiSuccessResponse <T> extends ApiResponse<T> {
+public class ApiSuccessResponse<T> extends ApiResponse<T> {
 
     private final T body;
 

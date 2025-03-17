@@ -13,8 +13,8 @@ import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
 import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class NetworkUpdateResource <ResultType, RemoteType, DbType>
-    extends ExtendedMediatorLiveData<EmptyResource> {
+public abstract class NetworkUpdateResource<ResultType, RemoteType, DbType>
+        extends ExtendedMediatorLiveData<EmptyResource> {
 
     protected DbType dbObject;
 
@@ -69,8 +69,8 @@ public abstract class NetworkUpdateResource <ResultType, RemoteType, DbType>
         }
     }
 
-    private void networkResponseObserver(ApiResponse<RemoteType> response,
-                                         LiveData<ApiResponse<RemoteType>> networkResponseLivedata) {
+    private void networkResponseObserver(
+            ApiResponse<RemoteType> response, LiveData<ApiResponse<RemoteType>> networkResponseLivedata) {
         EmptyResource resource = toResource(response);
         if (resource.getStatus() != Status.SUCCESS) {
             updateValue(resource);

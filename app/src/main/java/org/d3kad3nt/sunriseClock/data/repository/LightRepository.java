@@ -28,9 +28,7 @@ import java.util.List;
 
 import okhttp3.ResponseBody;
 
-/**
- * Repository module for handling data operations (network or local database).
- */
+/** Repository module for handling data operations (network or local database). */
 public class LightRepository {
 
     private static DbLightDao dbLightDao;
@@ -38,9 +36,8 @@ public class LightRepository {
     private final EndpointRepository endpointRepo;
 
     /**
-     * Using singleton pattern as of now. With dependency injection (Dagger, ...) this class could be mocked when unit
-     * testing.
-     * TODO: Dependency Injection, optional
+     * Using singleton pattern as of now. With dependency injection (Dagger, ...) this class could
+     * be mocked when unit testing. TODO: Dependency Injection, optional
      */
     private LightRepository(Context context) {
         dbLightDao = AppDatabase.getInstance(context.getApplicationContext()).dbLightDao();
@@ -78,7 +75,7 @@ public class LightRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<DbLight> data) {
-                //TODO
+                // TODO
                 return true;
             }
 
@@ -125,54 +122,56 @@ public class LightRepository {
     public LiveData<EmptyResource> refreshLightsForEndpoint(long endpointId) {
         LogUtil.i("Refreshing all lights for endpoint with id %d", endpointId);
 
-        return Transformations.map(new NetworkBoundResource<Empty, List<RemoteLight>, List<DbLight>>() {
+        return Transformations.map(
+                new NetworkBoundResource<Empty, List<RemoteLight>, List<DbLight>>() {
 
-            @Override
-            protected void saveResponseToDb(List<DbLight> items) {
-                for (DbLight light : items) {
-                    dbLightDao.upsert(light);
-                }
-            }
+                    @Override
+                    protected void saveResponseToDb(List<DbLight> items) {
+                        for (DbLight light : items) {
+                            dbLightDao.upsert(light);
+                        }
+                    }
 
-            @Override
-            protected boolean shouldFetch(@Nullable List<DbLight> data) {
-                return true;
-            }
+                    @Override
+                    protected boolean shouldFetch(@Nullable List<DbLight> data) {
+                        return true;
+                    }
 
-            @NonNull
-            @Override
-            protected LiveData<BaseEndpoint> loadEndpoint() {
-                return endpointRepo.getRepoEndpoint(endpointId);
-            }
+                    @NonNull
+                    @Override
+                    protected LiveData<BaseEndpoint> loadEndpoint() {
+                        return endpointRepo.getRepoEndpoint(endpointId);
+                    }
 
-            @NotNull
-            @Override
-            protected LiveData<List<DbLight>> loadFromDb() {
-                return Transformations.map(dbLightDao.loadAllForEndpoint(endpointId), input -> {
-                    return new ArrayList<>(input);
-                });
-            }
+                    @NotNull
+                    @Override
+                    protected LiveData<List<DbLight>> loadFromDb() {
+                        return Transformations.map(dbLightDao.loadAllForEndpoint(endpointId), input -> {
+                            return new ArrayList<>(input);
+                        });
+                    }
 
-            @NotNull
-            @Override
-            protected LiveData<ApiResponse<List<RemoteLight>>> loadFromNetwork() {
-                return endpoint.getLights();
-            }
+                    @NotNull
+                    @Override
+                    protected LiveData<ApiResponse<List<RemoteLight>>> loadFromNetwork() {
+                        return endpoint.getLights();
+                    }
 
-            @Override
-            protected Empty convertDbTypeToResultType(List<DbLight> items) {
-                return new Empty();
-            }
+                    @Override
+                    protected Empty convertDbTypeToResultType(List<DbLight> items) {
+                        return new Empty();
+                    }
 
-            @Override
-            protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteLight>> response) {
-                List<DbLight> lights = new ArrayList<>();
-                for (RemoteLight light : response.getBody()) {
-                    lights.add(DbLight.from(light));
-                }
-                return lights;
-            }
-        }, emptyResource -> EmptyResource.fromResource(emptyResource));
+                    @Override
+                    protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteLight>> response) {
+                        List<DbLight> lights = new ArrayList<>();
+                        for (RemoteLight light : response.getBody()) {
+                            lights.add(DbLight.from(light));
+                        }
+                        return lights;
+                    }
+                },
+                emptyResource -> EmptyResource.fromResource(emptyResource));
     }
 
     public LiveData<Resource<UILight>> getLight(long lightId) {
@@ -182,8 +181,10 @@ public class LightRepository {
 
             @Override
             protected void saveResponseToDb(DbLight item) {
-                // The primary key lightId is not known to the remote endpoint, but it is known to us.
-                // Set the lightId to enable direct update/insert via primary key (instead of endpointId and
+                // The primary key lightId is not known to the remote endpoint, but it is known to
+                // us.
+                // Set the lightId to enable direct update/insert via primary key (instead of
+                // endpointId and
                 // endpointLightId) through Room.
                 item.setLightId(lightId);
                 dbLightDao.upsert(item);
@@ -191,7 +192,7 @@ public class LightRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable DbLight data) {
-                //TODO
+                // TODO
                 return true;
             }
 
@@ -228,57 +229,63 @@ public class LightRepository {
     public LiveData<EmptyResource> refreshLight(long lightId) {
         LogUtil.i("Refreshing single light with id %d", lightId);
 
-        return Transformations.map(new NetworkBoundResource<Empty, RemoteLight, DbLight>() {
+        return Transformations.map(
+                new NetworkBoundResource<Empty, RemoteLight, DbLight>() {
 
-            @Override
-            protected void saveResponseToDb(DbLight item) {
-                // The primary key lightId is not known to the remote endpoint, but it is known to us.
-                // Set the lightId to enable direct update/insert via primary key (instead of endpointId and
-                // endpointLightId) through Room.
-                item.setLightId(lightId);
-                dbLightDao.upsert(item);
-            }
+                    @Override
+                    protected void saveResponseToDb(DbLight item) {
+                        // The primary key lightId is not known to the remote endpoint, but it is
+                        // known to us.
+                        // Set the lightId to enable direct update/insert via primary key (instead
+                        // of endpointId
+                        // and
+                        // endpointLightId) through Room.
+                        item.setLightId(lightId);
+                        dbLightDao.upsert(item);
+                    }
 
-            @Override
-            protected boolean shouldFetch(@Nullable DbLight data) {
-                return true;
-            }
+                    @Override
+                    protected boolean shouldFetch(@Nullable DbLight data) {
+                        return true;
+                    }
 
-            @NonNull
-            @Override
-            protected LiveData<BaseEndpoint> loadEndpoint() {
-                return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
-            }
+                    @NonNull
+                    @Override
+                    protected LiveData<BaseEndpoint> loadEndpoint() {
+                        return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
+                    }
 
-            @NotNull
-            @Override
-            protected LiveData<DbLight> loadFromDb() {
-                return dbLightDao.load(lightId);
-            }
+                    @NotNull
+                    @Override
+                    protected LiveData<DbLight> loadFromDb() {
+                        return dbLightDao.load(lightId);
+                    }
 
-            @NotNull
-            @Override
-            protected LiveData<ApiResponse<RemoteLight>> loadFromNetwork() {
-                return endpoint.getLight(dbObject.getEndpointLightId());
-            }
+                    @NotNull
+                    @Override
+                    protected LiveData<ApiResponse<RemoteLight>> loadFromNetwork() {
+                        return endpoint.getLight(dbObject.getEndpointLightId());
+                    }
 
-            @Override
-            protected Empty convertDbTypeToResultType(DbLight item) {
-                return new Empty();
-            }
+                    @Override
+                    protected Empty convertDbTypeToResultType(DbLight item) {
+                        return new Empty();
+                    }
 
-            @Override
-            protected DbLight convertRemoteTypeToDbType(ApiSuccessResponse<RemoteLight> response) {
-                return DbLight.from(response.getBody());
-            }
-        }, emptyResource -> EmptyResource.fromResource(emptyResource));
+                    @Override
+                    protected DbLight convertRemoteTypeToDbType(ApiSuccessResponse<RemoteLight> response) {
+                        return DbLight.from(response.getBody());
+                    }
+                },
+                emptyResource -> EmptyResource.fromResource(emptyResource));
     }
 
     /**
      * Turns the light on or off.
      *
-     * @param lightId  The light to be turned on or off. The given ID must already exist in the database. Note that
-     *                 this ID is independent from the identifier that the backing endpoint uses internally.
+     * @param lightId The light to be turned on or off. The given ID must already exist in the
+     *     database. Note that this ID is independent from the identifier that the backing endpoint
+     *     uses internally.
      * @param newState Whether the light should be turned on (true) or off (false).
      * @return Resource representing the status of the request.
      */
@@ -318,11 +325,12 @@ public class LightRepository {
 
     /**
      * Toggle all lights from on to off or vice versa.
-     * <p>
-     * If one or more lights are currently turned on, those are turned off.
-     * If all lights are currently turned off, all lights are turned on.
      *
-     * @param endpointId The endpoint on which to execute the action. The given ID must already exist in the database.
+     * <p>If one or more lights are currently turned on, those are turned off. If all lights are
+     * currently turned off, all lights are turned on.
+     *
+     * @param endpointId The endpoint on which to execute the action. The given ID must already
+     *     exist in the database.
      * @return Resource representing the status of the request.
      */
     public LiveData<EmptyResource> toggleOnStateForEndpoint(long endpointId) {
@@ -353,12 +361,12 @@ public class LightRepository {
     }
 
     /**
-     * Changes the brightness of the light.
-     * TODO: Define whether a brightness of 0 means off or lowest brightness (but still on).
+     * Changes the brightness of the light. TODO: Define whether a brightness of 0 means off or
+     * lowest brightness (but still on).
      *
-     * @param lightId    The light that this action executes on. The given ID must already exist in the database.
-     *                   Note that this ID is independent from the identifier that the backing endpoint uses
-     *                   internally.
+     * @param lightId The light that this action executes on. The given ID must already exist in the
+     *     database. Note that this ID is independent from the identifier that the backing endpoint
+     *     uses internally.
      * @param brightness Desired light brightness, ranging from 0 (lowest) to 100 (highest).
      * @return Resource representing the status of the request.
      */
@@ -366,7 +374,7 @@ public class LightRepository {
         LogUtil.i("Setting brightness to %d %% for single light with id %d", brightness, lightId);
         if (brightness < 0 || brightness > 100) {
             throw new IllegalStateException(
-                "The new brightness for light " + lightId + " has to be between 0 and 100 and not " + brightness);
+                    "The new brightness for light " + lightId + " has to be between 0 and 100 and not " + brightness);
         }
 
         return new NetworkUpdateResource<UILight, ResponseBody, DbLight>() {

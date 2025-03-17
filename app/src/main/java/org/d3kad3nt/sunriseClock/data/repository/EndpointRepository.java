@@ -35,7 +35,8 @@ public class EndpointRepository {
     private static volatile EndpointRepository INSTANCE;
 
     private EndpointRepository(Context context) {
-        endpointConfigDao = AppDatabase.getInstance(context.getApplicationContext()).endpointConfigDao();
+        endpointConfigDao =
+                AppDatabase.getInstance(context.getApplicationContext()).endpointConfigDao();
     }
 
     public static EndpointRepository getInstance(Context context) {
@@ -52,13 +53,13 @@ public class EndpointRepository {
     LiveData<BaseEndpoint> getRepoEndpoint(long id) {
         if (!endpointLiveDataCache.containsKey(id)) {
             LiveData<BaseEndpoint> endpointTransformation =
-                Transformations.switchMap(endpointConfigDao.load(id), input -> {
-                    if (input == null) {
-                        return new MutableLiveData<>();
-                    } else {
-                        return new MutableLiveData<>(createEndpoint(input));
-                    }
-                });
+                    Transformations.switchMap(endpointConfigDao.load(id), input -> {
+                        if (input == null) {
+                            return new MutableLiveData<>();
+                        } else {
+                            return new MutableLiveData<>(createEndpoint(input));
+                        }
+                    });
             endpointLiveDataCache.put(id, endpointTransformation);
         }
         return endpointLiveDataCache.get(id);

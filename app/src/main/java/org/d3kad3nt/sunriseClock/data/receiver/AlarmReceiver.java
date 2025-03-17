@@ -32,19 +32,18 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         removeObsoleteSchedules();
         if (checkPrerequisites()) {
-            //Add Schedule
+            // Add Schedule
         }
     }
 
     /* TODO: Retrieve formerly used schedule ids (probably from local storage) to remove obsolete schedulues from
-        deconz.
-     * Could use the new WorkManager from jetpack. */
-    private void removeObsoleteSchedules() {
-
-    }
+       deconz.
+    * Could use the new WorkManager from jetpack. */
+    private void removeObsoleteSchedules() {}
 
     /**
-     * Checks whether WiFi is enabled and device is connected to to a specific BSSID (from settings).
+     * Checks whether WiFi is enabled and device is connected to to a specific BSSID (from
+     * settings).
      *
      * @return True for device states matching the prerequisites.
      */
@@ -54,7 +53,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             String bssid = wifiInfo.getBSSID();
             LogUtil.d("Currently connected to BSSID: %s", bssid);
-            //TODO: Only execute if in defined wifi connection (TODO: settings element).
+            // TODO: Only execute if in defined wifi connection (TODO: settings element).
             return true;
         } else {
             LogUtil.d("WiFi is not enabled.");

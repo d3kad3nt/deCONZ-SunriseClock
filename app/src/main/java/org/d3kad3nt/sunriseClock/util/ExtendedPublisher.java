@@ -12,7 +12,7 @@ import java.util.concurrent.Flow;
 import java.util.function.Consumer;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
-public class ExtendedPublisher <T> implements Flow.Publisher<T> {
+public class ExtendedPublisher<T> implements Flow.Publisher<T> {
 
     private final List<ExtendedSubscription> subscriptionList = new LinkedList<>();
 
@@ -21,12 +21,12 @@ public class ExtendedPublisher <T> implements Flow.Publisher<T> {
     private final List<T> cache = new ArrayList<>();
 
     /**
-     * This class implements the java Flow.Publisher API. It has public methods to publish new values and indicate
-     * that all values are sent.
+     * This class implements the java Flow.Publisher API. It has public methods to publish new
+     * values and indicate that all values are sent.
      *
-     * @param cache_publish_values This indicates if all published values should be cached until the next complete
-     *                             call If the values are cached they are emitted to each subscriber that was added
-     *                             after the value was published but before complete was called
+     * @param cache_publish_values This indicates if all published values should be cached until the
+     *     next complete call If the values are cached they are emitted to each subscriber that was
+     *     added after the value was published but before complete was called
      */
     public ExtendedPublisher(boolean cache_publish_values) {
         this.cache_publish_values = cache_publish_values;
@@ -40,16 +40,17 @@ public class ExtendedPublisher <T> implements Flow.Publisher<T> {
     }
 
     public void publish(@NonNull T value) {
-        subscriptionList.forEach(new Consumer<>() {
-            @Override
-            public void accept(final ExtendedSubscription subscription) {
-                if (subscription.requestedItems > 0) {
-                    subscription.subscriber.onNext(value);
-                    subscription.requestedItems--;
-                    subscription.currentListPos++;
-                }
-            }
-        });
+        subscriptionList.forEach(
+                new Consumer<>() {
+                    @Override
+                    public void accept(final ExtendedSubscription subscription) {
+                        if (subscription.requestedItems > 0) {
+                            subscription.subscriber.onNext(value);
+                            subscription.requestedItems--;
+                            subscription.currentListPos++;
+                        }
+                    }
+                });
         cache.add(value);
     }
 

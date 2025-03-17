@@ -9,7 +9,7 @@ import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class AlarmFragment extends PreferenceFragmentCompat
-    implements SharedPreferences.OnSharedPreferenceChangeListener {
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -28,7 +28,9 @@ public class AlarmFragment extends PreferenceFragmentCompat
     public void onPause() {
         super.onPause();
         // Unregister the listener whenever a key changes
-        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        getPreferenceScreen()
+                .getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override

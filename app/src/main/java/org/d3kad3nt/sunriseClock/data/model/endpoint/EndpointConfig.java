@@ -19,20 +19,25 @@ import java.util.Objects;
 public class EndpointConfig {
 
     public static final String TABLENAME = "endpoint";
-    //TODO: Maybe we have to use a separate library to handle timezones correctly.
+
+    // TODO: Maybe we have to use a separate library to handle timezones correctly.
     // Class LocalDateTime is timezone-sensitive, but is not supported until API level 26.
     @TypeConverters(DateTypeConverter.class)
     @ColumnInfo(name = "date_added")
     private final Date addedAt;
+
     @TypeConverters(JsonTypeConverter.class)
     @ColumnInfo(name = "config")
     private final JsonObject jsonConfig;
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "endpointId")
     public long id;
+
     @ColumnInfo(name = "type")
     @TypeConverters(EndpointTypeConverter.class)
     public EndpointType type;
+
     @SuppressWarnings("NotNullFieldNotInitialized")
     @ColumnInfo(name = "name", defaultValue = "Unnamed Endpoint")
     @NonNull

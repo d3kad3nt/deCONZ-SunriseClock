@@ -25,42 +25,56 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
     private EndpointsListAdapter adapter;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         LogUtil.d("Show endpoint list view");
-        EndpointsFragmentBinding binding = EndpointsFragmentBinding.inflate(inflater, container, false);
+        EndpointsFragmentBinding binding =
+                EndpointsFragmentBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointsViewModel.class);
         adapter = new EndpointsListAdapter(viewModel, this);
         binding.recyclerView.setAdapter(adapter);
-        viewModel.getEndpoints().observe(getViewLifecycleOwner(), new Observer<List<IEndpointUI>>() {
-            @Override
-            public void onChanged(List<IEndpointUI> endpointConfigList) {
-                if (!endpointConfigList.isEmpty()) {
-                    adapter.submitList(endpointConfigList);
-                } else {
-                    LogUtil.d("No Endpoints found");
-                }
-            }
-        });
+        viewModel
+                .getEndpoints()
+                .observe(
+                        getViewLifecycleOwner(),
+                        new Observer<List<IEndpointUI>>() {
+                            @Override
+                            public void onChanged(List<IEndpointUI> endpointConfigList) {
+                                if (!endpointConfigList.isEmpty()) {
+                                    adapter.submitList(endpointConfigList);
+                                } else {
+                                    LogUtil.d("No Endpoints found");
+                                }
+                            }
+                        });
         addAddEndpointListener(binding);
         return binding.getRoot();
     }
 
     private void addAddEndpointListener(@NonNull EndpointsFragmentBinding binding) {
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogUtil.d("Navigate to endpoint creation view");
-                Navigation.findNavController(v)
-                    .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointAddFragment());
-            }
-        });
+        binding.fab.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        LogUtil.d("Navigate to endpoint creation view");
+                        Navigation.findNavController(v)
+                                .navigate(
+                                        EndpointsFragmentDirections
+                                                .actionEndpointsToEndpointAddFragment());
+                    }
+                });
     }
 
     @Override
     public void onCardClick(final View view, final long endpointId, String endpointName) {
-        LogUtil.d("Navigate to endpoint detail view for endpoint %s (Id %d)", endpointName, endpointId);
+        LogUtil.d(
+                "Navigate to endpoint detail view for endpoint %s (Id %d)",
+                endpointName, endpointId);
         Navigation.findNavController(view)
-            .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointId, endpointName));
+                .navigate(
+                        EndpointsFragmentDirections.actionEndpointsToEndpointDetail(
+                                endpointId, endpointName));
     }
 }

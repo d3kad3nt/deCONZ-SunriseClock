@@ -34,6 +34,7 @@ public interface EndpointConfigDao {
 
         @ColumnInfo(name = "endpointId")
         public long endpointId;
+
         @ColumnInfo(name = "name")
         public String name;
     }

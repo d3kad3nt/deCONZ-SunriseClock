@@ -20,7 +20,7 @@ public class EndpointsViewModel extends AndroidViewModel {
     public EndpointsViewModel(@NonNull Application application) {
         super(application);
         EndpointRepository endpointRepository =
-            EndpointRepository.getInstance(getApplication().getApplicationContext());
+                EndpointRepository.getInstance(getApplication().getApplicationContext());
         endpoints = endpointRepository.getAllEndpoints();
         settingsRepository = SettingsRepository.getInstance(application.getApplicationContext());
     }

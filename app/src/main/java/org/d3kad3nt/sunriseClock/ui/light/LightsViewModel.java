@@ -25,74 +25,82 @@ import java.util.Optional;
 public class LightsViewModel extends AndroidViewModel {
 
     private final LightRepository lightRepository =
-        LightRepository.getInstance(getApplication().getApplicationContext());
+            LightRepository.getInstance(getApplication().getApplicationContext());
     private final SettingsRepository settingsRepository =
-        SettingsRepository.getInstance(getApplication().getApplicationContext());
+            SettingsRepository.getInstance(getApplication().getApplicationContext());
 
     private final LiveData<Optional<Long>> endpointId;
 
     private final LiveData<Resource<List<UILight>>> lights;
 
-    /**
-     * Whether the loading indicator should be shown by the fragment.
-     */
+    /** Whether the loading indicator should be shown by the fragment. */
     public ResourceVisibilityLiveData loadingIndicatorVisibility;
 
-    /**
-     * Whether the loading indicator of the swipeRefreshLayout should be shown by the fragment.
-     */
+    /** Whether the loading indicator of the swipeRefreshLayout should be shown by the fragment. */
     public MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
 
     public LightsViewModel(@NonNull Application application) {
         super(application);
 
         // Todo: Integrate initial loading of lights.
-        loadingIndicatorVisibility = new ResourceVisibilityLiveData(View.INVISIBLE).setLoadingVisibility(View.VISIBLE)
-            .setSuccessVisibility(View.INVISIBLE).setErrorVisibility(View.INVISIBLE);
+        loadingIndicatorVisibility =
+                new ResourceVisibilityLiveData(View.INVISIBLE)
+                        .setLoadingVisibility(View.VISIBLE)
+                        .setSuccessVisibility(View.INVISIBLE)
+                        .setErrorVisibility(View.INVISIBLE);
 
         endpointId = settingsRepository.getActiveEndpointIdAsLivedata();
 
-        lights = Transformations.switchMap(endpointId, id -> {
-            if (id.isEmpty()) {
-                return new MutableLiveData<>(Resource.success(List.of()));
-            } else {
-                return lightRepository.getLightsForEndpoint(id.get());
-            }
-        });
+        lights =
+                Transformations.switchMap(
+                        endpointId,
+                        id -> {
+                            if (id.isEmpty()) {
+                                return new MutableLiveData<>(Resource.success(List.of()));
+                            } else {
+                                return lightRepository.getLightsForEndpoint(id.get());
+                            }
+                        });
     }
 
     public void refreshLights() {
         LogUtil.d("User requested refresh of all lights.");
 
-        if (!endpointId.isInitialized() || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
+        if (!endpointId.isInitialized()
+                || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
             LogUtil.w("No active endpoint found.");
             return;
         }
 
-        LiveData<EmptyResource> state = lightRepository.refreshLightsForEndpoint(endpointId.getValue().get());
+        LiveData<EmptyResource> state =
+                lightRepository.refreshLightsForEndpoint(endpointId.getValue().get());
 
-        swipeRefreshing.addSource(state, emptyResource -> {
-            switch (emptyResource.getStatus()) {
-                case SUCCESS, ERROR -> {
-                    LogUtil.v("Stopping swipeRefresh animation.");
-                    swipeRefreshing.setValue(false);
-                    swipeRefreshing.removeSource(state);
-                }
-                case LOADING -> {
-                    LogUtil.v("Starting swipeRefresh animation.");
-                    swipeRefreshing.setValue(true);
-                }
-            }
-        });
+        swipeRefreshing.addSource(
+                state,
+                emptyResource -> {
+                    switch (emptyResource.getStatus()) {
+                        case SUCCESS, ERROR -> {
+                            LogUtil.v("Stopping swipeRefresh animation.");
+                            swipeRefreshing.setValue(false);
+                            swipeRefreshing.removeSource(state);
+                        }
+                        case LOADING -> {
+                            LogUtil.v("Starting swipeRefresh animation.");
+                            swipeRefreshing.setValue(true);
+                        }
+                    }
+                });
     }
 
     public void toggleLightsOnState() {
         LogUtil.d("User requested all lights to be turned on or off.");
-        if (!endpointId.isInitialized() || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
+        if (!endpointId.isInitialized()
+                || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
             LogUtil.w("No active endpoint found.");
             return;
         }
-        LiveData<EmptyResource> state = lightRepository.toggleOnStateForEndpoint(endpointId.getValue().get());
+        LiveData<EmptyResource> state =
+                lightRepository.toggleOnStateForEndpoint(endpointId.getValue().get());
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 
@@ -107,8 +115,10 @@ public class LightsViewModel extends AndroidViewModel {
     }
 
     public void setLightBrightness(long lightId, int brightness, final boolean onState) {
-        LogUtil.d("Slider for setLightBrightness for lightId %s was set to value %s.", lightId, brightness);
-        //Enable the light if it was disabled
+        LogUtil.d(
+                "Slider for setLightBrightness for lightId %s was set to value %s.",
+                lightId, brightness);
+        // Enable the light if it was disabled
         if (brightness > 0 && !onState) {
             lightRepository.setOnState(lightId, true);
         }

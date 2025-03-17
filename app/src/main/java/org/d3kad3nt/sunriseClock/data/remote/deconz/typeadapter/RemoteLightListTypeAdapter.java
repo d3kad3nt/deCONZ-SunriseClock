@@ -25,18 +25,22 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
     /**
      * Custom type adapter for usage with Gson.
      *
-     * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is not part of the JSON
-     *                   response, therefore it has to be set manually for a specific RemoteLight when deserializing
-     *                   it.
+     * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is not
+     *     part of the JSON response, therefore it has to be set manually for a specific RemoteLight
+     *     when deserializing it.
      */
     public RemoteLightListTypeAdapter(long endpointId) {
         this.gson =
-            new GsonBuilder().registerTypeAdapter(RemoteLight.class, new RemoteLightTypeAdapter(endpointId)).create();
+                new GsonBuilder()
+                        .registerTypeAdapter(
+                                RemoteLight.class, new RemoteLightTypeAdapter(endpointId))
+                        .create();
     }
 
     @Override
-    public List<RemoteLight> deserialize(@NonNull JsonElement json, Type typeOfT,
-                                         JsonDeserializationContext context) throws JsonParseException {
+    public List<RemoteLight> deserialize(
+            @NonNull JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
         JsonObject rawJson = json.getAsJsonObject();
         List<RemoteLight> lights = new ArrayList<>();
 
@@ -46,7 +50,9 @@ public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteL
             JsonObject jsonLight = rawJson.get(lightId).getAsJsonObject();
 
             // Preprocessing: Manipulate returned json to include the light id.
-            // This enables the existing Gson typeadapter (RemoteLightTypeAdapter) to work for requests for both
+            // This enables the existing Gson typeadapter (RemoteLightTypeAdapter) to work for
+            // requests
+            // for both
             // single and multiple light(s).
             jsonLight.addProperty(IServices.endpointLightIdHeader, lightId);
 
