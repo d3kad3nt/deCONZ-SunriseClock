@@ -11,10 +11,36 @@
             name="brightnessSliderTouchListener"
             type="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment.BrightnessSliderTouchListener" />
     </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/light_details_constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/light_details_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        app:layout_constraintTop_toTopOf="@id/light_details_constraint_layout">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/light_details_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:menu="@menu/menu_light_details"
+            tools:title="@sample/sample.json/lights/name"/>
+    </com.google.android.material.appbar.AppBarLayout>
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/light_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="@{viewModel.loadingIndicatorVisibility}"
+        app:layout_constraintTop_toBottomOf="@id/light_details_appbar" />
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/light_loading"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:setOnRefreshListener="@{()-> viewModel.refreshLight()}"
         app:refreshing="@{viewModel.swipeRefreshing}">
         <!-- Scrolling might be necessary on smaller display sizes or when in landscape mode. -->
@@ -23,31 +49,11 @@
             android:layout_height="match_parent"
             android:fillViewport="true">
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/light_details_constraint_layout"
+                android:id="@+id/light_details_constraint_layout1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="16dp"
                 tools:context="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment">
-                <com.google.android.material.appbar.AppBarLayout
-                    android:id="@+id/light_details_appbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fitsSystemWindows="true"
-                    app:layout_constraintTop_toTopOf="@id/light_details_constraint_layout">
-                    <com.google.android.material.appbar.MaterialToolbar
-                        android:id="@+id/light_details_toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:menu="@menu/menu_light_details"
-                        tools:title="@sample/sample.json/lights/name"/>
-                </com.google.android.material.appbar.AppBarLayout>
-                <com.google.android.material.progressindicator.LinearProgressIndicator
-                    android:id="@+id/progress_indicator_light_loading"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="true"
-                    android:visibility="@{viewModel.loadingIndicatorVisibility}"
-                    app:layout_constraintTop_toBottomOf="@id/light_details_appbar" />
                 <!-- Todo: Could show different images depending on the type of light (isSwitchable, isDimmable, ...) -->
                 <!-- Todo: Make image size dynamic to better match differing screen sizes and landscape mode. -->
                 <androidx.appcompat.widget.AppCompatImageView
@@ -58,7 +64,7 @@
                     android:scaleType="fitCenter"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/progress_indicator_light_loading"
+                    app:layout_constraintTop_toTopOf="@id/light_details_constraint_layout1"
                     app:srcCompat="@drawable/lightbulb_24dp" />
                 <!-- The android:checkedButton attribute was not working with databinding, use the check() method on the group instead. -->
                 <!-- Todo: Enable/disable control based on reachability. Last time, sometimes checked buttons were no longer show for active lights.-->
@@ -145,4 +151,5 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
