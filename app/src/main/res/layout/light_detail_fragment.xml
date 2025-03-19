@@ -38,7 +38,8 @@
                         android:id="@+id/light_details_toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:menu="@menu/menu_light_details"/>
+                        tools:menu="@menu/menu_light_details"
+                        tools:title="@sample/sample.json/lights/name"/>
                 </com.google.android.material.appbar.AppBarLayout>
                 <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/progress_indicator_light_loading"
