@@ -15,7 +15,6 @@ import org.d3kad3nt.sunriseClock.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private AppBarConfiguration appBarConfiguration;
     private NavController navController;
 
     @Override
@@ -30,18 +29,7 @@ public class MainActivity extends AppCompatActivity {
         assert navHostFragment != null;
 
         navController = navHostFragment.getNavController();
-        // In some cases, you might need to define multiple top-level destinations instead of using the default start
-        // destination.
-        // Using a BottomNavigationView is a common use case for this, where you may have sibling screens that are
-        // not hierarchically related to each other and may each have their own set of related destinations.
-        appBarConfiguration =
-            new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
 
         NavigationUI.setupWithNavController(binding.mainBottomNavigation, navController);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 }

@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.databinding.EndpointsFragmentBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
@@ -56,8 +57,15 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         NavController navController = Navigation.findNavController(view);
-        NavigationUI.setupWithNavController(binding.endpointsToolbar, navController,
-            new AppBarConfiguration.Builder(navController.getGraph()).build());
+
+        // In some cases, you might need to define multiple top-level destinations instead of using the default start
+        // destination.
+        // Using a BottomNavigationView is a common use case for this, where you may have sibling screens that are
+        // not hierarchically related to each other and may each have their own set of related destinations.
+        AppBarConfiguration appBarConfiguration =
+            new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
+
+        NavigationUI.setupWithNavController(binding.endpointsToolbar, navController, appBarConfiguration);
 
         // Specify the fragment view as the lifecycle owner of the binding. This is used so that the binding can
         // observe LiveData updates.

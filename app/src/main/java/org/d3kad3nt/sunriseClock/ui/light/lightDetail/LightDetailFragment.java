@@ -78,8 +78,15 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         NavController navController = Navigation.findNavController(view);
-        NavigationUI.setupWithNavController(binding.lightDetailsToolbar, navController,
-            new AppBarConfiguration.Builder(navController.getGraph()).build());
+
+        // In some cases, you might need to define multiple top-level destinations instead of using the default start
+        // destination.
+        // Using a BottomNavigationView is a common use case for this, where you may have sibling screens that are
+        // not hierarchically related to each other and may each have their own set of related destinations.
+        AppBarConfiguration appBarConfiguration =
+            new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
+
+        NavigationUI.setupWithNavController(binding.lightDetailsToolbar, navController, appBarConfiguration);
 
         binding.setBrightnessSliderTouchListener(new BrightnessSliderTouchListener());
         binding.setViewModel(viewModel);
