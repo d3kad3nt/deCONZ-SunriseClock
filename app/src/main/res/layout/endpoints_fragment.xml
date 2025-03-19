@@ -3,21 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/endpoints_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment">
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/endpoints_appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            app:layout_constraintTop_toTopOf="@id/endpoints_constraint_layout">
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/endpoints_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.appbar.AppBarLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:clipToPadding="false"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp"
+            android:clipToPadding="true"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/endpoints_appbar"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="2"
             tools:listitem="@layout/endpoint_list_element" />
         <com.google.android.material.floatingactionbutton.FloatingActionButton

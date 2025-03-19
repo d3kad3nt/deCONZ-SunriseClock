@@ -9,10 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddDeconzFragmentBinding;
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddFragmentBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
@@ -22,6 +26,7 @@ import java.util.Map;
 
 public class EndpointAddFragment extends Fragment {
 
+    private EndpointAddFragmentBinding binding;
     private EndpointAddViewModel viewModel;
 
     public static EndpointAddFragment newInstance() {
@@ -32,13 +37,41 @@ public class EndpointAddFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         LogUtil.d("Show add endpoint view");
-        EndpointAddFragmentBinding binding = EndpointAddFragmentBinding.inflate(inflater, container, false);
+
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointAddViewModel.class);
+
+        binding = EndpointAddFragmentBinding.inflate(inflater, container, false);
+
         //TODO select endpoint type
         EndpointAddDeconzFragmentBinding deconzBinding =
             EndpointAddDeconzFragmentBinding.inflate(inflater, binding.constraintLayoutSpecificEndpoint, true);
         addCreateEndpointListener(binding, deconzBinding);
+
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        NavController navController = Navigation.findNavController(view);
+
+        // In some cases, you might need to define multiple top-level destinations instead of using the default start
+        // destination.
+        // Using a BottomNavigationView is a common use case for this, where you may have sibling screens that are
+        // not hierarchically related to each other and may each have their own set of related destinations.
+        AppBarConfiguration appBarConfiguration =
+            new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
+
+        NavigationUI.setupWithNavController(binding.endpointAddToolbar, navController, appBarConfiguration);
+
+        // Specify the fragment view as the lifecycle owner of the binding. This is used so that the binding can
+        // observe LiveData updates.
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     //Todo: This should definitely be removed (and replaced by setting the onClickListener inside of XML and
