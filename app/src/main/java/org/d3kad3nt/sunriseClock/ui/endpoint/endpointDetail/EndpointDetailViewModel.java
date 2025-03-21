@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.ViewModelInitializer;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.Optional;
 
@@ -24,23 +25,21 @@ public class EndpointDetailViewModel extends ViewModel {
         new CreationExtras.Key<>() {};
     public final static CreationExtras.Key<Long> ENDPOINT_ID_KEY = new CreationExtras.Key<>() {};
 
-    static final ViewModelInitializer<EndpointDetailViewModel> initializer = new ViewModelInitializer<>(
-        EndpointDetailViewModel.class,
-        creationExtras -> {
+    static final ViewModelInitializer<EndpointDetailViewModel> initializer =
+        new ViewModelInitializer<>(EndpointDetailViewModel.class, creationExtras -> {
             EndpointRepository endpointRepository = creationExtras.get(ENDPOINT_REPOSITORY_KEY);
             SettingsRepository settingsRepository = creationExtras.get(SETTINGS_REPOSITORY_KEY);
             Long endpointId = creationExtras.get(ENDPOINT_ID_KEY);
             return new EndpointDetailViewModel(endpointRepository, settingsRepository, endpointId);
-        }
-    );
+        });
     private final EndpointRepository endpointRepository;
     private final SettingsRepository settingsRepository;
     private final long endpointID;
     public LiveData<IEndpointUI> endpointConfig;
     public LiveData<Boolean> selected;
     /**
-     * Text that is shown in the endpoint rename dialog.
-     * The user types the desired new name into a text field backed by this LiveData.
+     * Text that is shown in the endpoint rename dialog. The user types the desired new name into a text field backed
+     * by this LiveData.
      */
     public MutableLiveData<String> endpointNameEditText = new MutableLiveData<>();
 
@@ -77,5 +76,19 @@ public class EndpointDetailViewModel extends ViewModel {
 
     public void setEndpointName(String newName) {
         endpointRepository.setName(endpointID, newName);
+    }
+
+    public boolean deleteEndpoint() {
+        boolean result = false;
+        long selectedEndpointId = settingsRepository.getActiveEndpoint();
+        LogUtil.d("selected id: %d current id: ", selectedEndpointId, endpointID);
+        if (selectedEndpointId != endpointID) {
+            LogUtil.d("Delete endpoint %d", selectedEndpointId);
+            endpointRepository.deleteEndpoint(endpointID);
+            result = true;
+        } else {
+            LogUtil.i("Endpoint %d can't be deleted, because it is currently active");
+        }
+        return result;
     }
 }
