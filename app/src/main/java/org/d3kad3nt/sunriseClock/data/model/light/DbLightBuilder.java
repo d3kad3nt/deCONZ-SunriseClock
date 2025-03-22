@@ -64,9 +64,7 @@ public class DbLightBuilder {
         return this;
     }
 
-    /**
-     * @param name Name that can be used by the user to identify this light.
-     */
+    /** @param name Name that can be used by the user to identify this light. */
     public DbLightBuilder setName(String name) {
         this.name = name;
         return this;
@@ -81,9 +79,7 @@ public class DbLightBuilder {
         return this;
     }
 
-    /**
-     * @param isOn Whether the light is currently switched on (true) or off (false).
-     */
+    /** @param isOn Whether the light is currently switched on (true) or off (false). */
     public DbLightBuilder setIsOn(boolean isOn) {
         this.isOn = isOn;
         return this;

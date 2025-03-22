@@ -33,30 +33,28 @@ public class ResourceVisibilityLiveData extends androidx.lifecycle.MediatorLiveD
             LiveData<? extends Resource<T>> liveData) {
         this.removeSource(this.initialVisibilityLivedata);
         ResourceVisibilityLiveData resourceVisibilityLivedata = this;
-        this.addSource(
-                liveData,
-                new Observer<Resource<T>>() {
-                    @Override
-                    public void onChanged(Resource<T> resource) {
-                        switch (resource.getStatus()) {
-                            case LOADING:
-                                loading.add(liveData);
-                                resourceVisibilityLivedata.setValue(loadingVisibility);
-                                break;
-                            case SUCCESS:
-                                loading.remove(liveData);
-                                if (loading.isEmpty()) {
-                                    resourceVisibilityLivedata.setValue(successVisibility);
-                                }
-                                resourceVisibilityLivedata.removeSource(liveData);
-                                break;
-                            case ERROR:
-                                resourceVisibilityLivedata.setValue(errorVisibility);
-                                resourceVisibilityLivedata.removeSource(liveData);
-                                break;
+        this.addSource(liveData, new Observer<Resource<T>>() {
+            @Override
+            public void onChanged(Resource<T> resource) {
+                switch (resource.getStatus()) {
+                    case LOADING:
+                        loading.add(liveData);
+                        resourceVisibilityLivedata.setValue(loadingVisibility);
+                        break;
+                    case SUCCESS:
+                        loading.remove(liveData);
+                        if (loading.isEmpty()) {
+                            resourceVisibilityLivedata.setValue(successVisibility);
                         }
-                    }
-                });
+                        resourceVisibilityLivedata.removeSource(liveData);
+                        break;
+                    case ERROR:
+                        resourceVisibilityLivedata.setValue(errorVisibility);
+                        resourceVisibilityLivedata.removeSource(liveData);
+                        break;
+                }
+            }
+        });
         return this;
     }
 

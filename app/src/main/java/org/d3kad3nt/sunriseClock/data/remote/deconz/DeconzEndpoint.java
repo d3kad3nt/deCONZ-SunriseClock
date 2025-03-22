@@ -11,6 +11,13 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
 
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
@@ -20,20 +27,14 @@ import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-
-import okhttp3.Interceptor;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DeconzEndpoint extends BaseEndpoint {
 
@@ -107,7 +108,8 @@ public class DeconzEndpoint extends BaseEndpoint {
                     // used to modify the JSON response from the
                     // Deconz endpoint and adds this light id.
                     if (request.header(IServices.endpointLightIdHeader) != null) {
-                        LogUtil.v("HTTP interceptor: Try to set light id in JSON response as workaround.");
+                        LogUtil.v(
+                                "HTTP interceptor: Try to set light id in JSON response as workaround.");
 
                         assert response.body() != null;
                         String stringJson = response.body().string();
@@ -116,10 +118,12 @@ public class DeconzEndpoint extends BaseEndpoint {
                         try {
                             jsonObject = new JSONObject(stringJson);
                             jsonObject.put(
-                                    IServices.endpointLightIdHeader, request.header(IServices.endpointLightIdHeader));
+                                    IServices.endpointLightIdHeader,
+                                    request.header(IServices.endpointLightIdHeader));
 
                             MediaType contentType = response.body().contentType();
-                            ResponseBody body = ResponseBody.create(contentType, String.valueOf(jsonObject));
+                            ResponseBody body =
+                                    ResponseBody.create(contentType, String.valueOf(jsonObject));
 
                             return response.newBuilder().body(body).build();
                         } catch (JSONException ignored) {
@@ -187,7 +191,8 @@ public class DeconzEndpoint extends BaseEndpoint {
     }
 
     @Override
-    public LiveData<ApiResponse<ResponseBody>> setOnState(String endpointLightId, boolean newState) {
+    public LiveData<ApiResponse<ResponseBody>> setOnState(
+            String endpointLightId, boolean newState) {
         LogUtil.d("Setting light state for id %s to %s", endpointLightId, newState);
         JsonObject requestBody = new JsonObject();
         requestBody.add("on", new JsonPrimitive(newState));
@@ -215,7 +220,9 @@ public class DeconzEndpoint extends BaseEndpoint {
 
     @Override
     public LiveData<ApiResponse<ResponseBody>> setName(String endpointLightId, String newName) {
-        LogUtil.d("Setting light name for id %s to %s on endpoint: %s", endpointLightId, newName, this.baseUrl);
+        LogUtil.d(
+                "Setting light name for id %s to %s on endpoint: %s",
+                endpointLightId, newName, this.baseUrl);
         JsonObject requestBody = new JsonObject();
         requestBody.add("name", new JsonPrimitive(newName));
         return this.retrofit.updateLightAttributes(endpointLightId, requestBody);

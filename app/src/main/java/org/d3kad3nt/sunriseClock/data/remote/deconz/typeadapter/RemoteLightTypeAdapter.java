@@ -34,10 +34,9 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
             JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
 
-        RemoteLightBuilder remoteLightBuilder =
-                new RemoteLightBuilder()
-                        .setEndpointType(EndpointType.DECONZ)
-                        .setEndpointId(this.endpointId);
+        RemoteLightBuilder remoteLightBuilder = new RemoteLightBuilder()
+                .setEndpointType(EndpointType.DECONZ)
+                .setEndpointId(this.endpointId);
 
         LogUtil.d("Parsing JSON for single light: %s", json.toString());
 
@@ -65,14 +64,15 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
         }
 
         if (rawJsonState.has("on")) {
-            remoteLightBuilder.setIsSwitchable(true).setIsOn(rawJsonState.get("on").getAsBoolean());
+            remoteLightBuilder
+                    .setIsSwitchable(true)
+                    .setIsOn(rawJsonState.get("on").getAsBoolean());
         }
 
         if (rawJsonState.has("bri")) {
-            remoteLightBuilder =
-                    remoteLightBuilder
-                            .setIsDimmable(true)
-                            .setBrightness(rawJsonState.get("bri").getAsInt());
+            remoteLightBuilder = remoteLightBuilder
+                    .setIsDimmable(true)
+                    .setBrightness(rawJsonState.get("bri").getAsInt());
         }
 
         if (rawJsonState.has("colormode")) {

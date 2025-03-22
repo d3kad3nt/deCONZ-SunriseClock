@@ -110,41 +110,29 @@ public class SettingsRepository {
     }
 
     private LiveData<Optional<Long>> getObservableLongSetting(SettingKeys settingKeys) {
-        return getObservableSetting(
-                settingKeys,
-                listenerLongCache,
-                new Supplier<>() {
-                    public Long get() {
-                        return preferences.getLong(settingKeys.toString(), 0);
-                    }
-                });
+        return getObservableSetting(settingKeys, listenerLongCache, new Supplier<>() {
+            public Long get() {
+                return preferences.getLong(settingKeys.toString(), 0);
+            }
+        });
     }
 
     private LiveData<Optional<Boolean>> getObservableBooleanSetting(SettingKeys settingKeys) {
-        return getObservableSetting(
-                settingKeys,
-                listenerBooleanCache,
-                () -> {
-                    return preferences.getBoolean(settingKeys.toString(), false);
-                });
+        return getObservableSetting(settingKeys, listenerBooleanCache, () -> {
+            return preferences.getBoolean(settingKeys.toString(), false);
+        });
     }
 
     private LiveData<Optional<String>> getObservableStringSetting(SettingKeys settingKeys) {
-        return getObservableSetting(
-                settingKeys,
-                listenerStringCache,
-                () -> {
-                    return preferences.getString(settingKeys.toString(), "");
-                });
+        return getObservableSetting(settingKeys, listenerStringCache, () -> {
+            return preferences.getString(settingKeys.toString(), "");
+        });
     }
 
     private LiveData<Optional<Integer>> getObservableIntSetting(SettingKeys settingKeys) {
-        return getObservableSetting(
-                settingKeys,
-                listenerIntCache,
-                () -> {
-                    return preferences.getInt(settingKeys.toString(), 0);
-                });
+        return getObservableSetting(settingKeys, listenerIntCache, () -> {
+            return preferences.getInt(settingKeys.toString(), 0);
+        });
     }
 
     private void setLongSetting(@NonNull SettingKeys key, long value) {

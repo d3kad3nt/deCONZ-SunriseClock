@@ -40,17 +40,16 @@ public class ExtendedPublisher<T> implements Flow.Publisher<T> {
     }
 
     public void publish(@NonNull T value) {
-        subscriptionList.forEach(
-                new Consumer<>() {
-                    @Override
-                    public void accept(final ExtendedSubscription subscription) {
-                        if (subscription.requestedItems > 0) {
-                            subscription.subscriber.onNext(value);
-                            subscription.requestedItems--;
-                            subscription.currentListPos++;
-                        }
-                    }
-                });
+        subscriptionList.forEach(new Consumer<>() {
+            @Override
+            public void accept(final ExtendedSubscription subscription) {
+                if (subscription.requestedItems > 0) {
+                    subscription.subscriber.onNext(value);
+                    subscription.requestedItems--;
+                    subscription.currentListPos++;
+                }
+            }
+        });
         cache.add(value);
     }
 

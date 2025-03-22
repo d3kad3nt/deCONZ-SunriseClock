@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
+import okhttp3.ResponseBody;
+
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.DbLightDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
@@ -25,8 +27,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.ResponseBody;
 
 /** Repository module for handling data operations (network or local database). */
 public class LightRepository {
@@ -109,7 +109,8 @@ public class LightRepository {
             }
 
             @Override
-            protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteLight>> response) {
+            protected List<DbLight> convertRemoteTypeToDbType(
+                    ApiSuccessResponse<List<RemoteLight>> response) {
                 List<DbLight> lights = new ArrayList<>();
                 for (RemoteLight light : response.getBody()) {
                     lights.add(DbLight.from(light));
@@ -146,9 +147,10 @@ public class LightRepository {
                     @NotNull
                     @Override
                     protected LiveData<List<DbLight>> loadFromDb() {
-                        return Transformations.map(dbLightDao.loadAllForEndpoint(endpointId), input -> {
-                            return new ArrayList<>(input);
-                        });
+                        return Transformations.map(
+                                dbLightDao.loadAllForEndpoint(endpointId), input -> {
+                                    return new ArrayList<>(input);
+                                });
                     }
 
                     @NotNull
@@ -163,7 +165,8 @@ public class LightRepository {
                     }
 
                     @Override
-                    protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteLight>> response) {
+                    protected List<DbLight> convertRemoteTypeToDbType(
+                            ApiSuccessResponse<List<RemoteLight>> response) {
                         List<DbLight> lights = new ArrayList<>();
                         for (RemoteLight light : response.getBody()) {
                             lights.add(DbLight.from(light));
@@ -273,7 +276,8 @@ public class LightRepository {
                     }
 
                     @Override
-                    protected DbLight convertRemoteTypeToDbType(ApiSuccessResponse<RemoteLight> response) {
+                    protected DbLight convertRemoteTypeToDbType(
+                            ApiSuccessResponse<RemoteLight> response) {
                         return DbLight.from(response.getBody());
                     }
                 },
@@ -310,14 +314,16 @@ public class LightRepository {
 
             @NonNull
             @Override
-            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
+            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(
+                    BaseEndpoint baseEndpoint) {
                 return baseEndpoint.setOnState(dbObject.getEndpointLightId(), newState);
             }
 
             @NotNull
             @Override
             protected LiveData<Resource<UILight>> loadUpdatedVersion() {
-                LogUtil.d("Loading updated light with id %d after successful setOn change", lightId);
+                LogUtil.d(
+                        "Loading updated light with id %d after successful setOn change", lightId);
                 return getLight(lightId);
             }
         };
@@ -349,7 +355,8 @@ public class LightRepository {
 
             @NonNull
             @Override
-            protected @NotNull LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
+            protected @NotNull LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(
+                    BaseEndpoint baseEndpoint) {
                 return baseEndpoint.toggleOnState();
             }
 
@@ -370,11 +377,12 @@ public class LightRepository {
      * @param brightness Desired light brightness, ranging from 0 (lowest) to 100 (highest).
      * @return Resource representing the status of the request.
      */
-    public LiveData<EmptyResource> setBrightness(long lightId, @IntRange(from = 0, to = 100) int brightness) {
+    public LiveData<EmptyResource> setBrightness(
+            long lightId, @IntRange(from = 0, to = 100) int brightness) {
         LogUtil.i("Setting brightness to %d %% for single light with id %d", brightness, lightId);
         if (brightness < 0 || brightness > 100) {
-            throw new IllegalStateException(
-                    "The new brightness for light " + lightId + " has to be between 0 and 100 and not " + brightness);
+            throw new IllegalStateException("The new brightness for light " + lightId
+                    + " has to be between 0 and 100 and not " + brightness);
         }
 
         return new NetworkUpdateResource<UILight, ResponseBody, DbLight>() {
@@ -391,14 +399,17 @@ public class LightRepository {
 
             @NonNull
             @Override
-            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
+            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(
+                    BaseEndpoint baseEndpoint) {
                 return baseEndpoint.setBrightness(dbObject.getEndpointLightId(), brightness);
             }
 
             @NotNull
             @Override
             protected LiveData<Resource<UILight>> loadUpdatedVersion() {
-                LogUtil.d("Loading updated light with id %d after successful brightness change", lightId);
+                LogUtil.d(
+                        "Loading updated light with id %d after successful brightness change",
+                        lightId);
                 return getLight(lightId);
             }
         };
@@ -421,7 +432,8 @@ public class LightRepository {
 
             @NonNull
             @Override
-            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
+            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(
+                    BaseEndpoint baseEndpoint) {
                 return baseEndpoint.setName(dbObject.getEndpointLightId(), newName);
             }
 

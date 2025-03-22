@@ -43,24 +43,20 @@ public class LightsViewModel extends AndroidViewModel {
         super(application);
 
         // Todo: Integrate initial loading of lights.
-        loadingIndicatorVisibility =
-                new ResourceVisibilityLiveData(View.INVISIBLE)
-                        .setLoadingVisibility(View.VISIBLE)
-                        .setSuccessVisibility(View.INVISIBLE)
-                        .setErrorVisibility(View.INVISIBLE);
+        loadingIndicatorVisibility = new ResourceVisibilityLiveData(View.INVISIBLE)
+                .setLoadingVisibility(View.VISIBLE)
+                .setSuccessVisibility(View.INVISIBLE)
+                .setErrorVisibility(View.INVISIBLE);
 
         endpointId = settingsRepository.getActiveEndpointIdAsLivedata();
 
-        lights =
-                Transformations.switchMap(
-                        endpointId,
-                        id -> {
-                            if (id.isEmpty()) {
-                                return new MutableLiveData<>(Resource.success(List.of()));
-                            } else {
-                                return lightRepository.getLightsForEndpoint(id.get());
-                            }
-                        });
+        lights = Transformations.switchMap(endpointId, id -> {
+            if (id.isEmpty()) {
+                return new MutableLiveData<>(Resource.success(List.of()));
+            } else {
+                return lightRepository.getLightsForEndpoint(id.get());
+            }
+        });
     }
 
     public void refreshLights() {
@@ -75,21 +71,19 @@ public class LightsViewModel extends AndroidViewModel {
         LiveData<EmptyResource> state =
                 lightRepository.refreshLightsForEndpoint(endpointId.getValue().get());
 
-        swipeRefreshing.addSource(
-                state,
-                emptyResource -> {
-                    switch (emptyResource.getStatus()) {
-                        case SUCCESS, ERROR -> {
-                            LogUtil.v("Stopping swipeRefresh animation.");
-                            swipeRefreshing.setValue(false);
-                            swipeRefreshing.removeSource(state);
-                        }
-                        case LOADING -> {
-                            LogUtil.v("Starting swipeRefresh animation.");
-                            swipeRefreshing.setValue(true);
-                        }
-                    }
-                });
+        swipeRefreshing.addSource(state, emptyResource -> {
+            switch (emptyResource.getStatus()) {
+                case SUCCESS, ERROR -> {
+                    LogUtil.v("Stopping swipeRefresh animation.");
+                    swipeRefreshing.setValue(false);
+                    swipeRefreshing.removeSource(state);
+                }
+                case LOADING -> {
+                    LogUtil.v("Starting swipeRefresh animation.");
+                    swipeRefreshing.setValue(true);
+                }
+            }
+        });
     }
 
     public void toggleLightsOnState() {

@@ -36,9 +36,8 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        long endpointID =
-                EndpointDetailFragmentArgs.fromBundle(requireArguments())
-                        .getEndpointID(); // id from navigation
+        long endpointID = EndpointDetailFragmentArgs.fromBundle(requireArguments())
+                .getEndpointID(); // id from navigation
 
         LogUtil.setPrefix("EndpointID %d: ", endpointID);
         LogUtil.d("Show endpoint detail view");
@@ -73,12 +72,11 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
         // ViewModelProvider(this).get
         // (EndpointDetailViewModel.class)).
         // For viewModel older than 2.5.0 ViewModelProvider.Factory had to be extended.
-        viewModel =
-                new ViewModelProvider(
-                                backStackEntry.getViewModelStore(),
-                                ViewModelProvider.Factory.from(EndpointDetailViewModel.initializer),
-                                viewModelDependencies)
-                        .get(EndpointDetailViewModel.class);
+        viewModel = new ViewModelProvider(
+                        backStackEntry.getViewModelStore(),
+                        ViewModelProvider.Factory.from(EndpointDetailViewModel.initializer),
+                        viewModelDependencies)
+                .get(EndpointDetailViewModel.class);
 
         binding = EndpointDetailFragmentBinding.inflate(inflater, container, false);
 

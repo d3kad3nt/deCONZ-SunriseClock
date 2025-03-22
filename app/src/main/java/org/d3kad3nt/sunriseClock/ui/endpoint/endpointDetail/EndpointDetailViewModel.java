@@ -8,18 +8,20 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.CreationExtras;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
+import kotlin.jvm.functions.Function1;
+
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
 
 import java.util.Optional;
 
-import kotlin.jvm.functions.Function1;
-
 public class EndpointDetailViewModel extends ViewModel {
 
-    public static final CreationExtras.Key<EndpointRepository> ENDPOINT_REPOSITORY_KEY = new CreationExtras.Key<>() {};
-    public static final CreationExtras.Key<SettingsRepository> SETTINGS_REPOSITORY_KEY = new CreationExtras.Key<>() {};
+    public static final CreationExtras.Key<EndpointRepository> ENDPOINT_REPOSITORY_KEY =
+            new CreationExtras.Key<>() {};
+    public static final CreationExtras.Key<SettingsRepository> SETTINGS_REPOSITORY_KEY =
+            new CreationExtras.Key<>() {};
     public static final CreationExtras.Key<Long> ENDPOINT_ID_KEY = new CreationExtras.Key<>() {};
 
     static final ViewModelInitializer<EndpointDetailViewModel> initializer =
@@ -27,7 +29,8 @@ public class EndpointDetailViewModel extends ViewModel {
                 EndpointRepository endpointRepository = creationExtras.get(ENDPOINT_REPOSITORY_KEY);
                 SettingsRepository settingsRepository = creationExtras.get(SETTINGS_REPOSITORY_KEY);
                 Long endpointId = creationExtras.get(ENDPOINT_ID_KEY);
-                return new EndpointDetailViewModel(endpointRepository, settingsRepository, endpointId);
+                return new EndpointDetailViewModel(
+                        endpointRepository, settingsRepository, endpointId);
             });
     private final EndpointRepository endpointRepository;
     private final SettingsRepository settingsRepository;
@@ -52,20 +55,22 @@ public class EndpointDetailViewModel extends ViewModel {
 
         this.endpointConfig = getEndpoint(endpointId);
 
-        selected = Transformations.map(settingsRepository.getActiveEndpointIdAsLivedata(), new Function1<>() {
-            @Override
-            public Boolean invoke(final Optional<Long> aLong) {
-                return aLong.isPresent() && aLong.get().equals(endpointId);
-            }
-        });
+        selected = Transformations.map(
+                settingsRepository.getActiveEndpointIdAsLivedata(), new Function1<>() {
+                    @Override
+                    public Boolean invoke(final Optional<Long> aLong) {
+                        return aLong.isPresent() && aLong.get().equals(endpointId);
+                    }
+                });
 
         // If the endpoint name changes upstream, we update the name that the user is getting shown
         // in
         // the rename
         // dialog.
-        endpointNameEditText = (MutableLiveData<String>) Transformations.map(endpointConfig, endpointUI -> {
-            return endpointUI.getName();
-        });
+        endpointNameEditText =
+                (MutableLiveData<String>) Transformations.map(endpointConfig, endpointUI -> {
+                    return endpointUI.getName();
+                });
     }
 
     private LiveData<IEndpointUI> getEndpoint(long endpointID) {

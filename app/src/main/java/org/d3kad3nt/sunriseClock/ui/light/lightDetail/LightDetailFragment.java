@@ -37,9 +37,8 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
             @NonNull LayoutInflater inflater,
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        long lightID =
-                LightDetailFragmentArgs.fromBundle(requireArguments())
-                        .getLight(); // id from navigation
+        long lightID = LightDetailFragmentArgs.fromBundle(requireArguments())
+                .getLight(); // id from navigation
 
         LogUtil.setPrefix("LightID %d: ", lightID);
         LogUtil.d("Show light detail view");
@@ -71,12 +70,11 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
         // ViewModelProvider(this).get
         // (LightDetailViewModel.class)).
         // For viewModel older than 2.5.0 ViewModelProvider.Factory had to be extended.
-        viewModel =
-                new ViewModelProvider(
-                                backStackEntry.getViewModelStore(),
-                                ViewModelProvider.Factory.from(LightDetailViewModel.initializer),
-                                viewModelDependencies)
-                        .get(LightDetailViewModel.class);
+        viewModel = new ViewModelProvider(
+                        backStackEntry.getViewModelStore(),
+                        ViewModelProvider.Factory.from(LightDetailViewModel.initializer),
+                        viewModelDependencies)
+                .get(LightDetailViewModel.class);
 
         binding = LightDetailFragmentBinding.inflate(inflater, container, false);
 

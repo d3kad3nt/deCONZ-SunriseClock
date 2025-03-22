@@ -24,10 +24,8 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setContentView(binding.getRoot());
 
-        NavHostFragment navHostFragment =
-                (NavHostFragment)
-                        getSupportFragmentManager()
-                                .findFragmentById(binding.mainNavHostFragment.getId());
+        NavHostFragment navHostFragment = (NavHostFragment)
+                getSupportFragmentManager().findFragmentById(binding.mainNavHostFragment.getId());
 
         assert navHostFragment != null;
 
@@ -40,10 +38,9 @@ public class MainActivity extends AppCompatActivity {
         // screens that are
         // not hierarchically related to each other and may each have their own set of related
         // destinations.
-        appBarConfiguration =
-                new AppBarConfiguration.Builder(
-                                R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment)
-                        .build();
+        appBarConfiguration = new AppBarConfiguration.Builder(
+                        R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment)
+                .build();
 
         setSupportActionBar(binding.mainToolbar);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

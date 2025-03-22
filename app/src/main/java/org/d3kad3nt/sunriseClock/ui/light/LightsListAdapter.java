@@ -30,7 +30,8 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LightListElementBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(LightListElementBinding.inflate(
+                LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
@@ -73,7 +74,8 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
          * @param brightness Desired light brightness, ranging from 0 (lowest) to 100 (highest).
          * @param state Whether the light is on (true) or off (false).
          */
-        void onSliderTouch(long lightId, @IntRange(from = 0, to = 100) int brightness, boolean state);
+        void onSliderTouch(
+                long lightId, @IntRange(from = 0, to = 100) int brightness, boolean state);
     }
 
     static class LightDiffCallback extends DiffUtil.ItemCallback<UILight> {
@@ -88,8 +90,8 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         }
 
         /**
-         * Determines if the particular item was updated. Only called when {@link
-         * LightsListAdapter.LightDiffCallback#areItemsTheSame} returned true.
+         * Determines if the particular item was updated. Only called when
+         * {@link LightsListAdapter.LightDiffCallback#areItemsTheSame} returned true.
          */
         @Override
         public boolean areContentsTheSame(@NonNull UILight oldItem, @NonNull UILight newItem) {
@@ -143,7 +145,8 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         public class SwitchCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {
 
             @Override
-            public void onCheckedChanged(final CompoundButton compoundButton, final boolean isChecked) {
+            public void onCheckedChanged(
+                    final CompoundButton compoundButton, final boolean isChecked) {
                 UILight light = getItem(getAbsoluteAdapterPosition());
                 clickListeners.onSwitchCheckedChange(light.getLightId(), isChecked);
             }
@@ -158,7 +161,8 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
              * Slider.OnSliderTouchListener to a slider.
              */
             @BindingAdapter(value = "android:onSliderTouch")
-            public static void setOnSliderTouchListener(Slider slider, SliderTouchListener sliderTouchListener) {
+            public static void setOnSliderTouchListener(
+                    Slider slider, SliderTouchListener sliderTouchListener) {
                 slider.addOnSliderTouchListener(sliderTouchListener);
             }
 
@@ -168,7 +172,8 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
             @Override
             public void onStopTrackingTouch(@NonNull final Slider slider) {
                 UILight light = getItem(getAbsoluteAdapterPosition());
-                clickListeners.onSliderTouch(light.getLightId(), (int) slider.getValue(), light.getIsOn());
+                clickListeners.onSliderTouch(
+                        light.getLightId(), (int) slider.getValue(), light.getIsOn());
             }
         }
     }

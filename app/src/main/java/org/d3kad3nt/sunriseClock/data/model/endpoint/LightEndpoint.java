@@ -2,18 +2,16 @@ package org.d3kad3nt.sunriseClock.data.model.endpoint;
 
 import androidx.lifecycle.LiveData;
 
+import okhttp3.ResponseBody;
+
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 
 import java.util.List;
 
-import okhttp3.ResponseBody;
-
 public interface LightEndpoint {
 
-    /**
-     * @return All lights on this endpoint.
-     */
+    /** @return All lights on this endpoint. */
     LiveData<ApiResponse<List<RemoteLight>>> getLights();
 
     /**

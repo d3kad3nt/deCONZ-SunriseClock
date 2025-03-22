@@ -55,7 +55,8 @@ public class RemoteLight {
             this.endpointLightId = endpointLightId;
         } else {
             LogUtil.e("The given endpointLightId string cannot be null or empty!");
-            throw new IllegalArgumentException("The given endpointLightId string cannot be null or empty!");
+            throw new IllegalArgumentException(
+                    "The given endpointLightId string cannot be null or empty!");
         }
 
         this.name = name;
@@ -63,7 +64,8 @@ public class RemoteLight {
         this.isOn = isOn;
         this.isDimmable = isDimmable;
 
-        if (brightness >= endpointType.getMinBrightness() && brightness <= endpointType.getMaxBrightness()) {
+        if (brightness >= endpointType.getMinBrightness()
+                && brightness <= endpointType.getMaxBrightness()) {
             this.brightness = brightness;
         } else {
             throw new IllegalArgumentException("The given brightness of a light (endpoint type "
@@ -76,7 +78,8 @@ public class RemoteLight {
         }
 
         this.isTemperaturable = isTemperaturable;
-        this.colorTemperature = colorTemperature; // Todo: Define which values are allowed for each endpoint type
+        this.colorTemperature =
+                colorTemperature; // Todo: Define which values are allowed for each endpoint type
         this.isColorable = isColorable;
         this.color = color; // Todo: Define which values are allowed for each endpoint type
         this.isReachable = isReachable;
@@ -99,7 +102,8 @@ public class RemoteLight {
                 // https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio)
                 .setBrightness(calculateBrightness(remoteLight))
                 .setIsTemperaturable(remoteLight.getIsTemperaturable())
-                .setColorTemperature(remoteLight.getColorTemperature()) // Todo: Implement conversion
+                .setColorTemperature(
+                        remoteLight.getColorTemperature()) // Todo: Implement conversion
                 .setIsColorable(remoteLight.getIsColorable())
                 .setColor(remoteLight.getColor()) // Todo: Implement conversion
                 .setIsReachable(remoteLight.getIsReachable())

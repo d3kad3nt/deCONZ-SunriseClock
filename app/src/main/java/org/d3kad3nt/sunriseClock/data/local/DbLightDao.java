@@ -43,7 +43,9 @@ public interface DbLightDao {
         if (obj.getLightId() != 0L) {
             int rowsUpdated = updateUsingPrimaryKey(obj);
             if (rowsUpdated >= 1) {
-                LogUtil.d("%d rows updated by room. Updated DbLight with lightId: %d", rowsUpdated, obj.getLightId());
+                LogUtil.d(
+                        "%d rows updated by room. Updated DbLight with lightId: %d",
+                        rowsUpdated, obj.getLightId());
             } else if (rowsUpdated == 0) {
                 LogUtil.w(
                         "0 rows updated by room. This could mean that the primary key (lightId: %d) "
@@ -72,11 +74,13 @@ public interface DbLightDao {
                     obj.getIsColorable(),
                     obj.getColor());
             LogUtil.d(
-                    "%d rows updated by room. Updated DbLight with endpointId: %d" + " and endpointLightId: %s",
+                    "%d rows updated by room. Updated DbLight with endpointId: %d"
+                            + " and endpointLightId: %s",
                     rowsUpdated, obj.getEndpointId(), obj.getEndpointLightId());
         } else {
-            LogUtil.w("Neither lightId nor (endpointId and endpointLightId) were set. No update could be performed by "
-                    + "room!");
+            LogUtil.w(
+                    "Neither lightId nor (endpointId and endpointLightId) were set. No update could be performed by "
+                            + "room!");
         }
     }
 

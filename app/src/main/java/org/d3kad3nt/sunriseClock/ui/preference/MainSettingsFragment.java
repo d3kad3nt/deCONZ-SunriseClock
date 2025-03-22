@@ -18,26 +18,24 @@ public class MainSettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         LogUtil.d("Show settings view");
         setPreferencesFromResource(R.xml.preferences_main, rootKey);
-        Map<String, Integer> links =
-                Map.of(
-                        "pref_connectivity_category",
-                        R.id.action_mainSettingsFragment_to_connectivityFragment,
-                        "pref_alarm_category",
-                        R.id.action_mainSettingsFragment_to_alarmFragment,
-                        "pref_interface_category",
-                        R.id.action_mainSettingsFragment_to_interfaceFragment,
-                        "pref_debug_category",
-                        R.id.action_mainSettingsFragment_to_debugFragment);
+        Map<String, Integer> links = Map.of(
+                "pref_connectivity_category",
+                R.id.action_mainSettingsFragment_to_connectivityFragment,
+                "pref_alarm_category",
+                R.id.action_mainSettingsFragment_to_alarmFragment,
+                "pref_interface_category",
+                R.id.action_mainSettingsFragment_to_interfaceFragment,
+                "pref_debug_category",
+                R.id.action_mainSettingsFragment_to_debugFragment);
         for (Map.Entry<String, Integer> entry : links.entrySet()) {
             ((Preference) Objects.requireNonNull(findPreference(entry.getKey())))
-                    .setOnPreferenceClickListener(
-                            preference -> {
-                                // The Integer has to be converted to a int.
-                                // Otherwise a wrong function signature for navigate is selected
-                                NavHostFragment.findNavController(this)
-                                        .navigate(entry.getValue().intValue());
-                                return true;
-                            });
+                    .setOnPreferenceClickListener(preference -> {
+                        // The Integer has to be converted to a int.
+                        // Otherwise a wrong function signature for navigate is selected
+                        NavHostFragment.findNavController(this)
+                                .navigate(entry.getValue().intValue());
+                        return true;
+                    });
         }
     }
 }

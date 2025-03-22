@@ -30,9 +30,14 @@ import org.jetbrains.annotations.Contract;
                         onDelete = ForeignKey.CASCADE))
 public class DbLight {
 
-    @Ignore public static final String TABLENAME = "light";
-    @Ignore static final int BRIGHTNESS_MIN = 0;
-    @Ignore static final int BRIGHTNESS_MAX = 100;
+    @Ignore
+    public static final String TABLENAME = "light";
+
+    @Ignore
+    static final int BRIGHTNESS_MIN = 0;
+
+    @Ignore
+    static final int BRIGHTNESS_MAX = 100;
 
     @ColumnInfo(name = "endpoint_id")
     private final long endpointId;
@@ -129,7 +134,7 @@ public class DbLight {
         this.isTemperaturable = isTemperaturable;
         this.colorTemperature =
                 colorTemperature; // Todo: Define which values are allowed, see DbLightBuilder
-                                  // javadoc
+        // javadoc
         this.isColorable = isColorable;
         this.color = color; // Todo: Define which values are allowed, see DbLightBuilder javadoc
         this.isReachable = isReachable;
@@ -141,9 +146,7 @@ public class DbLight {
         return RemoteLight.toDbLight(remoteLight);
     }
 
-    /**
-     * @return Identifier for this light (inside the database).
-     */
+    /** @return Identifier for this light (inside the database). */
     public long getLightId() {
         return lightId;
     }
@@ -178,9 +181,7 @@ public class DbLight {
         return endpointLightId;
     }
 
-    /**
-     * @return Name that can be used by the user to identify this light.
-     */
+    /** @return Name that can be used by the user to identify this light. */
     @NonNull
     public String getName() {
         return name;
@@ -194,9 +195,7 @@ public class DbLight {
         return isSwitchable;
     }
 
-    /**
-     * @return Whether the light is currently switched on (true) or off (false).
-     */
+    /** @return Whether the light is currently switched on (true) or off (false). */
     public boolean getIsOn() {
         return isOn;
     }

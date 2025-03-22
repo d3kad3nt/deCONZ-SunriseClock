@@ -58,37 +58,30 @@ public class LightsFragment extends Fragment
 
         viewModel
                 .getLights()
-                .observe(
-                        getViewLifecycleOwner(),
-                        new Observer<Resource<List<UILight>>>() {
-                            @Override
-                            public void onChanged(Resource<List<UILight>> listResource) {
-                                if (listResource.getStatus().equals(Status.SUCCESS)
-                                        && listResource.getData() != null) {
-                                    LogUtil.i("Lights in list updated");
-                                    lightsState.clearError();
-                                    List<UILight> list = listResource.getData();
-                                    Collections.sort(
-                                            list,
-                                            new Comparator<>() {
-                                                @Override
-                                                public int compare(
-                                                        final UILight uiLight,
-                                                        final UILight uiLight2) {
-                                                    return uiLight.getName()
-                                                            .compareTo(uiLight2.getName());
-                                                }
-                                            });
-                                    adapter.submitList(list);
-                                } else if (listResource.getStatus().equals(Status.ERROR)) {
-                                    LogUtil.i("No Lights found");
-                                    lightsState.setError(
-                                            getResources().getString(R.string.noLights_title),
-                                            listResource.getMessage());
-                                    adapter.submitList(List.of());
+                .observe(getViewLifecycleOwner(), new Observer<Resource<List<UILight>>>() {
+                    @Override
+                    public void onChanged(Resource<List<UILight>> listResource) {
+                        if (listResource.getStatus().equals(Status.SUCCESS)
+                                && listResource.getData() != null) {
+                            LogUtil.i("Lights in list updated");
+                            lightsState.clearError();
+                            List<UILight> list = listResource.getData();
+                            Collections.sort(list, new Comparator<>() {
+                                @Override
+                                public int compare(final UILight uiLight, final UILight uiLight2) {
+                                    return uiLight.getName().compareTo(uiLight2.getName());
                                 }
-                            }
-                        });
+                            });
+                            adapter.submitList(list);
+                        } else if (listResource.getStatus().equals(Status.ERROR)) {
+                            LogUtil.i("No Lights found");
+                            lightsState.setError(
+                                    getResources().getString(R.string.noLights_title),
+                                    listResource.getMessage());
+                            adapter.submitList(List.of());
+                        }
+                    }
+                });
 
         return binding.getRoot();
     }

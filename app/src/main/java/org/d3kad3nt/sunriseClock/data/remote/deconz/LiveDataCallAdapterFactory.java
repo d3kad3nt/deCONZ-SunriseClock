@@ -5,12 +5,12 @@ import androidx.lifecycle.LiveData;
 
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 
+import retrofit2.CallAdapter;
+import retrofit2.Retrofit;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-
-import retrofit2.CallAdapter;
-import retrofit2.Retrofit;
 
 /**
  * Adapted from the official Google architecture-components github-sample app under

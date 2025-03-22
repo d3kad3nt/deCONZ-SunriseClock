@@ -1,8 +1,8 @@
 package org.d3kad3nt.sunriseClock.data.remote.common;
 
-import java.io.IOException;
-
 import retrofit2.Response;
+
+import java.io.IOException;
 
 // TODO: Make this class more generic / usable for other endpoints (instead of only supporting
 // retrofit's Response type). This could be achieved by shifting the logic to decide whether

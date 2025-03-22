@@ -37,34 +37,30 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
         binding.recyclerView.setAdapter(adapter);
         viewModel
                 .getEndpoints()
-                .observe(
-                        getViewLifecycleOwner(),
-                        new Observer<List<IEndpointUI>>() {
-                            @Override
-                            public void onChanged(List<IEndpointUI> endpointConfigList) {
-                                if (!endpointConfigList.isEmpty()) {
-                                    adapter.submitList(endpointConfigList);
-                                } else {
-                                    LogUtil.d("No Endpoints found");
-                                }
-                            }
-                        });
+                .observe(getViewLifecycleOwner(), new Observer<List<IEndpointUI>>() {
+                    @Override
+                    public void onChanged(List<IEndpointUI> endpointConfigList) {
+                        if (!endpointConfigList.isEmpty()) {
+                            adapter.submitList(endpointConfigList);
+                        } else {
+                            LogUtil.d("No Endpoints found");
+                        }
+                    }
+                });
         addAddEndpointListener(binding);
         return binding.getRoot();
     }
 
     private void addAddEndpointListener(@NonNull EndpointsFragmentBinding binding) {
-        binding.fab.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        LogUtil.d("Navigate to endpoint creation view");
-                        Navigation.findNavController(v)
-                                .navigate(
-                                        EndpointsFragmentDirections
-                                                .actionEndpointsToEndpointAddFragment());
-                    }
-                });
+        binding.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogUtil.d("Navigate to endpoint creation view");
+                Navigation.findNavController(v)
+                        .navigate(
+                                EndpointsFragmentDirections.actionEndpointsToEndpointAddFragment());
+            }
+        });
     }
 
     @Override
@@ -73,8 +69,7 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
                 "Navigate to endpoint detail view for endpoint %s (Id %d)",
                 endpointName, endpointId);
         Navigation.findNavController(view)
-                .navigate(
-                        EndpointsFragmentDirections.actionEndpointsToEndpointDetail(
-                                endpointId, endpointName));
+                .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(
+                        endpointId, endpointName));
     }
 }

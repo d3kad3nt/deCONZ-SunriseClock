@@ -5,13 +5,13 @@ import androidx.lifecycle.LiveData;
 
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 
-import java.lang.reflect.Type;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import java.lang.reflect.Type;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A Retrofit adapter that converts the Call into a LiveData of ApiResponse.
@@ -46,7 +46,8 @@ class LiveDataCallAdapter<T> implements CallAdapter<T, LiveData<ApiResponse<T>>>
                 if (started.compareAndSet(false, true)) {
                     call.enqueue(new Callback<T>() {
                         @Override
-                        public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
+                        public void onResponse(
+                                @NonNull Call<T> call, @NonNull Response<T> response) {
                             postValue(ApiResponse.create(response));
                         }
 

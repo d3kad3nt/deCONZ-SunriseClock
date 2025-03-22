@@ -24,29 +24,24 @@ import java.util.List;
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "sunriseclock-db-DEV.db";
-    private static final List<Migration> migrations =
-            new ArrayList<>(
-                    List.of(
-                            new Migration(1, 2) {
-                                @Override
-                                public void migrate(@NonNull SupportSQLiteDatabase database) {
-                                    database.execSQL(
-                                            "CREATE TABLE new_endpoint ("
-                                                    + "endpointId INTEGER PRIMARY KEY NOT NULL,"
-                                                    + "date_added INTEGER,"
-                                                    + "config TEXT,"
-                                                    + "type INTEGER,"
-                                                    + "name TEXT NOT NULL DEFAULT "
-                                                    + "'Unnamed"
-                                                    + " Endpoint')");
-                                    database.execSQL(
-                                            "INSERT INTO new_endpoint (endpointId, date_added, config, type) "
-                                                    + "SELECT "
-                                                    + "endpointId, date_added, config, type FROM endpoint");
-                                    database.execSQL("DROP TABLE endpoint");
-                                    database.execSQL("ALTER TABLE new_endpoint RENAME TO endpoint");
-                                }
-                            }));
+    private static final List<Migration> migrations = new ArrayList<>(List.of(new Migration(1, 2) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE new_endpoint ("
+                    + "endpointId INTEGER PRIMARY KEY NOT NULL,"
+                    + "date_added INTEGER,"
+                    + "config TEXT,"
+                    + "type INTEGER,"
+                    + "name TEXT NOT NULL DEFAULT "
+                    + "'Unnamed"
+                    + " Endpoint')");
+            database.execSQL("INSERT INTO new_endpoint (endpointId, date_added, config, type) "
+                    + "SELECT "
+                    + "endpointId, date_added, config, type FROM endpoint");
+            database.execSQL("DROP TABLE endpoint");
+            database.execSQL("ALTER TABLE new_endpoint RENAME TO endpoint");
+        }
+    }));
     private static volatile AppDatabase INSTANCE;
 
     /**

@@ -21,18 +21,16 @@ public class BooleanVisibilityLiveData extends androidx.lifecycle.MediatorLiveDa
     public <T> BooleanVisibilityLiveData addVisibilityProvider(LiveData<Boolean> liveData) {
         this.removeSource(this.initialVisibilityLivedata);
         BooleanVisibilityLiveData booleanVisibilityLiveData = this;
-        this.addSource(
-                liveData,
-                new Observer<Boolean>() {
-                    @Override
-                    public void onChanged(Boolean value) {
-                        if (value) {
-                            booleanVisibilityLiveData.setValue(trueVisibility);
-                        } else {
-                            booleanVisibilityLiveData.setValue(falseVisibility);
-                        }
-                    }
-                });
+        this.addSource(liveData, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean value) {
+                if (value) {
+                    booleanVisibilityLiveData.setValue(trueVisibility);
+                } else {
+                    booleanVisibilityLiveData.setValue(falseVisibility);
+                }
+            }
+        });
         return this;
     }
 
