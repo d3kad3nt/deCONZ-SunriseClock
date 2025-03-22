@@ -30,6 +30,16 @@
       "lightId": 7
     }
   ],
+  "groups": [
+    {
+      "name": "Küche",
+      "groupId": 1
+    },
+    {
+      "name": "Wohnzimmer",
+      "groupId": 2
+    }
+  ],
   "endpoints": [
     {
       "name": "Gateway Hamburg",
