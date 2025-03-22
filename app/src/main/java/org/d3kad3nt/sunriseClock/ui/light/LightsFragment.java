@@ -16,7 +16,10 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
@@ -49,10 +52,6 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
         adapter = new LightsListAdapter(this);
         binding.recyclerView.setAdapter(adapter);
 
-        // Initialize the options menu (toolbar menu).
-        MenuHost menuHost = requireActivity();
-        menuHost.addMenuProvider(this, getViewLifecycleOwner());
-
         viewModel.getLights().observe(getViewLifecycleOwner(), new Observer<Resource<List<UILight>>>() {
             @Override
             public void onChanged(Resource<List<UILight>> listResource) {
@@ -76,11 +75,25 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
             }
         });
 
+        // Initialize the options menu (toolbar menu).
+        binding.lightsToolbar.addMenuProvider(this, getViewLifecycleOwner());
+
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        NavController navController = Navigation.findNavController(view);
+
+        // In some cases, you might need to define multiple top-level destinations instead of using the default start
+        // destination.
+        // Using a BottomNavigationView is a common use case for this, where you may have sibling screens that are
+        // not hierarchically related to each other and may each have their own set of related destinations.
+        AppBarConfiguration appBarConfiguration =
+            new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
+
+        NavigationUI.setupWithNavController(binding.lightsToolbar, navController, appBarConfiguration);
+
         binding.setViewModel(viewModel);
         // Specify the fragment view as the lifecycle owner of the binding. This is used so that the binding can
         // observe LiveData updates.
