@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import org.d3kad3nt.sunriseClock.R;
+import org.d3kad3nt.sunriseClock.data.model.ListItem;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
@@ -28,6 +29,7 @@ import org.d3kad3nt.sunriseClock.util.LogUtil;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LightsFragment extends Fragment implements LightsListAdapter.ClickListeners, MenuProvider {
 
@@ -66,7 +68,8 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
                             return uiLight.getName().compareTo(uiLight2.getName());
                         }
                     });
-                    adapter.submitList(list);
+                    adapter.submitList(
+                        list.stream().map(uiLight -> (ListItem) uiLight).collect(Collectors.toUnmodifiableList()));
                 } else if (listResource.getStatus().equals(Status.ERROR)) {
                     LogUtil.i("No Lights found");
                     lightsState.setError(getResources().getString(R.string.noLights_title),

@@ -7,20 +7,21 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 
 import org.d3kad3nt.sunriseClock.data.model.DbEndpointEntity;
+import org.d3kad3nt.sunriseClock.data.model.ListItemType;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Objects;
 
 @Entity(tableName = DbGroup.TABLENAME,
-    indices = {@Index(value = {"endpoint_id", "id_on_endpoint"},
-        unique = true)},
-    // A DbGroup is always bound to a single endpoint. It cannot exist without one:
-    // Therefore Room is instructed to delete this DbGroup if the endpoint gets deleted.
-    foreignKeys = @ForeignKey(entity = EndpointConfig.class,
-        parentColumns = "endpointId",
-        childColumns = "endpoint_id",
-        onDelete = ForeignKey.CASCADE))
+        indices = {@Index(value = {"endpoint_id", "id_on_endpoint"},
+                          unique = true)},
+        // A DbGroup is always bound to a single endpoint. It cannot exist without one:
+        // Therefore Room is instructed to delete this DbGroup if the endpoint gets deleted.
+        foreignKeys = @ForeignKey(entity = EndpointConfig.class,
+                                  parentColumns = "endpointId",
+                                  childColumns = "endpoint_id",
+                                  onDelete = ForeignKey.CASCADE))
 public class DbGroup extends DbEndpointEntity {
 
     @Ignore
@@ -66,5 +67,9 @@ public class DbGroup extends DbEndpointEntity {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode());
+    }
+
+    public ListItemType getType() {
+        return ListItemType.LIGHT;
     }
 }

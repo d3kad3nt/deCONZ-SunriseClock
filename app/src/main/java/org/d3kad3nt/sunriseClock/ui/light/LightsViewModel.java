@@ -11,16 +11,18 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
+import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
-import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -34,7 +36,7 @@ public class LightsViewModel extends AndroidViewModel {
     private final LiveData<Optional<Long>> endpointId;
 
     private final LiveData<Resource<List<UILight>>> lights;
-    private final LiveData<Resource<List<DbGroup>>> groups;
+    private final LiveData<Resource<Map<DbGroup, List<DbLight>>>> groups;
 
     /**
      * Whether the loading indicator should be shown by the fragment.
@@ -64,26 +66,18 @@ public class LightsViewModel extends AndroidViewModel {
         });
 
         //Todo remove test
-        groups = Transformations.switchMap(endpointId, endpointId -> {
-            return lightRepository.getGroupsForEndpoint(endpointId.get());
-        });
-        groups.observeForever(listResource -> {
-            if (listResource.getStatus() == Status.SUCCESS) {
-                LogUtil.d(listResource.getData().get(2).getName());
+        groups = Transformations.switchMap(endpointId, id -> {
+            if (id.isEmpty()) {
+                return new MutableLiveData<>(Resource.success(new HashMap<DbGroup, List<DbLight>>()));
+            } else {
+                return lightRepository.getGroupsWithLightsForEndpoint(id.get());
             }
         });
-        var groups2 = Transformations.switchMap(endpointId, endpointId -> {
-            return lightRepository.getGroupsWithLightsForEndpoint(endpointId.get());
-        });
-        groups2.observeForever(mapResource -> {
-            if (mapResource.getStatus() == Status.SUCCESS) {
-                LogUtil.d("Size of GroupsWithLights map: %d", mapResource.getData().size());
-                mapResource.getData().forEach((dbGroup, dbLights) -> {
-                    LogUtil.d("GroupWithLights map with groupId %s and lightIds list %s!", dbGroup.getId(),
-                        dbLights.toString());
-                });
-            }
-        });
+//        groups.observeForever(listResource -> {
+//            if (listResource.getStatus() == Status.SUCCESS) {
+//                LogUtil.d(listResource.getData().get(2).getName());
+//            }
+//        });
     }
 
     public void refreshLights() {

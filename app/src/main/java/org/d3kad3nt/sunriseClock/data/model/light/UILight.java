@@ -3,12 +3,14 @@ package org.d3kad3nt.sunriseClock.data.model.light;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
+import org.d3kad3nt.sunriseClock.data.model.ListItem;
+import org.d3kad3nt.sunriseClock.data.model.ListItemType;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Objects;
 
-public class UILight {
+public class UILight implements ListItem {
 
     private final long lightId;
     private final long endpointId;
@@ -125,6 +127,10 @@ public class UILight {
 
     public boolean getIsReachable() {
         return isReachable;
+    }
+
+    public ListItemType getType() {
+        return ListItemType.LIGHT;
     }
 
     @Override
