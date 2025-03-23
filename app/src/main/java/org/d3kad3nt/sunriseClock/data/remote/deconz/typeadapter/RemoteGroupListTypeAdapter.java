@@ -1,7 +1,5 @@
 package org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -11,15 +9,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import org.d3kad3nt.sunriseClock.data.model.group.RemoteGroup;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RemoteGroupListTypeAdapter implements JsonDeserializer<List<RemoteGroup>> {
-
-    private static final String TAG = "RemoteGroupListTypeAda.";
-
+    
     private final Gson gson;
 
     /**
@@ -40,7 +37,7 @@ public class RemoteGroupListTypeAdapter implements JsonDeserializer<List<RemoteG
         JsonObject rawJson = json.getAsJsonObject();
         List<RemoteGroup> groups = new ArrayList<>();
 
-        Log.d(TAG, "Parsing JSON for list of groups: " + rawJson.toString());
+        LogUtil.d("Parsing JSON for list of groups: %s" + rawJson.toString());
 
         for (String groupId : rawJson.keySet()) {
             JsonObject jsonGroup = rawJson.get(groupId).getAsJsonObject();

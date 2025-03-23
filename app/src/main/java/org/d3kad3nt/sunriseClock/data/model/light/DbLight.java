@@ -33,9 +33,6 @@ public class DbLight extends DbEndpointEntity {
     @Ignore
     static final int BRIGHTNESS_MAX = 100;
 
-    @Ignore
-    private static final String TAG = "DbLight";
-
     @ColumnInfo(name = "is_switchable",
         defaultValue = "false")
     private final boolean isSwitchable;

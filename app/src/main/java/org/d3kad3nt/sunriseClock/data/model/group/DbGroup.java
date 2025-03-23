@@ -25,10 +25,7 @@ public class DbGroup extends DbEndpointEntity {
 
     @Ignore
     public static final String TABLENAME = "group";
-
-    @Ignore
-    private static final String TAG = "DbGroup";
-
+    
     /**
      * Create a new entity that represents a group in the app's Room database. This constructor has to be public for
      * Room to be able to create an object. This should not be otherwise accessed!

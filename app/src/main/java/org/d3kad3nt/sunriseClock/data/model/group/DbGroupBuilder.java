@@ -2,8 +2,6 @@ package org.d3kad3nt.sunriseClock.data.model.group;
 
 public class DbGroupBuilder {
 
-    private static final String TAG = "DbGroupBuilder";
-
     private long endpointId;
     private String endpointGroupId;
 

@@ -7,8 +7,6 @@ import java.util.List;
 
 public class RemoteGroupBuilder {
 
-    private static final String TAG = "RemoteGroupBuilder";
-
     private EndpointType endpointType;
 
     private long endpointId;

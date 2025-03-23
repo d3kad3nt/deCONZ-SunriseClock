@@ -1,13 +1,10 @@
 package org.d3kad3nt.sunriseClock.data.model;
 
-import android.util.Log;
-
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public abstract class RemoteEndpointEntity {
-
-    private static final String TAG = "RemoteEndpointEntity";
-
+    
     private final EndpointType endpointType;
 
     private final long endpointId;
@@ -22,14 +19,14 @@ public abstract class RemoteEndpointEntity {
         if (endpointId != 0L) {
             this.endpointId = endpointId;
         } else {
-            Log.e(TAG, "The given endpointId cannot be 0!");
+            LogUtil.e("The given endpointId cannot be 0!");
             throw new IllegalArgumentException("The given endpointId cannot be 0!");
         }
 
         if (endpointEntityId != null && !endpointEntityId.isEmpty()) {
             this.endpointEntityId = endpointEntityId;
         } else {
-            Log.e(TAG, "The given endpointEntityId string cannot be null or empty!");
+            LogUtil.e("The given endpointEntityId string cannot be null or empty!");
             throw new IllegalArgumentException("The given endpointEntityId string cannot be null or empty!");
         }
 
