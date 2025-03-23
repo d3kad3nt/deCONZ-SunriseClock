@@ -10,6 +10,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
+import org.d3kad3nt.sunriseClock.data.model.group.UIGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
@@ -18,7 +19,9 @@ import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -31,7 +34,7 @@ public class LightsViewModel extends AndroidViewModel {
 
     private final LiveData<Optional<Long>> endpointId;
 
-    private final LiveData<Resource<List<UILight>>> lights;
+    private final LiveData<Resource<Map<UIGroup, List<UILight>>>> groupsWithLights;
 
     /**
      * Whether the loading indicator should be shown by the fragment.
@@ -52,17 +55,18 @@ public class LightsViewModel extends AndroidViewModel {
 
         endpointId = settingsRepository.getActiveEndpointIdAsLivedata();
 
-        lights = Transformations.switchMap(endpointId, id -> {
+        groupsWithLights = Transformations.switchMap(endpointId, id -> {
             if (id.isEmpty()) {
-                return new MutableLiveData<>(Resource.success(List.of()));
+                return new MutableLiveData<>(Resource.success(new HashMap<>()));
             } else {
-                return lightRepository.getLightsForEndpoint(id.get());
+                return lightRepository.getGroupsWithLightsForEndpoint(id.get());
             }
         });
     }
 
     public void refreshLights() {
         LogUtil.d("User requested refresh of all lights.");
+        // Todo: Where to refresh group membership?
 
         if (!endpointId.isInitialized() || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
             LogUtil.w("No active endpoint found.");
@@ -96,8 +100,8 @@ public class LightsViewModel extends AndroidViewModel {
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 
-    public LiveData<Resource<List<UILight>>> getLights() {
-        return lights;
+    public LiveData<Resource<Map<UIGroup, List<UILight>>>> getGroupsWithLights() {
+        return groupsWithLights;
     }
 
     public void setLightOnState(long lightId, boolean newState) {

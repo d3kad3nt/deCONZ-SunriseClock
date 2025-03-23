@@ -24,16 +24,16 @@
             type="int" />
         <variable
             name="cardClickListener"
-            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.ViewHolder.CardClickListener" />
+            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.LightViewHolder.CardClickListener" />
         <variable
             name="switchCheckedChangeListener"
-            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.ViewHolder.SwitchCheckedChangeListener" />
+            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.LightViewHolder.SwitchCheckedChangeListener" />
         <variable
             name="sliderTouchListener"
-            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.ViewHolder.SliderTouchListener" />
+            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.LightViewHolder.SliderTouchListener" />
     </data>
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewFilledStyle"
+        style="?attr/materialCardViewOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"

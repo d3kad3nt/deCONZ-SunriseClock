@@ -22,15 +22,18 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import org.d3kad3nt.sunriseClock.R;
+import org.d3kad3nt.sunriseClock.data.model.ListItem;
+import org.d3kad3nt.sunriseClock.data.model.group.UIGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class LightsFragment extends Fragment implements LightsListAdapter.ClickListeners, MenuProvider {
 
@@ -52,24 +55,27 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
         adapter = new LightsListAdapter(this);
         binding.recyclerView.setAdapter(adapter);
 
-        viewModel.getLights().observe(getViewLifecycleOwner(), new Observer<Resource<List<UILight>>>() {
+        viewModel.getGroupsWithLights().observe(getViewLifecycleOwner(), new Observer<>() {
             @Override
-            public void onChanged(Resource<List<UILight>> listResource) {
-                if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
+            public void onChanged(final Resource<Map<UIGroup, List<UILight>>> mapResource) {
+                if (mapResource.getStatus().equals(Status.SUCCESS) && mapResource.getData() != null) {
                     LogUtil.i("Lights in list updated");
                     lightsState.clearError();
-                    List<UILight> list = listResource.getData();
-                    Collections.sort(list, new Comparator<>() {
-                        @Override
-                        public int compare(final UILight uiLight, final UILight uiLight2) {
-                            return uiLight.getName().compareTo(uiLight2.getName());
-                        }
-                    });
-                    adapter.submitList(list);
-                } else if (listResource.getStatus().equals(Status.ERROR)) {
+
+                    // Use comparable interface in UIGroup (and then UIList) to sort the output.
+                    List<ListItem> flatList =
+                        mapResource.getData().entrySet().stream()
+                            .sorted(Map.Entry.comparingByKey())
+                            .flatMap(entry -> Stream.concat(
+                                Stream.of(entry.getKey()),
+                                entry.getValue().stream().sorted()))
+                            .collect(Collectors.toUnmodifiableList());
+
+                    adapter.submitList(flatList);
+                } else if (mapResource.getStatus().equals(Status.ERROR)) {
                     LogUtil.i("No Lights found");
                     lightsState.setError(getResources().getString(R.string.noLights_title),
-                        listResource.getMessage());
+                        mapResource.getMessage());
                     adapter.submitList(List.of());
                 }
             }
@@ -107,21 +113,27 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
     }
 
     @Override
-    public void onCardClick(View view, final long lightId, final String lightName) {
+    public void onLightCardClick(View view, final long lightId, final String lightName) {
         LogUtil.d("Navigate to light detail view for light %s (Id %d)", lightName, lightId);
         Navigation.findNavController(view)
             .navigate(LightsFragmentDirections.actionLightsToLightDetail(lightId, lightName));
     }
 
     @Override
-    public void onSwitchCheckedChange(final long lightId, final boolean state) {
+    public void onLightSwitchCheckedChange(final long lightId, final boolean state) {
         viewModel.setLightOnState(lightId, state);
     }
 
     @Override
-    public void onSliderTouch(final long lightId, @IntRange(from = 0, to = 100) final int brightness,
-                              final boolean state) {
+    public void onLightSliderTouch(final long lightId, @IntRange(from = 0, to = 100) final int brightness,
+                                   final boolean state) {
         viewModel.setLightBrightness(lightId, brightness, state);
+    }
+
+    @Override
+    public void onGroupCardClick(final View view, final long groupId, final String groupName) {
+        //Todo: Implement group detail screen.
+        LogUtil.d("Group card clicked.");
     }
 
     @Override
