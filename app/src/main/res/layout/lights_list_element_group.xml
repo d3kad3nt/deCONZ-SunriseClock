@@ -11,7 +11,7 @@
             type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.GroupViewHolder.CardClickListener" />
     </data>
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewOutlinedStyle"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"

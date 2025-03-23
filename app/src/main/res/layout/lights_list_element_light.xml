@@ -33,7 +33,7 @@
             type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.LightViewHolder.SliderTouchListener" />
     </data>
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewFilledStyle"
+        style="?attr/materialCardViewOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
