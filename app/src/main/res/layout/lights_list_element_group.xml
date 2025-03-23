@@ -6,6 +6,9 @@
         <variable
             name="groupName"
             type="String" />
+        <variable
+            name="cardClickListener"
+            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.GroupViewHolder.CardClickListener" />
     </data>
     <com.google.android.material.card.MaterialCardView
         style="?attr/materialCardViewOutlinedStyle"
@@ -13,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="5dp"
+        android:onClick="@{cardClickListener}"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.LightsFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

@@ -10,8 +10,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
-import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
-import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
+import org.d3kad3nt.sunriseClock.data.model.group.UIGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
@@ -35,8 +34,7 @@ public class LightsViewModel extends AndroidViewModel {
 
     private final LiveData<Optional<Long>> endpointId;
 
-    private final LiveData<Resource<List<UILight>>> lights;
-    private final LiveData<Resource<Map<DbGroup, List<DbLight>>>> groups;
+    private final LiveData<Resource<Map<UIGroup, List<UILight>>>> groupsWithLights;
 
     /**
      * Whether the loading indicator should be shown by the fragment.
@@ -57,31 +55,18 @@ public class LightsViewModel extends AndroidViewModel {
 
         endpointId = settingsRepository.getActiveEndpointIdAsLivedata();
 
-        lights = Transformations.switchMap(endpointId, id -> {
+        groupsWithLights = Transformations.switchMap(endpointId, id -> {
             if (id.isEmpty()) {
-                return new MutableLiveData<>(Resource.success(List.of()));
-            } else {
-                return lightRepository.getLightsForEndpoint(id.get());
-            }
-        });
-
-        //Todo remove test
-        groups = Transformations.switchMap(endpointId, id -> {
-            if (id.isEmpty()) {
-                return new MutableLiveData<>(Resource.success(new HashMap<DbGroup, List<DbLight>>()));
+                return new MutableLiveData<>(Resource.success(new HashMap<>()));
             } else {
                 return lightRepository.getGroupsWithLightsForEndpoint(id.get());
             }
         });
-//        groups.observeForever(listResource -> {
-//            if (listResource.getStatus() == Status.SUCCESS) {
-//                LogUtil.d(listResource.getData().get(2).getName());
-//            }
-//        });
     }
 
     public void refreshLights() {
         LogUtil.d("User requested refresh of all lights.");
+        // Todo: Where to refresh group membership?
 
         if (!endpointId.isInitialized() || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
             LogUtil.w("No active endpoint found.");
@@ -115,8 +100,8 @@ public class LightsViewModel extends AndroidViewModel {
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 
-    public LiveData<Resource<List<UILight>>> getLights() {
-        return lights;
+    public LiveData<Resource<Map<UIGroup, List<UILight>>>> getGroupsWithLights() {
+        return groupsWithLights;
     }
 
     public void setLightOnState(long lightId, boolean newState) {

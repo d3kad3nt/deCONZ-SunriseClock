@@ -10,12 +10,13 @@ import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.DbGroupDao;
-import org.d3kad3nt.sunriseClock.data.local.DbLightGroupingDao;
 import org.d3kad3nt.sunriseClock.data.local.DbLightDao;
+import org.d3kad3nt.sunriseClock.data.local.DbLightGroupingDao;
+import org.d3kad3nt.sunriseClock.data.model.DbGroupLightCrossref;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
 import org.d3kad3nt.sunriseClock.data.model.group.RemoteGroup;
-import org.d3kad3nt.sunriseClock.data.model.DbGroupLightCrossref;
+import org.d3kad3nt.sunriseClock.data.model.group.UIGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import okhttp3.ResponseBody;
 
@@ -113,11 +115,7 @@ public class LightRepository {
 
             @Override
             protected List<UILight> convertDbTypeToResultType(List<DbLight> items) {
-                List<UILight> lights = new ArrayList<>();
-                for (DbLight light : items) {
-                    lights.add(UILight.from(light));
-                }
-                return lights;
+                return UILight.from(items);
             }
 
             @Override
@@ -435,14 +433,14 @@ public class LightRepository {
         };
     }
 
-    public LiveData<Resource<Map<DbGroup, List<DbLight>>>> getGroupsWithLightsForEndpoint(long endpointId) {
+    public LiveData<Resource<Map<UIGroup, List<UILight>>>> getGroupsWithLightsForEndpoint(long endpointId) {
         try {
             endpointRepo.getEndpoint(endpointId);
         } catch (NullPointerException e) {
-            Resource<Map<DbGroup, List<DbLight>>> resource = Resource.error("Endpoint doesn't exist", null);
+            Resource<Map<UIGroup, List<UILight>>> resource = Resource.error("Endpoint doesn't exist", null);
             return new MutableLiveData<>(resource);
         }
-        return new BiNetworkBoundResource<Map<DbGroup, List<DbLight>>, List<RemoteGroup>, List<RemoteLight>,
+        return new BiNetworkBoundResource<Map<UIGroup, List<UILight>>, List<RemoteGroup>, List<RemoteLight>,
             Map<DbGroup, List<DbLight>>>() {
 
             @Override
@@ -483,9 +481,11 @@ public class LightRepository {
             }
 
             @Override
-            protected Map<DbGroup, List<DbLight>> convertDbTypeToResultType(Map<DbGroup, List<DbLight>> item) {
-                //Todo: Convert to UI type
-                return item;
+            protected Map<UIGroup, List<UILight>> convertDbTypeToResultType(
+                Map<DbGroup, List<DbLight>> groupsWithLights) {
+                return groupsWithLights.entrySet().stream().collect(
+                    Collectors.toMap(groupWithLights -> UIGroup.from(groupWithLights.getKey()),
+                        groupWithLights -> UILight.from(groupWithLights.getValue())));
             }
 
             @Override
@@ -512,20 +512,20 @@ public class LightRepository {
         };
     }
 
-    public LiveData<Resource<List<DbGroup>>> getGroupsForEndpoint(long endpointId) {
+    public LiveData<Resource<List<UIGroup>>> getGroupsForEndpoint(long endpointId) {
         try {
             endpointRepo.getEndpoint(endpointId);
         } catch (NullPointerException e) {
-            Resource<List<DbGroup>> resource = Resource.error("Endpoint doesn't exist", null);
+            Resource<List<UIGroup>> resource = Resource.error("Endpoint doesn't exist", null);
             return new MutableLiveData<>(resource);
         }
-        return new NetworkBoundResource<List<DbGroup>, List<RemoteGroup>, List<DbGroup>>() {
+        return new NetworkBoundResource<List<UIGroup>, List<RemoteGroup>, List<DbGroup>>() {
 
             @Override
             protected void saveResponseToDb(List<DbGroup> items) {
                 for (DbGroup group : items) {
                     //Todo: Work with @Ignore to extract lightIds from object and manually insert them into the
-                    // crossref table
+                    // crossref table. Is this still necessary since getGroupsWithLightsForEndpoint?
                     dbGroupDao.upsert(group);
                 }
             }
@@ -552,9 +552,8 @@ public class LightRepository {
             }
 
             @Override
-            protected List<DbGroup> convertDbTypeToResultType(List<DbGroup> item) {
-                //Todo: Convert to UI type
-                return item;
+            protected List<UIGroup> convertDbTypeToResultType(List<DbGroup> dbGroups) {
+                return UIGroup.from(dbGroups);
             }
 
             @Override

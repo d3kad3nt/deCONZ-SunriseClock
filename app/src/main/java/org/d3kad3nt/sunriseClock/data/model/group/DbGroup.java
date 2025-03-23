@@ -7,7 +7,6 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 
 import org.d3kad3nt.sunriseClock.data.model.DbEndpointEntity;
-import org.d3kad3nt.sunriseClock.data.model.ListItemType;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
 import org.jetbrains.annotations.Contract;
 
@@ -67,9 +66,5 @@ public class DbGroup extends DbEndpointEntity {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode());
-    }
-
-    public ListItemType getType() {
-        return ListItemType.LIGHT;
     }
 }

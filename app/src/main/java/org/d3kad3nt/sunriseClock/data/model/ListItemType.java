@@ -4,9 +4,10 @@ import androidx.annotation.NonNull;
 
 public enum ListItemType {
 
-    GROUP_HEADER,
-    GROUP_FOOTER,
-    LIGHT;
+    HEADER,
+    GROUP,
+    LIGHT,
+    FOOTER;
 
     @NonNull
     public static ListItemType valueOf(final int viewType) {

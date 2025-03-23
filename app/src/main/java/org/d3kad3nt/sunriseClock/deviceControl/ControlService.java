@@ -87,7 +87,7 @@ public class ControlService extends ControlsProviderService {
                             switch (listResource.getStatus()) {
                                 case SUCCESS:
                                     for (UILight light : listResource.getData()) {
-                                        endpointNames.put(light.getLightId(), endpoint.getStringRepresentation());
+                                        endpointNames.put(light.getId(), endpoint.getStringRepresentation());
                                         flow.publish(getStatelessControl(light, pendingIntent));
                                     }
                                     removeObserver(this, lightResources, asyncHelper);
@@ -191,8 +191,8 @@ public class ControlService extends ControlsProviderService {
         //I don't know what this flag does, but it removes one warning
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("LightName", light.getName());
-        intent.putExtra("Light", light.getLightId());
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) light.getLightId(), intent,
+        intent.putExtra("Light", light.getId());
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) light.getId(), intent,
             PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         Control.StatefulBuilder builder = new Control.StatefulBuilder(getControlId(light), pendingIntent);
@@ -269,7 +269,7 @@ public class ControlService extends ControlsProviderService {
 
     @NonNull
     private String getControlId(@NonNull UILight light) {
-        return Long.toString(light.getLightId());
+        return Long.toString(light.getId());
     }
 
     private LiveData<Resource<UILight>> getUILight(@NonNull String controlId) {

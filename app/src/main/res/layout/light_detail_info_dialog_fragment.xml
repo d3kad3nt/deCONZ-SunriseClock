@@ -70,7 +70,7 @@
                 android:id="@+id/light_id_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{String.valueOf(viewModel.light.data.lightId)}"
+                android:text="@{String.valueOf(viewModel.light.data.id)}"
                 app:layout_constraintStart_toEndOf="@id/guideline"
                 app:layout_constraintTop_toBottomOf="@+id/barrier_between_name_and_id"
                 tools:text="@sample/sample.json/lights/lightId" />
