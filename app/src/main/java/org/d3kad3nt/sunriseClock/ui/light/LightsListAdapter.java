@@ -17,7 +17,7 @@ import com.google.android.material.slider.Slider;
 import org.d3kad3nt.sunriseClock.data.model.ListItem;
 import org.d3kad3nt.sunriseClock.data.model.ListItemType;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
-import org.d3kad3nt.sunriseClock.databinding.LightListElementBinding;
+import org.d3kad3nt.sunriseClock.databinding.LightsListElementLightBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
         switch (ListItemType.valueOf(viewType)) {
             case ListItemType.LIGHT:
                 return new ViewHolder(
-                    LightListElementBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+                    LightsListElementLightBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
             default:
                 throw new UnsupportedOperationException(String.format("Unknown Type: %d", viewType));
         }
@@ -188,9 +188,9 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final LightListElementBinding binding;
+        private final LightsListElementLightBinding binding;
 
-        ViewHolder(@NonNull LightListElementBinding binding) {
+        ViewHolder(@NonNull LightsListElementLightBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 
