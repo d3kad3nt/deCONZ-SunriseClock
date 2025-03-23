@@ -7,8 +7,6 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import org.d3kad3nt.sunriseClock.data.model.DbGroupLightCrossref;
-
 import java.util.List;
 
 @Dao

@@ -14,7 +14,6 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
 import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
-import org.d3kad3nt.sunriseClock.data.model.DbGroupLightCrossref;
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 
 import java.util.ArrayList;

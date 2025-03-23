@@ -10,9 +10,9 @@ import androidx.lifecycle.Transformations;
 
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.DbGroupDao;
+import org.d3kad3nt.sunriseClock.data.local.DbGroupLightCrossref;
 import org.d3kad3nt.sunriseClock.data.local.DbLightDao;
 import org.d3kad3nt.sunriseClock.data.local.DbLightGroupingDao;
-import org.d3kad3nt.sunriseClock.data.model.DbGroupLightCrossref;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
 import org.d3kad3nt.sunriseClock.data.model.group.RemoteGroup;

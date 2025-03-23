@@ -1,4 +1,4 @@
-package org.d3kad3nt.sunriseClock.data.model;
+package org.d3kad3nt.sunriseClock.data.local;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
