@@ -90,8 +90,7 @@ public class LightsFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         binding.setViewModel(viewModel);
         // Specify the fragment view as the lifecycle owner of the binding. This is used so that the
-        // binding can
-        // observe LiveData updates.
+        // binding can observe LiveData updates.
         binding.setLifecycleOwner(getViewLifecycleOwner());
     }
 
@@ -132,8 +131,7 @@ public class LightsFragment extends Fragment
     public boolean onMenuItemSelected(@NonNull final MenuItem menuItem) {
         // The SwipeRefreshLayout does not provide accessibility events.
         // Instead, a menu item should be provided to allow refresh of the content wherever this
-        // gesture
-        // is used.
+        // gesture is used.
         if (menuItem.getItemId() == R.id.menu_lights_refresh) {
             LogUtil.d("User requested refresh of all lights by clicking the toolbar menu option.");
             viewModel.refreshLights();

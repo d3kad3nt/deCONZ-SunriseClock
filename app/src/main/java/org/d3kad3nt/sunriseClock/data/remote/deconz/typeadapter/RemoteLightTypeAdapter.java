@@ -22,8 +22,8 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
      * Custom type adapter for usage with Gson.
      *
      * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is not
-     *     part of the JSON response, therefore it has to be set manually for a specific DbLight
-     *     when deserializing it.
+     *                   part of the JSON response, therefore it has to be set manually for a specific DbLight
+     *                   when deserializing it.
      */
     public RemoteLightTypeAdapter(long endpointId) {
         this.endpointId = endpointId;
@@ -31,12 +31,12 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
 
     @Override
     public RemoteLight deserialize(
-            JsonElement json, Type typeOfT, JsonDeserializationContext context)
-            throws JsonParseException {
+        JsonElement json, Type typeOfT, JsonDeserializationContext context)
+        throws JsonParseException {
 
         RemoteLightBuilder remoteLightBuilder = new RemoteLightBuilder()
-                .setEndpointType(EndpointType.DECONZ)
-                .setEndpointId(this.endpointId);
+            .setEndpointType(EndpointType.DECONZ)
+            .setEndpointId(this.endpointId);
 
         LogUtil.d("Parsing JSON for single light: %s", json.toString());
 
@@ -48,15 +48,12 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
         // the original request. A okHttp interceptor is used to modify the JSON response from the
         // Deconz endpoint and adds this light id.
         // When requesting a list of RemoteLights, the endpointLightId is manually added to the
-        // json,
-        // too.
+        // json, too.
         // This enables the existing Gson typeadapter (RemoteLightTypeAdapter) to work for requests
-        // for
-        // both single
-        // and multiple light(s).
+        // for both single and multiple light(s).
         if (rawJson.has(IServices.endpointLightIdHeader)) {
             remoteLightBuilder.setEndpointLightId(
-                    rawJson.get(IServices.endpointLightIdHeader).getAsString());
+                rawJson.get(IServices.endpointLightIdHeader).getAsString());
         }
 
         if (rawJson.has("name")) {
@@ -65,25 +62,25 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
 
         if (rawJsonState.has("on")) {
             remoteLightBuilder
-                    .setIsSwitchable(true)
-                    .setIsOn(rawJsonState.get("on").getAsBoolean());
+                .setIsSwitchable(true)
+                .setIsOn(rawJsonState.get("on").getAsBoolean());
         }
 
         if (rawJsonState.has("bri")) {
             remoteLightBuilder = remoteLightBuilder
-                    .setIsDimmable(true)
-                    .setBrightness(rawJsonState.get("bri").getAsInt());
+                .setIsDimmable(true)
+                .setBrightness(rawJsonState.get("bri").getAsInt());
         }
 
         if (rawJsonState.has("colormode")) {
             switch (rawJsonState.get("colormode").getAsString()) {
                 case "ct":
                     remoteLightBuilder
-                            .setIsTemperaturable(true)
-                            .setColorTemperature(rawJsonState.get("ct").getAsInt());
+                        .setIsTemperaturable(true)
+                        .setColorTemperature(rawJsonState.get("ct").getAsInt());
                 case "xy":
                     remoteLightBuilder.setIsColorable(true);
-                // TODO: .setColor();
+                    // TODO: .setColor();
                 case "hs":
                     remoteLightBuilder.setIsColorable(true);
                     // TODO: .setColor();

@@ -46,7 +46,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
     /**
      * Using singleton pattern as of now. With dependency injection (Dagger, ...) this class could
-     * be mocked when unit testing. TODO: Dependency Injection, optional
+     * be mocked when unit testing.
+     *
+     * <p>TODO: Dependency Injection, optional
      */
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {

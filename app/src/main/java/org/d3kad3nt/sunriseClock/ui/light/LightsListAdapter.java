@@ -105,9 +105,8 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
             return result;
         }
         // Optional getChangePayload() could be overwritten. This is called when areItemsTheSame()
-        // returns true for
-        // two items and areContentsTheSame() returns false for them to get a payload about the
-        // change.
+        // returns true for two items and areContentsTheSame() returns false for them to get a
+        // payload about the change.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

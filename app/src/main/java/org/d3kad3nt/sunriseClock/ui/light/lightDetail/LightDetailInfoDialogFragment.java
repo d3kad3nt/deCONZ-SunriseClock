@@ -39,8 +39,7 @@ public class LightDetailInfoDialogFragment
     @Override
     protected ViewModelProvider getViewModelProvider() {
         // NavBackStackEntry and viewModel scoped to our nested nav graph (containing all light
-        // detail
-        // screens).
+        // detail screens).
         NavController navController = NavHostFragment.findNavController(this);
         NavBackStackEntry backStackEntry =
                 navController.getBackStackEntry(R.id.nav_graph_light_detail);

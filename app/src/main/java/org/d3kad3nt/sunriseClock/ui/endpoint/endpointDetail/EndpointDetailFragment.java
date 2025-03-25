@@ -42,17 +42,15 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
         LogUtil.setPrefix("EndpointID %d: ", endpointID);
         LogUtil.d("Show endpoint detail view");
 
-        // We are using a nested navigation graph.
-        // From
+        // We are using a nested navigation graph. From
         // https://developer.android.com/guide/navigation/use-graph/programmatic#share_ui-related_data_between_destinations_with_viewmodel:
         // The Navigation back stack stores a NavBackStackEntry not only for each individual
-        // destination,
-        // but also for each parent navigation graph that contains the individual destination.
+        // destination, but also for each parent navigation graph that contains the individual
+        // destination.
         // This allows you to retrieve a NavBackStackEntry that is scoped to a navigation graph.
         // A navigation graph-scoped NavBackStackEntry provides a way to create a ViewModel that's
-        // scoped to a
-        // navigation graph,
-        // enabling you to share UI-related data between the graph's destinations.
+        // scoped to a navigation graph, enabling you to share UI-related data between the graph's
+        // destinations.
         NavController navController = NavHostFragment.findNavController(this);
         NavBackStackEntry backStackEntry =
                 navController.getBackStackEntry(R.id.nav_graph_endpoint_detail);
@@ -69,8 +67,7 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
         viewModelDependencies.set(EndpointDetailViewModel.ENDPOINT_ID_KEY, endpointID);
 
         // Use custom factory to initialize the viewModel (instead of using new
-        // ViewModelProvider(this).get
-        // (EndpointDetailViewModel.class)).
+        // ViewModelProvider(this).get(EndpointDetailViewModel.class)).
         // For viewModel older than 2.5.0 ViewModelProvider.Factory had to be extended.
         viewModel = new ViewModelProvider(
                         backStackEntry.getViewModelStore(),
@@ -91,8 +88,7 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         binding.setViewModel(viewModel);
         // Specify the fragment view as the lifecycle owner of the binding. This is used so that the
-        // binding can
-        // observe LiveData updates.
+        // binding can observe LiveData updates.
         binding.setLifecycleOwner(getViewLifecycleOwner());
     }
 

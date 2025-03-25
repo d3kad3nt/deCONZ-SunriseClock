@@ -25,22 +25,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         NavHostFragment navHostFragment = (NavHostFragment)
-                getSupportFragmentManager().findFragmentById(binding.mainNavHostFragment.getId());
+            getSupportFragmentManager().findFragmentById(binding.mainNavHostFragment.getId());
 
         assert navHostFragment != null;
 
         navController = navHostFragment.getNavController();
         // In some cases, you might need to define multiple top-level destinations instead of using
-        // the
-        // default start
-        // destination.
+        // the default start destination.
         // Using a BottomNavigationView is a common use case for this, where you may have sibling
-        // screens that are
-        // not hierarchically related to each other and may each have their own set of related
-        // destinations.
+        // screens that are not hierarchically related to each other and may each have their own set
+        // of related destinations.
         appBarConfiguration = new AppBarConfiguration.Builder(
-                        R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment)
-                .build();
+            R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment)
+            .build();
 
         setSupportActionBar(binding.mainToolbar);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -50,6 +47,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+            || super.onSupportNavigateUp();
     }
 }

@@ -99,13 +99,9 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType>
                     saveResponseToDb(
                             convertRemoteTypeToDbType((ApiSuccessResponse<RemoteType>) response));
                     ServiceLocator.getExecutor(ExecutorType.MainThread).execute(() -> {
-                        // we specially request a new live
-                        // data,
-                        // otherwise we will get immediately
-                        // last cached value,
-                        // which may not be updated with
-                        // latest results received from
-                        // network.
+                        // we specially request a new live data, otherwise we will get immediately
+                        // last cached value, which may not be updated with latest results received
+                        // from network.
                         addSource(loadFromDb(), newData -> {
                             updateValue(Resource.success(convertDbTypeToResultType(newData)));
                         });

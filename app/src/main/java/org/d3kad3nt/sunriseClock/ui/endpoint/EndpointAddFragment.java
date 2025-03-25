@@ -45,9 +45,7 @@ public class EndpointAddFragment extends Fragment {
     }
 
     // Todo: This should definitely be removed (and replaced by setting the onClickListener inside
-    // of
-    // XML and
-    // carrying over the logic to the viewmodel)
+    // of XML and carrying over the logic to the viewmodel)
     private void addCreateEndpointListener(
             @NonNull EndpointAddFragmentBinding binding,
             EndpointAddDeconzFragmentBinding specificBinding) {

@@ -90,8 +90,7 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
         binding.setBrightnessSliderTouchListener(new BrightnessSliderTouchListener());
         binding.setViewModel(viewModel);
         // Specify the fragment view as the lifecycle owner of the binding. This is used so that the
-        // binding can
-        // observe LiveData updates.
+        // binding can observe LiveData updates.
         binding.setLifecycleOwner(getViewLifecycleOwner());
     }
 
@@ -112,8 +111,7 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
     public boolean onMenuItemSelected(@NonNull final MenuItem menuItem) {
         // The SwipeRefreshLayout does not provide accessibility events.
         // Instead, a menu item should be provided to allow refresh of the content wherever this
-        // gesture
-        // is used.
+        // gesture is used.
         if (menuItem.getItemId() == R.id.menu_light_details_refresh) {
             LogUtil.d("User requested a light refresh by clicking the toolbar menu option.");
             viewModel.refreshLight();

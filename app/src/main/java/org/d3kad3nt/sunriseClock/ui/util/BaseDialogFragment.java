@@ -17,8 +17,7 @@ import org.d3kad3nt.sunriseClock.R;
 
 // There are at least two ways to create a custom dialog in Android:
 // 1.: Override onCreateDialog() and use the MaterialAlertDialogBuilder to define the layout
-// (including buttons and
-//     onClickListeners) programmatically.
+// (including buttons and onClickListeners) programmatically.
 // 2.: Override onCreateView() and inflate a fully custom XML layout.
 // We chose the second method because this gives us full control over the layout and allows
 // databinding.
@@ -40,17 +39,13 @@ public abstract class BaseDialogFragment<
         viewModel = getViewModelProvider().get(getViewModelClass());
 
         // Google: The view returned by onCreateView() is automatically added to the dialog. In most
-        // cases,
-        // this means that we don't need to override onCreateDialog(), as the default empty dialog
-        // is
-        // populated with
-        // our view.
+        // cases, this means that we don't need to override onCreateDialog(), as the default empty
+        // dialog is populated with our view.
         return binding.getRoot();
     }
 
     // onViewCreated() is only called because we've overridden onCreateView() and provided a
-    // non-null
-    // view.
+    // non-null view.
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -64,8 +59,7 @@ public abstract class BaseDialogFragment<
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // We do not use the MaterialAlertDialogBuilder: We have to take care of styling the dialog
-        // ourselves.
-        // Otherwise, it would be in AppCompat style and would not fit into our app.
+        // ourselves. Otherwise, it would be in AppCompat style and would not fit into our app.
         setStyle(STYLE_NORMAL, R.style.DialogStyle);
     }
 
