@@ -22,25 +22,29 @@ public class RemoteGroupTypeAdapter implements JsonDeserializer<RemoteGroup> {
     /**
      * Custom type adapter for usage with Gson.
      *
-     * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is not part of the JSON
-     *                   response, therefore it has to be set manually for a specific DbGroup when deserializing it.
+     * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is not
+     *     part of the JSON response, therefore it has to be set manually for a specific DbGroup
+     *     when deserializing it.
      */
     public RemoteGroupTypeAdapter(long endpointId) {
         this.endpointId = endpointId;
     }
 
     @Override
-    public RemoteGroup deserialize(JsonElement json, Type typeOfT,
-                                   JsonDeserializationContext context) throws JsonParseException {
-        RemoteGroupBuilder remoteGroupBuilder =
-            new RemoteGroupBuilder().setEndpointType(EndpointType.DECONZ).setEndpointId(this.endpointId);
+    public RemoteGroup deserialize(
+            JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
+        RemoteGroupBuilder remoteGroupBuilder = new RemoteGroupBuilder()
+                .setEndpointType(EndpointType.DECONZ)
+                .setEndpointId(this.endpointId);
 
         LogUtil.d("Parsing JSON for single group: %s" + json.toString());
 
         JsonObject rawJson = json.getAsJsonObject();
 
         if (rawJson.has("id")) {
-            remoteGroupBuilder = remoteGroupBuilder.setEndpointGroupId(rawJson.get("id").getAsString());
+            remoteGroupBuilder =
+                    remoteGroupBuilder.setEndpointGroupId(rawJson.get("id").getAsString());
         }
 
         if (rawJson.has("name")) {

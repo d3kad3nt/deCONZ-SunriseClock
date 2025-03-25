@@ -4,7 +4,7 @@ import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public abstract class RemoteEndpointEntity {
-    
+
     private final EndpointType endpointType;
 
     private final long endpointId;
@@ -13,7 +13,8 @@ public abstract class RemoteEndpointEntity {
 
     private final String name;
 
-    public RemoteEndpointEntity(EndpointType endpointType, long endpointId, String endpointEntityId, String name) {
+    public RemoteEndpointEntity(
+            EndpointType endpointType, long endpointId, String endpointEntityId, String name) {
         this.endpointType = endpointType;
 
         if (endpointId != 0L) {
@@ -27,37 +28,32 @@ public abstract class RemoteEndpointEntity {
             this.endpointEntityId = endpointEntityId;
         } else {
             LogUtil.e("The given endpointEntityId string cannot be null or empty!");
-            throw new IllegalArgumentException("The given endpointEntityId string cannot be null or empty!");
+            throw new IllegalArgumentException(
+                    "The given endpointEntityId string cannot be null or empty!");
         }
 
         this.name = name;
     }
 
-    /**
-     * @return Type of the remote endpoint.
-     */
+    /** @return Type of the remote endpoint. */
     public EndpointType getEndpointType() {
         return endpointType;
     }
 
     /**
-     * @return Foreign key of the remote endpoint that this entity belongs to. Only one endpoint object id (specific
-     * for that endpoint!) can exist for a single endpoint.
+     * @return Foreign key of the remote endpoint that this entity belongs to. Only one endpoint
+     *     object id (specific for that endpoint!) can exist for a single endpoint.
      */
     public long getEndpointId() {
         return endpointId;
     }
 
-    /**
-     * @return Identifier for this entity as used by the remote endpoint.
-     */
+    /** @return Identifier for this entity as used by the remote endpoint. */
     public String getEndpointEntityId() {
         return endpointEntityId;
     }
 
-    /**
-     * @return Name that can be used by the user to identify this object.
-     */
+    /** @return Name that can be used by the user to identify this object. */
     public String getName() {
         return name;
     }

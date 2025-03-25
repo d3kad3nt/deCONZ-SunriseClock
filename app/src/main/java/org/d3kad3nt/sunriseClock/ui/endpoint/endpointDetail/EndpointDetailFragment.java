@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuHost;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -89,14 +88,19 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         NavController navController = Navigation.findNavController(view);
 
-        // In some cases, you might need to define multiple top-level destinations instead of using the default start
+        // In some cases, you might need to define multiple top-level destinations instead of using
+        // the default start
         // destination.
-        // Using a BottomNavigationView is a common use case for this, where you may have sibling screens that are
-        // not hierarchically related to each other and may each have their own set of related destinations.
-        AppBarConfiguration appBarConfiguration =
-            new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
+        // Using a BottomNavigationView is a common use case for this, where you may have sibling
+        // screens that are
+        // not hierarchically related to each other and may each have their own set of related
+        // destinations.
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                        R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment)
+                .build();
 
-        NavigationUI.setupWithNavController(binding.endpointDetailsToolbar, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(
+                binding.endpointDetailsToolbar, navController, appBarConfiguration);
 
         binding.setViewModel(viewModel);
         // Specify the fragment view as the lifecycle owner of the binding. This is used so that the

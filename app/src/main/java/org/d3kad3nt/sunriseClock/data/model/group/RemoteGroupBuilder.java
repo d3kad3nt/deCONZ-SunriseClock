@@ -16,18 +16,14 @@ public class RemoteGroupBuilder {
 
     private List<String> endpointLightIds = new ArrayList<>();
 
-    /**
-     * Builder for constructing RemoteGroups.
-     */
-    public RemoteGroupBuilder() {
-
-    }
+    /** Builder for constructing RemoteGroups. */
+    public RemoteGroupBuilder() {}
 
     public RemoteGroup build() {
         if (endpointType == null) {
             throw new IllegalStateException(
-                "RemoteLightBuilder cannot build this light without an endpoint type! Check remote light parsing " +
-                    "logic.");
+                    "RemoteLightBuilder cannot build this light without an endpoint type! Check remote light parsing "
+                            + "logic.");
         }
         return new RemoteGroup(endpointType, endpointId, endpointGroupId, name, endpointLightIds);
     }

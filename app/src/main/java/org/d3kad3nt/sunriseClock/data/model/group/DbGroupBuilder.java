@@ -7,12 +7,8 @@ public class DbGroupBuilder {
 
     private String name = "NoName";
 
-    /**
-     * Builder for constructing DbGroups.
-     */
-    public DbGroupBuilder() {
-
-    }
+    /** Builder for constructing DbGroups. */
+    public DbGroupBuilder() {}
 
     public DbGroup build() {
         // Validator logic is defined inside the constructor of DbGroup (separation of concern).
@@ -20,8 +16,9 @@ public class DbGroupBuilder {
     }
 
     /**
-     * @param endpointId Foreign key (Room/SQLite) of the remote endpoint that this group belongs to. Only one
-     *                   endpoint group id (specific for that endpoint!) can exist for a single endpoint.
+     * @param endpointId Foreign key (Room/SQLite) of the remote endpoint that this group belongs
+     *     to. Only one endpoint group id (specific for that endpoint!) can exist for a single
+     *     endpoint.
      */
     public DbGroupBuilder setEndpointId(long endpointId) {
         this.endpointId = endpointId;
@@ -29,8 +26,8 @@ public class DbGroupBuilder {
     }
 
     /**
-     * This field enables the remote endpoint to identify the correct group. A remote endpoint cannot work with the
-     * groupId.
+     * This field enables the remote endpoint to identify the correct group. A remote endpoint
+     * cannot work with the groupId.
      *
      * @param endpointGroupId Identifier for this group inside (!) the remote endpoint.
      */
@@ -39,9 +36,7 @@ public class DbGroupBuilder {
         return this;
     }
 
-    /**
-     * @param name Name that can be used by the user to identify this group.
-     */
+    /** @param name Name that can be used by the user to identify this group. */
     public DbGroupBuilder setName(String name) {
         this.name = name;
         return this;

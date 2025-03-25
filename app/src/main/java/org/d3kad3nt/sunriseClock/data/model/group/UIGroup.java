@@ -22,8 +22,9 @@ public class UIGroup extends UIEndpointEntity<UIGroup> {
     public static UIGroup from(@NonNull DbGroup dbGroup) {
         // Place for conversion logic (if UI needs other data types or value ranges).
         UIGroup uiGroup = new UIGroup(dbGroup.getId(), dbGroup.getEndpointId(), dbGroup.getName());
-        LogUtil.v("Converted DbGroup with groupId %d (endpointId %d, endpointGroupId %s) to UIGroup.",
-            dbGroup.getId(), dbGroup.getEndpointId(), dbGroup.getEndpointEntityId());
+        LogUtil.v(
+                "Converted DbGroup with groupId %d (endpointId %d, endpointGroupId %s) to UIGroup.",
+                dbGroup.getId(), dbGroup.getEndpointId(), dbGroup.getEndpointEntityId());
         return uiGroup;
     }
 
@@ -33,8 +34,8 @@ public class UIGroup extends UIEndpointEntity<UIGroup> {
         return dbGroups.stream().map(dbGroup -> from(dbGroup)).collect(Collectors.toList());
     }
 
-    public static UIGroup.UIGroupChangePayload getSingleChangePayload(@NonNull UIGroup oldItem,
-                                                                      @NonNull UIGroup newItem) {
+    public static UIGroup.UIGroupChangePayload getSingleChangePayload(
+            @NonNull UIGroup oldItem, @NonNull UIGroup newItem) {
         if (!Objects.equals(oldItem.getId(), newItem.getId())) {
             return new UIGroup.UIGroupChangePayload.GroupId(newItem.getId());
         } else if (!Objects.equals(oldItem.getEndpointId(), newItem.getEndpointId())) {

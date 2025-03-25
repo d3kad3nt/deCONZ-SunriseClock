@@ -12,23 +12,29 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.Objects;
 
-@Entity(tableName = DbGroup.TABLENAME,
-        indices = {@Index(value = {"endpoint_id", "id_on_endpoint"},
-                          unique = true)},
+@Entity(
+        tableName = DbGroup.TABLENAME,
+        indices = {
+            @Index(
+                    value = {"endpoint_id", "id_on_endpoint"},
+                    unique = true)
+        },
         // A DbGroup is always bound to a single endpoint. It cannot exist without one:
         // Therefore Room is instructed to delete this DbGroup if the endpoint gets deleted.
-        foreignKeys = @ForeignKey(entity = EndpointConfig.class,
-                                  parentColumns = "endpointId",
-                                  childColumns = "endpoint_id",
-                                  onDelete = ForeignKey.CASCADE))
+        foreignKeys =
+                @ForeignKey(
+                        entity = EndpointConfig.class,
+                        parentColumns = "endpointId",
+                        childColumns = "endpoint_id",
+                        onDelete = ForeignKey.CASCADE))
 public class DbGroup extends DbEndpointEntity {
 
     @Ignore
     public static final String TABLENAME = "group";
-    
+
     /**
-     * Create a new entity that represents a group in the app's Room database. This constructor has to be public for
-     * Room to be able to create an object. This should not be otherwise accessed!
+     * Create a new entity that represents a group in the app's Room database. This constructor has
+     * to be public for Room to be able to create an object. This should not be otherwise accessed!
      */
     public DbGroup(long endpointId, String endpointEntityId, String name) {
         super(endpointId, endpointEntityId, name);

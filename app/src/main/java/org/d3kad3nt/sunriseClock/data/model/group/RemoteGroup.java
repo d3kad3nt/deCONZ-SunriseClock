@@ -13,8 +13,12 @@ public class RemoteGroup extends RemoteEndpointEntity {
 
     private final List<String> endpointLightIds;
 
-    RemoteGroup(EndpointType endpointType, long endpointId, String endpointGroupId, String name,
-                List<String> endpointLightIds) {
+    RemoteGroup(
+            EndpointType endpointType,
+            long endpointId,
+            String endpointGroupId,
+            String name,
+            List<String> endpointLightIds) {
         super(endpointType, endpointId, endpointGroupId, name);
 
         this.endpointLightIds = endpointLightIds;
@@ -26,12 +30,17 @@ public class RemoteGroup extends RemoteEndpointEntity {
         LogUtil.d("Converting RemoteGroup to DbGroup...");
         DbGroupBuilder dbGroupBuilder = new DbGroupBuilder();
         // Logic to convert remote group to db group.
-        // The endpoint type could be used to implement conversions depending on the type of the remote endpoint
+        // The endpoint type could be used to implement conversions depending on the type of the
+        // remote endpoint
         // this entity originated from.
-        DbGroup dbGroup = dbGroupBuilder.setEndpointId(remoteGroup.getEndpointId())
-            .setEndpointGroupId(remoteGroup.getEndpointEntityId()).setName(remoteGroup.getName()).build();
-        LogUtil.d("Converted RemoteGroup with endpointId %d and endpointGroupId %s to DbGroup.",
-            remoteGroup.getEndpointId(), remoteGroup.getEndpointEntityId());
+        DbGroup dbGroup = dbGroupBuilder
+                .setEndpointId(remoteGroup.getEndpointId())
+                .setEndpointGroupId(remoteGroup.getEndpointEntityId())
+                .setName(remoteGroup.getName())
+                .build();
+        LogUtil.d(
+                "Converted RemoteGroup with endpointId %d and endpointGroupId %s to DbGroup.",
+                remoteGroup.getEndpointId(), remoteGroup.getEndpointEntityId());
         return dbGroup;
     }
 

@@ -25,21 +25,29 @@ public class RemoteLightBuilder {
 
     private boolean isReachable = true;
 
-    /**
-     * Builder for constructing RemoteLights.
-     */
-    public RemoteLightBuilder() {
-
-    }
+    /** Builder for constructing RemoteLights. */
+    public RemoteLightBuilder() {}
 
     public RemoteLight build() {
         if (endpointType == null) {
             throw new IllegalStateException(
-                "RemoteLightBuilder cannot build this light without an endpoint type! " + "Check remote light" +
-                    " parsing logic.");
+                    "RemoteLightBuilder cannot build this light without an endpoint type! "
+                            + "Check remote light" + " parsing logic.");
         }
-        return new RemoteLight(endpointType, endpointId, endpointLightId, name, isSwitchable, isOn, isDimmable,
-            brightness, isTemperaturable, colorTemperature, isColorable, color, isReachable);
+        return new RemoteLight(
+                endpointType,
+                endpointId,
+                endpointLightId,
+                name,
+                isSwitchable,
+                isOn,
+                isDimmable,
+                brightness,
+                isTemperaturable,
+                colorTemperature,
+                isColorable,
+                color,
+                isReachable);
     }
 
     public RemoteLightBuilder setEndpointType(EndpointType endpointType) {
