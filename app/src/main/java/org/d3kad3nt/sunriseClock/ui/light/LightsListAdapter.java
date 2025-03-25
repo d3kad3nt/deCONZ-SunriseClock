@@ -7,44 +7,127 @@ import android.widget.CompoundButton;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
-import androidx.databinding.BindingAdapter;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.slider.Slider;
 
+import org.d3kad3nt.sunriseClock.data.model.ListItem;
+import org.d3kad3nt.sunriseClock.data.model.ListItemType;
+import org.d3kad3nt.sunriseClock.data.model.group.UIGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
-import org.d3kad3nt.sunriseClock.databinding.LightListElementBinding;
+import org.d3kad3nt.sunriseClock.databinding.LightsListElementGroupBinding;
+import org.d3kad3nt.sunriseClock.databinding.LightsListElementLightBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.ViewHolder> {
+import java.util.List;
+
+public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHolder> {
 
     private final ClickListeners clickListeners;
 
     public LightsListAdapter(final ClickListeners clickListeners) {
-        super(new LightDiffCallback());
+        super(new DiffCallback());
         this.clickListeners = clickListeners;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LightListElementBinding.inflate(
-                LayoutInflater.from(parent.getContext()), parent, false));
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return switch (ListItemType.valueOf(viewType)) {
+            case ListItemType.LIGHT -> new LightViewHolder(
+                LightsListElementLightBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+            case ListItemType.GROUP -> new GroupViewHolder(
+                LightsListElementGroupBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+            default -> throw new IllegalStateException("Unexpected value: " + ListItemType.valueOf(viewType));
+        };
+    }
+
+    // Full bind (not partial).
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        switch (getType(position)) {
+            case ListItemType.LIGHT -> {
+                UILight light = (UILight) getItem(position);
+                LogUtil.v("Triggering full (re)bind of light data for lightId %d.", light.getId());
+                LightViewHolder lightViewHolder = (LightViewHolder) holder;
+                lightViewHolder.bind(light);
+                lightViewHolder.itemView.setTag(light);
+            }
+            case ListItemType.GROUP -> {
+                UIGroup group = (UIGroup) getItem(position);
+                LogUtil.v("Triggering full (re)bind of group data for groupId %d.", group.getId());
+                GroupViewHolder groupViewHolder = (GroupViewHolder) holder;
+                groupViewHolder.bind(group);
+                groupViewHolder.itemView.setTag(group);
+            }
+        }
+    }
+
+    // If the payloads list is not empty, the ViewHolder is currently bound to old data and Adapter may run an
+    // efficient partial update using the payload info. If the payload is empty, Adapter must run a full bind.
+    // The payloads list is constructed by overwriting getChangePayload() from DiffUtil.ItemCallback.
+    // By using a partial bind, we can prevent the card from "flickering". This is the default animation for updates.
+    @Override
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position,
+                                 @NonNull final List<Object> payloads) {
+        boolean successfulPartialBind = switch (getType(position)) {
+            case ListItemType.LIGHT ->
+                onPartialBindLightViewHolder((LightViewHolder) holder, (UILight) getItem(position), payloads);
+            case ListItemType.GROUP ->
+                onPartialBindGroupViewHolder((GroupViewHolder) holder, (UIGroup) getItem(position), payloads);
+            default -> throw new IllegalStateException("Unexpected value: " + getType(position));
+        };
+        if (!successfulPartialBind) {
+            onBindViewHolder(holder, position);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        UILight light = getItem(position);
-        holder.bind(light);
-        holder.itemView.setTag(light);
+    public int getItemViewType(final int position) {
+        return getItem(position).getType().ordinal();
     }
 
-    @Override
-    public void onViewDetachedFromWindow(@NonNull final ViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-        holder.unbind();
+    @NonNull
+    private ListItemType getType(int position) {
+        int viewType = getItemViewType(position);
+        return ListItemType.valueOf(viewType);
+    }
+
+    private boolean onPartialBindLightViewHolder(@NonNull final LightViewHolder holder, final UILight light,
+                                                 @NonNull List<Object> payloads) {
+        if (!payloads.isEmpty()) {
+            LogUtil.d("Triggering partial instead of full rebind of light data for lightId %d.", light.getId());
+            if (payloads.get(0) instanceof final UILight.UILightChangePayload.LightOn lightState) {
+                LogUtil.v("Triggering partial rebind of light isOn state for lightId %d.", light.getId());
+                holder.bindIsOn(lightState.isOn);
+            } else if (payloads.get(0) instanceof final UILight.UILightChangePayload.LightBrightness lightState) {
+                LogUtil.v("Triggering partial rebind of light brightness for lightId %d.", light.getId());
+                holder.bindBrightness(lightState.brightness);
+            } else {
+                LogUtil.w("Requested partial rebind of light data but updating this field is not yet implemented.");
+            }
+            holder.binding.executePendingBindings();
+            return true;
+        } else {
+            // When payload list is empty or we don't have logic to handle a given type, default to full bind.
+            return false;
+        }
+    }
+
+    private boolean onPartialBindGroupViewHolder(@NonNull final GroupViewHolder holder, final UIGroup group,
+                                                 @NonNull List<Object> payloads) {
+        if (!payloads.isEmpty()) {
+            LogUtil.d("Triggering partial instead of full rebind of group data for groupId %d.", group.getId());
+            //Todo: Implement change payload for groups when adding additional attributes.
+            holder.binding.executePendingBindings();
+            return true;
+        } else {
+            // When payload list is empty or we don't have logic to handle a given type, default to full bind.
+            return false;
+        }
     }
 
     public interface ClickListeners {
@@ -52,102 +135,160 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         /**
          * Navigates to the light detail screen, providing detailed information for this light.
          *
-         * @param view View representing the light card.
-         * @param lightId The unique identifier for this light.
+         * @param view      View representing the light card.
+         * @param lightId   The unique identifier for this light.
          * @param lightName Name of the light.
          */
-        void onCardClick(View view, long lightId, String lightName);
+        void onLightCardClick(View view, long lightId, String lightName);
 
         /**
          * Turns the light on or off.
          *
          * @param lightId The unique identifier for this light.
-         * @param state Whether the light should be turned on (true) or off (false).
+         * @param state   Whether the light should be turned on (true) or off (false).
          */
-        void onSwitchCheckedChange(long lightId, boolean state);
+        void onLightSwitchCheckedChange(long lightId, boolean state);
 
         /**
-         * Changes the brightness of the light, identified by the given lightId. If the light is not
-         * already on, it should be turned on before changing the brightness level.
+         * Changes the brightness of the light, identified by the given lightId. If the light is not already on, it
+         * should be turned on before changing the brightness level.
          *
-         * @param lightId The unique identifier for this light.
+         * @param lightId    The unique identifier for this light.
          * @param brightness Desired light brightness, ranging from 0 (lowest) to 100 (highest).
-         * @param state Whether the light is on (true) or off (false).
+         * @param state      Whether the light is on (true) or off (false).
          */
-        void onSliderTouch(
-                long lightId, @IntRange(from = 0, to = 100) int brightness, boolean state);
+        void onLightSliderTouch(long lightId, @IntRange(from = 0, to = 100) int brightness, boolean state);
+
+        /**
+         * Navigates to the group detail screen, providing detailed information for this group.
+         *
+         * @param view      View representing the group card.
+         * @param groupId   The unique identifier for this group.
+         * @param groupName Name of the group.
+         */
+        void onGroupCardClick(View view, long groupId, String groupName);
     }
 
-    static class LightDiffCallback extends DiffUtil.ItemCallback<UILight> {
+    static class DiffCallback extends DiffUtil.ItemCallback<ListItem> {
 
         /**
-         * Used to determine structural changes between old and new list
-         * (additions/removals/position changes).
+         * Used to determine structural changes between old and new list (additions/removals/position changes).
          */
         @Override
-        public boolean areItemsTheSame(@NonNull UILight oldItem, @NonNull UILight newItem) {
-            return oldItem.getLightId() == newItem.getLightId();
+        public boolean areItemsTheSame(@NonNull ListItem oldItem, @NonNull ListItem newItem) {
+            if (oldItem instanceof UILight oldLight && newItem instanceof UILight newLight) {
+                return oldLight.getId() == newLight.getId();
+            } else if (oldItem instanceof UIGroup oldGroup && newItem instanceof UIGroup newGroup) {
+                return oldGroup.getId() == newGroup.getId();
+            } else {
+                throw new IllegalStateException(
+                    String.format("areItemsTheSame() does not support %s and %s.", oldItem.getType(),
+                        newItem.getType()));
+            }
         }
 
         /**
          * Determines if the particular item was updated. Only called when
-         * {@link LightsListAdapter.LightDiffCallback#areItemsTheSame} returned true.
+         * {@link DiffCallback#areItemsTheSame} returned true.
          */
         @Override
-        public boolean areContentsTheSame(@NonNull UILight oldItem, @NonNull UILight newItem) {
+        public boolean areContentsTheSame(@NonNull ListItem oldItem, @NonNull ListItem newItem) {
             boolean result = oldItem.equals(newItem);
-            if (!result) {
-                LogUtil.d(
-                        "Recyclerview determined that light with lightId %d was "
-                                + "changed and its ViewHolder content must be updated.",
-                        oldItem.getLightId());
+            if (oldItem instanceof UILight oldLight && newItem instanceof UILight newLight && !result) {
+                LogUtil.d("Recyclerview determined that light with lightId %d was changed and its LightViewHolder " +
+                    "content must be updated.", oldLight.getId());
+            } else if (oldItem instanceof UIGroup oldGroup && newItem instanceof UIGroup newGroup && !result) {
+                LogUtil.d("Recyclerview determined that group with groupId %d was changed and its GroupViewHolder " +
+                    "content must be updated.", oldGroup.getId());
             }
             return result;
         }
-        // Optional getChangePayload() could be overwritten. This is called when areItemsTheSame()
-        // returns true for two items and areContentsTheSame() returns false for them to get a
-        // payload about the change.
+
+        /**
+         * Return the particular field that changed in the item. Only called when
+         * {@link DiffCallback#areContentsTheSame} returned false.
+         * <p>
+         * This populates the payloads list for onBindViewHolder.
+         */
+        @Nullable
+        @Override
+        public Object getChangePayload(@NonNull final ListItem oldItem, @NonNull final ListItem newItem) {
+            if (oldItem instanceof UILight oldLight && newItem instanceof UILight newLight) {
+                return UILight.getSingleChangePayload(oldLight, newLight);
+            } else if (oldItem instanceof UIGroup oldGroup && newItem instanceof UIGroup newGroup) {
+                return UIGroup.getSingleChangePayload(oldGroup, newGroup);
+            } else {
+                throw new IllegalStateException(
+                    String.format("getChangePayload() does not support %s and %s.", oldItem.getType(),
+                        newItem.getType()));
+            }
+        }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class LightViewHolder extends RecyclerView.ViewHolder {
 
-        private final LightListElementBinding binding;
+        private final LightsListElementLightBinding binding;
 
-        ViewHolder(@NonNull LightListElementBinding binding) {
+        LightViewHolder(@NonNull LightsListElementLightBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-        }
 
-        void bind(UILight item) {
+            // Avoid creating and setting the onClickListeners everytime the LightViewHolder is bound.
             binding.setCardClickListener(new CardClickListener());
             binding.setSwitchCheckedChangeListener(new SwitchCheckedChangeListener());
             binding.setSliderTouchListener(new SliderTouchListener());
-            binding.setLight(item);
+        }
+
+        void bind(UILight item) {
+            bindName(item.getName());
+            bindIsReachable(item.getIsReachable());
+            bindIsSwitchable(item.getIsSwitchable());
+            bindIsOn(item.getIsOn());
+            bindIsDimmable(item.getIsDimmable());
+            bindBrightness(item.getBrightness());
+
             binding.executePendingBindings();
         }
 
-        void unbind() {
-            binding.materialSlider.clearOnSliderTouchListeners();
-            binding.materialSwitch2.setOnCheckedChangeListener(null);
-            binding.executePendingBindings();
+        void bindName(String name) {
+            binding.setLightName(name);
+        }
+
+        void bindIsReachable(boolean isOn) {
+            binding.setLightIsReachable(isOn);
+        }
+
+        void bindIsSwitchable(boolean isSwitchable) {
+            binding.setLightIsSwitchable(isSwitchable);
+        }
+
+        void bindIsOn(boolean isOn) {
+            binding.setLightIsOn(isOn);
+        }
+
+        void bindIsDimmable(boolean isDimmable) {
+            binding.setLightIsDimmable(isDimmable);
+        }
+
+        void bindBrightness(int brightness) {
+            binding.setLightBrightness(brightness);
         }
 
         public class CardClickListener implements View.OnClickListener {
 
             @Override
             public void onClick(final View view) {
-                UILight light = getItem(getAbsoluteAdapterPosition());
-                clickListeners.onCardClick(view, light.getLightId(), light.getName());
+                UILight light = (UILight) getItem(getAbsoluteAdapterPosition());
+                clickListeners.onLightCardClick(view, light.getId(), light.getName());
             }
         }
 
         public class SwitchCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {
 
             @Override
-            public void onCheckedChanged(
-                    final CompoundButton compoundButton, final boolean isChecked) {
-                UILight light = getItem(getAbsoluteAdapterPosition());
-                clickListeners.onSwitchCheckedChange(light.getLightId(), isChecked);
+            public void onCheckedChanged(final CompoundButton compoundButton, final boolean isChecked) {
+                UILight light = (UILight) getItem(getAbsoluteAdapterPosition());
+                clickListeners.onLightSwitchCheckedChange(light.getId(), isChecked);
             }
         }
 
@@ -155,24 +296,46 @@ public class LightsListAdapter extends ListAdapter<UILight, LightsListAdapter.Vi
         // OnSliderTouchListener reports only once, after the slider touch is released.
         public class SliderTouchListener implements Slider.OnSliderTouchListener {
 
-            /**
-             * Custom xml attribute (android:onSliderTouch) used for binding a
-             * Slider.OnSliderTouchListener to a slider.
-             */
-            @BindingAdapter(value = "android:onSliderTouch")
-            public static void setOnSliderTouchListener(
-                    Slider slider, SliderTouchListener sliderTouchListener) {
-                slider.addOnSliderTouchListener(sliderTouchListener);
+            @Override
+            public void onStartTrackingTouch(@NonNull final Slider slider) {
             }
 
             @Override
-            public void onStartTrackingTouch(@NonNull final Slider slider) {}
+            public void onStopTrackingTouch(@NonNull final Slider slider) {
+                UILight light = (UILight) getItem(getAbsoluteAdapterPosition());
+                clickListeners.onLightSliderTouch(light.getId(), (int) slider.getValue(), light.getIsOn());
+            }
+        }
+    }
+
+    public class GroupViewHolder extends RecyclerView.ViewHolder {
+
+        private final LightsListElementGroupBinding binding;
+
+        GroupViewHolder(@NonNull LightsListElementGroupBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+
+            // Avoid creating and setting the onClickListeners everytime the LightViewHolder is bound.
+            binding.setCardClickListener(new GroupViewHolder.CardClickListener());
+        }
+
+        void bind(UIGroup item) {
+            bindName(item.getName());
+
+            binding.executePendingBindings();
+        }
+
+        void bindName(String name) {
+            binding.setGroupName(name);
+        }
+
+        public class CardClickListener implements View.OnClickListener {
 
             @Override
-            public void onStopTrackingTouch(@NonNull final Slider slider) {
-                UILight light = getItem(getAbsoluteAdapterPosition());
-                clickListeners.onSliderTouch(
-                        light.getLightId(), (int) slider.getValue(), light.getIsOn());
+            public void onClick(final View view) {
+                UIGroup group = (UIGroup) getItem(getAbsoluteAdapterPosition());
+                clickListeners.onGroupCardClick(view, group.getId(), group.getName());
             }
         }
     }

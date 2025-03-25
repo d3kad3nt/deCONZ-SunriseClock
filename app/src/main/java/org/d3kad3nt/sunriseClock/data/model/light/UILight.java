@@ -3,18 +3,16 @@ package org.d3kad3nt.sunriseClock.data.model.light;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
+import org.d3kad3nt.sunriseClock.data.model.ListItemType;
+import org.d3kad3nt.sunriseClock.data.model.UIEndpointEntity;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-public class UILight {
-
-    private final long lightId;
-    private final long endpointId;
-    // endpointLightId not needed in UI
-
-    private final String name;
+public class UILight extends UIEndpointEntity<UILight> {
 
     private final boolean isSwitchable;
     private final boolean isOn;
@@ -23,35 +21,27 @@ public class UILight {
     private final int brightness;
 
     private final boolean isTemperaturable;
-    // private final int colorTemperature; // Not yet implemented in the backend
+    //private final int colorTemperature; // Not yet implemented in the backend
 
     private final boolean isColorable;
-    // private final int color; // Not yet implemented in the backend
+    //private final int color; // Not yet implemented in the backend
 
     private final boolean isReachable;
 
-    private UILight(
-            long lightId,
-            long endpointId,
-            String name,
-            boolean isSwitchable,
-            boolean isOn,
-            boolean isDimmable,
-            @IntRange(from = 0, to = 100) int brightness,
-            boolean isTemperaturable /*, int colorTemperature*/,
-            boolean isColorable /*, int color*/,
-            boolean isReachable) {
-        this.lightId = lightId;
-        this.endpointId = endpointId;
-        this.name = name;
+    private UILight(long lightId, long endpointId, String name, boolean isSwitchable, boolean isOn,
+                    boolean isDimmable, @IntRange(from = 0, to = 100) int brightness,
+                    boolean isTemperaturable/*, int colorTemperature*/, boolean isColorable/*, int color*/,
+                    boolean isReachable) {
+        super(lightId, endpointId, name);
+
         this.isSwitchable = isSwitchable;
         this.isOn = isOn;
         this.isDimmable = isDimmable;
         this.brightness = brightness;
         this.isTemperaturable = isTemperaturable;
-        // this.colorTemperature = colorTemperature;
+        //this.colorTemperature = colorTemperature;
         this.isColorable = isColorable;
-        // this.color = color;
+        //this.color = color;
         this.isReachable = isReachable;
     }
 
@@ -59,33 +49,44 @@ public class UILight {
     @Contract("_ -> new")
     public static UILight from(@NonNull DbLight dbLight) {
         // Place for conversion logic (if UI needs other data types or value ranges).
-        UILight uiLight = new UILight(
-                dbLight.getLightId(),
-                dbLight.getEndpointId(),
-                dbLight.getName(),
-                dbLight.getIsSwitchable(),
-                dbLight.getIsOn(),
-                dbLight.getIsDimmable(),
-                dbLight.getBrightness(),
-                dbLight.getIsTemperaturable(),
-                dbLight.getIsColorable(),
-                dbLight.getIsReachable());
-        LogUtil.v(
-                "Converted DbLight with lightId %d (endpointId %d, endpointLightId %s) to UILight.",
-                dbLight.getLightId(), dbLight.getEndpointId(), dbLight.getEndpointLightId());
+        UILight uiLight =
+            new UILight(dbLight.getId(), dbLight.getEndpointId(), dbLight.getName(), dbLight.getIsSwitchable(),
+                dbLight.getIsOn(), dbLight.getIsDimmable(), dbLight.getBrightness(), dbLight.getIsTemperaturable(),
+                dbLight.getIsColorable(), dbLight.getIsReachable());
+        LogUtil.v("Converted DbLight with lightId %d (endpointId %d, endpointLightId %s) to UILight.",
+            dbLight.getId(), dbLight.getEndpointId(), dbLight.getEndpointEntityId());
         return uiLight;
     }
 
-    public long getLightId() {
-        return lightId;
+    @NonNull
+    @Contract("_ -> new")
+    public static List<UILight> from(@NonNull List<DbLight> dbLights) {
+        return dbLights.stream().map(dbLight -> from(dbLight)).collect(Collectors.toList());
     }
 
-    public long getEndpointId() {
-        return endpointId;
-    }
-
-    public String getName() {
-        return name;
+    public static UILightChangePayload getSingleChangePayload(@NonNull UILight oldItem, @NonNull UILight newItem) {
+        if (!Objects.equals(oldItem.getId(), newItem.getId())) {
+            return new UILightChangePayload.LightId(newItem.getId());
+        } else if (!Objects.equals(oldItem.getEndpointId(), newItem.getEndpointId())) {
+            return new UILightChangePayload.EndpointId(newItem.getEndpointId());
+        } else if (!Objects.equals(oldItem.getName(), newItem.getName())) {
+            return new UILightChangePayload.LightName(newItem.getName());
+        } else if (!Objects.equals(oldItem.getIsSwitchable(), newItem.getIsSwitchable())) {
+            return new UILightChangePayload.LightIsSwitchable(newItem.getIsSwitchable());
+        } else if (!Objects.equals(oldItem.getIsOn(), newItem.getIsOn())) {
+            return new UILightChangePayload.LightOn(newItem.getIsOn());
+        } else if (!Objects.equals(oldItem.getIsDimmable(), newItem.getIsDimmable())) {
+            return new UILightChangePayload.LightIsDimmable(newItem.getIsDimmable());
+        } else if (!Objects.equals(oldItem.getBrightness(), newItem.getBrightness())) {
+            return new UILightChangePayload.LightBrightness(newItem.getBrightness());
+        } else if (!Objects.equals(oldItem.getIsTemperaturable(), newItem.getIsTemperaturable())) {
+            return new UILightChangePayload.LightIsTemperaturable(newItem.getIsTemperaturable());
+        } else if (!Objects.equals(oldItem.getIsColorable(), newItem.getIsColorable())) {
+            return new UILightChangePayload.LightIsColorable(newItem.getIsColorable());
+        } else if (!Objects.equals(oldItem.getIsReachable(), newItem.getIsReachable())) {
+            return new UILightChangePayload.LightIsReachable(newItem.getIsReachable());
+        }
+        return null;
     }
 
     public boolean getIsSwitchable() {
@@ -117,27 +118,120 @@ public class UILight {
         return isReachable;
     }
 
+    public ListItemType getType() {
+        return ListItemType.LIGHT;
+    }
+
     @Override
-    public boolean equals(Object o) {
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), isSwitchable, isOn, isDimmable, brightness, isTemperaturable,
+            isColorable, isReachable);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null) {
+        if (!(o instanceof final UILight uiLight)) {
             return false;
         }
-        if (getClass() != o.getClass()) {
-            return false;
+        return super.equals(o) && isSwitchable == uiLight.isSwitchable && isOn == uiLight.isOn &&
+            isDimmable == uiLight.isDimmable && brightness == uiLight.brightness &&
+            isTemperaturable == uiLight.isTemperaturable && isColorable == uiLight.isColorable &&
+            isReachable == uiLight.isReachable;
+    }
+
+    public interface UILightChangePayload {
+
+        class LightId implements UILightChangePayload {
+
+            public final long lightId;
+
+            LightId(long lightId) {
+                this.lightId = lightId;
+            }
         }
-        UILight otherLight = (UILight) o;
-        return Objects.equals(lightId, otherLight.lightId)
-                && Objects.equals(endpointId, otherLight.endpointId)
-                && Objects.equals(name, otherLight.name)
-                && Objects.equals(isSwitchable, otherLight.isSwitchable)
-                && Objects.equals(isOn, otherLight.isOn)
-                && Objects.equals(isDimmable, otherLight.isDimmable)
-                && Objects.equals(brightness, otherLight.brightness)
-                && Objects.equals(isTemperaturable, otherLight.isTemperaturable)
-                && Objects.equals(isColorable, otherLight.isColorable)
-                && Objects.equals(isReachable, otherLight.isReachable);
+
+        class EndpointId implements UILightChangePayload {
+
+            public final long endpointId;
+
+            EndpointId(long endpointId) {
+                this.endpointId = endpointId;
+            }
+        }
+
+        class LightName implements UILightChangePayload {
+
+            public final String lightName;
+
+            LightName(String lightName) {
+                this.lightName = lightName;
+            }
+        }
+
+        class LightIsSwitchable implements UILightChangePayload {
+
+            public final boolean isSwitchable;
+
+            LightIsSwitchable(boolean isSwitchable) {
+                this.isSwitchable = isSwitchable;
+            }
+        }
+
+        class LightOn implements UILightChangePayload {
+
+            public final boolean isOn;
+
+            LightOn(boolean isOn) {
+                this.isOn = isOn;
+            }
+        }
+
+        class LightIsDimmable implements UILightChangePayload {
+
+            public final boolean isDimmable;
+
+            LightIsDimmable(boolean isDimmable) {
+                this.isDimmable = isDimmable;
+            }
+        }
+
+        class LightBrightness implements UILightChangePayload {
+
+            public final int brightness;
+
+            LightBrightness(int brightness) {
+                this.brightness = brightness;
+            }
+        }
+
+        class LightIsTemperaturable implements UILightChangePayload {
+
+            public final boolean isTemperaturable;
+
+            LightIsTemperaturable(boolean isTemperaturable) {
+                this.isTemperaturable = isTemperaturable;
+            }
+        }
+
+        class LightIsColorable implements UILightChangePayload {
+
+            public final boolean isColorable;
+
+            LightIsColorable(boolean isColorable) {
+                this.isColorable = isColorable;
+            }
+        }
+
+        class LightIsReachable implements UILightChangePayload {
+
+            public final boolean isReachable;
+
+            LightIsReachable(boolean isReachable) {
+                this.isReachable = isReachable;
+            }
+        }
     }
 }

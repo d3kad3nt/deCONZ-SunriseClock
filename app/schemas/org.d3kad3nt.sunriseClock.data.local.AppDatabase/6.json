@@ -1,0 +1,315 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 6,
+    "identityHash": "3743c00a23747430852544195547bf03",
+    "entities": [
+      {
+        "tableName": "light",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`is_switchable` INTEGER NOT NULL DEFAULT false, `is_on` INTEGER NOT NULL DEFAULT false, `is_dimmable` INTEGER NOT NULL DEFAULT false, `brightness` INTEGER NOT NULL DEFAULT 0, `is_temperaturable` INTEGER NOT NULL DEFAULT false, `colortemperature` INTEGER NOT NULL DEFAULT 0, `is_colorable` INTEGER NOT NULL DEFAULT false, `color` INTEGER NOT NULL DEFAULT 0, `is_reachable` INTEGER NOT NULL DEFAULT true, `endpoint_id` INTEGER NOT NULL, `id_on_endpoint` TEXT NOT NULL, `name` TEXT NOT NULL DEFAULT 'No Name', `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`endpoint_id`) REFERENCES `endpoint`(`endpointId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "isSwitchable",
+            "columnName": "is_switchable",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "false"
+          },
+          {
+            "fieldPath": "isOn",
+            "columnName": "is_on",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "false"
+          },
+          {
+            "fieldPath": "isDimmable",
+            "columnName": "is_dimmable",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "false"
+          },
+          {
+            "fieldPath": "brightness",
+            "columnName": "brightness",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "isTemperaturable",
+            "columnName": "is_temperaturable",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "false"
+          },
+          {
+            "fieldPath": "colorTemperature",
+            "columnName": "colortemperature",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "isColorable",
+            "columnName": "is_colorable",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "false"
+          },
+          {
+            "fieldPath": "color",
+            "columnName": "color",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "isReachable",
+            "columnName": "is_reachable",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "true"
+          },
+          {
+            "fieldPath": "endpointId",
+            "columnName": "endpoint_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endpointEntityId",
+            "columnName": "id_on_endpoint",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'No Name'"
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_light_endpoint_id_id_on_endpoint",
+            "unique": true,
+            "columnNames": [
+              "endpoint_id",
+              "id_on_endpoint"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_light_endpoint_id_id_on_endpoint` ON `${TABLE_NAME}` (`endpoint_id`, `id_on_endpoint`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "endpoint",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "endpoint_id"
+            ],
+            "referencedColumns": [
+              "endpointId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "group",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`endpoint_id` INTEGER NOT NULL, `id_on_endpoint` TEXT NOT NULL, `name` TEXT NOT NULL DEFAULT 'No Name', `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`endpoint_id`) REFERENCES `endpoint`(`endpointId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "endpointId",
+            "columnName": "endpoint_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endpointEntityId",
+            "columnName": "id_on_endpoint",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'No Name'"
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_group_endpoint_id_id_on_endpoint",
+            "unique": true,
+            "columnNames": [
+              "endpoint_id",
+              "id_on_endpoint"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_group_endpoint_id_id_on_endpoint` ON `${TABLE_NAME}` (`endpoint_id`, `id_on_endpoint`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "endpoint",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "endpoint_id"
+            ],
+            "referencedColumns": [
+              "endpointId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "light_grouping",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_id` INTEGER NOT NULL, `light_id` INTEGER NOT NULL, PRIMARY KEY(`group_id`, `light_id`), FOREIGN KEY(`group_id`) REFERENCES `group`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`light_id`) REFERENCES `light`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "groupId",
+            "columnName": "group_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lightId",
+            "columnName": "light_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "group_id",
+            "light_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_light_grouping_group_id",
+            "unique": false,
+            "columnNames": [
+              "group_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_light_grouping_group_id` ON `${TABLE_NAME}` (`group_id`)"
+          },
+          {
+            "name": "index_light_grouping_light_id",
+            "unique": false,
+            "columnNames": [
+              "light_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_light_grouping_light_id` ON `${TABLE_NAME}` (`light_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "group",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "group_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "light",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "light_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "endpoint",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date_added` INTEGER, `config` TEXT, `endpointId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `type` INTEGER, `name` TEXT NOT NULL DEFAULT 'Unnamed Endpoint')",
+        "fields": [
+          {
+            "fieldPath": "addedAt",
+            "columnName": "date_added",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "jsonConfig",
+            "columnName": "config",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "endpointId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'Unnamed Endpoint'"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "endpointId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3743c00a23747430852544195547bf03')"
+    ]
+  }
+}

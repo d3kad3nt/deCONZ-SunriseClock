@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.util.Date;
 
-public abstract class BaseEndpoint implements LightEndpoint {
+public abstract class BaseEndpoint implements LightEndpoint, GroupEndpoint {
 
     EndpointConfig originalEndpointConfig;
 

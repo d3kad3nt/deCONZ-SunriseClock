@@ -25,53 +25,21 @@ public class RemoteLightBuilder {
 
     private boolean isReachable = true;
 
-    /** Builder for constructing RemoteLights. */
-    public RemoteLightBuilder() {}
-
     /**
-     * Builder for constructing RemoteLights, based on an already existing light object.
-     *
-     * @param light The starting point for a light to be modified by builder methods.
+     * Builder for constructing RemoteLights.
      */
-    public RemoteLightBuilder(RemoteLight light) {
-        this.endpointType = light.getEndpointType();
-        this.endpointId = light.getEndpointId();
-        this.endpointLightId = light.getEndpointLightId();
-        this.name = light.getName();
-        this.isSwitchable = light.getIsSwitchable();
-        this.isOn = light.getIsOn();
-        this.isDimmable = light.getIsDimmable();
-        this.brightness = light.getBrightness();
-        this.isTemperaturable = light.getIsTemperaturable();
-        this.colorTemperature = light.getColorTemperature();
-        this.isColorable = light.getIsColorable();
-        this.color = light.getColor();
+    public RemoteLightBuilder() {
+
     }
 
     public RemoteLight build() {
-        // Todo: Check if endpointId and endpointLightId are set, problem:
-        // RemoteLightListTypeAdapter has to set these values after the single light was parsed by
-        // GSON
         if (endpointType == null) {
             throw new IllegalStateException(
-                    "RemoteLightBuilder cannot build this light without an endpoint type! "
-                            + "Check remote light"
-                            + " parsing logic.");
+                "RemoteLightBuilder cannot build this light without an endpoint type! " + "Check remote light" +
+                    " parsing logic.");
         }
-        return new RemoteLight(
-                endpointType,
-                endpointId,
-                endpointLightId,
-                name,
-                isSwitchable,
-                isOn,
-                isDimmable,
-                brightness,
-                isTemperaturable,
-                colorTemperature,
-                isColorable,
-                color,
-                isReachable);
+        return new RemoteLight(endpointType, endpointId, endpointLightId, name, isSwitchable, isOn, isDimmable,
+            brightness, isTemperaturable, colorTemperature, isColorable, color, isReachable);
     }
 
     public RemoteLightBuilder setEndpointType(EndpointType endpointType) {

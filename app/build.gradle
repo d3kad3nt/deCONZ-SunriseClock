@@ -1,121 +1,93 @@
-plugins {
-	id("com.diffplug.spotless") version "7.0.2"
-}
 apply plugin: 'com.android.application'
 apply plugin: "androidx.navigation.safeargs"
 
-
 android {
-	compileSdk 35
-	defaultConfig {
-		applicationId "org.d3kad3nt.sunriseClock"
-		minSdkVersion 21
-		targetSdk 35
-		versionCode 1
-		versionName "1.0"
-		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-		javaCompileOptions {
-			annotationProcessorOptions {
-				arguments += [
-						"room.schemaLocation"  : "$projectDir/schemas".toString(),
-						"room.incremental"     : "true",
-						"room.expandProjection": "true"]
-			}
+    compileSdk 35
+    defaultConfig {
+        applicationId "org.d3kad3nt.sunriseClock"
+        minSdkVersion 21
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"]
+            }
 
-		}
-	}
-	buildTypes {
-		release {
-			minifyEnabled false
-			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-		}
-	}
-	buildFeatures {
-		viewBinding true
-		dataBinding true
-	}
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
 
-	compileOptions {
-		coreLibraryDesugaringEnabled true
+    compileOptions {
+        coreLibraryDesugaringEnabled true
 
-		sourceCompatibility = 21
-		targetCompatibility = 21
-	}
+        sourceCompatibility = 21
+        targetCompatibility = 21
+    }
 
-	namespace 'org.d3kad3nt.sunriseClock'
+    namespace 'org.d3kad3nt.sunriseClock'
 }
 
 dependencies {
-	def room_version = '2.6.1'
-	def retrofit_version = '2.11.0'
+    def room_version = '2.6.1'
+    def retrofit_version = '2.11.0'
 
-	implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-	// ViewModel and LiveData
-	implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-	implementation "androidx.lifecycle:lifecycle-common-java8:2.8.7"
-	implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7"
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.8.7"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7"
 
-	// Navigation component
-	implementation "androidx.navigation:navigation-fragment:$nav_version"
-	implementation "androidx.navigation:navigation-ui:$nav_version"
-	implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+    // Navigation component
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
 
-	// Retrofit
-	implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-	implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
-	// Room
-	implementation "androidx.room:room-runtime:$room_version"
-	annotationProcessor "androidx.room:room-compiler:$room_version"
+    // Room
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 
-	// GUI
-	implementation 'com.google.android.material:material:1.12.0'
-	implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-	implementation "androidx.constraintlayout:constraintlayout:2.2.1"
-	implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
-	implementation 'androidx.recyclerview:recyclerview:1.4.0'
-	implementation "androidx.cardview:cardview:1.0.0"
-	implementation "androidx.viewpager:viewpager:1.1.0"
+    // GUI
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.2.1"
+    implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "androidx.viewpager:viewpager:1.1.0"
 
-	// Appcompat
-	implementation 'androidx.appcompat:appcompat:1.7.0'
-	implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    // Appcompat
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
 
-	// Preference
-	implementation 'androidx.preference:preference:1.2.1'
+    // Preference
+    implementation 'androidx.preference:preference:1.2.1'
 
-	// Tests
-	androidTestImplementation 'androidx.test:runner:1.6.2'
-	testImplementation 'org.junit.jupiter:junit-jupiter:5.12.0'
-	androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-	androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+    // Tests
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
-	// Allow use of newer Java Features
-	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+    // Allow use of newer Java Features
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 
-}
-
-spotless {
-	format 'misc', {
-		// define the files to apply `misc` to
-		target '*.gradle', '.gitattributes', '.gitignore'
-
-		// define the steps to apply to those files
-		trimTrailingWhitespace()
-		leadingSpacesToTabs() // or leadingTabsToSpaces. Takes an integer argument if you don't like 4
-		endWithNewline()
-	}
-	java {
-		target 'src/*/java/**/*.java'
-		// Use the default importOrder configuration
-		importOrder()
-		removeUnusedImports()
-
-		// apply a specific flavor of google-java-format
-		palantirJavaFormat('2.58.0').style("AOSP").formatJavadoc(true)
-
-		// fix formatting of type annotations
-		// formatAnnotations()
-	}
 }
