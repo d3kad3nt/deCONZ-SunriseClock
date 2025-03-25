@@ -27,8 +27,6 @@ Settings -> Version Control -> Commit
     - Right margin: 72
 - Spelling: Checked
     - Severity: Typo
-- Reformat code: Checked
-- Rearrange code: Checked
 - Optimize imports: Checked
 - Analyze code: Checked
     - Profile: Stored in Project -> SunriseClock
@@ -45,15 +43,17 @@ Settings -> Build, Execution, Deployment -> Deployment
 
 Settings -> Tools -> Actions on Save
 
-- Reformat code: Checked
-    - All file types
-    - Changed lines
 - Optimize imports: Checked
     - All file types
 
 Settings -> Tools -> Terminal
 
 - Audible bell: Unchecked
+
+### Recommended Plugins
+
+This project uses [https://github.com/diffplug/spotless](Spotless) to format the code. To use that formatter also in
+Android Studio you have to install the spotless plugin https://plugins.jetbrains.com/plugin/18321-spotless-gradle
 
 ### Android Studio tips and tricks
 
