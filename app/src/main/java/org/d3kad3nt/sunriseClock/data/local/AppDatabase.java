@@ -19,37 +19,33 @@ import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The Room database for this app.
- */
+/** The Room database for this app. */
 @Database(
-    entities = {DbLight.class, DbGroup.class, DbGroupLightCrossref.class, EndpointConfig.class},
-    version = 6,
-    autoMigrations = {
-        @AutoMigration(from = 2, to = 3),
-        @AutoMigration(from = 3, to = 4),
-        @AutoMigration(from = 4, to = 5, spec = AppDatabase.Migration4To5.class),
-        @AutoMigration(from = 5, to = 6, spec = AppDatabase.Migration5To6.class)
-    })
+        entities = {DbLight.class, DbGroup.class, DbGroupLightCrossref.class, EndpointConfig.class},
+        version = 6,
+        autoMigrations = {
+            @AutoMigration(from = 2, to = 3),
+            @AutoMigration(from = 3, to = 4),
+            @AutoMigration(from = 4, to = 5, spec = AppDatabase.Migration4To5.class),
+            @AutoMigration(from = 5, to = 6, spec = AppDatabase.Migration5To6.class)
+        })
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "sunriseclock-db-DEV.db";
-    private static final List<Migration> migrations =
-        new ArrayList<>(List.of(new Migration(1, 2) {
-            @Override
-            public void migrate(@NonNull SupportSQLiteDatabase database) {
-                database.execSQL("CREATE TABLE new_endpoint ("
+    private static final List<Migration> migrations = new ArrayList<>(List.of(new Migration(1, 2) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE new_endpoint ("
                     + "endpointId INTEGER PRIMARY KEY NOT NULL," + "date_added INTEGER,"
                     + "config TEXT," + "type INTEGER," + "name TEXT NOT NULL DEFAULT "
                     + "'Unnamed" + " Endpoint')");
-                database.execSQL(
-                    "INSERT INTO new_endpoint (endpointId, date_added, config, type) "
-                        + "SELECT "
-                        + "endpointId, date_added, config, type FROM endpoint");
-                database.execSQL("DROP TABLE endpoint");
-                database.execSQL("ALTER TABLE new_endpoint RENAME TO endpoint");
-            }
-        }));
+            database.execSQL("INSERT INTO new_endpoint (endpointId, date_added, config, type) "
+                    + "SELECT "
+                    + "endpointId, date_added, config, type FROM endpoint");
+            database.execSQL("DROP TABLE endpoint");
+            database.execSQL("ALTER TABLE new_endpoint RENAME TO endpoint");
+        }
+    }));
     private static volatile AppDatabase INSTANCE;
 
     /**
@@ -67,8 +63,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase buildDatabase(Context context) {
         return Room.databaseBuilder(context, AppDatabase.class, DB_NAME)
-            .addMigrations(allMigrations())
-            .build();
+                .addMigrations(allMigrations())
+                .build();
     }
 
     public static void destroyInstance() {
@@ -84,16 +80,16 @@ public abstract class AppDatabase extends RoomDatabase {
     static class Migration4To5 implements AutoMigrationSpec {}
 
     @RenameColumn.Entries(
-        value = {
-            @RenameColumn(
-                tableName = "light",
-                fromColumnName = "endpoint_light_id",
-                toColumnName = "id_on_endpoint"),
-            @RenameColumn(
-                tableName = "group",
-                fromColumnName = "endpoint_light_id",
-                toColumnName = "id_on_endpoint")
-        })
+            value = {
+                @RenameColumn(
+                        tableName = "light",
+                        fromColumnName = "endpoint_light_id",
+                        toColumnName = "id_on_endpoint"),
+                @RenameColumn(
+                        tableName = "group",
+                        fromColumnName = "endpoint_light_id",
+                        toColumnName = "id_on_endpoint")
+            })
     static class Migration5To6 implements AutoMigrationSpec {}
 
     public abstract DbLightDao dbLightDao();
