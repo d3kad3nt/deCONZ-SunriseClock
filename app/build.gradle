@@ -112,9 +112,6 @@ spotless {
 		importOrder()
 		removeUnusedImports()
 
-		// Cleanthat will refactor your code, but it may break your style: apply it before your formatter
-		cleanthat()          // has its own section below
-
 		// apply a specific flavor of google-java-format
 		palantirJavaFormat('2.58.0').style("AOSP").formatJavadoc(true)
 
