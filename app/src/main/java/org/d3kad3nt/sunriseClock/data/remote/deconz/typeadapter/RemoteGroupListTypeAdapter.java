@@ -7,13 +7,11 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
-import org.d3kad3nt.sunriseClock.data.model.group.RemoteGroup;
-import org.d3kad3nt.sunriseClock.util.LogUtil;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import org.d3kad3nt.sunriseClock.data.model.group.RemoteGroup;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class RemoteGroupListTypeAdapter implements JsonDeserializer<List<RemoteGroup>> {
 
@@ -22,9 +20,8 @@ public class RemoteGroupListTypeAdapter implements JsonDeserializer<List<RemoteG
     /**
      * Custom type adapter for usage with Gson.
      *
-     * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is not
-     *     part of the JSON response, therefore it has to be set manually for a specific RemoteLight
-     *     when deserializing it.
+     * @param endpointId ID of the associated endpoint for this deserializer. The endpoint ID is not part of the JSON
+     *     response, therefore it has to be set manually for a specific RemoteLight when deserializing it.
      */
     public RemoteGroupListTypeAdapter(long endpointId) {
         this.gson = new GsonBuilder()

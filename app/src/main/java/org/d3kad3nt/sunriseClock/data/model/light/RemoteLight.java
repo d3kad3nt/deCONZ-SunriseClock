@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.data.model.light;
 
 import androidx.annotation.NonNull;
-
 import org.d3kad3nt.sunriseClock.data.model.RemoteEndpointEntity;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
@@ -42,8 +41,7 @@ public class RemoteLight extends RemoteEndpointEntity {
         this.isOn = isOn;
         this.isDimmable = isDimmable;
 
-        if (brightness >= endpointType.getMinBrightness()
-                && brightness <= endpointType.getMaxBrightness()) {
+        if (brightness >= endpointType.getMinBrightness() && brightness <= endpointType.getMaxBrightness()) {
             this.brightness = brightness;
         } else {
             throw new IllegalArgumentException("The given brightness of a light (endpoint type "
@@ -52,8 +50,7 @@ public class RemoteLight extends RemoteEndpointEntity {
         }
 
         this.isTemperaturable = isTemperaturable;
-        this.colorTemperature =
-                colorTemperature; // Todo: Define which values are allowed for each endpoint type
+        this.colorTemperature = colorTemperature; // Todo: Define which values are allowed for each endpoint type
         this.isColorable = isColorable;
         this.color = color; // Todo: Define which values are allowed for each endpoint type
         this.isReachable = isReachable;
@@ -79,8 +76,7 @@ public class RemoteLight extends RemoteEndpointEntity {
                 // https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio)
                 .setBrightness(calculateBrightness(remoteLight))
                 .setIsTemperaturable(remoteLight.getIsTemperaturable())
-                .setColorTemperature(
-                        remoteLight.getColorTemperature()) // Todo: Implement conversion
+                .setColorTemperature(remoteLight.getColorTemperature()) // Todo: Implement conversion
                 .setIsColorable(remoteLight.getIsColorable())
                 .setColor(remoteLight.getColor()) // Todo: Implement conversion
                 .setIsReachable(remoteLight.getIsReachable())
@@ -113,12 +109,11 @@ public class RemoteLight extends RemoteEndpointEntity {
     }
 
     /**
-     * When endpointType is DECONZ: The current brightness of the light, where 0 is the lowest
-     * brightness or off and 255 is the highest brightness. Depending on the light type 0 might not
-     * mean visible off but minimum brightness.
+     * When endpointType is DECONZ: The current brightness of the light, where 0 is the lowest brightness or off and 255
+     * is the highest brightness. Depending on the light type 0 might not mean visible off but minimum brightness.
      *
-     * @return Brightness of the light, value range and meaning of the value depend on the endpoint
-     *     this light originated from.
+     * @return Brightness of the light, value range and meaning of the value depend on the endpoint this light
+     *     originated from.
      */
     public int getBrightness() {
         return brightness;

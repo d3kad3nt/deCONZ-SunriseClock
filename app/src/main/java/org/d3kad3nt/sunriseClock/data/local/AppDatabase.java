@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.data.local;
 
 import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.room.AutoMigration;
 import androidx.room.Database;
@@ -11,13 +10,11 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.AutoMigrationSpec;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-
+import java.util.ArrayList;
+import java.util.List;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
 import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /** The Room database for this app. */
 @Database(
@@ -49,8 +46,8 @@ public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
     /**
-     * Using singleton pattern as of now. With dependency injection (Dagger, ...) this class could
-     * be mocked when unit testing. TODO: Dependency Injection, optional
+     * Using singleton pattern as of now. With dependency injection (Dagger, ...) this class could be mocked when unit
+     * testing. TODO: Dependency Injection, optional
      */
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {

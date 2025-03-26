@@ -1,13 +1,10 @@
 package org.d3kad3nt.sunriseClock.data.model.endpoint;
 
 import androidx.lifecycle.LiveData;
-
+import java.util.List;
 import okhttp3.ResponseBody;
-
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
-
-import java.util.List;
 
 public interface LightEndpoint {
 
@@ -41,8 +38,8 @@ public interface LightEndpoint {
     /**
      * Toggle all lights from on to off or vice versa.
      *
-     * <p>If one or more lights are currently turned on, those should be turned off. If all lights
-     * are currently turned off, all lights should be turned on.
+     * <p>If one or more lights are currently turned on, those should be turned off. If all lights are currently turned
+     * off, all lights should be turned on.
      */
     LiveData<ApiResponse<ResponseBody>> toggleOnState();
 

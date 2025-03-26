@@ -1,13 +1,10 @@
 package org.d3kad3nt.sunriseClock.ui.endpoint;
 
 import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-
-import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
-
 import java.util.Map;
+import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 
 public class EndpointAddViewModel extends AndroidViewModel {
 

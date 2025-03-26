@@ -15,13 +15,17 @@ import android.service.controls.templates.ControlTemplate;
 import android.service.controls.templates.RangeTemplate;
 import android.service.controls.templates.ToggleRangeTemplate;
 import android.service.controls.templates.ToggleTemplate;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.Flow;
+import java.util.function.Consumer;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
@@ -34,13 +38,6 @@ import org.d3kad3nt.sunriseClock.util.AsyncJoin;
 import org.d3kad3nt.sunriseClock.util.ExtendedPublisher;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.Flow;
-import java.util.function.Consumer;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class ControlService extends ControlsProviderService {
@@ -61,8 +58,7 @@ public class ControlService extends ControlsProviderService {
     private LightRepository nullableLightRepository;
 
     /**
-     * This Method gets called by the Android Device Controls, when all available Controls are
-     * listed.
+     * This Method gets called by the Android Device Controls, when all available Controls are listed.
      *
      * <p>This occurs for example when a new Device Control should be added.
      *
@@ -75,10 +71,7 @@ public class ControlService extends ControlsProviderService {
         Intent intent = new Intent();
         // The given Flags are always necessary
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                context,
-                1,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         ExtendedPublisher<Control> flow = new ExtendedPublisher<>(true);
         LiveData<List<IEndpointUI>> allEndpoints = getEndpointRepository().getAllEndpoints();
         AsyncJoin asyncHelper = new AsyncJoin();
@@ -95,8 +88,7 @@ public class ControlService extends ControlsProviderService {
                             switch (listResource.getStatus()) {
                                 case SUCCESS:
                                     for (UILight light : listResource.getData()) {
-                                        endpointNames.put(
-                                                light.getId(), endpoint.getStringRepresentation());
+                                        endpointNames.put(light.getId(), endpoint.getStringRepresentation());
                                         flow.publish(getStatelessControl(light, pendingIntent));
                                     }
                                     removeObserver(this, lightResources, asyncHelper);
@@ -120,11 +112,10 @@ public class ControlService extends ControlsProviderService {
     }
 
     /**
-     * This Method gets called be the Android Device Controls when the state of one ore multiple
-     * Device Controls should be given.
+     * This Method gets called be the Android Device Controls when the state of one ore multiple Device Controls should
+     * be given.
      *
-     * <p>This is for example the case when the device Control View is opened and a Control from
-     * this App is used.
+     * <p>This is for example the case when the device Control View is opened and a Control from this App is used.
      *
      * @param controlIds The IDs of the device controls that
      * @return A Flow of Control Elements that is updated when the state of a Light is changed.
@@ -140,8 +131,7 @@ public class ControlService extends ControlsProviderService {
     }
 
     /**
-     * This gets called by the Android Device Controls, when someone interacts with a device
-     * control.
+     * This gets called by the Android Device Controls, when someone interacts with a device control.
      *
      * @param controlId The Id of the Device Control
      * @param action The Action that was performed
@@ -176,8 +166,7 @@ public class ControlService extends ControlsProviderService {
 
     private @NonNull Control getStatelessControl(
             @NonNull final UILight light, @NonNull final PendingIntent pendingIntent) {
-        Control.StatelessBuilder builder =
-                new Control.StatelessBuilder(getControlId(light), pendingIntent);
+        Control.StatelessBuilder builder = new Control.StatelessBuilder(getControlId(light), pendingIntent);
         builder.setTitle(light.getName());
         // TODO use endpoint.getName, when it is merged
         builder.setStructure(getEndpointName(light.getEndpointId()));
@@ -210,13 +199,9 @@ public class ControlService extends ControlsProviderService {
         intent.putExtra("LightName", light.getName());
         intent.putExtra("Light", light.getId());
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                context,
-                (int) light.getId(),
-                intent,
-                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+                context, (int) light.getId(), intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Control.StatefulBuilder builder =
-                new Control.StatefulBuilder(getControlId(light), pendingIntent);
+        Control.StatefulBuilder builder = new Control.StatefulBuilder(getControlId(light), pendingIntent);
         builder.setDeviceType(DeviceTypes.TYPE_LIGHT);
         builder.setSubtitle(getEndpointName(light.getEndpointId()));
         builder.setStructure(getEndpointName(light.getEndpointId()));
@@ -232,8 +217,7 @@ public class ControlService extends ControlsProviderService {
             builder.setStatus(Control.STATUS_OK);
         }
         if (light.getIsDimmable()) {
-            ControlButton button = new ControlButton(
-                    light.getIsOn(), context.getString(R.string.light_on_state_label));
+            ControlButton button = new ControlButton(light.getIsOn(), context.getString(R.string.light_on_state_label));
             RangeTemplate rangeTemplate = new RangeTemplate(
                     getControlId(light),
                     (float) 0,
@@ -241,12 +225,10 @@ public class ControlService extends ControlsProviderService {
                     light.getBrightness(),
                     1,
                     context.getString(R.string.light_brightness_label));
-            ControlTemplate template =
-                    new ToggleRangeTemplate(getControlId(light), button, rangeTemplate);
+            ControlTemplate template = new ToggleRangeTemplate(getControlId(light), button, rangeTemplate);
             builder.setControlTemplate(template);
         } else if (light.getIsSwitchable()) {
-            ControlButton button = new ControlButton(
-                    light.getIsOn(), context.getString(R.string.light_on_state_label));
+            ControlButton button = new ControlButton(light.getIsOn(), context.getString(R.string.light_on_state_label));
             ControlTemplate template = new ToggleTemplate(getControlId(light), button);
             builder.setControlTemplate(template);
         }
@@ -263,11 +245,10 @@ public class ControlService extends ControlsProviderService {
         return Objects.requireNonNull(controlFlows.get(flowKey));
     }
 
-    private void performFloatControlAction(
-            @NonNull final String controlId, @NonNull final FloatAction action) {
+    private void performFloatControlAction(@NonNull final String controlId, @NonNull final FloatAction action) {
         LogUtil.d("New brightness Value: %.3f, for LightID %s", action.getNewValue(), controlId);
-        LiveData<EmptyResource> responseLiveData = getLightRepository()
-                .setBrightness(Long.parseLong(controlId), (int) action.getNewValue());
+        LiveData<EmptyResource> responseLiveData =
+                getLightRepository().setBrightness(Long.parseLong(controlId), (int) action.getNewValue());
         // The observer is needed because livedata executes only if it has a observer.
         responseLiveData.observeForever(new Observer<>() {
             @Override
@@ -279,8 +260,7 @@ public class ControlService extends ControlsProviderService {
         });
     }
 
-    public void performBooleanControlAction(
-            @NonNull final String controlId, @NonNull final BooleanAction action) {
+    public void performBooleanControlAction(@NonNull final String controlId, @NonNull final BooleanAction action) {
         LogUtil.d("New 'On' State: %b, for LightID %s", action.getNewState(), controlId);
         LiveData<EmptyResource> responseLiveData =
                 getLightRepository().setOnState(Long.parseLong(controlId), action.getNewState());

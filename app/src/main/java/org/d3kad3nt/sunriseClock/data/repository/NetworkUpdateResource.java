@@ -2,7 +2,6 @@ package org.d3kad3nt.sunriseClock.data.repository;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
@@ -57,13 +56,11 @@ public abstract class NetworkUpdateResource<ResultType, RemoteType, DbType>
         }
     }
 
-    private void endpointLiveDataObserver(
-            BaseEndpoint baseEndpoint, LiveData<BaseEndpoint> endpointLiveData) {
+    private void endpointLiveDataObserver(BaseEndpoint baseEndpoint, LiveData<BaseEndpoint> endpointLiveData) {
         if (baseEndpoint == null) {
             updateValue(EmptyResource.loading("Endpoints loads"));
         } else {
-            LiveData<ApiResponse<RemoteType>> networkResponseLivedata =
-                    this.sendNetworkRequest(baseEndpoint);
+            LiveData<ApiResponse<RemoteType>> networkResponseLivedata = this.sendNetworkRequest(baseEndpoint);
             addSource(networkResponseLivedata, response -> {
                 networkResponseObserver(response, networkResponseLivedata);
             });
@@ -72,8 +69,7 @@ public abstract class NetworkUpdateResource<ResultType, RemoteType, DbType>
     }
 
     private void networkResponseObserver(
-            ApiResponse<RemoteType> response,
-            LiveData<ApiResponse<RemoteType>> networkResponseLivedata) {
+            ApiResponse<RemoteType> response, LiveData<ApiResponse<RemoteType>> networkResponseLivedata) {
         EmptyResource resource = toResource(response);
         if (resource.getStatus() != Status.SUCCESS) {
             updateValue(resource);
@@ -108,8 +104,7 @@ public abstract class NetworkUpdateResource<ResultType, RemoteType, DbType>
     protected abstract LiveData<BaseEndpoint> loadEndpoint();
 
     @NotNull
-    protected abstract LiveData<ApiResponse<RemoteType>> sendNetworkRequest(
-            BaseEndpoint baseEndpoint);
+    protected abstract LiveData<ApiResponse<RemoteType>> sendNetworkRequest(BaseEndpoint baseEndpoint);
 
     @NotNull
     protected abstract LiveData<Resource<ResultType>> loadUpdatedVersion();

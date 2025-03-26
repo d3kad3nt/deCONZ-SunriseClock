@@ -17,9 +17,8 @@
 package org.d3kad3nt.sunriseClock.data.model.resource;
 
 /**
- * A generic class that holds a value with its loading status. Copied from the official Google
- * architecture-components github-sample under
- * https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample
+ * A generic class that holds a value with its loading status. Copied from the official Google architecture-components
+ * github-sample under https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample
  * /app/src/main/java/com/android/example/github/vo/Resource.kt
  *
  * @param <T>

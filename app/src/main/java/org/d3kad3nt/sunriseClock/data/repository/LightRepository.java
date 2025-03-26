@@ -1,15 +1,17 @@
 package org.d3kad3nt.sunriseClock.data.repository;
 
 import android.content.Context;
-
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import okhttp3.ResponseBody;
-
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.DbGroupDao;
 import org.d3kad3nt.sunriseClock.data.local.DbGroupLightCrossref;
@@ -31,12 +33,6 @@ import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 /** Repository module for handling data operations (network or local database). */
 public class LightRepository {
 
@@ -47,8 +43,8 @@ public class LightRepository {
     private final EndpointRepository endpointRepo;
 
     /**
-     * Using singleton pattern as of now. With dependency injection (Dagger, ...) this class could
-     * be mocked when unit testing. TODO: Dependency Injection, optional
+     * Using singleton pattern as of now. With dependency injection (Dagger, ...) this class could be mocked when unit
+     * testing. TODO: Dependency Injection, optional
      */
     private LightRepository(Context context) {
         dbLightDao = AppDatabase.getInstance(context.getApplicationContext()).dbLightDao();
@@ -117,8 +113,7 @@ public class LightRepository {
             }
 
             @Override
-            protected List<DbLight> convertRemoteTypeToDbType(
-                    ApiSuccessResponse<List<RemoteLight>> response) {
+            protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteLight>> response) {
                 List<DbLight> lights = new ArrayList<>();
                 for (RemoteLight light : response.getBody()) {
                     lights.add(DbLight.from(light));
@@ -155,10 +150,9 @@ public class LightRepository {
                     @NotNull
                     @Override
                     protected LiveData<List<DbLight>> loadFromDb() {
-                        return Transformations.map(
-                                dbLightDao.loadAllForEndpoint(endpointId), input -> {
-                                    return new ArrayList<>(input);
-                                });
+                        return Transformations.map(dbLightDao.loadAllForEndpoint(endpointId), input -> {
+                            return new ArrayList<>(input);
+                        });
                     }
 
                     @NotNull
@@ -173,8 +167,7 @@ public class LightRepository {
                     }
 
                     @Override
-                    protected List<DbLight> convertRemoteTypeToDbType(
-                            ApiSuccessResponse<List<RemoteLight>> response) {
+                    protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteLight>> response) {
                         List<DbLight> lights = new ArrayList<>();
                         for (RemoteLight light : response.getBody()) {
                             lights.add(DbLight.from(light));
@@ -283,8 +276,7 @@ public class LightRepository {
                     }
 
                     @Override
-                    protected DbLight convertRemoteTypeToDbType(
-                            ApiSuccessResponse<RemoteLight> response) {
+                    protected DbLight convertRemoteTypeToDbType(ApiSuccessResponse<RemoteLight> response) {
                         return DbLight.from(response.getBody());
                     }
                 },
@@ -294,9 +286,8 @@ public class LightRepository {
     /**
      * Turns the light on or off.
      *
-     * @param lightId The light to be turned on or off. The given ID must already exist in the
-     *     database. Note that this ID is independent from the identifier that the backing endpoint
-     *     uses internally.
+     * @param lightId The light to be turned on or off. The given ID must already exist in the database. Note that this
+     *     ID is independent from the identifier that the backing endpoint uses internally.
      * @param newState Whether the light should be turned on (true) or off (false).
      * @return Resource representing the status of the request.
      */
@@ -321,16 +312,14 @@ public class LightRepository {
 
             @NonNull
             @Override
-            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(
-                    BaseEndpoint baseEndpoint) {
+            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
                 return baseEndpoint.setOnState(dbObject.getEndpointEntityId(), newState);
             }
 
             @NotNull
             @Override
             protected LiveData<Resource<UILight>> loadUpdatedVersion() {
-                LogUtil.d(
-                        "Loading updated light with id %d after successful setOn change", lightId);
+                LogUtil.d("Loading updated light with id %d after successful setOn change", lightId);
                 return getLight(lightId);
             }
         };
@@ -339,11 +328,10 @@ public class LightRepository {
     /**
      * Toggle all lights from on to off or vice versa.
      *
-     * <p>If one or more lights are currently turned on, those are turned off. If all lights are
-     * currently turned off, all lights are turned on.
+     * <p>If one or more lights are currently turned on, those are turned off. If all lights are currently turned off,
+     * all lights are turned on.
      *
-     * @param endpointId The endpoint on which to execute the action. The given ID must already
-     *     exist in the database.
+     * @param endpointId The endpoint on which to execute the action. The given ID must already exist in the database.
      * @return Resource representing the status of the request.
      */
     public LiveData<EmptyResource> toggleOnStateForEndpoint(long endpointId) {
@@ -362,8 +350,7 @@ public class LightRepository {
 
             @NonNull
             @Override
-            protected @NotNull LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(
-                    BaseEndpoint baseEndpoint) {
+            protected @NotNull LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
                 return baseEndpoint.toggleOnState();
             }
 
@@ -375,21 +362,19 @@ public class LightRepository {
     }
 
     /**
-     * Changes the brightness of the light. TODO: Define whether a brightness of 0 means off or
-     * lowest brightness (but still on).
+     * Changes the brightness of the light. TODO: Define whether a brightness of 0 means off or lowest brightness (but
+     * still on).
      *
-     * @param lightId The light that this action executes on. The given ID must already exist in the
-     *     database. Note that this ID is independent from the identifier that the backing endpoint
-     *     uses internally.
+     * @param lightId The light that this action executes on. The given ID must already exist in the database. Note that
+     *     this ID is independent from the identifier that the backing endpoint uses internally.
      * @param brightness Desired light brightness, ranging from 0 (lowest) to 100 (highest).
      * @return Resource representing the status of the request.
      */
-    public LiveData<EmptyResource> setBrightness(
-            long lightId, @IntRange(from = 0, to = 100) int brightness) {
+    public LiveData<EmptyResource> setBrightness(long lightId, @IntRange(from = 0, to = 100) int brightness) {
         LogUtil.i("Setting brightness to %d %% for single light with id %d", brightness, lightId);
         if (brightness < 0 || brightness > 100) {
-            throw new IllegalStateException("The new brightness for light " + lightId
-                    + " has to be between 0 and 100 and not " + brightness);
+            throw new IllegalStateException(
+                    "The new brightness for light " + lightId + " has to be between 0 and 100 and not " + brightness);
         }
 
         return new NetworkUpdateResource<UILight, ResponseBody, DbLight>() {
@@ -406,17 +391,14 @@ public class LightRepository {
 
             @NonNull
             @Override
-            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(
-                    BaseEndpoint baseEndpoint) {
+            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
                 return baseEndpoint.setBrightness(dbObject.getEndpointEntityId(), brightness);
             }
 
             @NotNull
             @Override
             protected LiveData<Resource<UILight>> loadUpdatedVersion() {
-                LogUtil.d(
-                        "Loading updated light with id %d after successful brightness change",
-                        lightId);
+                LogUtil.d("Loading updated light with id %d after successful brightness change", lightId);
                 return getLight(lightId);
             }
         };
@@ -439,8 +421,7 @@ public class LightRepository {
 
             @NonNull
             @Override
-            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(
-                    BaseEndpoint baseEndpoint) {
+            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
                 return baseEndpoint.setName(dbObject.getEndpointEntityId(), newName);
             }
 
@@ -453,20 +434,15 @@ public class LightRepository {
         };
     }
 
-    public LiveData<Resource<Map<UIGroup, List<UILight>>>> getGroupsWithLightsForEndpoint(
-            long endpointId) {
+    public LiveData<Resource<Map<UIGroup, List<UILight>>>> getGroupsWithLightsForEndpoint(long endpointId) {
         try {
             endpointRepo.getEndpoint(endpointId);
         } catch (NullPointerException e) {
-            Resource<Map<UIGroup, List<UILight>>> resource =
-                    Resource.error("Endpoint doesn't exist", null);
+            Resource<Map<UIGroup, List<UILight>>> resource = Resource.error("Endpoint doesn't exist", null);
             return new MutableLiveData<>(resource);
         }
         return new BiNetworkBoundResource<
-                Map<UIGroup, List<UILight>>,
-                List<RemoteGroup>,
-                List<RemoteLight>,
-                Map<DbGroup, List<DbLight>>>() {
+                Map<UIGroup, List<UILight>>, List<RemoteGroup>, List<RemoteLight>, Map<DbGroup, List<DbLight>>>() {
 
             @Override
             protected void saveResponseToDb(Map<DbGroup, List<DbLight>> items) {
@@ -528,8 +504,7 @@ public class LightRepository {
                 for (RemoteGroup group : remoteGroups.getBody()) {
                     DbGroup dbGroup = DbGroup.from(group);
                     List<DbLight> groupLights = lights.stream()
-                            .filter(dbLight -> group.getEndpointLightIds()
-                                    .contains(dbLight.getEndpointEntityId()))
+                            .filter(dbLight -> group.getEndpointLightIds().contains(dbLight.getEndpointEntityId()))
                             .toList();
                     groupsWithLights.put(dbGroup, groupLights);
                 }
@@ -584,8 +559,7 @@ public class LightRepository {
             }
 
             @Override
-            protected List<DbGroup> convertRemoteTypeToDbType(
-                    ApiSuccessResponse<List<RemoteGroup>> response) {
+            protected List<DbGroup> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteGroup>> response) {
                 List<DbGroup> groups = new ArrayList<>();
                 for (RemoteGroup group : response.getBody()) {
                     groups.add(DbGroup.from(group));

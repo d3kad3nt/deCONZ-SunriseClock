@@ -7,12 +7,10 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
-
+import java.util.Objects;
 import org.d3kad3nt.sunriseClock.data.model.DbEndpointEntity;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
 import org.jetbrains.annotations.Contract;
-
-import java.util.Objects;
 
 @Entity(
         tableName = DbLight.TABLENAME,
@@ -68,8 +66,8 @@ public class DbLight extends DbEndpointEntity {
     private final boolean isReachable;
 
     /**
-     * Create a new entity that represents a light in the app's Room database. This constructor has
-     * to be public for Room to be able to create an object. This should not be otherwise accessed!
+     * Create a new entity that represents a light in the app's Room database. This constructor has to be public for
+     * Room to be able to create an object. This should not be otherwise accessed!
      */
     public DbLight(
             long endpointId,
@@ -94,13 +92,11 @@ public class DbLight extends DbEndpointEntity {
         if (brightness >= BRIGHTNESS_MIN && brightness <= BRIGHTNESS_MAX) {
             this.brightness = brightness;
         } else {
-            throw new IllegalArgumentException(
-                    "The given brightness of a light must be between 0 and 100!");
+            throw new IllegalArgumentException("The given brightness of a light must be between 0 and 100!");
         }
 
         this.isTemperaturable = isTemperaturable;
-        this.colorTemperature =
-                colorTemperature; // Todo: Define which values are allowed, see DbLightBuilder
+        this.colorTemperature = colorTemperature; // Todo: Define which values are allowed, see DbLightBuilder
         // javadoc
         this.isColorable = isColorable;
         this.color = color; // Todo: Define which values are allowed, see DbLightBuilder javadoc
@@ -114,8 +110,8 @@ public class DbLight extends DbEndpointEntity {
     }
 
     /**
-     * @return Whether the light's capabilities allow it to be turned on and off (true if allowed by
-     *     the device, false if not).
+     * @return Whether the light's capabilities allow it to be turned on and off (true if allowed by the device, false
+     *     if not).
      */
     public boolean getIsSwitchable() {
         return isSwitchable;
@@ -126,17 +122,14 @@ public class DbLight extends DbEndpointEntity {
         return isOn;
     }
 
-    /**
-     * @return Whether the light's capabilities allow it to be dimmed (true if allowed by the
-     *     device, false if not).
-     */
+    /** @return Whether the light's capabilities allow it to be dimmed (true if allowed by the device, false if not). */
     public boolean getIsDimmable() {
         return isDimmable;
     }
 
     /**
-     * @return The current brightness of the light, where 0 is the lowest brightness or off
-     *     (depending on the light) and 100 is the highest brightness.
+     * @return The current brightness of the light, where 0 is the lowest brightness or off (depending on the light) and
+     *     100 is the highest brightness.
      */
     @IntRange(from = 0, to = 100)
     public int getBrightness() {
@@ -144,8 +137,8 @@ public class DbLight extends DbEndpointEntity {
     }
 
     /**
-     * @return Whether the light's capabilities allow its color temperature to be changed (true if
-     *     allowed by the device, false if not).
+     * @return Whether the light's capabilities allow its color temperature to be changed (true if allowed by the
+     *     device, false if not).
      */
     public boolean getIsTemperaturable() {
         return isTemperaturable;
@@ -157,8 +150,8 @@ public class DbLight extends DbEndpointEntity {
     }
 
     /**
-     * @return Whether the light's capabilities allow its color to be changed (true if allowed by
-     *     the device, false if not).
+     * @return Whether the light's capabilities allow its color to be changed (true if allowed by the device, false if
+     *     not).
      */
     public boolean getIsColorable() {
         return isColorable;

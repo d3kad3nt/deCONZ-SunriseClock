@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,13 +13,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
+import java.util.List;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.databinding.EndpointsFragmentBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
-
-import java.util.List;
 
 public class EndpointsFragment extends Fragment implements EndpointsListAdapter.ClickListeners {
 
@@ -30,9 +27,7 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
 
     @Override
     public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+            @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         LogUtil.d("Show endpoint list view");
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointsViewModel.class);
 
@@ -41,18 +36,16 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
         adapter = new EndpointsListAdapter(viewModel, this);
         binding.recyclerView.setAdapter(adapter);
 
-        viewModel
-                .getEndpoints()
-                .observe(getViewLifecycleOwner(), new Observer<List<IEndpointUI>>() {
-                    @Override
-                    public void onChanged(List<IEndpointUI> endpointConfigList) {
-                        if (!endpointConfigList.isEmpty()) {
-                            adapter.submitList(endpointConfigList);
-                        } else {
-                            LogUtil.d("No Endpoints found");
-                        }
-                    }
-                });
+        viewModel.getEndpoints().observe(getViewLifecycleOwner(), new Observer<List<IEndpointUI>>() {
+            @Override
+            public void onChanged(List<IEndpointUI> endpointConfigList) {
+                if (!endpointConfigList.isEmpty()) {
+                    adapter.submitList(endpointConfigList);
+                } else {
+                    LogUtil.d("No Endpoints found");
+                }
+            }
+        });
         addAddEndpointListener(binding);
 
         return binding.getRoot();
@@ -69,12 +62,10 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
         // screens that are
         // not hierarchically related to each other and may each have their own set of related
         // destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                        R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment)
-                .build();
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
 
-        NavigationUI.setupWithNavController(
-                binding.endpointsToolbar, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(binding.endpointsToolbar, navController, appBarConfiguration);
 
         // Specify the fragment view as the lifecycle owner of the binding. This is used so that the
         // binding can
@@ -94,19 +85,15 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
             public void onClick(View v) {
                 LogUtil.d("Navigate to endpoint creation view");
                 Navigation.findNavController(v)
-                        .navigate(
-                                EndpointsFragmentDirections.actionEndpointsToEndpointAddFragment());
+                        .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointAddFragment());
             }
         });
     }
 
     @Override
     public void onCardClick(final View view, final long endpointId, String endpointName) {
-        LogUtil.d(
-                "Navigate to endpoint detail view for endpoint %s (Id %d)",
-                endpointName, endpointId);
+        LogUtil.d("Navigate to endpoint detail view for endpoint %s (Id %d)", endpointName, endpointId);
         Navigation.findNavController(view)
-                .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(
-                        endpointId, endpointName));
+                .navigate(EndpointsFragmentDirections.actionEndpointsToEndpointDetail(endpointId, endpointName));
     }
 }

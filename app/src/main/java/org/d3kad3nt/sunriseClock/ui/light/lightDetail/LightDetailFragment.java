@@ -7,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
@@ -20,9 +19,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.google.android.material.slider.Slider;
-
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.databinding.LightDetailFragmentBinding;
@@ -35,11 +32,8 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
 
     @Override
     public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
-        long lightID = LightDetailFragmentArgs.fromBundle(requireArguments())
-                .getLight(); // id from navigation
+            @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        long lightID = LightDetailFragmentArgs.fromBundle(requireArguments()).getLight(); // id from navigation
 
         LogUtil.setPrefix("LightID %d: ", lightID);
         LogUtil.d("Show light detail view");
@@ -56,15 +50,13 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
         // navigation graph,
         // enabling you to share UI-related data between the graph's destinations.
         NavController navController = NavHostFragment.findNavController(this);
-        NavBackStackEntry backStackEntry =
-                navController.getBackStackEntry(R.id.nav_graph_light_detail);
+        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_light_detail);
 
         // Initialize viewModel with light id and inject the light repository.
         // By injecting the repository, the viewModel no longer needs the Application or Context.
         MutableCreationExtras viewModelDependencies = new MutableCreationExtras();
         viewModelDependencies.set(
-                LightDetailViewModel.LIGHT_REPOSITORY_KEY,
-                LightRepository.getInstance(requireContext()));
+                LightDetailViewModel.LIGHT_REPOSITORY_KEY, LightRepository.getInstance(requireContext()));
         viewModelDependencies.set(LightDetailViewModel.LIGHT_ID_KEY, lightID);
 
         // Use custom factory to initialize the viewModel (instead of using new
@@ -96,12 +88,10 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
         // screens that are
         // not hierarchically related to each other and may each have their own set of related
         // destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                        R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment)
-                .build();
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
 
-        NavigationUI.setupWithNavController(
-                binding.lightDetailsToolbar, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(binding.lightDetailsToolbar, navController, appBarConfiguration);
 
         binding.setBrightnessSliderTouchListener(new BrightnessSliderTouchListener());
         binding.setViewModel(viewModel);
@@ -133,20 +123,14 @@ public class LightDetailFragment extends Fragment implements MenuProvider {
             viewModel.refreshLight();
             return true;
         } else if (menuItem.getItemId() == R.id.menu_light_details_info) {
-            LogUtil.d(
-                    "User requested to show light info screen by clicking the toolbar menu option.");
+            LogUtil.d("User requested to show light info screen by clicking the toolbar menu option.");
             Navigation.findNavController(binding.getRoot())
-                    .navigate(
-                            LightDetailFragmentDirections
-                                    .actionLightDetailToLightDetailInfoDialogFragment());
+                    .navigate(LightDetailFragmentDirections.actionLightDetailToLightDetailInfoDialogFragment());
             return true;
         } else if (menuItem.getItemId() == R.id.menu_light_details_name_edit) {
-            LogUtil.d(
-                    "User requested to show light name edit screen by clicking the toolbar menu option.");
+            LogUtil.d("User requested to show light name edit screen by clicking the toolbar menu option.");
             Navigation.findNavController(binding.getRoot())
-                    .navigate(
-                            LightDetailFragmentDirections
-                                    .actionLightDetailToLightDetailNameEditDialogFragment());
+                    .navigate(LightDetailFragmentDirections.actionLightDetailToLightDetailNameEditDialogFragment());
             return true;
         } else {
             return false;

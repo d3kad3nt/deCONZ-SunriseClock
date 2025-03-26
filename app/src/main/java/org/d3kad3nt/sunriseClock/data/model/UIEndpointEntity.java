@@ -2,14 +2,11 @@ package org.d3kad3nt.sunriseClock.data.model;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
-
-import org.d3kad3nt.sunriseClock.util.LogUtil;
-
 import java.util.Locale;
 import java.util.Objects;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-public abstract class UIEndpointEntity<T extends UIEndpointEntity<T>>
-        implements ListItem, Comparable<T> {
+public abstract class UIEndpointEntity<T extends UIEndpointEntity<T>> implements ListItem, Comparable<T> {
 
     private final long id;
     private final long endpointId;
@@ -41,8 +38,8 @@ public abstract class UIEndpointEntity<T extends UIEndpointEntity<T>>
     }
 
     /**
-     * @return Foreign key of the remote endpoint that this entity belongs to. Only one endpoint
-     *     object id (specific for that endpoint!) can exist for a single endpoint.
+     * @return Foreign key of the remote endpoint that this entity belongs to. Only one endpoint object id (specific for
+     *     that endpoint!) can exist for a single endpoint.
      */
     public long getEndpointId() {
         return endpointId;

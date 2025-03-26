@@ -1,15 +1,12 @@
 package org.d3kad3nt.sunriseClock.ui.util;
 
 import android.view.View;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-
-import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
-
 import java.util.HashSet;
 import java.util.Set;
+import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 
 public class ResourceVisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Integer> {
 
@@ -29,8 +26,7 @@ public class ResourceVisibilityLiveData extends androidx.lifecycle.MediatorLiveD
         this.addSource(initialVisibilityLivedata, integer -> this.setValue(integer));
     }
 
-    public <T> ResourceVisibilityLiveData addVisibilityProvider(
-            LiveData<? extends Resource<T>> liveData) {
+    public <T> ResourceVisibilityLiveData addVisibilityProvider(LiveData<? extends Resource<T>> liveData) {
         this.removeSource(this.initialVisibilityLivedata);
         ResourceVisibilityLiveData resourceVisibilityLivedata = this;
         this.addSource(liveData, new Observer<Resource<T>>() {

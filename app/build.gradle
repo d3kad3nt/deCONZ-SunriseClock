@@ -112,7 +112,7 @@ spotless {
 		removeUnusedImports()
 
 		// apply a specific flavor of google-java-format
-		palantirJavaFormat('2.58.0').style("AOSP").formatJavadoc(true)
+		palantirJavaFormat('2.58.0').formatJavadoc(true)
 
 		// fix formatting of type annotations
 		// formatAnnotations()

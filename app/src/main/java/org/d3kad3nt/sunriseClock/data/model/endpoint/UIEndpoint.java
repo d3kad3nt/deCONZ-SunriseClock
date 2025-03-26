@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.data.model.endpoint;
 
 import androidx.annotation.NonNull;
-
 import org.jetbrains.annotations.Contract;
 
 public class UIEndpoint implements IEndpointUI {
@@ -24,10 +23,7 @@ public class UIEndpoint implements IEndpointUI {
     @Contract("_ -> new")
     public static UIEndpoint from(@NonNull EndpointConfig baseEndpoint) {
         return new UIEndpoint(
-                baseEndpoint.toString(),
-                baseEndpoint.getId(),
-                baseEndpoint.getName(),
-                EndpointType.DECONZ);
+                baseEndpoint.toString(), baseEndpoint.getId(), baseEndpoint.getName(), EndpointType.DECONZ);
     }
 
     @NonNull

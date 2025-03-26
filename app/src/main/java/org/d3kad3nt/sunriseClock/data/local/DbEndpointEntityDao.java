@@ -6,21 +6,19 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Transaction;
 import androidx.room.Update;
-
 import org.d3kad3nt.sunriseClock.data.model.DbEndpointEntity;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public interface DbEndpointEntityDao<T extends DbEndpointEntity> {
 
     /**
-     * Insert an endpoint entity (e.g. group or light) into the database (create) or update existing
-     * entity.
-     * <li>Case 1: Insert if neither id (primary key) nor (endpointId and endpointEntityId, the
-     *     composite primary key) are found inside the database.
-     * <li>Case 2: Update if id (primary key) is given in the object. An entity with this id must
-     *     already exist inside the database.
-     * <li>Case 3: Update if endpointId and endpointEntityId are given in the object. An entity with
-     *     this endpointId and endpointEntityId must already exist inside the database.
+     * Insert an endpoint entity (e.g. group or light) into the database (create) or update existing entity.
+     * <li>Case 1: Insert if neither id (primary key) nor (endpointId and endpointEntityId, the composite primary key)
+     *     are found inside the database.
+     * <li>Case 2: Update if id (primary key) is given in the object. An entity with this id must already exist inside
+     *     the database.
+     * <li>Case 3: Update if endpointId and endpointEntityId are given in the object. An entity with this endpointId and
+     *     endpointEntityId must already exist inside the database.
      *
      * @param dbEndpointEntity The endpoint entity with the id OR (endpointId (see
      *     {@link DbEndpointEntity#getEndpointId()}) and endpointEntityId (see
@@ -92,43 +90,40 @@ public interface DbEndpointEntityDao<T extends DbEndpointEntity> {
                     dbEndpointEntity.getTABLENAME(), pk);
             return pk;
         } else {
-            LogUtil.w(
-                    "Neither id nor (endpointId and endpointEntityId) were set. No update or insert could be "
-                            + "performed by room!");
+            LogUtil.w("Neither id nor (endpointId and endpointEntityId) were set. No update or insert could be "
+                    + "performed by room!");
             return 0;
         }
     }
 
     /**
-     * Use endpointId and endpointEntityId for manual SQL update statement. Overwritten by DAO
-     * interfaces.
+     * Use endpointId and endpointEntityId for manual SQL update statement. Overwritten by DAO interfaces.
      *
-     * @param dbEndpointEntity The endpoint entity with the endpointId (see
-     *     {@link DbEndpointEntity#getEndpointId()}) and endpointEntityId (see
-     *     {@link DbEndpointEntity#getEndpointEntityId()}) set.
+     * @param dbEndpointEntity The endpoint entity with the endpointId (see {@link DbEndpointEntity#getEndpointId()})
+     *     and endpointEntityId (see {@link DbEndpointEntity#getEndpointEntityId()}) set.
      * @return Number of rows that were updated successfully.
      */
     int updateUsingEndpointIdAndEndpointEntityId(@NonNull T dbEndpointEntity);
 
     /**
-     * Get the primary key (id) for the dbEndpointEntity identified by the given composite key
-     * (endpointId and endpointEntityId). Overwritten by DAO interfaces.
+     * Get the primary key (id) for the dbEndpointEntity identified by the given composite key (endpointId and
+     * endpointEntityId). Overwritten by DAO interfaces.
      *
      * @param endpointId See {@link DbEndpointEntity#getEndpointId()}.
      * @param endpointEntityId See {@link DbEndpointEntity#getEndpointEntityId()}.
-     * @return The primary key for the dbEndpointEntity identified by the given composite key. 0 if
-     *     the primary could not be found.
+     * @return The primary key for the dbEndpointEntity identified by the given composite key. 0 if the primary could
+     *     not be found.
      */
     long getIdForEndpointIdAndEndpointEntityId(long endpointId, String endpointEntityId);
 
     /**
-     * Insert the entity into the database. If there is a conflict on insert, the entity is not
-     * inserted and a special value is returned.
+     * Insert the entity into the database. If there is a conflict on insert, the entity is not inserted and a special
+     * value is returned.
      *
-     * @param dbEndpointEntity The endpoint entity with the {@link DbEndpointEntity#getEndpointId()}
-     *     and {@link DbEndpointEntity#getEndpointEntityId()} set.
-     * @return -1 for rows that are not inserted (will ignore the row if there is a conflict), else
-     *     the row id for the newly inserted item.
+     * @param dbEndpointEntity The endpoint entity with the {@link DbEndpointEntity#getEndpointId()} and
+     *     {@link DbEndpointEntity#getEndpointEntityId()} set.
+     * @return -1 for rows that are not inserted (will ignore the row if there is a conflict), else the row id for the
+     *     newly inserted item.
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     // An Insert DAO method that returns the inserted rows ids will return -1 for rows that are not
@@ -137,9 +132,8 @@ public interface DbEndpointEntityDao<T extends DbEndpointEntity> {
     long save(T dbEndpointEntity);
 
     /**
-     * Use primary key (id) for SQL update. Room uses the primary key to match passed entity
-     * instances to rows in the database. If there is no row with the same primary key, Room makes
-     * no changes.
+     * Use primary key (id) for SQL update. Room uses the primary key to match passed entity instances to rows in the
+     * database. If there is no row with the same primary key, Room makes no changes.
      *
      * @param dbEndpointEntity The dbEndpointEntity with the primary key set.
      * @return Number of rows that were updated successfully.

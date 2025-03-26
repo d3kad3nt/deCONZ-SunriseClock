@@ -6,12 +6,10 @@ import androidx.room.Dao;
 import androidx.room.Query;
 import androidx.room.RoomWarnings;
 import androidx.room.Transaction;
-
-import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
-import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
-
 import java.util.List;
 import java.util.Map;
+import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
+import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 
 @Dao
 public interface DbLightDao extends DbEndpointEntityDao<DbLight> {

@@ -7,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +18,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.ListItem;
 import org.d3kad3nt.sunriseClock.data.model.group.UIGroup;
@@ -29,13 +31,7 @@ import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-public class LightsFragment extends Fragment
-        implements LightsListAdapter.ClickListeners, MenuProvider {
+public class LightsFragment extends Fragment implements LightsListAdapter.ClickListeners, MenuProvider {
 
     private final LightsState lightsState = new LightsState();
     private LightsFragmentBinding binding;
@@ -44,9 +40,7 @@ public class LightsFragment extends Fragment
 
     @Override
     public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+            @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         LogUtil.d("Show light list view");
         viewModel = new ViewModelProvider(requireActivity()).get(LightsViewModel.class);
 
@@ -60,8 +54,7 @@ public class LightsFragment extends Fragment
         viewModel.getGroupsWithLights().observe(getViewLifecycleOwner(), new Observer<>() {
             @Override
             public void onChanged(final Resource<Map<UIGroup, List<UILight>>> mapResource) {
-                if (mapResource.getStatus().equals(Status.SUCCESS)
-                        && mapResource.getData() != null) {
+                if (mapResource.getStatus().equals(Status.SUCCESS) && mapResource.getData() != null) {
                     LogUtil.i("Lights in list updated");
                     lightsState.clearError();
 
@@ -76,9 +69,7 @@ public class LightsFragment extends Fragment
                     adapter.submitList(flatList);
                 } else if (mapResource.getStatus().equals(Status.ERROR)) {
                     LogUtil.i("No Lights found");
-                    lightsState.setError(
-                            getResources().getString(R.string.noLights_title),
-                            mapResource.getMessage());
+                    lightsState.setError(getResources().getString(R.string.noLights_title), mapResource.getMessage());
                     adapter.submitList(List.of());
                 }
             }
@@ -101,12 +92,10 @@ public class LightsFragment extends Fragment
         // screens that are
         // not hierarchically related to each other and may each have their own set of related
         // destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                        R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment)
-                .build();
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
 
-        NavigationUI.setupWithNavController(
-                binding.lightsToolbar, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(binding.lightsToolbar, navController, appBarConfiguration);
 
         binding.setViewModel(viewModel);
         // Specify the fragment view as the lifecycle owner of the binding. This is used so that the
@@ -135,9 +124,7 @@ public class LightsFragment extends Fragment
 
     @Override
     public void onLightSliderTouch(
-            final long lightId,
-            @IntRange(from = 0, to = 100) final int brightness,
-            final boolean state) {
+            final long lightId, @IntRange(from = 0, to = 100) final int brightness, final boolean state) {
         viewModel.setLightBrightness(lightId, brightness, state);
     }
 

@@ -1,15 +1,13 @@
 package org.d3kad3nt.sunriseClock.data.model.group;
 
 import androidx.annotation.NonNull;
-
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.d3kad3nt.sunriseClock.data.model.ListItemType;
 import org.d3kad3nt.sunriseClock.data.model.UIEndpointEntity;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class UIGroup extends UIEndpointEntity<UIGroup> {
 

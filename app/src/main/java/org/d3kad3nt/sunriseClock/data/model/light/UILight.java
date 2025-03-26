@@ -2,15 +2,13 @@ package org.d3kad3nt.sunriseClock.data.model.light;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
-
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.d3kad3nt.sunriseClock.data.model.ListItemType;
 import org.d3kad3nt.sunriseClock.data.model.UIEndpointEntity;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class UILight extends UIEndpointEntity<UILight> {
 
@@ -79,8 +77,7 @@ public class UILight extends UIEndpointEntity<UILight> {
         return dbLights.stream().map(dbLight -> from(dbLight)).collect(Collectors.toList());
     }
 
-    public static UILightChangePayload getSingleChangePayload(
-            @NonNull UILight oldItem, @NonNull UILight newItem) {
+    public static UILightChangePayload getSingleChangePayload(@NonNull UILight oldItem, @NonNull UILight newItem) {
         if (!Objects.equals(oldItem.getId(), newItem.getId())) {
             return new UILightChangePayload.LightId(newItem.getId());
         } else if (!Objects.equals(oldItem.getEndpointId(), newItem.getEndpointId())) {

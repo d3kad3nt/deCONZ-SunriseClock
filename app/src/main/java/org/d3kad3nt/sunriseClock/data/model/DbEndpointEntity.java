@@ -4,10 +4,8 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
-
-import org.d3kad3nt.sunriseClock.util.LogUtil;
-
 import java.util.Objects;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public abstract class DbEndpointEntity {
 
@@ -42,24 +40,23 @@ public abstract class DbEndpointEntity {
             this.endpointEntityId = endpointEntityId;
         } else {
             LogUtil.e("The given endpointEntityId string cannot be null or empty!");
-            throw new IllegalArgumentException(
-                    "The given endpointEntityId string cannot be null or empty!");
+            throw new IllegalArgumentException("The given endpointEntityId string cannot be null or empty!");
         }
 
         this.name = name;
     }
 
     /**
-     * @return Foreign key of the remote endpoint that this entity belongs to. Only one endpoint
-     *     object id (specific for that endpoint!) can exist for a single endpoint.
+     * @return Foreign key of the remote endpoint that this entity belongs to. Only one endpoint object id (specific for
+     *     that endpoint!) can exist for a single endpoint.
      */
     public long getEndpointId() {
         return endpointId;
     }
 
     /**
-     * This field enables the remote endpoint to identify the correct entity. A remote endpoint
-     * cannot work with the (auto-generated) id that we use internally.
+     * This field enables the remote endpoint to identify the correct entity. A remote endpoint cannot work with the
+     * (auto-generated) id that we use internally.
      *
      * @return Identifier for this entity as used by the remote endpoint.
      */
@@ -80,11 +77,10 @@ public abstract class DbEndpointEntity {
     }
 
     /**
-     * This setter has to be public for Room to be able to set the auto-generated id. It must not be
-     * used outside of Room!
+     * This setter has to be public for Room to be able to set the auto-generated id. It must not be used outside of
+     * Room!
      *
-     * @param id The auto-generated identifier of this group, not depending on the
-     *     (endpoint-specific) endpointGroupId.
+     * @param id The auto-generated identifier of this group, not depending on the (endpoint-specific) endpointGroupId.
      */
     public void setId(long id) {
         this.id = id;

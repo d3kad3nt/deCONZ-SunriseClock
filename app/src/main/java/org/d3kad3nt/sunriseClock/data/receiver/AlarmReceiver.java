@@ -6,10 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-
-import org.d3kad3nt.sunriseClock.util.LogUtil;
-
 import java.util.Objects;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -42,8 +40,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     private void removeObsoleteSchedules() {}
 
     /**
-     * Checks whether WiFi is enabled and device is connected to to a specific BSSID (from
-     * settings).
+     * Checks whether WiFi is enabled and device is connected to to a specific BSSID (from settings).
      *
      * @return True for device states matching the prerequisites.
      */

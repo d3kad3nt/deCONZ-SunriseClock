@@ -7,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
@@ -20,7 +19,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
@@ -34,11 +32,9 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
 
     @Override
     public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
-        long endpointID = EndpointDetailFragmentArgs.fromBundle(requireArguments())
-                .getEndpointID(); // id from navigation
+            @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        long endpointID =
+                EndpointDetailFragmentArgs.fromBundle(requireArguments()).getEndpointID(); // id from navigation
 
         LogUtil.setPrefix("EndpointID %d: ", endpointID);
         LogUtil.d("Show endpoint detail view");
@@ -53,18 +49,15 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
         // scoped to a navigation graph, enabling you to share UI-related data between the graph's
         // destinations.
         NavController navController = NavHostFragment.findNavController(this);
-        NavBackStackEntry backStackEntry =
-                navController.getBackStackEntry(R.id.nav_graph_endpoint_detail);
+        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_endpoint_detail);
 
         // Initialize viewModel with endpoint id and inject the endpoint and settings repository.
         // By injecting the repository, the viewModel no longer needs the Application or Context.
         MutableCreationExtras viewModelDependencies = new MutableCreationExtras();
         viewModelDependencies.set(
-                EndpointDetailViewModel.ENDPOINT_REPOSITORY_KEY,
-                EndpointRepository.getInstance(requireContext()));
+                EndpointDetailViewModel.ENDPOINT_REPOSITORY_KEY, EndpointRepository.getInstance(requireContext()));
         viewModelDependencies.set(
-                EndpointDetailViewModel.SETTINGS_REPOSITORY_KEY,
-                SettingsRepository.getInstance(requireContext()));
+                EndpointDetailViewModel.SETTINGS_REPOSITORY_KEY, SettingsRepository.getInstance(requireContext()));
         viewModelDependencies.set(EndpointDetailViewModel.ENDPOINT_ID_KEY, endpointID);
 
         // Use custom factory to initialize the viewModel (instead of using new
@@ -95,12 +88,10 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
         // screens that are
         // not hierarchically related to each other and may each have their own set of related
         // destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                        R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment)
-                .build();
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
 
-        NavigationUI.setupWithNavController(
-                binding.endpointDetailsToolbar, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(binding.endpointDetailsToolbar, navController, appBarConfiguration);
 
         binding.setViewModel(viewModel);
         // Specify the fragment view as the lifecycle owner of the binding. This is used so that the
@@ -124,16 +115,13 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
     @Override
     public boolean onMenuItemSelected(@NonNull final MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.menu_endpoint_details_info) {
-            LogUtil.d(
-                    "User requested to show endpoint info screen by clicking the toolbar menu option.");
+            LogUtil.d("User requested to show endpoint info screen by clicking the toolbar menu option.");
             Navigation.findNavController(binding.getRoot())
                     .navigate(
-                            EndpointDetailFragmentDirections
-                                    .actionEndpointDetailToEndpointDetailInfoDialogFragment());
+                            EndpointDetailFragmentDirections.actionEndpointDetailToEndpointDetailInfoDialogFragment());
             return true;
         } else if (menuItem.getItemId() == R.id.menu_endpoint_details_name_edit) {
-            LogUtil.d(
-                    "User requested to show endpoint name edit screen by clicking the toolbar menu option.");
+            LogUtil.d("User requested to show endpoint name edit screen by clicking the toolbar menu option.");
             Navigation.findNavController(binding.getRoot())
                     .navigate(
                             EndpointDetailFragmentDirections

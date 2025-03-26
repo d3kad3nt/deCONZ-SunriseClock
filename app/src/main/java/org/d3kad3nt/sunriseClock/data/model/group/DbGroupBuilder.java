@@ -16,9 +16,8 @@ public class DbGroupBuilder {
     }
 
     /**
-     * @param endpointId Foreign key (Room/SQLite) of the remote endpoint that this group belongs
-     *     to. Only one endpoint group id (specific for that endpoint!) can exist for a single
-     *     endpoint.
+     * @param endpointId Foreign key (Room/SQLite) of the remote endpoint that this group belongs to. Only one endpoint
+     *     group id (specific for that endpoint!) can exist for a single endpoint.
      */
     public DbGroupBuilder setEndpointId(long endpointId) {
         this.endpointId = endpointId;
@@ -26,8 +25,8 @@ public class DbGroupBuilder {
     }
 
     /**
-     * This field enables the remote endpoint to identify the correct group. A remote endpoint
-     * cannot work with the groupId.
+     * This field enables the remote endpoint to identify the correct group. A remote endpoint cannot work with the
+     * groupId.
      *
      * @param endpointGroupId Identifier for this group inside (!) the remote endpoint.
      */

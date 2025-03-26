@@ -1,9 +1,8 @@
 package org.d3kad3nt.sunriseClock.data.model.group;
 
-import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 
 public class RemoteGroupBuilder {
 

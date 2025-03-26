@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,16 +12,13 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.google.android.material.textfield.TextInputEditText;
-
+import java.util.HashMap;
+import java.util.Map;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddDeconzFragmentBinding;
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddFragmentBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class EndpointAddFragment extends Fragment {
 
@@ -35,9 +31,7 @@ public class EndpointAddFragment extends Fragment {
 
     @Override
     public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+            @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         LogUtil.d("Show add endpoint view");
 
         viewModel = new ViewModelProvider(requireActivity()).get(EndpointAddViewModel.class);
@@ -45,8 +39,8 @@ public class EndpointAddFragment extends Fragment {
         binding = EndpointAddFragmentBinding.inflate(inflater, container, false);
 
         // TODO select endpoint type
-        EndpointAddDeconzFragmentBinding deconzBinding = EndpointAddDeconzFragmentBinding.inflate(
-                inflater, binding.constraintLayoutSpecificEndpoint, true);
+        EndpointAddDeconzFragmentBinding deconzBinding =
+                EndpointAddDeconzFragmentBinding.inflate(inflater, binding.constraintLayoutSpecificEndpoint, true);
         addCreateEndpointListener(binding, deconzBinding);
 
         return binding.getRoot();
@@ -63,12 +57,10 @@ public class EndpointAddFragment extends Fragment {
         // screens that are
         // not hierarchically related to each other and may each have their own set of related
         // destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                        R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment)
-                .build();
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
 
-        NavigationUI.setupWithNavController(
-                binding.endpointAddToolbar, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(binding.endpointAddToolbar, navController, appBarConfiguration);
 
         // Specify the fragment view as the lifecycle owner of the binding. This is used so that the
         // binding can
@@ -86,8 +78,7 @@ public class EndpointAddFragment extends Fragment {
     // of XML and
     // carrying over the logic to the viewmodel)
     private void addCreateEndpointListener(
-            @NonNull EndpointAddFragmentBinding binding,
-            EndpointAddDeconzFragmentBinding specificBinding) {
+            @NonNull EndpointAddFragmentBinding binding, EndpointAddDeconzFragmentBinding specificBinding) {
         binding.createEndpoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,10 +7,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
-
-import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
-
 import java.util.List;
+import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
 
 @Dao
 public interface EndpointConfigDao {

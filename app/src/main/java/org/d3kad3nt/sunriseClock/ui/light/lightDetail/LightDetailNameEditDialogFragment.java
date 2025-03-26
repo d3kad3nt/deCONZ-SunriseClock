@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.databinding.LightDetailNameEditDialogFragmentBinding;
 import org.d3kad3nt.sunriseClock.ui.util.BaseDialogFragment;
@@ -44,8 +43,7 @@ public class LightDetailNameEditDialogFragment
         // detail
         // screens).
         NavController navController = NavHostFragment.findNavController(this);
-        NavBackStackEntry backStackEntry =
-                navController.getBackStackEntry(R.id.nav_graph_light_detail);
+        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_light_detail);
         return new ViewModelProvider(backStackEntry);
     }
 

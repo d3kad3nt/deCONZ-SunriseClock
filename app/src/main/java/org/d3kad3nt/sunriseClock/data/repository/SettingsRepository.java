@@ -2,20 +2,17 @@ package org.d3kad3nt.sunriseClock.data.repository;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Supplier;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.preference.PreferenceManager;
-
-import org.d3kad3nt.sunriseClock.util.LogUtil;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class SettingsRepository {
 
@@ -168,6 +165,5 @@ public class SettingsRepository {
     }
 
     record Listener<T>(
-            SharedPreferences.OnSharedPreferenceChangeListener listener,
-            MutableLiveData<Optional<T>> liveData) {}
+            SharedPreferences.OnSharedPreferenceChangeListener listener, MutableLiveData<Optional<T>> liveData) {}
 }

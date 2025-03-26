@@ -2,15 +2,12 @@ package org.d3kad3nt.sunriseClock.data.remote.deconz;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-
-import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
-
-import retrofit2.CallAdapter;
-import retrofit2.Retrofit;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
+import retrofit2.CallAdapter;
+import retrofit2.Retrofit;
 
 /**
  * Adapted from the official Google architecture-components github-sample app under
@@ -21,9 +18,7 @@ class LiveDataCallAdapterFactory extends CallAdapter.Factory {
 
     @Override
     public CallAdapter<?, ?> get(
-            @NonNull Type returnType,
-            @NonNull Annotation[] annotations,
-            @NonNull Retrofit retrofit) {
+            @NonNull Type returnType, @NonNull Annotation[] annotations, @NonNull Retrofit retrofit) {
         if (getRawType(returnType) != LiveData.class) {
             return null;
         }

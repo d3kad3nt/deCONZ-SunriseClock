@@ -1,14 +1,17 @@
 package org.d3kad3nt.sunriseClock.data.repository;
 
 import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.EndpointConfigDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
@@ -20,13 +23,6 @@ import org.d3kad3nt.sunriseClock.data.remote.common.EndpointBuilder;
 import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class EndpointRepository {
 

@@ -5,12 +5,10 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
-
+import java.util.Objects;
 import org.d3kad3nt.sunriseClock.data.model.DbEndpointEntity;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointConfig;
 import org.jetbrains.annotations.Contract;
-
-import java.util.Objects;
 
 @Entity(
         tableName = DbGroup.TABLENAME,
@@ -33,8 +31,8 @@ public class DbGroup extends DbEndpointEntity {
     public static final String TABLENAME = "group";
 
     /**
-     * Create a new entity that represents a group in the app's Room database. This constructor has
-     * to be public for Room to be able to create an object. This should not be otherwise accessed!
+     * Create a new entity that represents a group in the app's Room database. This constructor has to be public for
+     * Room to be able to create an object. This should not be otherwise accessed!
      */
     public DbGroup(long endpointId, String endpointEntityId, String name) {
         super(endpointId, endpointEntityId, name);

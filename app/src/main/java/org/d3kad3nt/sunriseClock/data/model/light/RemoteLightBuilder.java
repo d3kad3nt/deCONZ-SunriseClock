@@ -30,9 +30,8 @@ public class RemoteLightBuilder {
 
     public RemoteLight build() {
         if (endpointType == null) {
-            throw new IllegalStateException(
-                    "RemoteLightBuilder cannot build this light without an endpoint type! "
-                            + "Check remote light" + " parsing logic.");
+            throw new IllegalStateException("RemoteLightBuilder cannot build this light without an endpoint type! "
+                    + "Check remote light" + " parsing logic.");
         }
         return new RemoteLight(
                 endpointType,

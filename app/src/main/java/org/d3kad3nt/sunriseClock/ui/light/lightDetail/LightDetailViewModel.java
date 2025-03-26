@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.light.lightDetail;
 
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -10,9 +9,8 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.CreationExtras;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
-
+import java.util.Objects;
 import kotlin.jvm.functions.Function1;
-
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
@@ -24,12 +22,9 @@ import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
-import java.util.Objects;
-
 public class LightDetailViewModel extends ViewModel {
 
-    public static final CreationExtras.Key<LightRepository> LIGHT_REPOSITORY_KEY =
-            new CreationExtras.Key<>() {};
+    public static final CreationExtras.Key<LightRepository> LIGHT_REPOSITORY_KEY = new CreationExtras.Key<>() {};
     public static final CreationExtras.Key<Long> LIGHT_ID_KEY = new CreationExtras.Key<>() {};
 
     static final ViewModelInitializer<LightDetailViewModel> initializer =
@@ -52,8 +47,8 @@ public class LightDetailViewModel extends ViewModel {
     public MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
 
     /**
-     * Text that is shown in the light rename dialog. The user types the desired new name into a
-     * text field backed by this LiveData.
+     * Text that is shown in the light rename dialog. The user types the desired new name into a text field backed by
+     * this LiveData.
      */
     public MutableLiveData<String> lightNameEditText = new MutableLiveData<>();
 
@@ -78,13 +73,12 @@ public class LightDetailViewModel extends ViewModel {
 
         // If the light name changes upstream, we update the name that the user is getting shown in
         // the rename dialog.
-        lightNameEditText =
-                (MutableLiveData<String>) Transformations.map(light, uiLightResource -> {
-                    if (uiLightResource.getStatus() == Status.SUCCESS) {
-                        return uiLightResource.getData().getName();
-                    }
-                    return "";
-                });
+        lightNameEditText = (MutableLiveData<String>) Transformations.map(light, uiLightResource -> {
+            if (uiLightResource.getStatus() == Status.SUCCESS) {
+                return uiLightResource.getData().getName();
+            }
+            return "";
+        });
     }
 
     public void refreshLight() {
@@ -130,8 +124,7 @@ public class LightDetailViewModel extends ViewModel {
             // Enable the light if it was disabled.
             if (brightness > 0
                     && !(Objects.requireNonNull(light.getValue()).getData().getIsOn())) {
-                LogUtil.d(
-                        "The brightness was changed while the light was off. Turning on light...");
+                LogUtil.d("The brightness was changed while the light was off. Turning on light...");
                 setLightOnState(true);
             }
             LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightness);

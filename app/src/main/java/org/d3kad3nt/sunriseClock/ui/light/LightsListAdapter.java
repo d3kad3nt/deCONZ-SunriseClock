@@ -4,16 +4,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.slider.Slider;
-
+import java.util.List;
 import org.d3kad3nt.sunriseClock.data.model.ListItem;
 import org.d3kad3nt.sunriseClock.data.model.ListItemType;
 import org.d3kad3nt.sunriseClock.data.model.group.UIGroup;
@@ -21,8 +19,6 @@ import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.databinding.LightsListElementGroupBinding;
 import org.d3kad3nt.sunriseClock.databinding.LightsListElementLightBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
-
-import java.util.List;
 
 public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHolder> {
 
@@ -38,14 +34,12 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return switch (ListItemType.valueOf(viewType)) {
             case ListItemType.LIGHT ->
-                new LightViewHolder(LightsListElementLightBinding.inflate(
-                        LayoutInflater.from(parent.getContext()), parent, false));
+                new LightViewHolder(
+                        LightsListElementLightBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
             case ListItemType.GROUP ->
-                new GroupViewHolder(LightsListElementGroupBinding.inflate(
-                        LayoutInflater.from(parent.getContext()), parent, false));
-            default ->
-                throw new IllegalStateException(
-                        "Unexpected value: " + ListItemType.valueOf(viewType));
+                new GroupViewHolder(
+                        LightsListElementGroupBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+            default -> throw new IllegalStateException("Unexpected value: " + ListItemType.valueOf(viewType));
         };
     }
 
@@ -80,19 +74,14 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
     // animation for updates.
     @Override
     public void onBindViewHolder(
-            @NonNull final RecyclerView.ViewHolder holder,
-            final int position,
-            @NonNull final List<Object> payloads) {
+            @NonNull final RecyclerView.ViewHolder holder, final int position, @NonNull final List<Object> payloads) {
         boolean successfulPartialBind =
                 switch (getType(position)) {
                     case ListItemType.LIGHT ->
-                        onPartialBindLightViewHolder(
-                                (LightViewHolder) holder, (UILight) getItem(position), payloads);
+                        onPartialBindLightViewHolder((LightViewHolder) holder, (UILight) getItem(position), payloads);
                     case ListItemType.GROUP ->
-                        onPartialBindGroupViewHolder(
-                                (GroupViewHolder) holder, (UIGroup) getItem(position), payloads);
-                    default ->
-                        throw new IllegalStateException("Unexpected value: " + getType(position));
+                        onPartialBindGroupViewHolder((GroupViewHolder) holder, (UIGroup) getItem(position), payloads);
+                    default -> throw new IllegalStateException("Unexpected value: " + getType(position));
                 };
         if (!successfulPartialBind) {
             onBindViewHolder(holder, position);
@@ -111,27 +100,17 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
     }
 
     private boolean onPartialBindLightViewHolder(
-            @NonNull final LightViewHolder holder,
-            final UILight light,
-            @NonNull List<Object> payloads) {
+            @NonNull final LightViewHolder holder, final UILight light, @NonNull List<Object> payloads) {
         if (!payloads.isEmpty()) {
-            LogUtil.d(
-                    "Triggering partial instead of full rebind of light data for lightId %d.",
-                    light.getId());
+            LogUtil.d("Triggering partial instead of full rebind of light data for lightId %d.", light.getId());
             if (payloads.get(0) instanceof final UILight.UILightChangePayload.LightOn lightState) {
-                LogUtil.v(
-                        "Triggering partial rebind of light isOn state for lightId %d.",
-                        light.getId());
+                LogUtil.v("Triggering partial rebind of light isOn state for lightId %d.", light.getId());
                 holder.bindIsOn(lightState.isOn);
-            } else if (payloads.get(0)
-                    instanceof final UILight.UILightChangePayload.LightBrightness lightState) {
-                LogUtil.v(
-                        "Triggering partial rebind of light brightness for lightId %d.",
-                        light.getId());
+            } else if (payloads.get(0) instanceof final UILight.UILightChangePayload.LightBrightness lightState) {
+                LogUtil.v("Triggering partial rebind of light brightness for lightId %d.", light.getId());
                 holder.bindBrightness(lightState.brightness);
             } else {
-                LogUtil.w(
-                        "Requested partial rebind of light data but updating this field is not yet implemented.");
+                LogUtil.w("Requested partial rebind of light data but updating this field is not yet implemented.");
             }
             holder.binding.executePendingBindings();
             return true;
@@ -143,13 +122,9 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
     }
 
     private boolean onPartialBindGroupViewHolder(
-            @NonNull final GroupViewHolder holder,
-            final UIGroup group,
-            @NonNull List<Object> payloads) {
+            @NonNull final GroupViewHolder holder, final UIGroup group, @NonNull List<Object> payloads) {
         if (!payloads.isEmpty()) {
-            LogUtil.d(
-                    "Triggering partial instead of full rebind of group data for groupId %d.",
-                    group.getId());
+            LogUtil.d("Triggering partial instead of full rebind of group data for groupId %d.", group.getId());
             // Todo: Implement change payload for groups when adding additional attributes.
             holder.binding.executePendingBindings();
             return true;
@@ -180,15 +155,14 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
         void onLightSwitchCheckedChange(long lightId, boolean state);
 
         /**
-         * Changes the brightness of the light, identified by the given lightId. If the light is not
-         * already on, it should be turned on before changing the brightness level.
+         * Changes the brightness of the light, identified by the given lightId. If the light is not already on, it
+         * should be turned on before changing the brightness level.
          *
          * @param lightId The unique identifier for this light.
          * @param brightness Desired light brightness, ranging from 0 (lowest) to 100 (highest).
          * @param state Whether the light is on (true) or off (false).
          */
-        void onLightSliderTouch(
-                long lightId, @IntRange(from = 0, to = 100) int brightness, boolean state);
+        void onLightSliderTouch(long lightId, @IntRange(from = 0, to = 100) int brightness, boolean state);
 
         /**
          * Navigates to the group detail screen, providing detailed information for this group.
@@ -202,10 +176,7 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
 
     static class DiffCallback extends DiffUtil.ItemCallback<ListItem> {
 
-        /**
-         * Used to determine structural changes between old and new list
-         * (additions/removals/position changes).
-         */
+        /** Used to determine structural changes between old and new list (additions/removals/position changes). */
         @Override
         public boolean areItemsTheSame(@NonNull ListItem oldItem, @NonNull ListItem newItem) {
             if (oldItem instanceof UILight oldLight && newItem instanceof UILight newLight) {
@@ -214,28 +185,23 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
                 return oldGroup.getId() == newGroup.getId();
             } else {
                 throw new IllegalStateException(String.format(
-                        "areItemsTheSame() does not support %s and %s.",
-                        oldItem.getType(), newItem.getType()));
+                        "areItemsTheSame() does not support %s and %s.", oldItem.getType(), newItem.getType()));
             }
         }
 
         /**
-         * Determines if the particular item was updated. Only called when
-         * {@link DiffCallback#areItemsTheSame} returned true.
+         * Determines if the particular item was updated. Only called when {@link DiffCallback#areItemsTheSame} returned
+         * true.
          */
         @Override
         public boolean areContentsTheSame(@NonNull ListItem oldItem, @NonNull ListItem newItem) {
             boolean result = oldItem.equals(newItem);
-            if (oldItem instanceof UILight oldLight
-                    && newItem instanceof UILight newLight
-                    && !result) {
+            if (oldItem instanceof UILight oldLight && newItem instanceof UILight newLight && !result) {
                 LogUtil.d(
                         "Recyclerview determined that light with lightId %d was changed and its LightViewHolder "
                                 + "content must be updated.",
                         oldLight.getId());
-            } else if (oldItem instanceof UIGroup oldGroup
-                    && newItem instanceof UIGroup newGroup
-                    && !result) {
+            } else if (oldItem instanceof UIGroup oldGroup && newItem instanceof UIGroup newGroup && !result) {
                 LogUtil.d(
                         "Recyclerview determined that group with groupId %d was changed and its GroupViewHolder "
                                 + "content must be updated.",
@@ -252,16 +218,14 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
          */
         @Nullable
         @Override
-        public Object getChangePayload(
-                @NonNull final ListItem oldItem, @NonNull final ListItem newItem) {
+        public Object getChangePayload(@NonNull final ListItem oldItem, @NonNull final ListItem newItem) {
             if (oldItem instanceof UILight oldLight && newItem instanceof UILight newLight) {
                 return UILight.getSingleChangePayload(oldLight, newLight);
             } else if (oldItem instanceof UIGroup oldGroup && newItem instanceof UIGroup newGroup) {
                 return UIGroup.getSingleChangePayload(oldGroup, newGroup);
             } else {
                 throw new IllegalStateException(String.format(
-                        "getChangePayload() does not support %s and %s.",
-                        oldItem.getType(), newItem.getType()));
+                        "getChangePayload() does not support %s and %s.", oldItem.getType(), newItem.getType()));
             }
         }
     }
@@ -328,8 +292,7 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
         public class SwitchCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {
 
             @Override
-            public void onCheckedChanged(
-                    final CompoundButton compoundButton, final boolean isChecked) {
+            public void onCheckedChanged(final CompoundButton compoundButton, final boolean isChecked) {
                 UILight light = (UILight) getItem(getAbsoluteAdapterPosition());
                 clickListeners.onLightSwitchCheckedChange(light.getId(), isChecked);
             }
@@ -345,8 +308,7 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
             @Override
             public void onStopTrackingTouch(@NonNull final Slider slider) {
                 UILight light = (UILight) getItem(getAbsoluteAdapterPosition());
-                clickListeners.onLightSliderTouch(
-                        light.getId(), (int) slider.getValue(), light.getIsOn());
+                clickListeners.onLightSliderTouch(light.getId(), (int) slider.getValue(), light.getIsOn());
             }
         }
     }

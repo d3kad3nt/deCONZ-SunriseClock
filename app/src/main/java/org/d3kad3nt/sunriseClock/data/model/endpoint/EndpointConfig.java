@@ -5,15 +5,12 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
-
 import com.google.gson.JsonObject;
-
+import java.util.Date;
+import java.util.Objects;
 import org.d3kad3nt.sunriseClock.data.local.typeconverter.DateTypeConverter;
 import org.d3kad3nt.sunriseClock.data.local.typeconverter.EndpointTypeConverter;
 import org.d3kad3nt.sunriseClock.data.local.typeconverter.JsonTypeConverter;
-
-import java.util.Date;
-import java.util.Objects;
 
 @Entity(tableName = EndpointConfig.TABLENAME)
 public class EndpointConfig {

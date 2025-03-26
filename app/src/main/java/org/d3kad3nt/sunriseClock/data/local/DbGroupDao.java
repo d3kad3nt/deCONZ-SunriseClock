@@ -6,12 +6,10 @@ import androidx.room.Dao;
 import androidx.room.Query;
 import androidx.room.RoomWarnings;
 import androidx.room.Transaction;
-
-import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
-import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
-
 import java.util.List;
 import java.util.Map;
+import org.d3kad3nt.sunriseClock.data.model.group.DbGroup;
+import org.d3kad3nt.sunriseClock.data.model.light.DbLight;
 
 @Dao
 public interface DbGroupDao extends DbEndpointEntityDao<DbGroup> {
@@ -35,8 +33,7 @@ public interface DbGroupDao extends DbEndpointEntityDao<DbGroup> {
 
     @Query("UPDATE '" + DbGroup.TABLENAME + "' SET name = :name WHERE endpoint_id = "
             + ":endpointId AND id_on_endpoint = :endpointGroupId")
-    int updateUsingEndpointIdAndEndpointGroupId(
-            long endpointId, String endpointGroupId, String name);
+    int updateUsingEndpointIdAndEndpointGroupId(long endpointId, String endpointGroupId, String name);
 
     @Query(value = "SELECT * FROM '" + DbGroup.TABLENAME + "' WHERE endpoint_id = :endpointId")
     LiveData<List<DbGroup>> loadAllForEndpoint(long endpointId);

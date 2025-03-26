@@ -2,14 +2,17 @@ package org.d3kad3nt.sunriseClock.ui.light;
 
 import android.app.Application;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import org.d3kad3nt.sunriseClock.data.model.group.UIGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
@@ -18,12 +21,6 @@ import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 
 public class LightsViewModel extends AndroidViewModel {
 
@@ -113,9 +110,7 @@ public class LightsViewModel extends AndroidViewModel {
     }
 
     public void setLightBrightness(long lightId, int brightness, final boolean onState) {
-        LogUtil.d(
-                "Slider for setLightBrightness for lightId %s was set to value %s.",
-                lightId, brightness);
+        LogUtil.d("Slider for setLightBrightness for lightId %s was set to value %s.", lightId, brightness);
         // Enable the light if it was disabled
         if (brightness > 0 && !onState) {
             lightRepository.setOnState(lightId, true);

@@ -3,7 +3,6 @@ package org.d3kad3nt.sunriseClock.data.repository;
 import androidx.annotation.MainThread;
 import androidx.annotation.WorkerThread;
 import androidx.lifecycle.LiveData;
-
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiEmptyResponse;
@@ -17,9 +16,7 @@ import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
 // Copied from the official Google architecture-components github-sample
 // (https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/repository/NetworkBoundResource.kt).
 
-/**
- * A generic class that can provide a resource backed by both the sqlite database and the network.
- */
+/** A generic class that can provide a resource backed by both the sqlite database and the network. */
 public abstract class NetworkBoundResource<ResultType, RemoteType, DbType>
         extends ExtendedMediatorLiveData<Resource<ResultType>> {
 
@@ -55,8 +52,7 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType>
         }
     }
 
-    private void endpointLiveDataObserver(
-            BaseEndpoint endpoint, LiveData<BaseEndpoint> endpointLiveData) {
+    private void endpointLiveDataObserver(BaseEndpoint endpoint, LiveData<BaseEndpoint> endpointLiveData) {
         if (endpoint == null) {
             updateValue(Resource.loading(null));
         } else {
@@ -78,8 +74,7 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType>
             Class<? extends ApiResponse> aClass = response.getClass();
             if (ApiSuccessResponse.class.equals(aClass)) {
                 ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
-                    saveResponseToDb(
-                            convertRemoteTypeToDbType((ApiSuccessResponse<RemoteType>) response));
+                    saveResponseToDb(convertRemoteTypeToDbType((ApiSuccessResponse<RemoteType>) response));
                     ServiceLocator.getExecutor(ExecutorType.MainThread).execute(() -> {
                         // we specially request a new live data,
                         // otherwise we will get immediately last cached value,
@@ -111,8 +106,7 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType>
     protected void onFetchFailed() {}
 
     /**
-     * Insert data into the database, for example by calling insert or update methods on Room's DAO
-     * classes:
+     * Insert data into the database, for example by calling insert or update methods on Room's DAO classes:
      *
      * <p>{@code dbLightDao.upsert(item);}
      */
@@ -129,8 +123,8 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType>
     protected abstract LiveData<DbType> loadFromDb();
 
     /**
-     * Load fresh data from the network, for example by calling methods on the endpoint (backed e.g.
-     * by Retrofit network requests):
+     * Load fresh data from the network, for example by calling methods on the endpoint (backed e.g. by Retrofit network
+     * requests):
      *
      * <p>{@code return endpoint.getLight(dbObject.getEndpointEntityId());}
      */
@@ -138,8 +132,7 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType>
     protected abstract LiveData<ApiResponse<RemoteType>> loadFromNetwork();
 
     /**
-     * Convert from database data transfer objects to the desired result type (e.g. for use in the
-     * GUI), for example:
+     * Convert from database data transfer objects to the desired result type (e.g. for use in the GUI), for example:
      *
      * <p>{@code return UILight.from(item);}
      *
@@ -148,8 +141,8 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType>
     protected abstract ResultType convertDbTypeToResultType(DbType item);
 
     /**
-     * Convert from remote (network) data transfer objects to a object suitable for database inserts
-     * or updates. This is given directly to {@link #saveResponseToDb(DbType)}. For example:
+     * Convert from remote (network) data transfer objects to a object suitable for database inserts or updates. This is
+     * given directly to {@link #saveResponseToDb(DbType)}. For example:
      *
      * <p>{@code return DbLight.from(response.getBody());}
      *

@@ -15,8 +15,7 @@ public enum EndpointType {
     private final int BRIGHTNESS_MIN;
     private final int BRIGHTNESS_MAX;
 
-    EndpointType(
-            int id, String name, EndpointBuilder builder, int brightnessMin, int brightnessMax) {
+    EndpointType(int id, String name, EndpointBuilder builder, int brightnessMin, int brightnessMax) {
         this.ID = id;
         this.BUILDER = builder;
         this.BRIGHTNESS_MIN = brightnessMin;

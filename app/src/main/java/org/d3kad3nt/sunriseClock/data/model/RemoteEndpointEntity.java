@@ -13,8 +13,7 @@ public abstract class RemoteEndpointEntity {
 
     private final String name;
 
-    public RemoteEndpointEntity(
-            EndpointType endpointType, long endpointId, String endpointEntityId, String name) {
+    public RemoteEndpointEntity(EndpointType endpointType, long endpointId, String endpointEntityId, String name) {
         this.endpointType = endpointType;
 
         if (endpointId != 0L) {
@@ -28,8 +27,7 @@ public abstract class RemoteEndpointEntity {
             this.endpointEntityId = endpointEntityId;
         } else {
             LogUtil.e("The given endpointEntityId string cannot be null or empty!");
-            throw new IllegalArgumentException(
-                    "The given endpointEntityId string cannot be null or empty!");
+            throw new IllegalArgumentException("The given endpointEntityId string cannot be null or empty!");
         }
 
         this.name = name;
@@ -41,8 +39,8 @@ public abstract class RemoteEndpointEntity {
     }
 
     /**
-     * @return Foreign key of the remote endpoint that this entity belongs to. Only one endpoint
-     *     object id (specific for that endpoint!) can exist for a single endpoint.
+     * @return Foreign key of the remote endpoint that this entity belongs to. Only one endpoint object id (specific for
+     *     that endpoint!) can exist for a single endpoint.
      */
     public long getEndpointId() {
         return endpointId;

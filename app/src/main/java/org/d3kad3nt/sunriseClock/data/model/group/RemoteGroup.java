@@ -1,13 +1,11 @@
 package org.d3kad3nt.sunriseClock.data.model.group;
 
 import androidx.annotation.NonNull;
-
+import java.util.List;
 import org.d3kad3nt.sunriseClock.data.model.RemoteEndpointEntity;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
-
-import java.util.List;
 
 public class RemoteGroup extends RemoteEndpointEntity {
 
