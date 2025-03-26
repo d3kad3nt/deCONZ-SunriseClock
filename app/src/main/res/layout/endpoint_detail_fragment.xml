@@ -6,9 +6,6 @@
         <variable
             name="viewModel"
             type="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailViewModel" />
-        <variable
-            name="onDeleteEndpointClickListener"
-            type="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailFragment.DeleteEndpointClickListener" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -54,17 +51,5 @@
             app:chipIconVisible="false"
             app:layout_constraintStart_toEndOf="@+id/label_endpointSelected"
             app:layout_constraintTop_toBottomOf="@+id/text_endpointType" />
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/deleteEndpoint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
-            android:contentDescription="@string/delete"
-            android:onClickListener="@{onDeleteEndpointClickListener}"
-            android:text="@string/delete"
-            app:icon="@drawable/delete_24px"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

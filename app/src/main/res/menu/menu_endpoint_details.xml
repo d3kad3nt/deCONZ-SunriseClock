@@ -11,4 +11,9 @@
         android:icon="@drawable/edit_24dp"
         android:title="@string/endpoint_rename"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_endpoint_details_delete"
+        android:icon="@drawable/delete_24px"
+        android:title="@string/delete"
+        app:showAsAction="ifRoom" />
 </menu>
