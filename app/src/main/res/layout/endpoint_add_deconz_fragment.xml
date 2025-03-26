@@ -37,6 +37,7 @@
             android:hint="@string/port"
             app:helperText="Format: 80"
             app:helperTextEnabled="true"
+            android:text="80"
             app:layout_constraintBottom_toTopOf="@id/editTextApikeyContainer"
             app:layout_constraintLeft_toRightOf="@id/guideline"
             app:layout_constraintRight_toRightOf="parent">
@@ -44,7 +45,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
-                android:tag="port" />
+                android:tag="port"
+                android:text="80" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editTextApikeyContainer"

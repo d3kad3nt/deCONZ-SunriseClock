@@ -56,7 +56,7 @@
     <string name="lights_title">All Lights</string>
     <string name="lightDetail_title">Light info</string>
     <string name="preferences_title">Preferences</string>
-    <string name="conectivity_settings_title">Conectivity</string>
+    <string name="conectivity_settings_title">Connectivity</string>
     <string name="alarm_settings_title">Alarm</string>
     <string name="debug_settings_title">Debug</string>
     <string name="interface_settings_title">Interface</string>
@@ -88,4 +88,5 @@
     <string name="endpointDetail_title">Endpoint info</string>
     <string name="light_on_action">On</string>
     <string name="light_off_action">Off</string>
+    <string name="delete">Delete</string>
 </resources>

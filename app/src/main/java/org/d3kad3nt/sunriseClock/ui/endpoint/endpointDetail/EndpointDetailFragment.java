@@ -78,6 +78,29 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
     }
 
     @Override
+    public boolean onMenuItemSelected(@NonNull final MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.menu_endpoint_details_info) {
+            LogUtil.d("User requested to show endpoint info screen by clicking the toolbar menu option.");
+            Navigation.findNavController(binding.getRoot())
+                .navigate(EndpointDetailFragmentDirections.actionEndpointDetailToEndpointDetailInfoDialogFragment());
+            return true;
+        } else if (menuItem.getItemId() == R.id.menu_endpoint_details_name_edit) {
+            LogUtil.d("User requested to show endpoint name edit screen by clicking the toolbar menu option.");
+            Navigation.findNavController(binding.getRoot()).navigate(
+                EndpointDetailFragmentDirections.actionEndpointDetailToEndpointDetailNameEditDialogFragment());
+            return true;
+        } else if (menuItem.getItemId() == R.id.menu_endpoint_details_delete) {
+            LogUtil.d("User requested deletion of endpoint");
+            if (viewModel.deleteEndpoint()) {
+                Navigation.findNavController(binding.getRoot()).navigateUp();
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         NavController navController = Navigation.findNavController(view);
 
@@ -107,23 +130,5 @@ public class EndpointDetailFragment extends Fragment implements MenuProvider {
         // XML menu resources do not support view or data binding: We have to use the R class.
         LogUtil.d("Adding menu options to the toolbar.");
         menuInflater.inflate(R.menu.menu_endpoint_details, menu);
-    }
-
-    @Override
-    public boolean onMenuItemSelected(@NonNull final MenuItem menuItem) {
-        if (menuItem.getItemId() == R.id.menu_endpoint_details_info) {
-            LogUtil.d("User requested to show endpoint info screen by clicking the toolbar menu option.");
-            Navigation.findNavController(binding.getRoot())
-                .navigate(EndpointDetailFragmentDirections.actionEndpointDetailToEndpointDetailInfoDialogFragment());
-            return true;
-        } else if (menuItem.getItemId() == R.id.menu_endpoint_details_name_edit) {
-            LogUtil.d("User requested to show endpoint name edit screen by clicking the toolbar menu option.");
-            Navigation.findNavController(binding.getRoot())
-                .navigate(
-                    EndpointDetailFragmentDirections.actionEndpointDetailToEndpointDetailNameEditDialogFragment());
-            return true;
-        } else {
-            return false;
-        }
     }
 }
