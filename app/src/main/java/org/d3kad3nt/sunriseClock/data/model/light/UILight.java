@@ -2,15 +2,13 @@ package org.d3kad3nt.sunriseClock.data.model.light;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
-
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.d3kad3nt.sunriseClock.data.model.ListItemType;
 import org.d3kad3nt.sunriseClock.data.model.UIEndpointEntity;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class UILight extends UIEndpointEntity<UILight> {
 
@@ -21,17 +19,24 @@ public class UILight extends UIEndpointEntity<UILight> {
     private final int brightness;
 
     private final boolean isTemperaturable;
-    //private final int colorTemperature; // Not yet implemented in the backend
+    // private final int colorTemperature; // Not yet implemented in the backend
 
     private final boolean isColorable;
-    //private final int color; // Not yet implemented in the backend
+    // private final int color; // Not yet implemented in the backend
 
     private final boolean isReachable;
 
-    private UILight(long lightId, long endpointId, String name, boolean isSwitchable, boolean isOn,
-                    boolean isDimmable, @IntRange(from = 0, to = 100) int brightness,
-                    boolean isTemperaturable/*, int colorTemperature*/, boolean isColorable/*, int color*/,
-                    boolean isReachable) {
+    private UILight(
+            long lightId,
+            long endpointId,
+            String name,
+            boolean isSwitchable,
+            boolean isOn,
+            boolean isDimmable,
+            @IntRange(from = 0, to = 100) int brightness,
+            boolean isTemperaturable /*, int colorTemperature*/,
+            boolean isColorable /*, int color*/,
+            boolean isReachable) {
         super(lightId, endpointId, name);
 
         this.isSwitchable = isSwitchable;
@@ -39,9 +44,9 @@ public class UILight extends UIEndpointEntity<UILight> {
         this.isDimmable = isDimmable;
         this.brightness = brightness;
         this.isTemperaturable = isTemperaturable;
-        //this.colorTemperature = colorTemperature;
+        // this.colorTemperature = colorTemperature;
         this.isColorable = isColorable;
-        //this.color = color;
+        // this.color = color;
         this.isReachable = isReachable;
     }
 
@@ -49,12 +54,20 @@ public class UILight extends UIEndpointEntity<UILight> {
     @Contract("_ -> new")
     public static UILight from(@NonNull DbLight dbLight) {
         // Place for conversion logic (if UI needs other data types or value ranges).
-        UILight uiLight =
-            new UILight(dbLight.getId(), dbLight.getEndpointId(), dbLight.getName(), dbLight.getIsSwitchable(),
-                dbLight.getIsOn(), dbLight.getIsDimmable(), dbLight.getBrightness(), dbLight.getIsTemperaturable(),
-                dbLight.getIsColorable(), dbLight.getIsReachable());
-        LogUtil.v("Converted DbLight with lightId %d (endpointId %d, endpointLightId %s) to UILight.",
-            dbLight.getId(), dbLight.getEndpointId(), dbLight.getEndpointEntityId());
+        UILight uiLight = new UILight(
+                dbLight.getId(),
+                dbLight.getEndpointId(),
+                dbLight.getName(),
+                dbLight.getIsSwitchable(),
+                dbLight.getIsOn(),
+                dbLight.getIsDimmable(),
+                dbLight.getBrightness(),
+                dbLight.getIsTemperaturable(),
+                dbLight.getIsColorable(),
+                dbLight.getIsReachable());
+        LogUtil.v(
+                "Converted DbLight with lightId %d (endpointId %d, endpointLightId %s) to UILight.",
+                dbLight.getId(), dbLight.getEndpointId(), dbLight.getEndpointEntityId());
         return uiLight;
     }
 
@@ -124,8 +137,15 @@ public class UILight extends UIEndpointEntity<UILight> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), isSwitchable, isOn, isDimmable, brightness, isTemperaturable,
-            isColorable, isReachable);
+        return Objects.hash(
+                super.hashCode(),
+                isSwitchable,
+                isOn,
+                isDimmable,
+                brightness,
+                isTemperaturable,
+                isColorable,
+                isReachable);
     }
 
     @Override
@@ -136,10 +156,14 @@ public class UILight extends UIEndpointEntity<UILight> {
         if (!(o instanceof final UILight uiLight)) {
             return false;
         }
-        return super.equals(o) && isSwitchable == uiLight.isSwitchable && isOn == uiLight.isOn &&
-            isDimmable == uiLight.isDimmable && brightness == uiLight.brightness &&
-            isTemperaturable == uiLight.isTemperaturable && isColorable == uiLight.isColorable &&
-            isReachable == uiLight.isReachable;
+        return super.equals(o)
+                && isSwitchable == uiLight.isSwitchable
+                && isOn == uiLight.isOn
+                && isDimmable == uiLight.isDimmable
+                && brightness == uiLight.brightness
+                && isTemperaturable == uiLight.isTemperaturable
+                && isColorable == uiLight.isColorable
+                && isReachable == uiLight.isReachable;
     }
 
     public interface UILightChangePayload {

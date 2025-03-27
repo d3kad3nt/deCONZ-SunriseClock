@@ -1,14 +1,11 @@
 package org.d3kad3nt.sunriseClock.ui;
 
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.databinding.ActivityMainBinding;
 
@@ -24,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         NavHostFragment navHostFragment =
-            (NavHostFragment) getSupportFragmentManager().findFragmentById(binding.mainNavHostFragment.getId());
+                (NavHostFragment) getSupportFragmentManager().findFragmentById(binding.mainNavHostFragment.getId());
 
         assert navHostFragment != null;
 

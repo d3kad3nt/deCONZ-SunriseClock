@@ -2,20 +2,17 @@ package org.d3kad3nt.sunriseClock.data.repository;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Supplier;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.preference.PreferenceManager;
-
-import org.d3kad3nt.sunriseClock.util.LogUtil;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class SettingsRepository {
 
@@ -80,9 +77,10 @@ public class SettingsRepository {
         }
     }
 
-    private <T> LiveData<Optional<T>> getObservableSetting(SettingKeys settingKeys,
-                                                           @NonNull Map<SettingKeys, Listener<T>> cache,
-                                                           @NonNull final Supplier<T> function) {
+    private <T> LiveData<Optional<T>> getObservableSetting(
+            SettingKeys settingKeys,
+            @NonNull Map<SettingKeys, Listener<T>> cache,
+            @NonNull final Supplier<T> function) {
         if (cache.containsKey(settingKeys)) {
             return Objects.requireNonNull(cache.get(settingKeys)).liveData();
         }
@@ -94,15 +92,15 @@ public class SettingsRepository {
         }
         MutableLiveData<Optional<T>> liveData = new MutableLiveData<>(initialValue);
         SharedPreferences.OnSharedPreferenceChangeListener listener =
-            new SharedPreferences.OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences,
-                                                      @Nullable final String key) {
-                    if (key != null && key.equals(settingKeys.toString())) {
-                        liveData.postValue(Optional.of(function.get()));
+                new SharedPreferences.OnSharedPreferenceChangeListener() {
+                    @Override
+                    public void onSharedPreferenceChanged(
+                            final SharedPreferences sharedPreferences, @Nullable final String key) {
+                        if (key != null && key.equals(settingKeys.toString())) {
+                            liveData.postValue(Optional.of(function.get()));
+                        }
                     }
-                }
-            };
+                };
         cache.put(settingKeys, new Listener<>(listener, liveData));
         preferences.registerOnSharedPreferenceChangeListener(listener);
         return liveData;
@@ -166,6 +164,6 @@ public class SettingsRepository {
         }
     }
 
-    record Listener <T>(SharedPreferences.OnSharedPreferenceChangeListener listener,
-                        MutableLiveData<Optional<T>> liveData) {}
+    record Listener<T>(
+            SharedPreferences.OnSharedPreferenceChangeListener listener, MutableLiveData<Optional<T>> liveData) {}
 }

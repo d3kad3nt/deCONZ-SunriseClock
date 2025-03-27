@@ -1,22 +1,22 @@
 package org.d3kad3nt.sunriseClock.ui.util;
 
 import android.view.View;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-
-import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
-
 import java.util.HashSet;
 import java.util.Set;
+import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 
 public class ResourceVisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Integer> {
 
     private final LiveData<Integer> initialVisibilityLivedata;
-    //This uses a raw instance of Resource because the real type is only known in addVisibilityProvider
+
+    // This uses a raw instance of Resource because the real type is only known in
+    // addVisibilityProvider
     @SuppressWarnings("rawtypes")
     private final Set<LiveData<? extends Resource>> loading = new HashSet<>();
+
     private Integer loadingVisibility = View.INVISIBLE;
     private Integer successVisibility = View.VISIBLE;
     private Integer errorVisibility = View.VISIBLE;

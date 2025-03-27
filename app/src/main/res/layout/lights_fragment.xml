@@ -26,7 +26,7 @@
                 android:id="@+id/lights_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:menu="@menu/menu_lights"/>
+                tools:menu="@menu/menu_lights" />
         </com.google.android.material.appbar.AppBarLayout>
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/light_loading"

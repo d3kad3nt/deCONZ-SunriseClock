@@ -3,7 +3,6 @@ package org.d3kad3nt.sunriseClock.data.model;
 import androidx.annotation.NonNull;
 
 public enum ListItemType {
-
     HEADER,
     GROUP,
     LIGHT,

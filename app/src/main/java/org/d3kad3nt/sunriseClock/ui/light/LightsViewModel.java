@@ -2,14 +2,17 @@ package org.d3kad3nt.sunriseClock.ui.light;
 
 import android.app.Application;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import org.d3kad3nt.sunriseClock.data.model.group.UIGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
@@ -19,39 +22,31 @@ import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-
 public class LightsViewModel extends AndroidViewModel {
 
     private final LightRepository lightRepository =
-        LightRepository.getInstance(getApplication().getApplicationContext());
+            LightRepository.getInstance(getApplication().getApplicationContext());
     private final SettingsRepository settingsRepository =
-        SettingsRepository.getInstance(getApplication().getApplicationContext());
+            SettingsRepository.getInstance(getApplication().getApplicationContext());
 
     private final LiveData<Optional<Long>> endpointId;
 
     private final LiveData<Resource<Map<UIGroup, List<UILight>>>> groupsWithLights;
 
-    /**
-     * Whether the loading indicator should be shown by the fragment.
-     */
+    /** Whether the loading indicator should be shown by the fragment. */
     public ResourceVisibilityLiveData loadingIndicatorVisibility;
 
-    /**
-     * Whether the loading indicator of the swipeRefreshLayout should be shown by the fragment.
-     */
+    /** Whether the loading indicator of the swipeRefreshLayout should be shown by the fragment. */
     public MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
 
     public LightsViewModel(@NonNull Application application) {
         super(application);
 
         // Todo: Integrate initial loading of lights.
-        loadingIndicatorVisibility = new ResourceVisibilityLiveData(View.INVISIBLE).setLoadingVisibility(View.VISIBLE)
-            .setSuccessVisibility(View.INVISIBLE).setErrorVisibility(View.INVISIBLE);
+        loadingIndicatorVisibility = new ResourceVisibilityLiveData(View.INVISIBLE)
+                .setLoadingVisibility(View.VISIBLE)
+                .setSuccessVisibility(View.INVISIBLE)
+                .setErrorVisibility(View.INVISIBLE);
 
         endpointId = settingsRepository.getActiveEndpointIdAsLivedata();
 
@@ -68,12 +63,14 @@ public class LightsViewModel extends AndroidViewModel {
         LogUtil.d("User requested refresh of all lights.");
         // Todo: Where to refresh group membership?
 
-        if (!endpointId.isInitialized() || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
+        if (!endpointId.isInitialized()
+                || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
             LogUtil.w("No active endpoint found.");
             return;
         }
 
-        LiveData<EmptyResource> state = lightRepository.refreshLightsForEndpoint(endpointId.getValue().get());
+        LiveData<EmptyResource> state =
+                lightRepository.refreshLightsForEndpoint(endpointId.getValue().get());
 
         swipeRefreshing.addSource(state, emptyResource -> {
             switch (emptyResource.getStatus()) {
@@ -92,11 +89,13 @@ public class LightsViewModel extends AndroidViewModel {
 
     public void toggleLightsOnState() {
         LogUtil.d("User requested all lights to be turned on or off.");
-        if (!endpointId.isInitialized() || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
+        if (!endpointId.isInitialized()
+                || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
             LogUtil.w("No active endpoint found.");
             return;
         }
-        LiveData<EmptyResource> state = lightRepository.toggleOnStateForEndpoint(endpointId.getValue().get());
+        LiveData<EmptyResource> state =
+                lightRepository.toggleOnStateForEndpoint(endpointId.getValue().get());
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 
@@ -112,7 +111,7 @@ public class LightsViewModel extends AndroidViewModel {
 
     public void setLightBrightness(long lightId, int brightness, final boolean onState) {
         LogUtil.d("Slider for setLightBrightness for lightId %s was set to value %s.", lightId, brightness);
-        //Enable the light if it was disabled
+        // Enable the light if it was disabled
         if (brightness > 0 && !onState) {
             lightRepository.setOnState(lightId, true);
         }
