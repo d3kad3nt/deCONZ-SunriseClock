@@ -42,8 +42,6 @@ android {
 }
 
 dependencies {
-    def room_version = '2.6.1'
-    def retrofit_version = '2.11.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -51,35 +49,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     implementation "androidx.lifecycle:lifecycle-common-java8:2.8.7"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7"
-
-    // Navigation component
-    implementation "androidx.navigation:navigation-fragment:$nav_version"
-    implementation "androidx.navigation:navigation-ui:$nav_version"
-    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
-
-    // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-
-    // Room
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
-
-    // GUI
-    implementation 'com.google.android.material:material:1.12.0'
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.2.1"
-    implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
-    implementation 'androidx.recyclerview:recyclerview:1.4.0'
-    implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.viewpager:viewpager:1.1.0"
-
-    // Appcompat
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation "androidx.legacy:legacy-support-v4:1.0.0"
-
-    // Preference
-    implementation 'androidx.preference:preference:1.2.1'
 
     // Tests
     androidTestImplementation 'androidx.test:runner:1.6.2'
