@@ -1,16 +1,13 @@
 package org.d3kad3nt.sunriseClock.ui.endpoint;
 
 import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
+import java.util.List;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
-
-import java.util.List;
 
 public class EndpointsViewModel extends AndroidViewModel {
 
@@ -20,7 +17,7 @@ public class EndpointsViewModel extends AndroidViewModel {
     public EndpointsViewModel(@NonNull Application application) {
         super(application);
         EndpointRepository endpointRepository =
-            EndpointRepository.getInstance(getApplication().getApplicationContext());
+                EndpointRepository.getInstance(getApplication().getApplicationContext());
         endpoints = endpointRepository.getAllEndpoints();
         settingsRepository = SettingsRepository.getInstance(application.getApplicationContext());
     }

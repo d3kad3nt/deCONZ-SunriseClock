@@ -1,9 +1,7 @@
 package org.d3kad3nt.sunriseClock.util;
 
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
-
 import java.util.List;
 import java.util.concurrent.Flow;
 

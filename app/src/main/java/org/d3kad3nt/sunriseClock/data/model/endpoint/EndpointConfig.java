@@ -5,34 +5,36 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
-
 import com.google.gson.JsonObject;
-
+import java.util.Date;
+import java.util.Objects;
 import org.d3kad3nt.sunriseClock.data.local.typeconverter.DateTypeConverter;
 import org.d3kad3nt.sunriseClock.data.local.typeconverter.EndpointTypeConverter;
 import org.d3kad3nt.sunriseClock.data.local.typeconverter.JsonTypeConverter;
-
-import java.util.Date;
-import java.util.Objects;
 
 @Entity(tableName = EndpointConfig.TABLENAME)
 public class EndpointConfig {
 
     public static final String TABLENAME = "endpoint";
-    //TODO: Maybe we have to use a separate library to handle timezones correctly.
+
+    // TODO: Maybe we have to use a separate library to handle timezones correctly.
     // Class LocalDateTime is timezone-sensitive, but is not supported until API level 26.
     @TypeConverters(DateTypeConverter.class)
     @ColumnInfo(name = "date_added")
     private final Date addedAt;
+
     @TypeConverters(JsonTypeConverter.class)
     @ColumnInfo(name = "config")
     private final JsonObject jsonConfig;
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "endpointId")
     public long id;
+
     @ColumnInfo(name = "type")
     @TypeConverters(EndpointTypeConverter.class)
     public EndpointType type;
+
     @SuppressWarnings("NotNullFieldNotInitialized")
     @ColumnInfo(name = "name", defaultValue = "Unnamed Endpoint")
     @NonNull

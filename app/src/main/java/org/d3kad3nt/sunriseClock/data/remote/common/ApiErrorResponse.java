@@ -1,6 +1,6 @@
 package org.d3kad3nt.sunriseClock.data.remote.common;
 
-public class ApiErrorResponse <T> extends ApiResponse<T> {
+public class ApiErrorResponse<T> extends ApiResponse<T> {
 
     private final String errorMessage;
 

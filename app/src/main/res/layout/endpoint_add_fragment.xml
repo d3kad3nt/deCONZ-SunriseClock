@@ -17,7 +17,7 @@
                 android:id="@+id/endpoint_add_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:title="@string/endpoint_add"/>
+                tools:title="@string/endpoint_add" />
         </com.google.android.material.appbar.AppBarLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/endpointNameContainer"

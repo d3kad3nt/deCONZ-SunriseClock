@@ -23,22 +23,29 @@ public class DbLightBuilder {
 
     private boolean isReachable = true;
 
-    /**
-     * Builder for constructing DbLights.
-     */
-    public DbLightBuilder() {
-
-    }
+    /** Builder for constructing DbLights. */
+    public DbLightBuilder() {}
 
     public DbLight build() {
         // Validator logic is defined inside the constructor of DbLight (separation of concern).
-        return new DbLight(endpointId, endpointLightId, name, isSwitchable, isOn, isDimmable, brightness,
-            isTemperaturable, colorTemperature, isColorable, color, isReachable);
+        return new DbLight(
+                endpointId,
+                endpointLightId,
+                name,
+                isSwitchable,
+                isOn,
+                isDimmable,
+                brightness,
+                isTemperaturable,
+                colorTemperature,
+                isColorable,
+                color,
+                isReachable);
     }
 
     /**
-     * @param endpointId Foreign key (Room/SQLite) of the remote endpoint that this light belongs to. Only one
-     *                   endpoint light id (specific for that endpoint!) can exist for a single endpoint.
+     * @param endpointId Foreign key (Room/SQLite) of the remote endpoint that this light belongs to. Only one endpoint
+     *     light id (specific for that endpoint!) can exist for a single endpoint.
      */
     public DbLightBuilder setEndpointId(long endpointId) {
         this.endpointId = endpointId;
@@ -56,9 +63,7 @@ public class DbLightBuilder {
         return this;
     }
 
-    /**
-     * @param name Name that can be used by the user to identify this light.
-     */
+    /** @param name Name that can be used by the user to identify this light. */
     public DbLightBuilder setName(String name) {
         this.name = name;
         return this;
@@ -66,24 +71,22 @@ public class DbLightBuilder {
 
     /**
      * @param isSwitchable Whether the light's capabilities allow it to be turned on and off (true if allowed by the
-     *                     device, false if not).
+     *     device, false if not).
      */
     public DbLightBuilder setIsSwitchable(boolean isSwitchable) {
         this.isSwitchable = isSwitchable;
         return this;
     }
 
-    /**
-     * @param isOn Whether the light is currently switched on (true) or off (false).
-     */
+    /** @param isOn Whether the light is currently switched on (true) or off (false). */
     public DbLightBuilder setIsOn(boolean isOn) {
         this.isOn = isOn;
         return this;
     }
 
     /**
-     * @param isDimmable Whether the light's capabilities allow it to be dimmed (true if allowed by the device, false
-     *                   if not).
+     * @param isDimmable Whether the light's capabilities allow it to be dimmed (true if allowed by the device, false if
+     *     not).
      */
     public DbLightBuilder setIsDimmable(boolean isDimmable) {
         this.isDimmable = isDimmable;
@@ -91,8 +94,8 @@ public class DbLightBuilder {
     }
 
     /**
-     * @param brightness The current brightness of the light, where 0 is the lowest brightness or off (depending on
-     *                   the light) and 100 is the highest brightness.
+     * @param brightness The current brightness of the light, where 0 is the lowest brightness or off (depending on the
+     *     light) and 100 is the highest brightness.
      */
     public DbLightBuilder setBrightness(@IntRange(from = 0, to = 100) int brightness) {
         this.brightness = brightness;
@@ -101,7 +104,7 @@ public class DbLightBuilder {
 
     /**
      * @param isTemperaturable Whether the light's capabilities allow its color temperature to be changed (true if
-     *                         allowed by the device, false if not).
+     *     allowed by the device, false if not).
      */
     public DbLightBuilder setIsTemperaturable(boolean isTemperaturable) {
         this.isTemperaturable = isTemperaturable;
@@ -115,8 +118,8 @@ public class DbLightBuilder {
     }
 
     /**
-     * @param isColorable Whether the light's capabilities allow its color to be changed (true if allowed by the
-     *                    device, false if not).
+     * @param isColorable Whether the light's capabilities allow its color to be changed (true if allowed by the device,
+     *     false if not).
      */
     public DbLightBuilder setIsColorable(boolean isColorable) {
         this.isColorable = isColorable;

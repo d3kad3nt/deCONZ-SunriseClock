@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:menu="@menu/menu_endpoint_details"
-                tools:title="@sample/sample.json/endpoints/name"/>
+                tools:title="@sample/sample.json/endpoints/name" />
         </com.google.android.material.appbar.AppBarLayout>
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/label_endpointType"

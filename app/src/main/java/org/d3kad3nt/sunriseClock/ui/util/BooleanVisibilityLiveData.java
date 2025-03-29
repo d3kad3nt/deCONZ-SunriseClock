@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.ui.util;
 
 import android.view.View;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
