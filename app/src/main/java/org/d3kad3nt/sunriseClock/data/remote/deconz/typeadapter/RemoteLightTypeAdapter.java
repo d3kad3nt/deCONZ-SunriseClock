@@ -84,8 +84,8 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
                     break;
                 default:
                     LogUtil.i(
-                        "Unknown colormode: %s.",
-                        rawJsonState.get("colormode").getAsString());
+                            "Unknown colormode: %s.",
+                            rawJsonState.get("colormode").getAsString());
             }
         }
 
