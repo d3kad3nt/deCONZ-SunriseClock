@@ -73,12 +73,19 @@ public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
                     remoteLightBuilder
                             .setIsTemperaturable(true)
                             .setColorTemperature(rawJsonState.get("ct").getAsInt());
+                    break;
                 case "xy":
                     remoteLightBuilder.setIsColorable(true);
-                // TODO: .setColor();
+                    // TODO: .setColor();
+                    break;
                 case "hs":
                     remoteLightBuilder.setIsColorable(true);
                     // TODO: .setColor();
+                    break;
+                default:
+                    LogUtil.i(
+                            "Unknown colormode: %s.",
+                            rawJsonState.get("colormode").getAsString());
             }
         }
 
