@@ -4,10 +4,8 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
-
-import org.d3kad3nt.sunriseClock.util.LogUtil;
-
 import java.util.Objects;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public abstract class DbEndpointEntity {
 
@@ -15,17 +13,19 @@ public abstract class DbEndpointEntity {
     private final long endpointId;
 
     @ColumnInfo(name = "id_on_endpoint")
-    @NonNull // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string).
+    @NonNull // Set SQLITE notNull attribute, for primitive types this is set automatically (but
+    // this is a string).
     private final String endpointEntityId;
 
-    @ColumnInfo(name = "name",
-        defaultValue = "No Name")
-    @NonNull // Set SQLITE notNull attribute, for primitive types this is set automatically (but this is a string).
+    @ColumnInfo(name = "name", defaultValue = "No Name")
+    @NonNull // Set SQLITE notNull attribute, for primitive types this is set automatically (but
+    // this is a string).
     private final String name;
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    private long id; // Cannot be final because Room must be able to set the groupId after it was auto-generated.
+    private long id; // Cannot be final because Room must be able to set the groupId after it was
+    // auto-generated.
 
     public DbEndpointEntity(long endpointId, String endpointEntityId, String name) {
 
@@ -47,8 +47,8 @@ public abstract class DbEndpointEntity {
     }
 
     /**
-     * @return Foreign key of the remote endpoint that this entity belongs to. Only one endpoint object id (specific
-     * for that endpoint!) can exist for a single endpoint.
+     * @return Foreign key of the remote endpoint that this entity belongs to. Only one endpoint object id (specific for
+     *     that endpoint!) can exist for a single endpoint.
      */
     public long getEndpointId() {
         return endpointId;
@@ -65,17 +65,13 @@ public abstract class DbEndpointEntity {
         return endpointEntityId;
     }
 
-    /**
-     * @return Name that can be used by the user to identify this object.
-     */
+    /** @return Name that can be used by the user to identify this object. */
     @NonNull
     public String getName() {
         return name;
     }
 
-    /**
-     * @return Auto-generated identifier for this object (inside the database).
-     */
+    /** @return Auto-generated identifier for this object (inside the database). */
     public long getId() {
         return id;
     }
@@ -84,17 +80,13 @@ public abstract class DbEndpointEntity {
      * This setter has to be public for Room to be able to set the auto-generated id. It must not be used outside of
      * Room!
      *
-     * @param id The auto-generated identifier of this group, not depending on the (endpoint-specific)
-     *           endpointGroupId.
+     * @param id The auto-generated identifier of this group, not depending on the (endpoint-specific) endpointGroupId.
      */
     public void setId(long id) {
         this.id = id;
     }
 
-    /**
-     * @return Name of the table containing these entities in the database.
-     * @noinspection SpellCheckingInspection
-     */
+    /** @return Name of the table containing these entities in the database. */
     public abstract String getTABLENAME();
 
     @Override
@@ -106,9 +98,10 @@ public abstract class DbEndpointEntity {
         if (!(o instanceof final DbEndpointEntity that)) {
             return false;
         }
-        return endpointId == that.endpointId && id == that.id &&
-            Objects.equals(endpointEntityId, that.endpointEntityId) &&
-            Objects.equals(name, that.name);
+        return endpointId == that.endpointId
+                && id == that.id
+                && Objects.equals(endpointEntityId, that.endpointEntityId)
+                && Objects.equals(name, that.name);
     }
 
     @Override

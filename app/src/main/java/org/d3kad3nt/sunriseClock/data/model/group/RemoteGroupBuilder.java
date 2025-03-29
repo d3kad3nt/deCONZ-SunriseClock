@@ -1,9 +1,8 @@
 package org.d3kad3nt.sunriseClock.data.model.group;
 
-import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 
 public class RemoteGroupBuilder {
 
@@ -16,18 +15,14 @@ public class RemoteGroupBuilder {
 
     private List<String> endpointLightIds = new ArrayList<>();
 
-    /**
-     * Builder for constructing RemoteGroups.
-     */
-    public RemoteGroupBuilder() {
-
-    }
+    /** Builder for constructing RemoteGroups. */
+    public RemoteGroupBuilder() {}
 
     public RemoteGroup build() {
         if (endpointType == null) {
             throw new IllegalStateException(
-                "RemoteLightBuilder cannot build this light without an endpoint type! Check remote light parsing " +
-                    "logic.");
+                    "RemoteLightBuilder cannot build this light without an endpoint type! Check remote light parsing "
+                            + "logic.");
         }
         return new RemoteGroup(endpointType, endpointId, endpointGroupId, name, endpointLightIds);
     }

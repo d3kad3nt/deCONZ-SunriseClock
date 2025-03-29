@@ -2,12 +2,9 @@ package org.d3kad3nt.sunriseClock.data.remote.deconz;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-
-import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
-
 import java.lang.reflect.Type;
 import java.util.concurrent.atomic.AtomicBoolean;
-
+import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Callback;
@@ -15,12 +12,12 @@ import retrofit2.Response;
 
 /**
  * A Retrofit adapter that converts the Call into a LiveData of ApiResponse.
- * <p>
- * Adapted from the official Google architecture-components github-sample app under
+ *
+ * <p>Adapted from the official Google architecture-components github-sample app under
  * https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com
  * /android/example/github/util/LiveDataCallAdapter.kt.
  */
-class LiveDataCallAdapter <T> implements CallAdapter<T, LiveData<ApiResponse<T>>> {
+class LiveDataCallAdapter<T> implements CallAdapter<T, LiveData<ApiResponse<T>>> {
 
     private final Type responseType;
 

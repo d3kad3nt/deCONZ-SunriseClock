@@ -1,10 +1,9 @@
 package org.d3kad3nt.sunriseClock.data.remote.common;
 
 import java.io.IOException;
-
 import retrofit2.Response;
 
-//TODO: Make this class more generic / usable for other endpoints (instead of only supporting
+// TODO: Make this class more generic / usable for other endpoints (instead of only supporting
 // retrofit's Response type). This could be achieved by shifting the logic to decide whether
 // a request was successful or not (Type ApiSuccessResponse or ApiErrorResponse) to the specific
 // endpoint. Deconz or MQTT endpoint should be able to implement this logic in their request or
@@ -12,12 +11,12 @@ import retrofit2.Response;
 
 /**
  * Common class used by API responses.
- * <p>
- * Adapted from the official Google architecture-components github-sample app under
+ *
+ * <p>Adapted from the official Google architecture-components github-sample app under
  * https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com
  * /android/example/github/api/ApiResponse.kt.
  */
-public abstract class ApiResponse <T> {
+public abstract class ApiResponse<T> {
 
     public static <T> ApiResponse<T> create(Throwable error) {
         if (error.getMessage() != null) {

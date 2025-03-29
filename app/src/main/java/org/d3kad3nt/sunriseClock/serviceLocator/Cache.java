@@ -3,7 +3,7 @@ package org.d3kad3nt.sunriseClock.serviceLocator;
 import java.util.HashMap;
 import java.util.Map;
 
-abstract class Cache <K, T> {
+abstract class Cache<K, T> {
 
     private final Map<K, T> instances = new HashMap<>();
 

@@ -1,7 +1,6 @@
 package org.d3kad3nt.sunriseClock.data.local.typeconverter;
 
 import androidx.room.TypeConverter;
-
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 
 public class EndpointTypeConverter {

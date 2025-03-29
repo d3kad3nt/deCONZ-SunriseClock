@@ -6,10 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-
-import org.d3kad3nt.sunriseClock.util.LogUtil;
-
 import java.util.Objects;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -32,16 +30,14 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         removeObsoleteSchedules();
         if (checkPrerequisites()) {
-            //Add Schedule
+            // Add Schedule
         }
     }
 
     /* TODO: Retrieve formerly used schedule ids (probably from local storage) to remove obsolete schedulues from
-        deconz.
+     * deconz.
      * Could use the new WorkManager from jetpack. */
-    private void removeObsoleteSchedules() {
-
-    }
+    private void removeObsoleteSchedules() {}
 
     /**
      * Checks whether WiFi is enabled and device is connected to to a specific BSSID (from settings).
@@ -54,7 +50,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             String bssid = wifiInfo.getBSSID();
             LogUtil.d("Currently connected to BSSID: %s", bssid);
-            //TODO: Only execute if in defined wifi connection (TODO: settings element).
+            // TODO: Only execute if in defined wifi connection (TODO: settings element).
             return true;
         } else {
             LogUtil.d("WiFi is not enabled.");

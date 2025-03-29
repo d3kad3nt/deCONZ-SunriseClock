@@ -1,14 +1,17 @@
 package org.d3kad3nt.sunriseClock.data.repository;
 
 import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.d3kad3nt.sunriseClock.data.local.AppDatabase;
 import org.d3kad3nt.sunriseClock.data.local.EndpointConfigDao;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.BaseEndpoint;
@@ -21,13 +24,6 @@ import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class EndpointRepository {
 
     private static final Map<Long, LiveData<BaseEndpoint>> endpointLiveDataCache = new HashMap<>();
@@ -35,7 +31,8 @@ public class EndpointRepository {
     private static volatile EndpointRepository INSTANCE;
 
     private EndpointRepository(Context context) {
-        endpointConfigDao = AppDatabase.getInstance(context.getApplicationContext()).endpointConfigDao();
+        endpointConfigDao =
+                AppDatabase.getInstance(context.getApplicationContext()).endpointConfigDao();
     }
 
     public static EndpointRepository getInstance(Context context) {
@@ -52,13 +49,13 @@ public class EndpointRepository {
     LiveData<BaseEndpoint> getRepoEndpoint(long id) {
         if (!endpointLiveDataCache.containsKey(id)) {
             LiveData<BaseEndpoint> endpointTransformation =
-                Transformations.switchMap(endpointConfigDao.load(id), input -> {
-                    if (input == null) {
-                        return new MutableLiveData<>();
-                    } else {
-                        return new MutableLiveData<>(createEndpoint(input));
-                    }
-                });
+                    Transformations.switchMap(endpointConfigDao.load(id), input -> {
+                        if (input == null) {
+                            return new MutableLiveData<>();
+                        } else {
+                            return new MutableLiveData<>(createEndpoint(input));
+                        }
+                    });
             endpointLiveDataCache.put(id, endpointTransformation);
         }
         return endpointLiveDataCache.get(id);
