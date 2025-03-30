@@ -33,21 +33,10 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
         implements MenuProvider {
 
     protected DataBindingT binding;
-    private final Optional<Integer> menuId;
 
     protected ViewModelT viewModel;
-    private final Optional<MenuHandler> menuHandler;
+    private Optional<MenuHandler> menuHandler = Optional.empty();
     private CommonToolbarBinding commonToolbarBinding;
-
-    protected BaseFragment() {
-        this.menuId = Optional.empty();
-        this.menuHandler = Optional.empty();
-    }
-
-    protected BaseFragment(int menuId, MenuHandler menuHandler) {
-        this.menuId = Optional.of(menuId);
-        this.menuHandler = Optional.of(menuHandler);
-    }
 
     @Nullable
     @Override
@@ -60,7 +49,9 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
         binding = getViewBinding();
         commonToolbarBinding = CommonToolbarBinding.bind(binding.getRoot());
 
-        if (menuId.isPresent() && menuHandler.isPresent()) {
+        this.menuHandler = Optional.ofNullable(bindMenu());
+
+        if (menuHandler.isPresent()) {
             // Initialize the options menu (toolbar menu).
             commonToolbarBinding.toolbar.addMenuProvider(this, getViewLifecycleOwner());
         }
@@ -68,6 +59,14 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
         viewModel = getViewModelProvider().get(getViewModelClass());
 
         return binding.getRoot();
+    }
+
+    /**
+     * Overwrite this Method, if a custom Menu should be defined
+     */
+    @Nullable
+    protected MenuHandler bindMenu() {
+        return null;
     }
 
     @Override
@@ -99,10 +98,10 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
 
     @Override
     public void onCreateMenu(@NonNull final Menu menu, @NonNull final MenuInflater menuInflater) {
-        if (menuId.isPresent()) {
+        if (menuHandler.isPresent()) {
             // XML menu resources do not support view or data binding: We have to use the R class.
             LogUtil.d("Adding menu options to the toolbar.");
-            menuInflater.inflate(menuId.get(), menu);
+            menuInflater.inflate(menuHandler.get().getMenuId(), menu);
         }
     }
 

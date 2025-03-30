@@ -2,13 +2,17 @@ package org.d3kad3nt.sunriseClock.ui.light;
 
 import android.view.MenuItem;
 import android.view.View;
-
 import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.model.ListItem;
 import org.d3kad3nt.sunriseClock.data.model.group.UIGroup;
@@ -20,20 +24,11 @@ import org.d3kad3nt.sunriseClock.ui.util.BaseFragment;
 import org.d3kad3nt.sunriseClock.ui.util.MenuHandler;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsViewModel>
         implements LightsListAdapter.ClickListeners, MenuHandler {
 
     private final LightsState lightsState = new LightsState();
     private LightsListAdapter adapter;
-
-    public LightsFragment() {
-        super(R.menu.menu_lights, this);
-    }
 
     @Override
     protected LightsFragmentBinding getViewBinding() {
@@ -111,8 +106,13 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
         LogUtil.d("Group card clicked.");
     }
 
+    @Nullable
     @Override
-    public boolean onMenuClicked(final MenuItem menuItem) {
+    protected MenuHandler bindMenu() {
+        return this;
+    }
+
+    public boolean onMenuClicked(@NonNull final MenuItem menuItem) {
         // The SwipeRefreshLayout does not provide accessibility events.
         // Instead, a menu item should be provided to allow refresh of the content wherever this
         // gesture is used.
@@ -122,5 +122,10 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int getMenuId() {
+        return R.menu.menu_lights;
     }
 }
