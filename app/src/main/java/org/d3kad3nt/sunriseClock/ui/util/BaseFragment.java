@@ -2,11 +2,15 @@ package org.d3kad3nt.sunriseClock.ui.util;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
@@ -17,16 +21,33 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.databinding.CommonToolbarBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewModelT extends ViewModel>
-        extends Fragment {
+import java.util.Optional;
+
+public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewModelT extends ViewModel> extends Fragment
+        implements MenuProvider {
 
     protected DataBindingT binding;
+    private final Optional<Integer> menuId;
+
     protected ViewModelT viewModel;
+    private final Optional<MenuHandler> menuHandler;
     private CommonToolbarBinding commonToolbarBinding;
+
+    protected BaseFragment() {
+        this.menuId = Optional.empty();
+        this.menuHandler = Optional.empty();
+    }
+
+    protected BaseFragment(int menuId, MenuHandler menuHandler) {
+        this.menuId = Optional.of(menuId);
+        this.menuHandler = Optional.of(menuHandler);
+    }
 
     @Nullable
     @Override
@@ -38,6 +59,11 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
 
         binding = getViewBinding();
         commonToolbarBinding = CommonToolbarBinding.bind(binding.getRoot());
+
+        if (menuId.isPresent() && menuHandler.isPresent()) {
+            // Initialize the options menu (toolbar menu).
+            commonToolbarBinding.toolbar.addMenuProvider(this, getViewLifecycleOwner());
+        }
 
         viewModel = getViewModelProvider().get(getViewModelClass());
 
@@ -67,8 +93,25 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
         binding = null;
     }
 
-    protected CommonToolbarBinding getToolbar() {
-        return commonToolbarBinding;
+    protected MaterialToolbar getToolbar() {
+        return commonToolbarBinding.toolbar;
+    }
+
+    @Override
+    public void onCreateMenu(@NonNull final Menu menu, @NonNull final MenuInflater menuInflater) {
+        if (menuId.isPresent()) {
+            // XML menu resources do not support view or data binding: We have to use the R class.
+            LogUtil.d("Adding menu options to the toolbar.");
+            menuInflater.inflate(menuId.get(), menu);
+        }
+    }
+
+    @Override
+    public boolean onMenuItemSelected(@NonNull final MenuItem menuItem) {
+        if (menuHandler.isPresent()) {
+            return menuHandler.get().onMenuClicked(menuItem);
+        }
+        return false;
     }
 
     protected abstract DataBindingT getViewBinding();

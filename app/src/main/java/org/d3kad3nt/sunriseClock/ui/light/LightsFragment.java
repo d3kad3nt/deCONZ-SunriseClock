@@ -1,13 +1,9 @@
 package org.d3kad3nt.sunriseClock.ui.light;
 
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.core.view.MenuProvider;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,6 +17,7 @@ import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
 import org.d3kad3nt.sunriseClock.ui.util.BaseFragment;
+import org.d3kad3nt.sunriseClock.ui.util.MenuHandler;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 import java.util.List;
@@ -28,13 +25,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsViewModel> implements LightsListAdapter.ClickListeners, MenuProvider {
+public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsViewModel>
+        implements LightsListAdapter.ClickListeners, MenuHandler {
 
     private final LightsState lightsState = new LightsState();
     private LightsListAdapter adapter;
 
-        // Initialize the options menu (toolbar menu).
-        //binding.lightsToolbar.addMenuProvider(this, getViewLifecycleOwner());
+    public LightsFragment() {
+        super(R.menu.menu_lights, this);
+    }
 
     @Override
     protected LightsFragmentBinding getViewBinding() {
@@ -53,7 +52,7 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
 
         adapter = new LightsListAdapter(this);
         binding.recyclerView.setAdapter(adapter);
-        viewModel.getGroupsWithLights().observe(getViewLifecycleOwner(), new Observer<>() {
+        viewModel.getGroupsWithLights().observe(getLifecycleOwner(), new Observer<>() {
             @Override
             public void onChanged(final Resource<Map<UIGroup, List<UILight>>> mapResource) {
                 if (mapResource.getStatus().equals(Status.SUCCESS) && mapResource.getData() != null) {
@@ -62,11 +61,11 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
 
                     // Use comparable interface in UIGroup (and then UIList) to sort the output.
                     List<ListItem> flatList = mapResource.getData().entrySet().stream()
-                        .sorted(Map.Entry.comparingByKey())
-                        .flatMap(entry -> Stream.concat(
-                            Stream.of(entry.getKey()),
-                            entry.getValue().stream().sorted()))
-                        .collect(Collectors.toUnmodifiableList());
+                            .sorted(Map.Entry.comparingByKey())
+                            .flatMap(entry -> Stream.concat(
+                                    Stream.of(entry.getKey()),
+                                    entry.getValue().stream().sorted()))
+                            .collect(Collectors.toUnmodifiableList());
 
                     adapter.submitList(flatList);
                 } else if (mapResource.getStatus().equals(Status.ERROR)) {
@@ -113,14 +112,7 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
     }
 
     @Override
-    public void onCreateMenu(@NonNull final Menu menu, @NonNull final MenuInflater menuInflater) {
-        // XML menu resources do not support view or data binding: We have to use the R class.
-        LogUtil.d("Adding menu options to the toolbar.");
-        menuInflater.inflate(R.menu.menu_lights, menu);
-    }
-
-    @Override
-    public boolean onMenuItemSelected(@NonNull final MenuItem menuItem) {
+    public boolean onMenuClicked(final MenuItem menuItem) {
         // The SwipeRefreshLayout does not provide accessibility events.
         // Instead, a menu item should be provided to allow refresh of the content wherever this
         // gesture is used.
