@@ -20,8 +20,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import org.d3kad3nt.sunriseClock.R;
-import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
-import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
+import org.d3kad3nt.sunriseClock.backend.data.repository.EndpointRepository;
+import org.d3kad3nt.sunriseClock.backend.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.databinding.EndpointDetailFragmentBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 

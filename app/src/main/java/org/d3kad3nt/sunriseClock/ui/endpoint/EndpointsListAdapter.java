@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
+import org.d3kad3nt.sunriseClock.backend.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.databinding.EndpointListElementBinding;
 
 public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsListAdapter.ViewHolder> {

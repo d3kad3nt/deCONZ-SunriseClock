@@ -21,7 +21,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.slider.Slider;
 import org.d3kad3nt.sunriseClock.R;
-import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
+import org.d3kad3nt.sunriseClock.backend.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.databinding.LightDetailFragmentBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 

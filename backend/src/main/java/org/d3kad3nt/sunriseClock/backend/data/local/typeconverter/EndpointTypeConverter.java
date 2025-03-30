@@ -1,0 +1,27 @@
+/*
+ * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+ */
+
+package org.d3kad3nt.sunriseClock.backend.data.local.typeconverter;
+
+import androidx.room.TypeConverter;
+import org.d3kad3nt.sunriseClock.backend.data.model.endpoint.EndpointType;
+
+public class EndpointTypeConverter {
+
+    @TypeConverter
+    public static EndpointType toType(int type) {
+
+        for (EndpointType t : EndpointType.values()) {
+            if (t.getId() == type) {
+                return t;
+            }
+        }
+        throw new IllegalArgumentException("No type in ENUM EndpointType for type id: " + type);
+    }
+
+    @TypeConverter
+    public static Integer toInteger(EndpointType type) {
+        return type.getId();
+    }
+}
