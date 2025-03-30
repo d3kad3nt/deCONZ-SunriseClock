@@ -108,7 +108,7 @@ spotless {
     java {
         target 'src/*/java/**/*.java'
         // Use the default importOrder configuration
-        // importOrder()
+        importOrder()
         removeUnusedImports()
         // apply a specific flavor of palantir-java-format
         leadingSpacesToTabs()

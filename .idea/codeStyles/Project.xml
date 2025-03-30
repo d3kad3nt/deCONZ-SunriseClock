@@ -20,6 +20,13 @@
       <option name="ANNOTATION_PARAMETER_WRAP" value="1" />
       <option name="ALIGN_MULTILINE_ANNOTATION_PARAMETERS" value="true" />
       <option name="NEW_LINE_WHEN_BODY_IS_PRESENTED" value="true" />
+      <option name="IMPORT_LAYOUT_TABLE">
+        <value>
+          <package name="" withSubpackages="true" static="true" />
+          <emptyLine />
+          <package name="" withSubpackages="true" static="false" />
+        </value>
+      </option>
       <option name="JD_ADD_BLANK_AFTER_RETURN" value="true" />
       <option name="JD_KEEP_INVALID_TAGS" value="false" />
       <option name="JD_PRESERVE_LINE_FEEDS" value="true" />
