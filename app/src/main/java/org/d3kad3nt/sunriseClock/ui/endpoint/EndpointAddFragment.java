@@ -18,7 +18,7 @@ import java.util.Map;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddDeconzFragmentBinding;
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddFragmentBinding;
-import org.d3kad3nt.sunriseclock.util.LogUtil;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class EndpointAddFragment extends Fragment {
 

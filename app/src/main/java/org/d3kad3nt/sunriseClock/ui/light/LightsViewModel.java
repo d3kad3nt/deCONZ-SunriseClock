@@ -20,7 +20,7 @@ import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
-import org.d3kad3nt.sunriseclock.util.LogUtil;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class LightsViewModel extends AndroidViewModel {
 

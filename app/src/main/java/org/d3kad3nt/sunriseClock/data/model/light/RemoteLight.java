@@ -3,7 +3,7 @@ package org.d3kad3nt.sunriseClock.data.model.light;
 import androidx.annotation.NonNull;
 import org.d3kad3nt.sunriseClock.data.model.RemoteEndpointEntity;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
-import org.d3kad3nt.sunriseclock.util.LogUtil;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
 public class RemoteLight extends RemoteEndpointEntity {

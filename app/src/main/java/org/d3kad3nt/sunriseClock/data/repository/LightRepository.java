@@ -28,8 +28,8 @@ import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
-import org.d3kad3nt.sunriseclock.util.Empty;
-import org.d3kad3nt.sunriseclock.util.LogUtil;
+import org.d3kad3nt.sunriseClock.util.Empty;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

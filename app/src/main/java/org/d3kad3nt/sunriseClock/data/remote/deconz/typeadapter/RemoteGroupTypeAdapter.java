@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 import org.d3kad3nt.sunriseClock.data.model.group.RemoteGroup;
 import org.d3kad3nt.sunriseClock.data.model.group.RemoteGroupBuilder;
-import org.d3kad3nt.sunriseclock.util.LogUtil;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class RemoteGroupTypeAdapter implements JsonDeserializer<RemoteGroup> {
 

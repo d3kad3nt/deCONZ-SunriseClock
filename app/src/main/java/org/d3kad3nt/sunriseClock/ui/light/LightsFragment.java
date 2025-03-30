@@ -29,7 +29,7 @@ import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
-import org.d3kad3nt.sunriseclock.util.LogUtil;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class LightsFragment extends Fragment implements LightsListAdapter.ClickListeners, MenuProvider {
 

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "org.d3kad3nt.sunriseclock.util"
+    namespace = "org.d3kad3nt.sunriseClock.util"
     compileSdk = 35
 
     defaultConfig {
@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    
+
     implementation("androidx.lifecycle:lifecycle-livedata:2.8.7")
 
     testImplementation("junit:junit:4.13.2")

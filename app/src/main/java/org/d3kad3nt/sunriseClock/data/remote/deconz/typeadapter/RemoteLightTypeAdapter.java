@@ -10,7 +10,7 @@ import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLightBuilder;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.IServices;
-import org.d3kad3nt.sunriseclock.util.LogUtil;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class RemoteLightTypeAdapter implements JsonDeserializer<RemoteLight> {
 

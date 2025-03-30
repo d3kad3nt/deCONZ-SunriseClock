@@ -2,7 +2,7 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-package org.d3kad3nt.sunriseclock.util;
+package org.d3kad3nt.sunriseClock.util;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;

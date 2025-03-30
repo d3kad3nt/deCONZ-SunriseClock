@@ -1,7 +1,7 @@
 package org.d3kad3nt.sunriseClock.data.model;
 
 import org.d3kad3nt.sunriseClock.data.model.endpoint.EndpointType;
-import org.d3kad3nt.sunriseclock.util.LogUtil;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public abstract class RemoteEndpointEntity {
 

@@ -23,7 +23,7 @@ import com.google.android.material.slider.Slider;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.databinding.LightDetailFragmentBinding;
-import org.d3kad3nt.sunriseclock.util.LogUtil;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class LightDetailFragment extends Fragment implements MenuProvider {
 
