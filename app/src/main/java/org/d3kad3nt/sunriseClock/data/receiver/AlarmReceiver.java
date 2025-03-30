@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import java.util.Objects;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
@@ -47,10 +46,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     private boolean checkPrerequisites() {
         WifiManager wifiManager = (WifiManager) this.context.getSystemService(Context.WIFI_SERVICE);
         if (wifiManager.isWifiEnabled()) {
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            String bssid = wifiInfo.getBSSID();
-            LogUtil.d("Currently connected to BSSID: %s", bssid);
-            // TODO: Only execute if in defined wifi connection (TODO: settings element).
             return true;
         } else {
             LogUtil.d("WiFi is not enabled.");
