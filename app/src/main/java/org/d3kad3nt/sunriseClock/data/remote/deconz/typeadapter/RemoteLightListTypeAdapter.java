@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.d3kad3nt.sunriseClock.data.model.light.RemoteLight;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.IServices;
-import org.d3kad3nt.sunriseClock.util.LogUtil;
+import org.d3kad3nt.sunriseclock.util.LogUtil;
 
 public class RemoteLightListTypeAdapter implements JsonDeserializer<List<RemoteLight>> {
 

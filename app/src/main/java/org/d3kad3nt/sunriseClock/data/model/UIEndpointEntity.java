@@ -4,7 +4,7 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import java.util.Locale;
 import java.util.Objects;
-import org.d3kad3nt.sunriseClock.util.LogUtil;
+import org.d3kad3nt.sunriseclock.util.LogUtil;
 
 public abstract class UIEndpointEntity<T extends UIEndpointEntity<T>> implements ListItem, Comparable<T> {
 

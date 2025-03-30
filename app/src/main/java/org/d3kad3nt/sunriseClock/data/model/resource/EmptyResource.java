@@ -2,7 +2,7 @@ package org.d3kad3nt.sunriseClock.data.model.resource;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import org.d3kad3nt.sunriseClock.util.Empty;
+import org.d3kad3nt.sunriseclock.util.Empty;
 
 public class EmptyResource extends Resource<Empty> {
 

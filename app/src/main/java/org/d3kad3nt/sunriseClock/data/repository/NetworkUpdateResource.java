@@ -9,7 +9,7 @@ import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiEmptyResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
-import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
+import org.d3kad3nt.sunriseclock.util.ExtendedMediatorLiveData;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class NetworkUpdateResource<ResultType, RemoteType, DbType>

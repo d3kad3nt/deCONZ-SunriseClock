@@ -11,7 +11,7 @@ import org.d3kad3nt.sunriseClock.data.remote.common.ApiResponse;
 import org.d3kad3nt.sunriseClock.data.remote.common.ApiSuccessResponse;
 import org.d3kad3nt.sunriseClock.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.serviceLocator.ServiceLocator;
-import org.d3kad3nt.sunriseClock.util.ExtendedMediatorLiveData;
+import org.d3kad3nt.sunriseclock.util.ExtendedMediatorLiveData;
 
 // Copied from the official Google architecture-components github-sample
 // (https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/repository/NetworkBoundResource.kt).

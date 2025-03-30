@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.d3kad3nt.sunriseClock.util.LogUtil;
+import org.d3kad3nt.sunriseclock.util.LogUtil;
 
 public class SettingsRepository {
 

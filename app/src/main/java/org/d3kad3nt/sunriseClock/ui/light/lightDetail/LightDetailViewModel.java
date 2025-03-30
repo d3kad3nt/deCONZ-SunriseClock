@@ -18,8 +18,8 @@ import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.ui.util.BooleanVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
-import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
-import org.d3kad3nt.sunriseClock.util.LogUtil;
+import org.d3kad3nt.sunriseclock.util.LiveDataUtil;
+import org.d3kad3nt.sunriseclock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
 public class LightDetailViewModel extends ViewModel {

@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Transaction;
 import androidx.room.Update;
 import org.d3kad3nt.sunriseClock.data.model.DbEndpointEntity;
-import org.d3kad3nt.sunriseClock.util.LogUtil;
+import org.d3kad3nt.sunriseclock.util.LogUtil;
 
 public interface DbEndpointEntityDao<T extends DbEndpointEntity> {
 

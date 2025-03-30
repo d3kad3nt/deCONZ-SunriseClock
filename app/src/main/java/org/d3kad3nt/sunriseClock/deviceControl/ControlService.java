@@ -34,10 +34,10 @@ import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
-import org.d3kad3nt.sunriseClock.util.AsyncJoin;
-import org.d3kad3nt.sunriseClock.util.ExtendedPublisher;
-import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
-import org.d3kad3nt.sunriseClock.util.LogUtil;
+import org.d3kad3nt.sunriseclock.util.AsyncJoin;
+import org.d3kad3nt.sunriseclock.util.ExtendedPublisher;
+import org.d3kad3nt.sunriseclock.util.LiveDataUtil;
+import org.d3kad3nt.sunriseclock.util.LogUtil;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class ControlService extends ControlsProviderService {

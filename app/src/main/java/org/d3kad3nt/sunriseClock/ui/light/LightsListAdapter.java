@@ -18,7 +18,7 @@ import org.d3kad3nt.sunriseClock.data.model.group.UIGroup;
 import org.d3kad3nt.sunriseClock.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.databinding.LightsListElementGroupBinding;
 import org.d3kad3nt.sunriseClock.databinding.LightsListElementLightBinding;
-import org.d3kad3nt.sunriseClock.util.LogUtil;
+import org.d3kad3nt.sunriseclock.util.LogUtil;
 
 public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHolder> {
 

@@ -28,7 +28,7 @@ import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.RemoteGroupListT
 import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.RemoteGroupTypeAdapter;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.RemoteLightListTypeAdapter;
 import org.d3kad3nt.sunriseClock.data.remote.deconz.typeadapter.RemoteLightTypeAdapter;
-import org.d3kad3nt.sunriseClock.util.LogUtil;
+import org.d3kad3nt.sunriseclock.util.LogUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 import retrofit2.Retrofit;

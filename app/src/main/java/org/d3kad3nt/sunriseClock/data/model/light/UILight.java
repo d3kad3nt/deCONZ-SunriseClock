@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.d3kad3nt.sunriseClock.data.model.ListItemType;
 import org.d3kad3nt.sunriseClock.data.model.UIEndpointEntity;
-import org.d3kad3nt.sunriseClock.util.LogUtil;
+import org.d3kad3nt.sunriseclock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
 public class UILight extends UIEndpointEntity<UILight> {

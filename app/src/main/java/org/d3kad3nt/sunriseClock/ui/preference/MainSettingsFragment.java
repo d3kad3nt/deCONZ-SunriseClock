@@ -7,7 +7,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Map;
 import java.util.Objects;
 import org.d3kad3nt.sunriseClock.R;
-import org.d3kad3nt.sunriseClock.util.LogUtil;
+import org.d3kad3nt.sunriseclock.util.LogUtil;
 
 public class MainSettingsFragment extends PreferenceFragmentCompat {
 
