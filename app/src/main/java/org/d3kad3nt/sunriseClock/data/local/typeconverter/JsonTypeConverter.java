@@ -13,6 +13,6 @@ public class JsonTypeConverter {
 
     @TypeConverter
     public JsonObject stringToJsonObject(String string) {
-        return new JsonParser().parse(string).getAsJsonObject();
+        return JsonParser.parseString(string).getAsJsonObject();
     }
 }
