@@ -6,78 +6,56 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.HashMap;
 import java.util.Map;
-import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddDeconzFragmentBinding;
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddFragmentBinding;
+import org.d3kad3nt.sunriseClock.ui.util.BaseFragment;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-public class EndpointAddFragment extends Fragment {
-
-    private EndpointAddFragmentBinding binding;
-    private EndpointAddViewModel viewModel;
-
-    public static EndpointAddFragment newInstance() {
-        return new EndpointAddFragment();
-    }
+public class EndpointAddFragment extends BaseFragment<EndpointAddFragmentBinding, EndpointAddViewModel> {
 
     @Override
-    public View onCreateView(
-            @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LogUtil.d("Show add endpoint view");
+    protected EndpointAddFragmentBinding getViewBinding(@NonNull final LayoutInflater inflater,
+                                                        @Nullable final ViewGroup container,
+                                                        @Nullable final Bundle savedInstanceState) {
+        EndpointAddFragmentBinding tmpBinding = EndpointAddFragmentBinding.inflate(inflater, container, false);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(EndpointAddViewModel.class);
-
-        binding = EndpointAddFragmentBinding.inflate(inflater, container, false);
-
-        // TODO select endpoint type
+        // TODO: select endpoint type. This whole binding section should be refactored. Maybe use separate screens
+        //  for every endpoint type instead of this dynamic binding.
         EndpointAddDeconzFragmentBinding deconzBinding =
-                EndpointAddDeconzFragmentBinding.inflate(inflater, binding.constraintLayoutSpecificEndpoint, true);
-        addCreateEndpointListener(binding, deconzBinding);
+            EndpointAddDeconzFragmentBinding.inflate(inflater, tmpBinding.constraintLayoutSpecificEndpoint, true);
 
-        return binding.getRoot();
+        return addCreateEndpointListener(tmpBinding, deconzBinding);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        NavController navController = Navigation.findNavController(view);
-
-        // In some cases, you might need to define multiple top-level destinations instead of using
-        // the default start
-        // destination.
-        // Using a BottomNavigationView is a common use case for this, where you may have sibling
-        // screens that are
-        // not hierarchically related to each other and may each have their own set of related
-        // destinations.
-        AppBarConfiguration appBarConfiguration =
-                new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
-
-        NavigationUI.setupWithNavController(binding.endpointAddToolbar, navController, appBarConfiguration);
-
-        // Specify the fragment view as the lifecycle owner of the binding. This is used so that the
-        // binding can
-        // observe LiveData updates.
-        binding.setLifecycleOwner(getViewLifecycleOwner());
+    protected Class<EndpointAddViewModel> getViewModelClass() {
+        return EndpointAddViewModel.class;
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    protected void bindVars(final EndpointAddFragmentBinding binding) {
+
     }
 
-    // Todo: This should definitely be removed (and replaced by setting the onClickListener inside
-    // of XML and
-    // carrying over the logic to the viewmodel)
-    private void addCreateEndpointListener(
+    @Override
+    protected LifecycleOwner getLifecycleOwner() {
+        return getViewLifecycleOwner();
+    }
+
+    @Override
+    protected ViewModelProvider getViewModelProvider() {
+        return new ViewModelProvider(this);
+    }
+
+    // Todo: This should definitely be removed (and replaced by setting the onClickListener inside of XML and
+    //  carrying over the logic to the viewmodel).
+    private EndpointAddFragmentBinding addCreateEndpointListener(
             @NonNull EndpointAddFragmentBinding binding, EndpointAddDeconzFragmentBinding specificBinding) {
         binding.createEndpoint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,5 +78,6 @@ public class EndpointAddFragment extends Fragment {
                 }
             }
         });
+        return binding;
     }
 }

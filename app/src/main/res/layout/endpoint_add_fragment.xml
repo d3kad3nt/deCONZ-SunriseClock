@@ -7,24 +7,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointAddFragment">
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/endpoint_add_appbar"
+        <include
+            layout="@layout/common_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:layout_constraintTop_toTopOf="@id/endpoint_add_constraint_layout">
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/endpoint_add_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:title="@string/endpoint_add" />
-        </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="wrap_content" />
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/endpointNameContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Name"
-            app:layout_constraintTop_toBottomOf="@id/endpoint_add_appbar"
+            app:layout_constraintTop_toBottomOf="@id/appbar"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayoutSpecificEndpoint">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/endpointName"
