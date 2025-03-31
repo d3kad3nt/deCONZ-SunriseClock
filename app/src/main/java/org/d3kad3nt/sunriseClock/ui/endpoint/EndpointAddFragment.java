@@ -20,15 +20,16 @@ import org.d3kad3nt.sunriseClock.util.LogUtil;
 public class EndpointAddFragment extends BaseFragment<EndpointAddFragmentBinding, EndpointAddViewModel> {
 
     @Override
-    protected EndpointAddFragmentBinding getViewBinding(@NonNull final LayoutInflater inflater,
-                                                        @Nullable final ViewGroup container,
-                                                        @Nullable final Bundle savedInstanceState) {
+    protected EndpointAddFragmentBinding getViewBinding(
+            @NonNull final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState) {
         EndpointAddFragmentBinding tmpBinding = EndpointAddFragmentBinding.inflate(inflater, container, false);
 
         // TODO: select endpoint type. This whole binding section should be refactored. Maybe use separate screens
         //  for every endpoint type instead of this dynamic binding.
         EndpointAddDeconzFragmentBinding deconzBinding =
-            EndpointAddDeconzFragmentBinding.inflate(inflater, tmpBinding.constraintLayoutSpecificEndpoint, true);
+                EndpointAddDeconzFragmentBinding.inflate(inflater, tmpBinding.constraintLayoutSpecificEndpoint, true);
 
         return addCreateEndpointListener(tmpBinding, deconzBinding);
     }
@@ -39,9 +40,7 @@ public class EndpointAddFragment extends BaseFragment<EndpointAddFragmentBinding
     }
 
     @Override
-    protected void bindVars(final EndpointAddFragmentBinding binding) {
-
-    }
+    protected void bindVars(final EndpointAddFragmentBinding binding) {}
 
     @Override
     protected LifecycleOwner getLifecycleOwner() {

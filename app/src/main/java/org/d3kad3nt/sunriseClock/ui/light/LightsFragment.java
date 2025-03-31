@@ -34,9 +34,10 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
     private LightsListAdapter adapter;
 
     @Override
-    protected LightsFragmentBinding getViewBinding(@NonNull final LayoutInflater inflater,
-                                                   @Nullable final ViewGroup container,
-                                                   @Nullable final Bundle savedInstanceState) {
+    protected LightsFragmentBinding getViewBinding(
+            @NonNull final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState) {
         return LightsFragmentBinding.inflate(inflater, container, false);
     }
 

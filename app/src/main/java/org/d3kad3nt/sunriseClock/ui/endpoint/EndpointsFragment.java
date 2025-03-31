@@ -6,29 +6,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import java.util.List;
-import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.backend.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.databinding.EndpointsFragmentBinding;
 import org.d3kad3nt.sunriseClock.ui.util.BaseFragment;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-public class EndpointsFragment extends BaseFragment<EndpointsFragmentBinding, EndpointsViewModel> implements EndpointsListAdapter.ClickListeners {
+public class EndpointsFragment extends BaseFragment<EndpointsFragmentBinding, EndpointsViewModel>
+        implements EndpointsListAdapter.ClickListeners {
 
     private EndpointsListAdapter adapter;
 
     @Override
-    protected EndpointsFragmentBinding getViewBinding(@NonNull final LayoutInflater inflater,
-                                                      @Nullable final ViewGroup container,
-                                                      @Nullable final Bundle savedInstanceState) {
+    protected EndpointsFragmentBinding getViewBinding(
+            @NonNull final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState) {
         return EndpointsFragmentBinding.inflate(inflater, container, false);
     }
 

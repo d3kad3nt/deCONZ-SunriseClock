@@ -7,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
@@ -20,14 +19,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.google.android.material.appbar.MaterialToolbar;
-
+import java.util.Optional;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.databinding.CommonToolbarBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
-
-import java.util.Optional;
 
 public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewModelT extends ViewModel> extends Fragment
         implements MenuProvider {
@@ -61,9 +57,7 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
         return binding.getRoot();
     }
 
-    /**
-     * Overwrite this Method, if a custom Menu should be defined
-     */
+    /** Overwrite this Method, if a custom Menu should be defined */
     @Nullable
     protected MenuHandler bindMenu() {
         return null;
@@ -115,21 +109,21 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
         return false;
     }
 
-    protected abstract DataBindingT getViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
+    protected abstract DataBindingT getViewBinding(
+            @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
     protected abstract Class<ViewModelT> getViewModelClass();
 
     /**
      * Can be used to set values in the databinding class.
      *
-     * <p>Typically, the developer will be able to call the subclass's set method directly.
-     * For example, if there is a variable x in the Binding, a setX method will be generated.
+     * <p>Typically, the developer will be able to call the subclass's set method directly. For example, if there is a
+     * variable x in the Binding, a setX method will be generated.
      */
     protected abstract void bindVars(DataBindingT binding);
 
     /**
-     * Must return the {@link LifecycleOwner} that should be used for observing changes of LiveData
-     * in this binding.
+     * Must return the {@link LifecycleOwner} that should be used for observing changes of LiveData in this binding.
      *
      * <p>If a LiveData is in one of the binding expressions and no LifecycleOwner is set, the LiveData will not be
      * observed and updates to it will not be propagated to the UI. Note from Google: When subscribing to

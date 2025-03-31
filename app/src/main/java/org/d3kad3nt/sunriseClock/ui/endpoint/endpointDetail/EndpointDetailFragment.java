@@ -2,15 +2,10 @@ package org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.viewmodel.MutableCreationExtras;
@@ -18,8 +13,6 @@ import androidx.navigation.NavBackStackEntry;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.backend.data.repository.EndpointRepository;
 import org.d3kad3nt.sunriseClock.backend.data.repository.SettingsRepository;
@@ -28,13 +21,14 @@ import org.d3kad3nt.sunriseClock.ui.util.BaseFragment;
 import org.d3kad3nt.sunriseClock.ui.util.MenuHandler;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-public class EndpointDetailFragment extends BaseFragment<EndpointDetailFragmentBinding, EndpointDetailViewModel> implements
-    MenuHandler {
+public class EndpointDetailFragment extends BaseFragment<EndpointDetailFragmentBinding, EndpointDetailViewModel>
+        implements MenuHandler {
 
     @Override
-    protected EndpointDetailFragmentBinding getViewBinding(@NonNull final LayoutInflater inflater,
-                                                           @Nullable final ViewGroup container,
-                                                           @Nullable final Bundle savedInstanceState) {
+    protected EndpointDetailFragmentBinding getViewBinding(
+            @NonNull final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState) {
         return EndpointDetailFragmentBinding.inflate(inflater, container, false);
     }
 
@@ -56,7 +50,7 @@ public class EndpointDetailFragment extends BaseFragment<EndpointDetailFragmentB
     @Override
     protected ViewModelProvider getViewModelProvider() {
         long endpointID =
-            EndpointDetailFragmentArgs.fromBundle(requireArguments()).getEndpointID(); // id from navigation
+                EndpointDetailFragmentArgs.fromBundle(requireArguments()).getEndpointID(); // id from navigation
 
         LogUtil.setPrefix("EndpointId %d: ", endpointID);
 
@@ -76,18 +70,18 @@ public class EndpointDetailFragment extends BaseFragment<EndpointDetailFragmentB
         // By injecting the repository, the viewModel no longer needs the Application or Context.
         MutableCreationExtras viewModelDependencies = new MutableCreationExtras();
         viewModelDependencies.set(
-            EndpointDetailViewModel.ENDPOINT_REPOSITORY_KEY, EndpointRepository.getInstance(requireContext()));
+                EndpointDetailViewModel.ENDPOINT_REPOSITORY_KEY, EndpointRepository.getInstance(requireContext()));
         viewModelDependencies.set(
-            EndpointDetailViewModel.SETTINGS_REPOSITORY_KEY, SettingsRepository.getInstance(requireContext()));
+                EndpointDetailViewModel.SETTINGS_REPOSITORY_KEY, SettingsRepository.getInstance(requireContext()));
         viewModelDependencies.set(EndpointDetailViewModel.ENDPOINT_ID_KEY, endpointID);
 
         // Use custom factory to initialize the viewModel (instead of using new
         // ViewModelProvider(this).get(EndpointDetailViewModel.class)).
         // For viewModel older than 2.5.0 ViewModelProvider.Factory had to be extended.
         return new ViewModelProvider(
-            backStackEntry.getViewModelStore(),
-            ViewModelProvider.Factory.from(EndpointDetailViewModel.initializer),
-            viewModelDependencies);
+                backStackEntry.getViewModelStore(),
+                ViewModelProvider.Factory.from(EndpointDetailViewModel.initializer),
+                viewModelDependencies);
     }
 
     @Nullable
@@ -101,15 +95,15 @@ public class EndpointDetailFragment extends BaseFragment<EndpointDetailFragmentB
         if (menuItem.getItemId() == R.id.menu_endpoint_details_info) {
             LogUtil.d("User requested to show endpoint info screen by clicking the toolbar menu option.");
             Navigation.findNavController(binding.getRoot())
-                .navigate(
-                    EndpointDetailFragmentDirections.actionEndpointDetailToEndpointDetailInfoDialogFragment());
+                    .navigate(
+                            EndpointDetailFragmentDirections.actionEndpointDetailToEndpointDetailInfoDialogFragment());
             return true;
         } else if (menuItem.getItemId() == R.id.menu_endpoint_details_name_edit) {
             LogUtil.d("User requested to show endpoint name edit screen by clicking the toolbar menu option.");
             Navigation.findNavController(binding.getRoot())
-                .navigate(
-                    EndpointDetailFragmentDirections
-                        .actionEndpointDetailToEndpointDetailNameEditDialogFragment());
+                    .navigate(
+                            EndpointDetailFragmentDirections
+                                    .actionEndpointDetailToEndpointDetailNameEditDialogFragment());
             return true;
         }
         return false;

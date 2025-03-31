@@ -21,12 +21,14 @@ import org.d3kad3nt.sunriseClock.ui.util.BaseFragment;
 import org.d3kad3nt.sunriseClock.ui.util.MenuHandler;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-public class LightDetailFragment extends BaseFragment<LightDetailFragmentBinding, LightDetailViewModel> implements MenuHandler {
+public class LightDetailFragment extends BaseFragment<LightDetailFragmentBinding, LightDetailViewModel>
+        implements MenuHandler {
 
     @Override
-    protected LightDetailFragmentBinding getViewBinding(@NonNull final LayoutInflater inflater,
-                                                        @Nullable final ViewGroup container,
-                                                        @Nullable final Bundle savedInstanceState) {
+    protected LightDetailFragmentBinding getViewBinding(
+            @NonNull final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState) {
         return LightDetailFragmentBinding.inflate(inflater, container, false);
     }
 
@@ -68,16 +70,16 @@ public class LightDetailFragment extends BaseFragment<LightDetailFragmentBinding
         // By injecting the repository, the viewModel no longer needs the Application or Context.
         MutableCreationExtras viewModelDependencies = new MutableCreationExtras();
         viewModelDependencies.set(
-            LightDetailViewModel.LIGHT_REPOSITORY_KEY, LightRepository.getInstance(requireContext()));
+                LightDetailViewModel.LIGHT_REPOSITORY_KEY, LightRepository.getInstance(requireContext()));
         viewModelDependencies.set(LightDetailViewModel.LIGHT_ID_KEY, lightID);
 
         // Use custom factory to initialize the viewModel (instead of using new
         // ViewModelProvider(this).get(LightDetailViewModel.class)).
         // For viewModel older than 2.5.0 ViewModelProvider.Factory had to be extended.
         return new ViewModelProvider(
-            backStackEntry.getViewModelStore(),
-            ViewModelProvider.Factory.from(LightDetailViewModel.initializer),
-            viewModelDependencies);
+                backStackEntry.getViewModelStore(),
+                ViewModelProvider.Factory.from(LightDetailViewModel.initializer),
+                viewModelDependencies);
     }
 
     @Nullable
@@ -98,12 +100,12 @@ public class LightDetailFragment extends BaseFragment<LightDetailFragmentBinding
         } else if (menuItem.getItemId() == R.id.menu_light_details_info) {
             LogUtil.d("User requested to show light info screen by clicking the toolbar menu option.");
             Navigation.findNavController(binding.getRoot())
-                .navigate(LightDetailFragmentDirections.actionLightDetailToLightDetailInfoDialogFragment());
+                    .navigate(LightDetailFragmentDirections.actionLightDetailToLightDetailInfoDialogFragment());
             return true;
         } else if (menuItem.getItemId() == R.id.menu_light_details_name_edit) {
             LogUtil.d("User requested to show light name edit screen by clicking the toolbar menu option.");
             Navigation.findNavController(binding.getRoot())
-                .navigate(LightDetailFragmentDirections.actionLightDetailToLightDetailNameEditDialogFragment());
+                    .navigate(LightDetailFragmentDirections.actionLightDetailToLightDetailNameEditDialogFragment());
             return true;
         }
         return false;
