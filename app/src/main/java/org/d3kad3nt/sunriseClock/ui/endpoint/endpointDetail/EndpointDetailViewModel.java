@@ -9,9 +9,9 @@ import androidx.lifecycle.viewmodel.CreationExtras;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 import java.util.Optional;
 import kotlin.jvm.functions.Function1;
-import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
-import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
-import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
+import org.d3kad3nt.sunriseClock.backend.data.model.endpoint.IEndpointUI;
+import org.d3kad3nt.sunriseClock.backend.data.repository.EndpointRepository;
+import org.d3kad3nt.sunriseClock.backend.data.repository.SettingsRepository;
 
 public class EndpointDetailViewModel extends ViewModel {
 

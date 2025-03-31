@@ -4,7 +4,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import java.util.Map;
-import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
+import org.d3kad3nt.sunriseClock.backend.data.repository.EndpointRepository;
 
 public class EndpointAddViewModel extends AndroidViewModel {
 

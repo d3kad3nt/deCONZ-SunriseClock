@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.d3kad3nt.sunriseClock.data.model.group.UIGroup;
-import org.d3kad3nt.sunriseClock.data.model.light.UILight;
-import org.d3kad3nt.sunriseClock.data.model.resource.EmptyResource;
-import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
-import org.d3kad3nt.sunriseClock.data.repository.LightRepository;
-import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
+import org.d3kad3nt.sunriseClock.backend.data.model.group.UIGroup;
+import org.d3kad3nt.sunriseClock.backend.data.model.light.UILight;
+import org.d3kad3nt.sunriseClock.backend.data.model.resource.EmptyResource;
+import org.d3kad3nt.sunriseClock.backend.data.model.resource.Resource;
+import org.d3kad3nt.sunriseClock.backend.data.repository.LightRepository;
+import org.d3kad3nt.sunriseClock.backend.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 

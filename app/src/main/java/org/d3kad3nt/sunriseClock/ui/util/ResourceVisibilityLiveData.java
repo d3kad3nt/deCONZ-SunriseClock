@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import java.util.HashSet;
 import java.util.Set;
-import org.d3kad3nt.sunriseClock.data.model.resource.Resource;
+import org.d3kad3nt.sunriseClock.backend.data.model.resource.Resource;
 
 public class ResourceVisibilityLiveData extends androidx.lifecycle.MediatorLiveData<Integer> {
 
