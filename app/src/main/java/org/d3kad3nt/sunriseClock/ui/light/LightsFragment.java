@@ -84,7 +84,7 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
 
     @Override
     public void onLightCardClick(View view, final long lightId, final String lightName) {
-        LogUtil.d("Navigate to light detail view for light %s (Id %d)", lightName, lightId);
+        LogUtil.d("Navigate to light detail view for light %s (id %d)", lightName, lightId);
         Navigation.findNavController(view)
                 .navigate(LightsFragmentDirections.actionLightsToLightDetail(lightId, lightName));
     }
@@ -112,6 +112,7 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
         return this;
     }
 
+    @Override
     public boolean onMenuClicked(@NonNull final MenuItem menuItem) {
         // The SwipeRefreshLayout does not provide accessibility events.
         // Instead, a menu item should be provided to allow refresh of the content wherever this
