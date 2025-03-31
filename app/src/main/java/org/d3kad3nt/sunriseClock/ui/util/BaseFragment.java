@@ -53,7 +53,7 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
 
         if (menuHandler.isPresent()) {
             // Initialize the options menu (toolbar menu).
-            commonToolbarBinding.toolbar.addMenuProvider(this, getViewLifecycleOwner());
+            commonToolbarBinding.toolbar.addMenuProvider(this, getLifecycleOwner());
         }
 
         viewModel = getViewModelProvider().get(getViewModelClass());
