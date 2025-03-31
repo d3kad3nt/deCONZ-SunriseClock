@@ -5,7 +5,7 @@
     <data>
         <variable
             name="endpoint"
-            type="org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI" />
+            type="org.d3kad3nt.sunriseClock.backend.data.model.endpoint.IEndpointUI" />
         <variable
             name="endpointSelected"
             type="java.lang.Boolean" />

@@ -15,7 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import java.util.List;
 import org.d3kad3nt.sunriseClock.R;
-import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
+import org.d3kad3nt.sunriseClock.backend.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.databinding.EndpointsFragmentBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 

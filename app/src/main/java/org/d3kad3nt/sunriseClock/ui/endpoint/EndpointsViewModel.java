@@ -5,9 +5,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import java.util.List;
-import org.d3kad3nt.sunriseClock.data.model.endpoint.IEndpointUI;
-import org.d3kad3nt.sunriseClock.data.repository.EndpointRepository;
-import org.d3kad3nt.sunriseClock.data.repository.SettingsRepository;
+import org.d3kad3nt.sunriseClock.backend.data.model.endpoint.IEndpointUI;
+import org.d3kad3nt.sunriseClock.backend.data.repository.EndpointRepository;
+import org.d3kad3nt.sunriseClock.backend.data.repository.SettingsRepository;
 
 public class EndpointsViewModel extends AndroidViewModel {
 
