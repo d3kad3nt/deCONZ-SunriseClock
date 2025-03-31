@@ -83,6 +83,8 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
 
         bindVars(binding);
 
+        // Most of the time: Specify the fragment view as the lifecycle owner of the binding. This is used so that the
+        // binding can observe LiveData updates.
         binding.setLifecycleOwner(getLifecycleOwner());
     }
 
