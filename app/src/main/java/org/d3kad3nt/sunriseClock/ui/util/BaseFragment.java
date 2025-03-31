@@ -46,7 +46,7 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
             @Nullable final Bundle savedInstanceState) {
         LogUtil.i("Create fragment view: %s.", this.getClass().getSimpleName());
 
-        binding = getViewBinding();
+        binding = getViewBinding(inflater, container, savedInstanceState);
         commonToolbarBinding = CommonToolbarBinding.bind(binding.getRoot());
 
         this.menuHandler = Optional.ofNullable(bindMenu());
@@ -113,7 +113,7 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
         return false;
     }
 
-    protected abstract DataBindingT getViewBinding();
+    protected abstract DataBindingT getViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 
     protected abstract Class<ViewModelT> getViewModelClass();
 

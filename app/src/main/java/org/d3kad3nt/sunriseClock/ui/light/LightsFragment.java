@@ -1,7 +1,10 @@
 package org.d3kad3nt.sunriseClock.ui.light;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,8 +34,10 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
     private LightsListAdapter adapter;
 
     @Override
-    protected LightsFragmentBinding getViewBinding() {
-        return LightsFragmentBinding.inflate(getLayoutInflater());
+    protected LightsFragmentBinding getViewBinding(@NonNull final LayoutInflater inflater,
+                                                   @Nullable final ViewGroup container,
+                                                   @Nullable final Bundle savedInstanceState) {
+        return LightsFragmentBinding.inflate(inflater, container, false);
     }
 
     @Override
