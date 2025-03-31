@@ -84,7 +84,7 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
 
     @Override
     protected ViewModelProvider getViewModelProvider() {
-        return new ViewModelProvider(requireActivity());
+        return new ViewModelProvider(this);
     }
 
     @Override

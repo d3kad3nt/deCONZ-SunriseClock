@@ -62,7 +62,7 @@ public class EndpointsFragment extends BaseFragment<EndpointsFragmentBinding, En
 
     @Override
     protected ViewModelProvider getViewModelProvider() {
-        return new ViewModelProvider(requireActivity());
+        return new ViewModelProvider(this);
     }
 
     private void addAddEndpointListener(@NonNull EndpointsFragmentBinding binding) {
