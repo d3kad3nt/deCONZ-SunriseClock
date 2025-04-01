@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Destination ids for menu items have to match destinations in the nav graph.-->
     <item
-        android:id="@+id/lightsList"
-        android:icon="@drawable/lightbulb_24dp"
-        android:title="@string/lights_title" />
+        android:id="@+id/bottomnav_home"
+        android:icon="@drawable/home_24dp"
+        android:title="@string/bottomnav_home_title" />
     <item
-        android:id="@+id/endpointsList"
+        android:id="@+id/bottomnav_endpoints"
         android:icon="@drawable/router_24dp"
-        android:title="@string/endpoint" />
+        android:title="@string/bottomnav_endpoints_title" />
     <item
-        android:id="@+id/mainSettingsFragment"
+        android:id="@+id/bottomnav_settings"
         android:icon="@drawable/settings_24dp"
-        android:title="@string/preferences_title" />
+        android:title="@string/bottomnav_preferences_title" />
 </menu>

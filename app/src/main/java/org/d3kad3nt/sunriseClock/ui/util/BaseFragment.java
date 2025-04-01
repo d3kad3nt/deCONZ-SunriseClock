@@ -72,7 +72,7 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
         // screens that are not hierarchically related to each other and may each have their own set
         // of related destinations.
         AppBarConfiguration appBarConfiguration =
-                new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
+                new AppBarConfiguration.Builder(R.id.bottomnav_home, R.id.bottomnav_endpoints, R.id.bottomnav_settings).build();
         NavigationUI.setupWithNavController(commonToolbarBinding.toolbar, navController, appBarConfiguration);
 
         bindVars(binding);

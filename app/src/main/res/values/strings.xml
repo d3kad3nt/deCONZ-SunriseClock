@@ -55,7 +55,7 @@
     <string name="navigation_drawer_header_title">SunriseClock</string>
     <string name="lights_title">All Lights</string>
     <string name="lightDetail_title">Light info</string>
-    <string name="preferences_title">Preferences</string>
+    <string name="bottomnav_preferences_title">Preferences</string>
     <string name="conectivity_settings_title">Conectivity</string>
     <string name="alarm_settings_title">Alarm</string>
     <string name="debug_settings_title">Debug</string>
@@ -88,4 +88,6 @@
     <string name="endpointDetail_title">Endpoint info</string>
     <string name="light_on_action">On</string>
     <string name="light_off_action">Off</string>
+    <string name="bottomnav_home_title">Home</string>
+    <string name="bottomnav_endpoints_title">Endpoints</string>
 </resources>
