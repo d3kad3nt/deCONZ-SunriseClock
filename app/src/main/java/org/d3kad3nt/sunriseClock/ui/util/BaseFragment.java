@@ -22,7 +22,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.appbar.MaterialToolbar;
 import java.util.Optional;
 import org.d3kad3nt.sunriseClock.R;
-import org.d3kad3nt.sunriseClock.databinding.CommonToolbarBinding;
+import org.d3kad3nt.sunriseClock.databinding.CommonToolbarSmallBinding;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewModelT extends ViewModel> extends Fragment
@@ -32,7 +32,7 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
 
     protected ViewModelT viewModel;
     private Optional<MenuHandler> menuHandler = Optional.empty();
-    private CommonToolbarBinding commonToolbarBinding;
+    private CommonToolbarSmallBinding commonToolbarBinding;
 
     @Nullable
     @Override
@@ -43,7 +43,7 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
         LogUtil.i("Create fragment view: %s.", this.getClass().getSimpleName());
 
         binding = getViewBinding(inflater, container, savedInstanceState);
-        commonToolbarBinding = CommonToolbarBinding.bind(binding.getRoot());
+        commonToolbarBinding = CommonToolbarSmallBinding.bind(binding.getRoot());
 
         this.menuHandler = Optional.ofNullable(bindMenu());
 

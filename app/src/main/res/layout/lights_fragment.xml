@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.LightsFragment">
         <include
-            layout="@layout/common_toolbar"
+            layout="@layout/common_toolbar_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <com.google.android.material.progressindicator.LinearProgressIndicator
