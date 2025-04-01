@@ -90,4 +90,5 @@
     <string name="light_off_action">Off</string>
     <string name="bottomnav_home_title">Home</string>
     <string name="bottomnav_endpoints_title">Endpoints</string>
+    <string name="bottomnav_entities_title">Devices</string>
 </resources>

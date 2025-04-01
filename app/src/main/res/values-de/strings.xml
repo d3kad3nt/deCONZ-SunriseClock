@@ -83,4 +83,5 @@
     <string name="light_off_action">Aus</string>
     <string name="bottomnav_home_title">Start</string>
     <string name="bottomnav_endpoints_title">Endpoints</string>
+    <string name="bottomnav_entities_title">Geräte</string>
 </resources>

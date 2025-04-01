@@ -146,4 +146,9 @@
             android:name="endpointName"
             app:argType="string" />
     </navigation>
+    <fragment
+        android:id="@+id/bottomnav_entities"
+        android:name="org.d3kad3nt.sunriseClock.ui.entity.EntitiesFragment"
+        android:label="@string/bottomnav_entities_title"
+        tools:layout="@layout/entities_fragment"/>
 </navigation>

@@ -6,6 +6,10 @@
         android:icon="@drawable/home_24dp"
         android:title="@string/bottomnav_home_title" />
     <item
+        android:id="@+id/bottomnav_entities"
+        android:icon="@drawable/lightbulb_24dp"
+        android:title="@string/bottomnav_entities_title" />
+    <item
         android:id="@+id/bottomnav_endpoints"
         android:icon="@drawable/router_24dp"
         android:title="@string/bottomnav_endpoints_title" />
