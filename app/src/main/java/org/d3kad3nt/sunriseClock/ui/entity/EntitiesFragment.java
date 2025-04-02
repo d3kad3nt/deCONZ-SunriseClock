@@ -10,6 +10,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.viewmodel.MutableCreationExtras;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ConcatAdapter;
 import java.util.List;
 import org.d3kad3nt.sunriseClock.backend.data.model.group.UIGroup;
@@ -98,11 +99,14 @@ public class EntitiesFragment extends BaseFragment<EntitiesFragmentBinding, Enti
 
     @Override
     public void onLightCardClick(final View view, final long lightId, final String lightName) {
-        LogUtil.d("Light card clicked");
+        LogUtil.d("Navigate to light detail view for light %s (id %d)", lightName, lightId);
+        Navigation.findNavController(view)
+            .navigate(EntitiesFragmentDirections.actionBottomnavEntitiesToNavGraphLightDetail(lightId, lightName));
     }
 
     @Override
     public void onGroupCardClick(final View view, final long groupId, final String groupName) {
-        LogUtil.d("Group card clicked");
+        // Todo: Implement group detail screen.
+        LogUtil.d("Group card clicked.");
     }
 }

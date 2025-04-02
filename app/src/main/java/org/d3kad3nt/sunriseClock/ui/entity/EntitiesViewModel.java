@@ -18,6 +18,7 @@ import org.d3kad3nt.sunriseClock.backend.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.backend.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.backend.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
+import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class EntitiesViewModel extends ViewModel {
     public static final CreationExtras.Key<LightRepository> LIGHT_REPOSITORY_KEY = new CreationExtras.Key<>() {};
@@ -48,7 +49,8 @@ public class EntitiesViewModel extends ViewModel {
         this.lightRepository = lightRepository;
         this.settingsRepository = settingsRepository;
 
-        loadingIndicatorVisibility = new ResourceVisibilityLiveData(View.VISIBLE)
+        // Todo: Integrate initial loading of entities.
+        loadingIndicatorVisibility = new ResourceVisibilityLiveData(View.INVISIBLE)
             .setLoadingVisibility(View.VISIBLE)
             .setSuccessVisibility(View.INVISIBLE)
             .setErrorVisibility(View.INVISIBLE);
@@ -70,6 +72,12 @@ public class EntitiesViewModel extends ViewModel {
                 return lightRepository.getGroupsForEndpoint(id.get());
             }
         });
+    }
+
+    public void refreshEntities() {
+        // Todo: Implement
+        LogUtil.d("User requested refresh of all entities. Not yet implemented.");
+        swipeRefreshing.setValue(false);
     }
 
     public LiveData<Resource<List<UILight>>> getLights() {

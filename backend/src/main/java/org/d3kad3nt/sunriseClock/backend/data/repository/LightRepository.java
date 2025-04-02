@@ -568,4 +568,59 @@ public class LightRepository {
             }
         };
     }
+
+    public LiveData<EmptyResource> refreshGroupsForEndpoint(long endpointId) {
+        LogUtil.i("Refreshing all groups for endpoint with id %d", endpointId);
+
+        return Transformations.map(
+            new NetworkBoundResource<Empty, List<RemoteGroup>, List<DbGroup>>() {
+
+                @Override
+                protected void saveResponseToDb(List<DbGroup> items) {
+                    for (DbGroup group : items) {
+                        dbGroupDao.upsert(group);
+                    }
+                }
+
+                @Override
+                protected boolean shouldFetch(@Nullable List<DbGroup> data) {
+                    return true;
+                }
+
+                @NonNull
+                @Override
+                protected LiveData<BaseEndpoint> loadEndpoint() {
+                    return endpointRepo.getRepoEndpoint(endpointId);
+                }
+
+                @NotNull
+                @Override
+                protected LiveData<List<DbGroup>> loadFromDb() {
+                    return Transformations.map(dbGroupDao.loadAllForEndpoint(endpointId), input -> {
+                        return new ArrayList<>(input);
+                    });
+                }
+
+                @NotNull
+                @Override
+                protected LiveData<ApiResponse<List<RemoteGroup>>> loadFromNetwork() {
+                    return endpoint.getGroups();
+                }
+
+                @Override
+                protected Empty convertDbTypeToResultType(List<DbGroup> items) {
+                    return new Empty();
+                }
+
+                @Override
+                protected List<DbGroup> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteGroup>> response) {
+                    List<DbGroup> groups = new ArrayList<>();
+                    for (RemoteGroup group : response.getBody()) {
+                        groups.add(DbGroup.from(group));
+                    }
+                    return groups;
+                }
+            },
+            emptyResource -> EmptyResource.fromResource(emptyResource));
+    }
 }

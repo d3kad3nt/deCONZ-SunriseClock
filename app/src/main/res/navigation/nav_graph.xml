@@ -150,5 +150,9 @@
         android:id="@+id/bottomnav_entities"
         android:name="org.d3kad3nt.sunriseClock.ui.entity.EntitiesFragment"
         android:label="@string/bottomnav_entities_title"
-        tools:layout="@layout/entities_fragment"/>
+        tools:layout="@layout/entities_fragment">
+        <action
+            android:id="@+id/action_bottomnav_entities_to_nav_graph_light_detail"
+            app:destination="@id/nav_graph_light_detail" />
+    </fragment>
 </navigation>
