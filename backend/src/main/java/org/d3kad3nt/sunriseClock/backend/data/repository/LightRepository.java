@@ -514,6 +514,8 @@ public class LightRepository {
     }
 
     public LiveData<Resource<List<UIGroup>>> getGroupsForEndpoint(long endpointId) {
+        LogUtil.i("Requesting and returning all groups for endpoint with id %d", endpointId);
+
         try {
             endpointRepo.getEndpoint(endpointId);
         } catch (NullPointerException e) {
