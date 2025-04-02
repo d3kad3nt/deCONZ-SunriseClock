@@ -296,7 +296,7 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
                 UILight light = (UILight) getItem(getAbsoluteAdapterPosition());
                 if (light.getIsOn() == isChecked) {
                     // This happens, when a viewHolder is reused and a new Light is bound to it.
-                    LogUtil.v("Suppressing on onCheckedChange event for light %d", light.getId());
+                    LogUtil.v("Suppressing onCheckedChanged event for light %d.", light.getId());
                     return;
                 }
                 clickListeners.onLightSwitchCheckedChange(light.getId(), isChecked);
