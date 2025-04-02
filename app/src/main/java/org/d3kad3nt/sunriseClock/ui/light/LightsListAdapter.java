@@ -245,7 +245,7 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
             binding.setSliderTouchListener(new SliderTouchListener());
         }
 
-        void bind(UILight item) {
+        void bind(@NonNull UILight item) {
             bindName(item.getName());
             bindIsReachable(item.getIsReachable());
             bindIsSwitchable(item.getIsSwitchable());
@@ -294,6 +294,11 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
             @Override
             public void onCheckedChanged(final CompoundButton compoundButton, final boolean isChecked) {
                 UILight light = (UILight) getItem(getAbsoluteAdapterPosition());
+                if (light.getIsOn() == isChecked) {
+                    // This happens, when a viewHolder is reused and a new Light is bound to it.
+                    LogUtil.v("Suppressing onCheckedChanged event for light %d.", light.getId());
+                    return;
+                }
                 clickListeners.onLightSwitchCheckedChange(light.getId(), isChecked);
             }
         }
