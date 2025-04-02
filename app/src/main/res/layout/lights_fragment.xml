@@ -16,25 +16,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.LightsFragment">
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/lights_appbar"
+        <include
+            layout="@layout/common_toolbar_small"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:layout_constraintTop_toTopOf="@id/lights_constraint_layout">
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/lights_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:menu="@menu/menu_lights" />
-        </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="wrap_content" />
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/light_loading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="@{viewModel.loadingIndicatorVisibility}"
-            app:layout_constraintTop_toBottomOf="@id/lights_appbar" />
+            app:layout_constraintTop_toBottomOf="@id/appbar" />
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
