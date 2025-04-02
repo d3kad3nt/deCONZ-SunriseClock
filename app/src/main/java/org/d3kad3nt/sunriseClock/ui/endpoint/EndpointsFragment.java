@@ -6,37 +6,41 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import java.util.List;
-import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.backend.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.databinding.EndpointsFragmentBinding;
+import org.d3kad3nt.sunriseClock.ui.util.BaseFragment;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-public class EndpointsFragment extends Fragment implements EndpointsListAdapter.ClickListeners {
+public class EndpointsFragment extends BaseFragment<EndpointsFragmentBinding, EndpointsViewModel>
+        implements EndpointsListAdapter.ClickListeners {
 
-    private EndpointsFragmentBinding binding;
-    private EndpointsViewModel viewModel;
     private EndpointsListAdapter adapter;
 
     @Override
-    public View onCreateView(
-            @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LogUtil.d("Show endpoint list view");
-        viewModel = new ViewModelProvider(requireActivity()).get(EndpointsViewModel.class);
+    protected EndpointsFragmentBinding getViewBinding(
+            @NonNull final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState) {
+        return EndpointsFragmentBinding.inflate(inflater, container, false);
+    }
 
-        binding = EndpointsFragmentBinding.inflate(inflater, container, false);
+    @Override
+    protected Class<EndpointsViewModel> getViewModelClass() {
+        return EndpointsViewModel.class;
+    }
+
+    @Override
+    protected void bindVars(final EndpointsFragmentBinding binding) {
+        addAddEndpointListener(binding);
 
         adapter = new EndpointsListAdapter(viewModel, this);
         binding.recyclerView.setAdapter(adapter);
-
-        viewModel.getEndpoints().observe(getViewLifecycleOwner(), new Observer<List<IEndpointUI>>() {
+        viewModel.getEndpoints().observe(getViewLifecycleOwner(), new Observer<>() {
             @Override
             public void onChanged(List<IEndpointUI> endpointConfigList) {
                 if (!endpointConfigList.isEmpty()) {
@@ -46,37 +50,16 @@ public class EndpointsFragment extends Fragment implements EndpointsListAdapter.
                 }
             }
         });
-        addAddEndpointListener(binding);
-
-        return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        NavController navController = Navigation.findNavController(view);
-
-        // In some cases, you might need to define multiple top-level destinations instead of using
-        // the default start
-        // destination.
-        // Using a BottomNavigationView is a common use case for this, where you may have sibling
-        // screens that are
-        // not hierarchically related to each other and may each have their own set of related
-        // destinations.
-        AppBarConfiguration appBarConfiguration =
-                new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
-
-        NavigationUI.setupWithNavController(binding.endpointsToolbar, navController, appBarConfiguration);
-
-        // Specify the fragment view as the lifecycle owner of the binding. This is used so that the
-        // binding can
-        // observe LiveData updates.
-        binding.setLifecycleOwner(getViewLifecycleOwner());
+    protected LifecycleOwner getLifecycleOwner() {
+        return getViewLifecycleOwner();
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    protected ViewModelProvider getViewModelProvider() {
+        return new ViewModelProvider(this);
     }
 
     private void addAddEndpointListener(@NonNull EndpointsFragmentBinding binding) {

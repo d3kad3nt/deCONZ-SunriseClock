@@ -15,26 +15,17 @@
         android:id="@+id/light_details_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/light_details_appbar"
+        <include
+            layout="@layout/common_toolbar_small"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            app:layout_constraintTop_toTopOf="@id/light_details_constraint_layout">
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/light_details_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:menu="@menu/menu_light_details"
-                tools:title="@sample/sample.json/lights/name" />
-        </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="wrap_content" />
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/light_loading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="@{viewModel.loadingIndicatorVisibility}"
-            app:layout_constraintTop_toBottomOf="@id/light_details_appbar" />
+            app:layout_constraintTop_toBottomOf="@id/appbar" />
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"

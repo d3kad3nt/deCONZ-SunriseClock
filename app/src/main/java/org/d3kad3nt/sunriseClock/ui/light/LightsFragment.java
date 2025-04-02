@@ -2,22 +2,16 @@ package org.d3kad3nt.sunriseClock.ui.light;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,29 +23,37 @@ import org.d3kad3nt.sunriseClock.backend.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.backend.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.backend.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.databinding.LightsFragmentBinding;
+import org.d3kad3nt.sunriseClock.ui.util.BaseFragment;
+import org.d3kad3nt.sunriseClock.ui.util.MenuHandler;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-public class LightsFragment extends Fragment implements LightsListAdapter.ClickListeners, MenuProvider {
+public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsViewModel>
+        implements LightsListAdapter.ClickListeners, MenuHandler {
 
     private final LightsState lightsState = new LightsState();
-    private LightsFragmentBinding binding;
-    private LightsViewModel viewModel;
     private LightsListAdapter adapter;
 
     @Override
-    public View onCreateView(
-            @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LogUtil.d("Show light list view");
-        viewModel = new ViewModelProvider(requireActivity()).get(LightsViewModel.class);
+    protected LightsFragmentBinding getViewBinding(
+            @NonNull final LayoutInflater inflater,
+            @Nullable final ViewGroup container,
+            @Nullable final Bundle savedInstanceState) {
+        return LightsFragmentBinding.inflate(inflater, container, false);
+    }
 
-        binding = LightsFragmentBinding.inflate(inflater, container, false);
+    @Override
+    protected Class<LightsViewModel> getViewModelClass() {
+        return LightsViewModel.class;
+    }
 
+    @Override
+    protected void bindVars(final LightsFragmentBinding binding) {
+        binding.setViewModel(viewModel);
         binding.setLightsState(lightsState);
 
         adapter = new LightsListAdapter(this);
         binding.recyclerView.setAdapter(adapter);
-
-        viewModel.getGroupsWithLights().observe(getViewLifecycleOwner(), new Observer<>() {
+        viewModel.getGroupsWithLights().observe(getLifecycleOwner(), new Observer<>() {
             @Override
             public void onChanged(final Resource<Map<UIGroup, List<UILight>>> mapResource) {
                 if (mapResource.getStatus().equals(Status.SUCCESS) && mapResource.getData() != null) {
@@ -74,45 +76,21 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
                 }
             }
         });
-
-        // Initialize the options menu (toolbar menu).
-        binding.lightsToolbar.addMenuProvider(this, getViewLifecycleOwner());
-
-        return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        NavController navController = Navigation.findNavController(view);
-
-        // In some cases, you might need to define multiple top-level destinations instead of using
-        // the default start
-        // destination.
-        // Using a BottomNavigationView is a common use case for this, where you may have sibling
-        // screens that are
-        // not hierarchically related to each other and may each have their own set of related
-        // destinations.
-        AppBarConfiguration appBarConfiguration =
-                new AppBarConfiguration.Builder(R.id.lightsList, R.id.endpointsList, R.id.mainSettingsFragment).build();
-
-        NavigationUI.setupWithNavController(binding.lightsToolbar, navController, appBarConfiguration);
-
-        binding.setViewModel(viewModel);
-        // Specify the fragment view as the lifecycle owner of the binding. This is used so that the
-        // binding can
-        // observe LiveData updates.
-        binding.setLifecycleOwner(getViewLifecycleOwner());
+    protected LifecycleOwner getLifecycleOwner() {
+        return getViewLifecycleOwner();
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    protected ViewModelProvider getViewModelProvider() {
+        return new ViewModelProvider(this);
     }
 
     @Override
     public void onLightCardClick(View view, final long lightId, final String lightName) {
-        LogUtil.d("Navigate to light detail view for light %s (Id %d)", lightName, lightId);
+        LogUtil.d("Navigate to light detail view for light %s (id %d)", lightName, lightId);
         Navigation.findNavController(view)
                 .navigate(LightsFragmentDirections.actionLightsToLightDetail(lightId, lightName));
     }
@@ -134,15 +112,14 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
         LogUtil.d("Group card clicked.");
     }
 
+    @Nullable
     @Override
-    public void onCreateMenu(@NonNull final Menu menu, @NonNull final MenuInflater menuInflater) {
-        // XML menu resources do not support view or data binding: We have to use the R class.
-        LogUtil.d("Adding menu options to the toolbar.");
-        menuInflater.inflate(R.menu.menu_lights, menu);
+    protected MenuHandler bindMenu() {
+        return this;
     }
 
     @Override
-    public boolean onMenuItemSelected(@NonNull final MenuItem menuItem) {
+    public boolean onMenuClicked(@NonNull final MenuItem menuItem) {
         // The SwipeRefreshLayout does not provide accessibility events.
         // Instead, a menu item should be provided to allow refresh of the content wherever this
         // gesture is used.
@@ -152,5 +129,10 @@ public class LightsFragment extends Fragment implements LightsListAdapter.ClickL
             return true;
         }
         return false;
+    }
+
+    @Override
+    public int getMenuId() {
+        return R.menu.menu_lights;
     }
 }
