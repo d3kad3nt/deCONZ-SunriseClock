@@ -2,6 +2,7 @@ package org.d3kad3nt.sunriseClock.ui.entity;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.lifecycle.viewmodel.MutableCreationExtras;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ConcatAdapter;
 import java.util.List;
+import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.backend.data.model.group.UIGroup;
 import org.d3kad3nt.sunriseClock.backend.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.backend.data.model.resource.Resource;
@@ -21,9 +23,11 @@ import org.d3kad3nt.sunriseClock.backend.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.backend.data.repository.SettingsRepository;
 import org.d3kad3nt.sunriseClock.databinding.EntitiesFragmentBinding;
 import org.d3kad3nt.sunriseClock.ui.util.BaseFragment;
+import org.d3kad3nt.sunriseClock.ui.util.MenuHandler;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-public class EntitiesFragment extends BaseFragment<EntitiesFragmentBinding, EntitiesViewModel> implements EntitiesListAdapterLight.ClickListeners, EntitiesListAdapterGroup.ClickListeners {
+public class EntitiesFragment extends BaseFragment<EntitiesFragmentBinding, EntitiesViewModel> implements EntitiesListAdapterLight.ClickListeners, EntitiesListAdapterGroup.ClickListeners,
+    MenuHandler {
 
     private EntitiesListAdapterLight lightsAdapter;
     private EntitiesListAdapterGroup groupsAdapter;
@@ -108,5 +112,29 @@ public class EntitiesFragment extends BaseFragment<EntitiesFragmentBinding, Enti
     public void onGroupCardClick(final View view, final long groupId, final String groupName) {
         // Todo: Implement group detail screen.
         LogUtil.d("Group card clicked.");
+    }
+
+    @Nullable
+    @Override
+    protected MenuHandler bindMenu() {
+        return this;
+    }
+
+    @Override
+    public boolean onMenuClicked(@NonNull final MenuItem menuItem) {
+        // The SwipeRefreshLayout does not provide accessibility events.
+        // Instead, a menu item should be provided to allow refresh of the content wherever this
+        // gesture is used.
+        if (menuItem.getItemId() == R.id.menu_entities_refresh) {
+            LogUtil.d("User requested refresh of all entities by clicking the toolbar menu option.");
+            viewModel.refreshEntities();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int getMenuId() {
+        return R.menu.menu_entities;
     }
 }
