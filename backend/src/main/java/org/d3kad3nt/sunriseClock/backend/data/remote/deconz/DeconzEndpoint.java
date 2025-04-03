@@ -93,17 +93,14 @@ public class DeconzEndpoint extends BaseEndpoint {
                 Request request = chain.request();
                 Response response = chain.proceed(request);
                 LogUtil.v(
-                        "HTTP interceptor: Intercepted request to: %s led to HTTP code: %d",
-                        response.request().url(), response.code());
+                        "HTTP interceptor: Intercepted HTTP %s request to %s led to status code %d.",
+                        response.request().method(), response.request().url(), response.code());
 
                 if (response.code() >= 200 && response.code() <= 399 && response.body() != null) {
 
-                    // Workaround: Deconz endpoint does not return the
-                    // id of a light when requesting a single
-                    // light. The Gson deserializer is automatically
-                    // called and cannot access the id inside of
-                    // the original request. A okHttp interceptor is
-                    // used to modify the JSON response from the
+                    // Workaround: Deconz endpoint does not return the id of a light when requesting a single
+                    // light. The Gson deserializer is automatically called and cannot access the id inside of
+                    // the original request. A okHttp interceptor is used to modify the JSON response from the
                     // Deconz endpoint and adds this light id.
                     if (request.header(IServices.endpointLightIdHeader) != null) {
                         LogUtil.v("HTTP interceptor: Try to set light id in JSON response as workaround.");
