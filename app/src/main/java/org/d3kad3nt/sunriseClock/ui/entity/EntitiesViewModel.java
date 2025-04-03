@@ -10,9 +10,12 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.CreationExtras;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.Optional;
+import org.d3kad3nt.sunriseClock.backend.data.model.UIEndpointEntity;
 import org.d3kad3nt.sunriseClock.backend.data.model.group.UIGroup;
 import org.d3kad3nt.sunriseClock.backend.data.model.light.UILight;
 import org.d3kad3nt.sunriseClock.backend.data.model.resource.EmptyResource;
@@ -64,7 +67,12 @@ public class EntitiesViewModel extends ViewModel {
             if (id.isEmpty()) {
                 return new MutableLiveData<>(Resource.success(new ArrayList<>()));
             } else {
-                return lightRepository.getLightsForEndpoint(id.get());
+                return Transformations.map(lightRepository.getLightsForEndpoint(id.get()), listResource -> {
+                    if (listResource.getData() != null) {
+                        listResource.getData().sort(Comparator.naturalOrder());
+                    }
+                    return listResource;
+                });
             }
         });
 
@@ -72,7 +80,12 @@ public class EntitiesViewModel extends ViewModel {
             if (id.isEmpty()) {
                 return new MutableLiveData<>(Resource.success(new ArrayList<>()));
             } else {
-                return lightRepository.getGroupsForEndpoint(id.get());
+                return Transformations.map(lightRepository.getGroupsForEndpoint(id.get()), listResource -> {
+                    if (listResource.getData() != null) {
+                        listResource.getData().sort(Comparator.naturalOrder());
+                    }
+                    return listResource;
+                });
             }
         });
     }
