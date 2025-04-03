@@ -78,9 +78,7 @@ public class LightRepository {
 
             @Override
             protected void saveResponseToDb(List<DbLight> items) {
-                for (DbLight light : items) {
-                    dbLightDao.upsert(light);
-                }
+                dbLightDao.upsert(items);
             }
 
             @Override
@@ -114,11 +112,7 @@ public class LightRepository {
 
             @Override
             protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteLight>> response) {
-                List<DbLight> lights = new ArrayList<>();
-                for (RemoteLight light : response.getBody()) {
-                    lights.add(DbLight.from(light));
-                }
-                return lights;
+                return response.getBody().stream().map(remoteLight -> DbLight.from(remoteLight)).toList();
             }
         };
     }
@@ -131,9 +125,7 @@ public class LightRepository {
 
                     @Override
                     protected void saveResponseToDb(List<DbLight> items) {
-                        for (DbLight light : items) {
-                            dbLightDao.upsert(light);
-                        }
+                        dbLightDao.upsert(items);
                     }
 
                     @Override
@@ -168,11 +160,7 @@ public class LightRepository {
 
                     @Override
                     protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteLight>> response) {
-                        List<DbLight> lights = new ArrayList<>();
-                        for (RemoteLight light : response.getBody()) {
-                            lights.add(DbLight.from(light));
-                        }
-                        return lights;
+                        return response.getBody().stream().map(remoteLight -> DbLight.from(remoteLight)).toList();
                     }
                 },
                 emptyResource -> EmptyResource.fromResource(emptyResource));
@@ -188,8 +176,7 @@ public class LightRepository {
                 // The primary key lightId is not known to the remote endpoint, but it is known to
                 // us.
                 // Set the lightId to enable direct update/insert via primary key (instead of
-                // endpointId and
-                // endpointLightId) through Room.
+                // endpointId and endpointLightId) through Room.
                 item.setId(lightId);
                 dbLightDao.upsert(item);
             }
@@ -241,8 +228,7 @@ public class LightRepository {
                         // The primary key lightId is not known to the remote endpoint, but it is
                         // known to us.
                         // Set the lightId to enable direct update/insert via primary key (instead
-                        // of endpointId and
-                        // endpointLightId) through Room.
+                        // of endpointId and endpointLightId) through Room.
                         item.setId(lightId);
                         dbLightDao.upsert(item);
                     }
@@ -494,12 +480,9 @@ public class LightRepository {
             protected Map<DbGroup, List<DbLight>> convertRemoteTypeToDbType(
                     ApiSuccessResponse<List<RemoteGroup>> remoteGroups,
                     ApiSuccessResponse<List<RemoteLight>> response2) {
-                List<DbLight> lights = new ArrayList<>();
-                Map<DbGroup, List<DbLight>> groupsWithLights = new HashMap<>();
+                List<DbLight> lights = response2.getBody().stream().map(remoteLight -> DbLight.from(remoteLight)).toList();
 
-                for (RemoteLight light : response2.getBody()) {
-                    lights.add(DbLight.from(light));
-                }
+                Map<DbGroup, List<DbLight>> groupsWithLights = new HashMap<>();
 
                 for (RemoteGroup group : remoteGroups.getBody()) {
                     DbGroup dbGroup = DbGroup.from(group);
@@ -526,12 +509,7 @@ public class LightRepository {
 
             @Override
             protected void saveResponseToDb(List<DbGroup> items) {
-                for (DbGroup group : items) {
-                    // Todo: Work with @Ignore to extract lightIds from object and manually insert
-                    // them into the
-                    // crossref table. Is this still necessary since getGroupsWithLightsForEndpoint?
-                    dbGroupDao.upsert(group);
-                }
+                dbGroupDao.upsert(items);
             }
 
             @Override
@@ -562,11 +540,7 @@ public class LightRepository {
 
             @Override
             protected List<DbGroup> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteGroup>> response) {
-                List<DbGroup> groups = new ArrayList<>();
-                for (RemoteGroup group : response.getBody()) {
-                    groups.add(DbGroup.from(group));
-                }
-                return groups;
+                return response.getBody().stream().map(remoteGroup -> DbGroup.from(remoteGroup)).toList();
             }
         };
     }
@@ -579,9 +553,7 @@ public class LightRepository {
 
                 @Override
                 protected void saveResponseToDb(List<DbGroup> items) {
-                    for (DbGroup group : items) {
-                        dbGroupDao.upsert(group);
-                    }
+                    dbGroupDao.upsert(items);
                 }
 
                 @Override
@@ -616,11 +588,7 @@ public class LightRepository {
 
                 @Override
                 protected List<DbGroup> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteGroup>> response) {
-                    List<DbGroup> groups = new ArrayList<>();
-                    for (RemoteGroup group : response.getBody()) {
-                        groups.add(DbGroup.from(group));
-                    }
-                    return groups;
+                    return response.getBody().stream().map(remoteGroup -> DbGroup.from(remoteGroup)).toList();
                 }
             },
             emptyResource -> EmptyResource.fromResource(emptyResource));

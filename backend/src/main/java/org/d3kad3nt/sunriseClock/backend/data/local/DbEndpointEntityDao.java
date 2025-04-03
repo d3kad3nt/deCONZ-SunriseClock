@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Transaction;
 import androidx.room.Update;
+import java.util.List;
 import org.d3kad3nt.sunriseClock.backend.data.model.DbEndpointEntity;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
@@ -97,6 +98,15 @@ public interface DbEndpointEntityDao<T extends DbEndpointEntity> {
     }
 
     /**
+     * Insert multiple endpoint entities (e.g. groups or lights) into the database (create) or update existing entity.
+     * <p>See the {@link #upsert} method for details on insertion behaviour.
+     * @param dbEndpointEntities List of endpoint entities.
+     */
+    default void upsert(List<T> dbEndpointEntities) {
+        dbEndpointEntities.forEach(t ->upsert(t));
+    }
+
+    /**
      * Use endpointId and endpointEntityId for manual SQL update statement. Overwritten by DAO interfaces.
      *
      * @param dbEndpointEntity The endpoint entity with the endpointId (see {@link DbEndpointEntity#getEndpointId()})
@@ -127,8 +137,7 @@ public interface DbEndpointEntityDao<T extends DbEndpointEntity> {
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     // An Insert DAO method that returns the inserted rows ids will return -1 for rows that are not
-    // inserted since
-    // this strategy will ignore the row if there is a conflict.
+    // inserted since this strategy will ignore the row if there is a conflict.
     long save(T dbEndpointEntity);
 
     /**

@@ -7,7 +7,9 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import org.d3kad3nt.sunriseClock.backend.data.model.DbEndpointEntity;
 import org.d3kad3nt.sunriseClock.backend.data.model.endpoint.EndpointConfig;
 import org.jetbrains.annotations.Contract;
@@ -107,6 +109,12 @@ public class DbLight extends DbEndpointEntity {
     @Contract("_ -> new")
     public static DbLight from(@NonNull RemoteLight remoteLight) {
         return RemoteLight.toDbLight(remoteLight);
+    }
+
+    @NonNull
+    @Contract("_ -> new")
+    public static List<DbLight> from(@NonNull List<RemoteLight> remoteLights) {
+        return remoteLights.stream().map(remoteLight -> from(remoteLight)).collect(Collectors.toList());
     }
 
     /**
