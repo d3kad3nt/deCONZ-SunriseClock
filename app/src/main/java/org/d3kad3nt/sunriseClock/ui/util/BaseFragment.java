@@ -40,7 +40,8 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
             @NonNull final LayoutInflater inflater,
             @Nullable final ViewGroup container,
             @Nullable final Bundle savedInstanceState) {
-        LogUtil.i("Create fragment view: %s.", this.getClass().getSimpleName());
+        LogUtil.setPrefix(String.format("%s: ", this.getClass().getSimpleName()));
+        LogUtil.i("Create fragment view.");
 
         binding = getViewBinding(inflater, container, savedInstanceState);
         commonToolbarBinding = CommonToolbarSmallBinding.bind(binding.getRoot());
