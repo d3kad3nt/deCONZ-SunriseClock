@@ -31,20 +31,22 @@ public class LightDetailViewModel extends ViewModel {
             new ViewModelInitializer<>(LightDetailViewModel.class, creationExtras -> {
                 LightRepository lightRepository = creationExtras.get(LIGHT_REPOSITORY_KEY);
                 Long lightId = creationExtras.get(LIGHT_ID_KEY);
+                assert lightRepository != null;
+                assert lightId != null;
                 return new LightDetailViewModel(lightRepository, lightId);
             });
     private final LightRepository lightRepository;
     private final long lightID;
-    public LiveData<Resource<UILight>> light;
+    public final LiveData<Resource<UILight>> light;
 
     /** Whether the loading indicator should be shown by the fragment. */
-    public ResourceVisibilityLiveData loadingIndicatorVisibility;
+    public final ResourceVisibilityLiveData loadingIndicatorVisibility;
 
     /** Visual indication that a light is not reachable. */
-    public BooleanVisibilityLiveData notReachableCardVisibility;
+    public final BooleanVisibilityLiveData notReachableCardVisibility;
 
     /** Whether the loading indicator of the swipeRefreshLayout should be shown by the fragment. */
-    public MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
+    public final MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
 
     /**
      * Text that is shown in the light rename dialog. The user types the desired new name into a text field backed by

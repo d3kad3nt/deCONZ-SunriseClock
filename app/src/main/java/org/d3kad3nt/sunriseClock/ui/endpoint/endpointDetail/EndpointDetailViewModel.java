@@ -24,13 +24,18 @@ public class EndpointDetailViewModel extends ViewModel {
                 EndpointRepository endpointRepository = creationExtras.get(ENDPOINT_REPOSITORY_KEY);
                 SettingsRepository settingsRepository = creationExtras.get(SETTINGS_REPOSITORY_KEY);
                 Long endpointId = creationExtras.get(ENDPOINT_ID_KEY);
+                assert endpointRepository != null;
+                assert settingsRepository != null;
+                assert endpointId != null;
                 return new EndpointDetailViewModel(endpointRepository, settingsRepository, endpointId);
             });
     private final EndpointRepository endpointRepository;
+    /** @noinspection FieldCanBeLocal*/
     private final SettingsRepository settingsRepository;
+
     private final long endpointID;
-    public LiveData<IEndpointUI> endpointConfig;
-    public LiveData<Boolean> selected;
+    public final LiveData<IEndpointUI> endpointConfig;
+    public final LiveData<Boolean> selected;
 
     /**
      * Text that is shown in the endpoint rename dialog. The user types the desired new name into a text field backed by
@@ -47,7 +52,7 @@ public class EndpointDetailViewModel extends ViewModel {
         this.settingsRepository = settingsRepository;
         this.endpointID = endpointId;
 
-        this.endpointConfig = getEndpoint(endpointId);
+        this.endpointConfig = endpointRepository.getEndpoint(endpointID);
 
         selected = Transformations.map(settingsRepository.getActiveEndpointIdAsLivedata(), new Function1<>() {
             @Override
@@ -61,10 +66,6 @@ public class EndpointDetailViewModel extends ViewModel {
         endpointNameEditText = (MutableLiveData<String>) Transformations.map(endpointConfig, endpointUI -> {
             return endpointUI.getName();
         });
-    }
-
-    private LiveData<IEndpointUI> getEndpoint(long endpointID) {
-        return endpointRepository.getEndpoint(endpointID);
     }
 
     public void setEndpointNameFromEditText() {

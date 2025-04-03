@@ -11,10 +11,10 @@
             type="java.lang.Boolean" />
         <variable
             name="cardClickListener"
-            type="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsListAdapter.ViewHolder.CardClickListener" />
+            type="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsListAdapter.EndpointListViewHolder.CardClickListener" />
         <variable
             name="radioCheckedChangeListener"
-            type="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsListAdapter.ViewHolder.RadioCheckedChangeListener" />
+            type="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsListAdapter.EndpointListViewHolder.RadioCheckedChangeListener" />
     </data>
     <com.google.android.material.card.MaterialCardView
         style="?attr/materialCardViewFilledStyle"

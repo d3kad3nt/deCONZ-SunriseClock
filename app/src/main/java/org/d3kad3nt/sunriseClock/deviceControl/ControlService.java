@@ -39,6 +39,7 @@ import org.d3kad3nt.sunriseClock.util.ExtendedPublisher;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
+/** @noinspection BoundedWildcard*/
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class ControlService extends ControlsProviderService {
 
@@ -174,7 +175,7 @@ public class ControlService extends ControlsProviderService {
         return builder.build();
     }
 
-    private void observeChanges(final String lightID, final ExtendedPublisher<Control> flow) {
+    private void observeChanges(final String lightID, final ExtendedPublisher<? super Control> flow) {
         LiveData<Resource<UILight>> lightLiveData = getUILight(lightID);
         lightLiveData.observeForever(new Observer<>() {
             @Override

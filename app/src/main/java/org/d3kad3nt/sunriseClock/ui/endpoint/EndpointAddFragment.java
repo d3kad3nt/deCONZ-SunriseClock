@@ -54,6 +54,7 @@ public class EndpointAddFragment extends BaseFragment<EndpointAddFragmentBinding
 
     // Todo: This should definitely be removed (and replaced by setting the onClickListener inside of XML and
     //  carrying over the logic to the viewmodel).
+    @NonNull
     private EndpointAddFragmentBinding addCreateEndpointListener(
             @NonNull EndpointAddFragmentBinding binding, EndpointAddDeconzFragmentBinding specificBinding) {
         binding.createEndpoint.setOnClickListener(new View.OnClickListener() {
