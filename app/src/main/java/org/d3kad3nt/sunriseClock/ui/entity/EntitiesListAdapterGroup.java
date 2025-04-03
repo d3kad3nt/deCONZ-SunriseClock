@@ -99,7 +99,8 @@ public class EntitiesListAdapterGroup extends ListAdapter<UIGroup, EntitiesListA
 
             @Override
             public void onClick(final View view) {
-                // Because this is used as part of ConcatAdapter, we cannot use the typical getAbsoluteAdapterPosition() to get the position of a viewholder in the adapter.
+                // Because this is used as part of ConcatAdapter, we cannot use the typical
+                // getAbsoluteAdapterPosition() to get the position of a ViewHolder in the adapter.
                 UIGroup group = getItem(getBindingAdapterPosition());
                 clickListeners.onGroupCardClick(view, group.getId(), group.getName());
             }
