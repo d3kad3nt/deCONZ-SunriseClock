@@ -8,16 +8,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.viewmodel.MutableCreationExtras;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ConcatAdapter;
-import java.util.List;
 import org.d3kad3nt.sunriseClock.R;
-import org.d3kad3nt.sunriseClock.backend.data.model.group.UIGroup;
-import org.d3kad3nt.sunriseClock.backend.data.model.light.UILight;
-import org.d3kad3nt.sunriseClock.backend.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.backend.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.backend.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.backend.data.repository.SettingsRepository;
@@ -56,23 +51,17 @@ public class EntitiesFragment extends BaseFragment<EntitiesFragmentBinding, Enti
         ConcatAdapter concatAdapter = new ConcatAdapter(lightsAdapter, groupsAdapter);
         binding.recyclerView.setAdapter(concatAdapter);
 
-        viewModel.getLights().observe(getLifecycleOwner(), new Observer<>() {
-            @Override
-            public void onChanged(final Resource<List<UILight>> listResource) {
-                if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
-                    LogUtil.i("Lights in list updated");
-                    lightsAdapter.submitList(listResource.getData());
-                }
+        viewModel.getLights().observe(getLifecycleOwner(), listResource -> {
+            if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
+                LogUtil.i("Lights in list updated");
+                lightsAdapter.submitList(listResource.getData());
             }
         });
 
-        viewModel.getGroups().observe(getLifecycleOwner(), new Observer<>() {
-            @Override
-            public void onChanged(final Resource<List<UIGroup>> listResource) {
-                if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
-                    LogUtil.i("Groups in list updated");
-                    groupsAdapter.submitList(listResource.getData());
-                }
+        viewModel.getGroups().observe(getLifecycleOwner(), listResource -> {
+            if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
+                LogUtil.i("Groups in list updated");
+                groupsAdapter.submitList(listResource.getData());
             }
         });
     }
