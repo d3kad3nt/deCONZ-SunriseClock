@@ -84,4 +84,6 @@
     <string name="bottomnav_home_title">Start</string>
     <string name="bottomnav_endpoints_title">Endpoints</string>
     <string name="bottomnav_entities_title">Geräte</string>
+    <string name="lights">Lichter</string>
+    <string name="groups">Gruppen</string>
 </resources>

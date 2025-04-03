@@ -91,4 +91,6 @@
     <string name="bottomnav_home_title">Home</string>
     <string name="bottomnav_endpoints_title">Endpoints</string>
     <string name="bottomnav_entities_title">Devices</string>
+    <string name="lights">Lights</string>
+    <string name="groups">Groups</string>
 </resources>

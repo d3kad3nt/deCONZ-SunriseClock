@@ -24,9 +24,6 @@ import org.d3kad3nt.sunriseClock.util.LogUtil;
 public class EntitiesFragment extends BaseFragment<EntitiesFragmentBinding, EntitiesViewModel>
         implements EntitiesListAdapterLight.ClickListeners, EntitiesListAdapterGroup.ClickListeners, MenuHandler {
 
-    private EntitiesListAdapterLight lightsAdapter;
-    private EntitiesListAdapterGroup groupsAdapter;
-
     @Override
     protected EntitiesFragmentBinding getViewBinding(
             @NonNull final LayoutInflater inflater,
@@ -44,12 +41,15 @@ public class EntitiesFragment extends BaseFragment<EntitiesFragmentBinding, Enti
     protected void bindVars(final EntitiesFragmentBinding binding) {
         binding.setViewModel(viewModel);
 
-        lightsAdapter = new EntitiesListAdapterLight(this);
-        groupsAdapter = new EntitiesListAdapterGroup(this);
+        EntitiesListAdapterHeader lightsHeaderAdapter = new EntitiesListAdapterHeader(getString(R.string.lights));
+        EntitiesListAdapterLight lightsAdapter = new EntitiesListAdapterLight(this);
+        EntitiesListAdapterHeader groupsHeaderAdapter = new EntitiesListAdapterHeader(getString(R.string.groups));
+        EntitiesListAdapterGroup groupsAdapter = new EntitiesListAdapterGroup(this);
 
         // Display the contents of multiple adapters sequentially.
         // Todo: Implement headers or dividers between adapters.
-        ConcatAdapter concatAdapter = new ConcatAdapter(lightsAdapter, groupsAdapter);
+        ConcatAdapter concatAdapter =
+                new ConcatAdapter(lightsHeaderAdapter, lightsAdapter, groupsHeaderAdapter, groupsAdapter);
         binding.recyclerView.setAdapter(concatAdapter);
 
         viewModel.getLights().observe(getLifecycleOwner(), listResource -> {
