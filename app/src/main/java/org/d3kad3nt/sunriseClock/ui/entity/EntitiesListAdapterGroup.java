@@ -24,17 +24,16 @@ public class EntitiesListAdapterGroup extends ListAdapter<UIGroup, EntitiesListA
     @Override
     public GroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new GroupViewHolder(
-                        EntitiesListElementGroupBinding.inflate(LayoutInflater.from(parent.getContext()), parent,
-                            false));
+                EntitiesListElementGroupBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull GroupViewHolder holder, int position) {
-            UIGroup group = getItem(position);
-            LogUtil.v("Triggering full (re)bind of group data for groupId %d.", group.getId());
-            holder.bind(group);
-            holder.itemView.setTag(group);
-        }
+        UIGroup group = getItem(position);
+        LogUtil.v("Triggering full (re)bind of group data for groupId %d.", group.getId());
+        holder.bind(group);
+        holder.itemView.setTag(group);
+    }
 
     public interface ClickListeners {
 
@@ -53,7 +52,7 @@ public class EntitiesListAdapterGroup extends ListAdapter<UIGroup, EntitiesListA
         /** Used to determine structural changes between old and new list (additions/removals/position changes). */
         @Override
         public boolean areItemsTheSame(@NonNull UIGroup oldItem, @NonNull UIGroup newItem) {
-                return oldItem.getId() == newItem.getId();
+            return oldItem.getId() == newItem.getId();
         }
 
         /**
