@@ -103,6 +103,11 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType>
         });
     }
 
+    /**
+     * This Method can ab overridden, but doesn't has to be
+     *
+     * @noinspection EmptyMethod
+     */
     protected void onFetchFailed() {}
 
     /**
