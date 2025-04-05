@@ -47,7 +47,6 @@ public class EntitiesFragment extends BaseFragment<EntitiesFragmentBinding, Enti
         EntitiesListAdapterGroup groupsAdapter = new EntitiesListAdapterGroup(this);
 
         // Display the contents of multiple adapters sequentially.
-        // Todo: Implement headers or dividers between adapters.
         ConcatAdapter concatAdapter =
                 new ConcatAdapter(lightsHeaderAdapter, lightsAdapter, groupsHeaderAdapter, groupsAdapter);
         binding.recyclerView.setAdapter(concatAdapter);
