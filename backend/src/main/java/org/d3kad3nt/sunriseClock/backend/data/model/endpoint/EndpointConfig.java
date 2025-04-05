@@ -33,7 +33,7 @@ public class EndpointConfig {
 
     @ColumnInfo(name = "type")
     @TypeConverters(EndpointTypeConverter.class)
-    public EndpointType type;
+    public final EndpointType type;
 
     @ColumnInfo(name = "name", defaultValue = "Unnamed Endpoint")
     @NonNull
