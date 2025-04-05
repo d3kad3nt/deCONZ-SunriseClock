@@ -17,7 +17,7 @@ public final class LiveDataUtil {
     }
 
     public static <T> void observeOnce(@NonNull LiveData<T> liveData, @NonNull Observer<T> observer) {
-        liveData.observeForever(new Observer<T>() {
+        liveData.observeForever(new Observer<>() {
             @Override
             public void onChanged(T t) {
                 observer.onChanged(t);
