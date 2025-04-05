@@ -17,13 +17,11 @@
     <string name="alarm_late">spätester Alarm</string>
     <string name="api_key">API-Schlüssel</string>
     <string name="alarm_enable">Aktiviere Alarme</string>
-    <string name="lights_title">Alle Lichter</string>
     <string name="lightDetail_title">Infos zum Licht</string>
     <string name="bottomnav_preferences_title">Einstellungen</string>
-    <string name="conectivity_settings_title">Verbindungseinstellungen</string>
+    <string name="connectivity_settings_title">Verbindungseinstellungen</string>
     <string name="debug_settings_title">Debug</string>
     <string name="noLights_title">Keine Lichter gefunden</string>
-    <string name="endpoint">Endpoint</string>
     <string name="endpoint_list">Alle Endpoints</string>
     <string name="add">hinzufügen</string>
     <string name="endpoint_add">Endpoint hinzufügen</string>

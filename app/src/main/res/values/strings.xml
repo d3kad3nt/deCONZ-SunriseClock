@@ -10,7 +10,7 @@
     <string name="network">Network</string>
     <string name="alarm" translatable="false">Alarm</string>
     <string name="ui_interface">Interface</string>
-    <string name="debug">Debuging</string>
+    <string name="debug">Debugging</string>
     <string name="logs_enable">Enable logging</string>
     <string name="schedule_toast">Message when Schedule set</string>
     <string name="start_on_boot">Start on boot</string>
@@ -19,13 +19,11 @@
     <string name="alarm_late_summary">Latest possible time for alarm</string>
     <string name="alarm_late">Latest alarm</string>
     <string name="alarm_enable">Enable Alarms</string>
-    <string name="lights_title">All Lights</string>
     <string name="lightDetail_title">Light info</string>
     <string name="bottomnav_preferences_title">Preferences</string>
-    <string name="conectivity_settings_title">Conectivity</string>
+    <string name="connectivity_settings_title">Connectivity</string>
     <string name="debug_settings_title">Debug</string>
     <string name="noLights_title">No Lights could be found</string>
-    <string name="endpoint">Endpoint</string>
     <string name="endpoint_list">All Endpoints</string>
     <string name="add">add</string>
     <string name="endpoint_add">Add Endpoint</string>

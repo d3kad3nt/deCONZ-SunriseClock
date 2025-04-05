@@ -33,7 +33,7 @@
     <fragment
         android:id="@+id/connectivityFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preference.ConnectivityFragment"
-        android:label="@string/conectivity_settings_title" />
+        android:label="@string/connectivity_settings_title" />
     <action
         android:id="@+id/action_global_mainSettingsFragment"
         app:destination="@id/bottomnav_settings" />

@@ -30,12 +30,12 @@ public class EntitiesViewModel extends ViewModel {
 
     static final ViewModelInitializer<EntitiesViewModel> initializer =
             new ViewModelInitializer<>(EntitiesViewModel.class, creationExtras -> {
-                LightRepository lightRepository = creationExtras.get(LIGHT_REPOSITORY_KEY);
-                SettingsRepository settingsRepository = creationExtras.get(SETTINGS_REPOSITORY_KEY);
+                LightRepository lightRepository = Objects.requireNonNull(creationExtras.get(LIGHT_REPOSITORY_KEY));
+                SettingsRepository settingsRepository =
+                    Objects.requireNonNull(creationExtras.get(SETTINGS_REPOSITORY_KEY));
                 return new EntitiesViewModel(lightRepository, settingsRepository);
             });
     private final LightRepository lightRepository;
-    private final SettingsRepository settingsRepository;
 
     private final LiveData<Optional<Long>> endpointId;
 
@@ -43,15 +43,14 @@ public class EntitiesViewModel extends ViewModel {
     private final LiveData<Resource<List<UIGroup>>> groups;
 
     /** Whether the loading indicator should be shown by the fragment. */
-    public ResourceVisibilityLiveData loadingIndicatorVisibility;
+    public final ResourceVisibilityLiveData loadingIndicatorVisibility;
 
     /** Whether the loading indicator of the swipeRefreshLayout should be shown by the fragment. */
-    public MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
+    public final MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
 
-    public EntitiesViewModel(@NonNull LightRepository lightRepository, SettingsRepository settingsRepository) {
+    public EntitiesViewModel(@NonNull LightRepository lightRepository, @NonNull SettingsRepository settingsRepository) {
         super();
         this.lightRepository = lightRepository;
-        this.settingsRepository = settingsRepository;
 
         // Todo: Integrate initial loading of entities.
         loadingIndicatorVisibility = new ResourceVisibilityLiveData(View.INVISIBLE)

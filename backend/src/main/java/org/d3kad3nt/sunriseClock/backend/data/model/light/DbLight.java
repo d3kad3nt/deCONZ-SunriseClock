@@ -111,6 +111,7 @@ public class DbLight extends DbEndpointEntity {
         return RemoteLight.toDbLight(remoteLight);
     }
 
+    /** @noinspection unused*/
     @NonNull
     @Contract("_ -> new")
     public static List<DbLight> from(@NonNull List<RemoteLight> remoteLights) {

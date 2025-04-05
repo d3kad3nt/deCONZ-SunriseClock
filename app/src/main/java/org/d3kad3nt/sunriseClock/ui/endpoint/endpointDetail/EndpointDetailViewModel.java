@@ -39,7 +39,7 @@ public class EndpointDetailViewModel extends ViewModel {
      * Text that is shown in the endpoint rename dialog. The user types the desired new name into a text field backed by
      * this LiveData.
      */
-    public MutableLiveData<String> endpointNameEditText;
+    public final MutableLiveData<String> endpointNameEditText;
 
     public EndpointDetailViewModel(
             @NonNull EndpointRepository endpointRepository,
