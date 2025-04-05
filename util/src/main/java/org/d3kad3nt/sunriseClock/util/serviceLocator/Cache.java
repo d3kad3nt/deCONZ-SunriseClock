@@ -11,11 +11,10 @@ abstract class Cache<K, T> {
         return instances.get(instanceName);
     }
 
-    public boolean addInstance(K key, T instance) {
+    public void addInstance(K key, T instance) {
         if (instances.containsKey(key)) {
-            return false;
+            throw new IllegalArgumentException("Can't override instance for " + key.toString());
         }
         instances.put(key, instance);
-        return true;
     }
 }

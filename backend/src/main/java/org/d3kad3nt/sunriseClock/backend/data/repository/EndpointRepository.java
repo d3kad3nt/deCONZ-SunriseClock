@@ -93,6 +93,7 @@ public final class EndpointRepository {
         return builder.setConfig(config).build();
     }
 
+    /** @noinspection UnusedReturnValue*/
     public IEndpointUI createEndpoint(Map<String, String> config) {
         if (config == null) {
             throw new NullPointerException("The given config map was null.");
@@ -105,6 +106,7 @@ public final class EndpointRepository {
         ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
             endpointConfigDao.save(endpointConfig);
         });
+        //This is done to verify that the endpoint is created correctly
         type.getBuilder().setConfig(endpointConfig).build();
         return UIEndpoint.from(endpointConfig);
     }

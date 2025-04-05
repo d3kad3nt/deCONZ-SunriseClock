@@ -14,6 +14,7 @@ public interface DbLightGroupingDao {
     @Query("SELECT * FROM " + DbGroupLightCrossref.TABLENAME)
     LiveData<List<DbGroupLightCrossref>> loadAll();
 
+    /** @noinspection UnusedReturnValue*/
     @Insert(entity = DbGroupLightCrossref.class, onConflict = OnConflictStrategy.REPLACE)
     long save(DbGroupLightCrossref obj);
 
