@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.backend.data.repository;
 
 import android.content.Context;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -64,7 +65,7 @@ public final class EndpointRepository {
     public LiveData<IEndpointUI> getEndpoint(long id) {
         return Transformations.map(endpointConfigDao.load(id), endpointConfig -> {
             if (endpointConfig == null) {
-                return null;
+                throw new IllegalArgumentException("Invalid endpoint id: " + id);
             } else {
                 return UIEndpoint.from(endpointConfig);
             }
@@ -85,19 +86,13 @@ public final class EndpointRepository {
         });
     }
 
-    private BaseEndpoint createEndpoint(EndpointConfig config) {
-        if (config == null) {
-            throw new NullPointerException("The given config object was null.");
-        }
+    private BaseEndpoint createEndpoint(@NonNull EndpointConfig config) {
         EndpointBuilder builder = config.type.getBuilder();
         return builder.setConfig(config).build();
     }
 
     /** @noinspection UnusedReturnValue*/
-    public IEndpointUI createEndpoint(Map<String, String> config) {
-        if (config == null) {
-            throw new NullPointerException("The given config map was null.");
-        }
+    public IEndpointUI createEndpoint(@NonNull Map<String, String> config) {
         EndpointType type = EndpointType.valueOf(config.remove("type"));
         String name = config.remove("name");
         Gson gson = new Gson();

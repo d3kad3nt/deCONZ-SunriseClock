@@ -65,12 +65,13 @@ public final class LightRepository {
         return INSTANCE;
     }
 
+    @NonNull
     public LiveData<Resource<List<UILight>>> getLightsForEndpoint(long endpointId) {
         LogUtil.i("Requesting and returning all lights for endpoint with id %d", endpointId);
 
         try {
             endpointRepo.getEndpoint(endpointId);
-        } catch (NullPointerException e) {
+        } catch (IllegalArgumentException e) {
             Resource<List<UILight>> resource = Resource.error("Endpoint doesn't exist", null);
             return new MutableLiveData<>(resource);
         }
@@ -420,10 +421,11 @@ public final class LightRepository {
         };
     }
 
+    @NonNull
     public LiveData<Resource<Map<UIGroup, List<UILight>>>> getGroupsWithLightsForEndpoint(long endpointId) {
         try {
             endpointRepo.getEndpoint(endpointId);
-        } catch (NullPointerException e) {
+        } catch (IllegalArgumentException e) {
             Resource<Map<UIGroup, List<UILight>>> resource = Resource.error("Endpoint doesn't exist", null);
             return new MutableLiveData<>(resource);
         }
@@ -497,12 +499,13 @@ public final class LightRepository {
     }
 
     /** @noinspection unused*/
+    @NonNull
     public LiveData<Resource<List<UIGroup>>> getGroupsForEndpoint(long endpointId) {
         LogUtil.i("Requesting and returning all groups for endpoint with id %d", endpointId);
 
         try {
             endpointRepo.getEndpoint(endpointId);
-        } catch (NullPointerException e) {
+        } catch (IllegalArgumentException e) {
             Resource<List<UIGroup>> resource = Resource.error("Endpoint doesn't exist", null);
             return new MutableLiveData<>(resource);
         }
