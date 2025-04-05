@@ -21,7 +21,7 @@
     <string name="alarm_enable">Enable Alarms</string>
     <string name="lights_title">All Lights</string>
     <string name="lightDetail_title">Light info</string>
-    <string name="preferences_title">Preferences</string>
+    <string name="bottomnav_preferences_title">Preferences</string>
     <string name="conectivity_settings_title">Conectivity</string>
     <string name="debug_settings_title">Debug</string>
     <string name="noLights_title">No Lights could be found</string>
@@ -47,4 +47,9 @@
     <string name="light_on_action">On</string>
     <string name="light_off_action">Off</string>
     <string name="create_button">Create</string>
+    <string name="bottomnav_home_title">Home</string>
+    <string name="bottomnav_endpoints_title">Endpoints</string>
+    <string name="bottomnav_entities_title">Devices</string>
+    <string name="lights">Lights</string>
+    <string name="groups">Groups</string>
 </resources>

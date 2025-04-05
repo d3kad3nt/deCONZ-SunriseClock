@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/lightsList">
+    app:startDestination="@id/bottomnav_home">
     <fragment
-        android:id="@+id/lightsList"
+        android:id="@+id/bottomnav_home"
         android:name="org.d3kad3nt.sunriseClock.ui.light.LightsFragment"
-        android:label="@string/lights_title"
+        android:label="@string/app_name"
         tools:layout="@layout/lights_fragment">
         <action
             android:id="@+id/action_lights_to_lightDetail"
             app:destination="@id/nav_graph_light_detail" />
     </fragment>
     <fragment
-        android:id="@+id/mainSettingsFragment"
+        android:id="@+id/bottomnav_settings"
         android:name="org.d3kad3nt.sunriseClock.ui.preference.MainSettingsFragment"
-        android:label="@string/preferences_title">
+        android:label="@string/bottomnav_preferences_title">
         <action
             android:id="@+id/action_mainSettingsFragment_to_connectivityFragment"
             app:destination="@id/connectivityFragment" />
@@ -36,7 +36,7 @@
         android:label="@string/conectivity_settings_title" />
     <action
         android:id="@+id/action_global_mainSettingsFragment"
-        app:destination="@id/mainSettingsFragment" />
+        app:destination="@id/bottomnav_settings" />
     <fragment
         android:id="@+id/alarmFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preference.AlarmFragment"
@@ -50,7 +50,7 @@
         android:name="org.d3kad3nt.sunriseClock.ui.preference.InterfaceFragment"
         android:label="@string/ui_interface" />
     <fragment
-        android:id="@+id/endpointsList"
+        android:id="@+id/bottomnav_endpoints"
         android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment"
         android:label="@string/endpoint_list"
         tools:layout="@layout/endpoints_fragment">
@@ -146,4 +146,13 @@
             android:name="endpointName"
             app:argType="string" />
     </navigation>
+    <fragment
+        android:id="@+id/bottomnav_entities"
+        android:name="org.d3kad3nt.sunriseClock.ui.entity.EntitiesFragment"
+        android:label="@string/bottomnav_entities_title"
+        tools:layout="@layout/entities_fragment">
+        <action
+            android:id="@+id/action_bottomnav_entities_to_nav_graph_light_detail"
+            app:destination="@id/nav_graph_light_detail" />
+    </fragment>
 </navigation>
