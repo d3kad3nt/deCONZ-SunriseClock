@@ -40,7 +40,7 @@
     <fragment
         android:id="@+id/alarmFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preference.AlarmFragment"
-        android:label="@string/alarm_settings_title" />
+        android:label="@string/alarm" />
     <fragment
         android:id="@+id/debugFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preference.DebugFragment"
@@ -48,7 +48,7 @@
     <fragment
         android:id="@+id/interfaceFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preference.InterfaceFragment"
-        android:label="@string/interface_settings_title" />
+        android:label="@string/ui_interface" />
     <fragment
         android:id="@+id/endpointsList"
         android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment"
