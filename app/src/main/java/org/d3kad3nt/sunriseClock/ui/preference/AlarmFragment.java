@@ -3,6 +3,7 @@ package org.d3kad3nt.sunriseClock.ui.preference;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
+import java.util.Objects;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
@@ -19,14 +20,14 @@ public class AlarmFragment extends PreferenceFragmentCompat
     public void onResume() {
         super.onResume();
         // Register the listener whenever a key changes
-        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        Objects.requireNonNull(getPreferenceScreen().getSharedPreferences()).registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         // Unregister the listener whenever a key changes
-        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        Objects.requireNonNull(getPreferenceScreen().getSharedPreferences()).unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override

@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddDeconzFragmentBinding;
 import org.d3kad3nt.sunriseClock.databinding.EndpointAddFragmentBinding;
 import org.d3kad3nt.sunriseClock.ui.util.BaseFragment;
@@ -61,7 +62,7 @@ public class EndpointAddFragment extends BaseFragment<EndpointAddFragmentBinding
             @Override
             public void onClick(View v) {
                 Map<String, String> settings = new HashMap<>();
-                settings.put("name", binding.endpointName.getText().toString());
+                settings.put("name",  Objects.requireNonNull(binding.endpointName.getText()).toString());
                 settings.put("type", specificBinding.getRoot().getTag().toString());
                 ViewGroup rootLinearLayout = (ViewGroup) specificBinding.getRoot();
                 TextInputEditText[] input = {
@@ -70,7 +71,7 @@ public class EndpointAddFragment extends BaseFragment<EndpointAddFragmentBinding
                     rootLinearLayout.findViewWithTag("apiKey")
                 };
                 for (TextInputEditText i : input) {
-                    settings.put(i.getTag().toString(), i.getText().toString());
+                    settings.put(i.getTag().toString(), Objects.requireNonNull(i.getText()).toString());
                 }
                 if (viewModel.createEndpoint(settings)) {
                     LogUtil.v("Endpoint created");

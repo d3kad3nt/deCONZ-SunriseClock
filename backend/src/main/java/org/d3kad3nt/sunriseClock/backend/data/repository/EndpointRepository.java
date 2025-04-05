@@ -92,9 +92,13 @@ public final class EndpointRepository {
     }
 
     /** @noinspection UnusedReturnValue*/
+    @NonNull
     public IEndpointUI createEndpoint(@NonNull Map<String, String> config) {
         EndpointType type = EndpointType.valueOf(config.remove("type"));
         String name = config.remove("name");
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("A name has to be provided");
+        }
         Gson gson = new Gson();
         JsonObject jsonConfig = gson.toJsonTree(config).getAsJsonObject();
         EndpointConfig endpointConfig = new EndpointConfig(type, name, new Date(), jsonConfig);
