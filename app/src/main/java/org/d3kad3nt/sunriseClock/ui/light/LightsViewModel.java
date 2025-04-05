@@ -26,7 +26,7 @@ public class LightsViewModel extends AndroidViewModel {
 
     private final LightRepository lightRepository =
             LightRepository.getInstance(getApplication().getApplicationContext());
-    /** @noinspection FieldCanBeLocal*/
+    /** @noinspection FieldCanBeLocal */
     private final SettingsRepository settingsRepository =
             SettingsRepository.getInstance(getApplication().getApplicationContext());
 

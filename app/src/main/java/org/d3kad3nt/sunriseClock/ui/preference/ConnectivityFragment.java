@@ -14,14 +14,16 @@ public class ConnectivityFragment extends PreferenceFragmentCompat
     public void onResume() {
         super.onResume();
         // Register the listener whenever a key changes
-        Objects.requireNonNull(getPreferenceScreen().getSharedPreferences()).registerOnSharedPreferenceChangeListener(this);
+        Objects.requireNonNull(getPreferenceScreen().getSharedPreferences())
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         // Unregister the listener whenever a key changes
-        Objects.requireNonNull(getPreferenceScreen().getSharedPreferences()).unregisterOnSharedPreferenceChangeListener(this);
+        Objects.requireNonNull(getPreferenceScreen().getSharedPreferences())
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override

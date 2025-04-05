@@ -32,7 +32,7 @@ public class EntitiesViewModel extends ViewModel {
             new ViewModelInitializer<>(EntitiesViewModel.class, creationExtras -> {
                 LightRepository lightRepository = Objects.requireNonNull(creationExtras.get(LIGHT_REPOSITORY_KEY));
                 SettingsRepository settingsRepository =
-                    Objects.requireNonNull(creationExtras.get(SETTINGS_REPOSITORY_KEY));
+                        Objects.requireNonNull(creationExtras.get(SETTINGS_REPOSITORY_KEY));
                 return new EntitiesViewModel(lightRepository, settingsRepository);
             });
     private final LightRepository lightRepository;

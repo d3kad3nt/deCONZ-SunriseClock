@@ -39,7 +39,7 @@ import org.d3kad3nt.sunriseClock.util.ExtendedPublisher;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-/** @noinspection BoundedWildcard*/
+/** @noinspection BoundedWildcard */
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class ControlService extends ControlsProviderService {
 

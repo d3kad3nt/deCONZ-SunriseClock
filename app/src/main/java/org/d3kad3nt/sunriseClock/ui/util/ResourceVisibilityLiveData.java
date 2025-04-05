@@ -54,7 +54,7 @@ public class ResourceVisibilityLiveData extends androidx.lifecycle.MediatorLiveD
         return this;
     }
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     public Integer getErrorVisibility() {
         return errorVisibility;
     }
@@ -64,7 +64,7 @@ public class ResourceVisibilityLiveData extends androidx.lifecycle.MediatorLiveD
         return this;
     }
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     public Integer getSuccessVisibility() {
         return successVisibility;
     }
@@ -74,7 +74,7 @@ public class ResourceVisibilityLiveData extends androidx.lifecycle.MediatorLiveD
         return this;
     }
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     public Integer getLoadingVisibility() {
         return loadingVisibility;
     }
