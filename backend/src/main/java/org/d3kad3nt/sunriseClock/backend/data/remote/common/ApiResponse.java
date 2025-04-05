@@ -13,8 +13,7 @@ import retrofit2.Response;
  * Common class used by API responses.
  *
  * <p>Adapted from the official Google architecture-components github-sample app under
- * https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com
- * /android/example/github/api/ApiResponse.kt.
+ * <a href="https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/api/ApiResponse.kt">ApiResponse.kt</a>
  */
 public abstract class ApiResponse<T> {
 

@@ -50,7 +50,7 @@ public interface LightEndpoint {
      *
      * @param endpointLightId String identifying the light on this endpoint.
      * @param newName Desired name for this light.
-     * @return
+     * @return A Livedata of the response from the endpoint. This doesn't have to have a meaningful content
      */
     LiveData<ApiResponse<ResponseBody>> setName(String endpointLightId, String newName);
 }
