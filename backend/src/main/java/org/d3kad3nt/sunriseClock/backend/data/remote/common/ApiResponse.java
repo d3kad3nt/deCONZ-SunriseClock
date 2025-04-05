@@ -35,11 +35,11 @@ public abstract class ApiResponse<T> {
             }
         } else {
             String msg = null;
-            if (response.errorBody() != null) {
-                try {
-                    msg = response.errorBody().string();
-                } catch (IOException ignored) {
+            try (var errorBody = response.errorBody()){
+                if (errorBody != null) {
+                    msg = errorBody.string();
                 }
+            } catch (IOException ignored) {
             }
             final String errorMsg;
             if ((msg == null) || msg.isEmpty()) {
