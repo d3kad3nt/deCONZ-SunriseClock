@@ -10,7 +10,7 @@ import org.d3kad3nt.sunriseClock.backend.data.model.UIEndpointEntity;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
-public class UILight extends UIEndpointEntity<UILight> {
+public final class UILight extends UIEndpointEntity<UILight> {
 
     private final boolean isSwitchable;
     private final boolean isOn;

@@ -24,7 +24,7 @@ import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.d3kad3nt.sunriseClock.util.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.util.serviceLocator.ServiceLocator;
 
-public class EndpointRepository {
+public final class EndpointRepository {
 
     private static final Map<Long, LiveData<BaseEndpoint>> endpointLiveDataCache = new HashMap<>();
     private static EndpointConfigDao endpointConfigDao;

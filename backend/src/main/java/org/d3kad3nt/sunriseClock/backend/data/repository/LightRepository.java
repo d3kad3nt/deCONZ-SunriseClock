@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /** Repository module for handling data operations (network or local database). */
-public class LightRepository {
+public final class LightRepository {
 
     private static DbLightDao dbLightDao;
     private static DbGroupDao dbGroupDao;
