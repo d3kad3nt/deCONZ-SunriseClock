@@ -28,6 +28,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         removeObsoleteSchedules();
+        //noinspection StatementWithEmptyBody
         if (checkPrerequisites()) {
             // Add Schedule
         }
