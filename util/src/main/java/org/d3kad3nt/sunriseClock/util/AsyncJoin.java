@@ -2,6 +2,7 @@ package org.d3kad3nt.sunriseClock.util;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,7 +35,7 @@ public class AsyncJoin {
     }
 
     public void executeWhenJoined(Action action) {
-        joinState.observeForever(new androidx.lifecycle.Observer<>() {
+        joinState.observeForever(new Observer<>() {
             @Override
             public void onChanged(final Boolean completed) {
                 if (completed) {
@@ -51,9 +52,9 @@ public class AsyncJoin {
         void apply();
     }
 
-    public abstract static class Observer<T> implements androidx.lifecycle.Observer<T> {
+    public abstract static class AsyncObserver <T> implements Observer<T> {
 
-        public Observer(@NonNull AsyncJoin joinHelper) {
+        public AsyncObserver(@NonNull AsyncJoin joinHelper) {
             joinHelper.addAsyncTask(this);
         }
     }

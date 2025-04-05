@@ -64,10 +64,6 @@ public abstract class AppDatabase extends RoomDatabase {
                 .build();
     }
 
-    public static void destroyInstance() {
-        INSTANCE = null;
-    }
-
     public static Migration[] allMigrations() {
         Migration[] migrationsArray = new Migration[migrations.size()];
         return migrations.toArray(migrationsArray);

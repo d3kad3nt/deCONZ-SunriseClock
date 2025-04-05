@@ -15,7 +15,7 @@
             android:id="@+id/endpointNameContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
+            android:hint="@string/name_label"
             app:layout_constraintTop_toBottomOf="@id/appbar"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayoutSpecificEndpoint">
             <com.google.android.material.textfield.TextInputEditText
@@ -36,7 +36,7 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
             android:contentDescription="@string/add"
-            android:text="Create"
+            android:text="@string/create_button"
             app:icon="@drawable/ic_plus"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

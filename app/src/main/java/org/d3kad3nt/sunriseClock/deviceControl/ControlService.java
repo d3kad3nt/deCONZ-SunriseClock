@@ -39,6 +39,7 @@ import org.d3kad3nt.sunriseClock.util.ExtendedPublisher;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
+/** @noinspection BoundedWildcard */
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class ControlService extends ControlsProviderService {
 
@@ -76,13 +77,13 @@ public class ControlService extends ControlsProviderService {
         LiveData<List<IEndpointUI>> allEndpoints = getEndpointRepository().getAllEndpoints();
         AsyncJoin asyncHelper = new AsyncJoin();
 
-        LiveDataUtil.observeOnce(allEndpoints, new AsyncJoin.Observer<>(asyncHelper) {
+        LiveDataUtil.observeOnce(allEndpoints, new AsyncJoin.AsyncObserver<>(asyncHelper) {
             @Override
             public void onChanged(final List<IEndpointUI> endpoints) {
                 for (IEndpointUI endpoint : endpoints) {
                     LiveData<Resource<List<UILight>>> lightResources =
                             getLightRepository().getLightsForEndpoint(endpoint.getId());
-                    lightResources.observeForever(new AsyncJoin.Observer<>(asyncHelper) {
+                    lightResources.observeForever(new AsyncJoin.AsyncObserver<>(asyncHelper) {
                         @Override
                         public void onChanged(final Resource<List<UILight>> listResource) {
                             switch (listResource.getStatus()) {
@@ -157,7 +158,7 @@ public class ControlService extends ControlsProviderService {
     }
 
     private <T> void removeObserver(
-            final AsyncJoin.Observer<T> observer,
+            final AsyncJoin.AsyncObserver<T> observer,
             @NonNull final LiveData<T> livedata,
             @NonNull final AsyncJoin asyncHelper) {
         asyncHelper.removeAsyncTask(observer);
@@ -174,7 +175,7 @@ public class ControlService extends ControlsProviderService {
         return builder.build();
     }
 
-    private void observeChanges(final String lightID, final ExtendedPublisher<Control> flow) {
+    private void observeChanges(final String lightID, final ExtendedPublisher<? super Control> flow) {
         LiveData<Resource<UILight>> lightLiveData = getUILight(lightID);
         lightLiveData.observeForever(new Observer<>() {
             @Override

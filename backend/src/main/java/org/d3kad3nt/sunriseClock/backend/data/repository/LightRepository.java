@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /** Repository module for handling data operations (network or local database). */
-public class LightRepository {
+public final class LightRepository {
 
     private static DbLightDao dbLightDao;
     private static DbGroupDao dbGroupDao;
@@ -65,12 +65,13 @@ public class LightRepository {
         return INSTANCE;
     }
 
+    @NonNull
     public LiveData<Resource<List<UILight>>> getLightsForEndpoint(long endpointId) {
         LogUtil.i("Requesting and returning all lights for endpoint with id %d", endpointId);
 
         try {
             endpointRepo.getEndpoint(endpointId);
-        } catch (NullPointerException e) {
+        } catch (IllegalArgumentException e) {
             Resource<List<UILight>> resource = Resource.error("Endpoint doesn't exist", null);
             return new MutableLiveData<>(resource);
         }
@@ -420,10 +421,11 @@ public class LightRepository {
         };
     }
 
+    @NonNull
     public LiveData<Resource<Map<UIGroup, List<UILight>>>> getGroupsWithLightsForEndpoint(long endpointId) {
         try {
             endpointRepo.getEndpoint(endpointId);
-        } catch (NullPointerException e) {
+        } catch (IllegalArgumentException e) {
             Resource<Map<UIGroup, List<UILight>>> resource = Resource.error("Endpoint doesn't exist", null);
             return new MutableLiveData<>(resource);
         }
@@ -496,12 +498,14 @@ public class LightRepository {
         };
     }
 
+    /** @noinspection unused*/
+    @NonNull
     public LiveData<Resource<List<UIGroup>>> getGroupsForEndpoint(long endpointId) {
         LogUtil.i("Requesting and returning all groups for endpoint with id %d", endpointId);
 
         try {
             endpointRepo.getEndpoint(endpointId);
-        } catch (NullPointerException e) {
+        } catch (IllegalArgumentException e) {
             Resource<List<UIGroup>> resource = Resource.error("Endpoint doesn't exist", null);
             return new MutableLiveData<>(resource);
         }
@@ -512,32 +516,38 @@ public class LightRepository {
                 dbGroupDao.upsert(items);
             }
 
+            /** @noinspection unused*/
             @Override
             protected boolean shouldFetch(List<DbGroup> data) {
                 // TODO
                 return true;
             }
 
+            /** @noinspection unused*/
             @Override
             protected LiveData<BaseEndpoint> loadEndpoint() {
                 return endpointRepo.getRepoEndpoint(endpointId);
             }
 
+            /** @noinspection unused*/
             @Override
             protected LiveData<List<DbGroup>> loadFromDb() {
                 return dbGroupDao.loadAllForEndpoint(endpointId);
             }
 
+            /** @noinspection unused*/
             @Override
             protected LiveData<ApiResponse<List<RemoteGroup>>> loadFromNetwork() {
                 return endpoint.getGroups();
             }
 
+            /** @noinspection unused*/
             @Override
             protected List<UIGroup> convertDbTypeToResultType(List<DbGroup> dbGroups) {
                 return UIGroup.from(dbGroups);
             }
 
+            /** @noinspection unused*/
             @Override
             protected List<DbGroup> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteGroup>> response) {
                 return response.getBody().stream().map(remoteGroup -> DbGroup.from(remoteGroup)).toList();

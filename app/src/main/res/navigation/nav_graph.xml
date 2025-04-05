@@ -33,14 +33,14 @@
     <fragment
         android:id="@+id/connectivityFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preference.ConnectivityFragment"
-        android:label="@string/conectivity_settings_title" />
+        android:label="@string/connectivity_settings_title" />
     <action
         android:id="@+id/action_global_mainSettingsFragment"
         app:destination="@id/bottomnav_settings" />
     <fragment
         android:id="@+id/alarmFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preference.AlarmFragment"
-        android:label="@string/alarm_settings_title" />
+        android:label="@string/alarm" />
     <fragment
         android:id="@+id/debugFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preference.DebugFragment"
@@ -48,7 +48,7 @@
     <fragment
         android:id="@+id/interfaceFragment"
         android:name="org.d3kad3nt.sunriseClock.ui.preference.InterfaceFragment"
-        android:label="@string/interface_settings_title" />
+        android:label="@string/ui_interface" />
     <fragment
         android:id="@+id/bottomnav_endpoints"
         android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment"

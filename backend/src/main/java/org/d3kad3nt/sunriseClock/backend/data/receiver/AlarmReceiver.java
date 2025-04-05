@@ -28,14 +28,17 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         removeObsoleteSchedules();
+        //noinspection StatementWithEmptyBody
         if (checkPrerequisites()) {
             // Add Schedule
         }
     }
 
-    /* TODO: Retrieve formerly used schedule ids (probably from local storage) to remove obsolete schedulues from
-     * deconz.
-     * Could use the new WorkManager from jetpack. */
+    /**
+     * TODO: Retrieve formerly used schedule ids (probably from local storage) to remove obsolete schedulues from
+     * deconz. Could use the new WorkManager from jetpack.
+     *
+     * @noinspection EmptyMethod */
     private void removeObsoleteSchedules() {}
 
     /**

@@ -90,6 +90,7 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
         binding = null;
     }
 
+    /** @noinspection unused */
     protected MaterialToolbar getToolbar() {
         return commonToolbarBinding.toolbar;
     }
@@ -111,6 +112,11 @@ public abstract class BaseFragment<DataBindingT extends ViewDataBinding, ViewMod
         return false;
     }
 
+    /**
+     * The savedInstanceState Parameter is currently not used in any implementation. This creates a warning
+     *
+     * @noinspection unused
+     */
     protected abstract DataBindingT getViewBinding(
             @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState);
 

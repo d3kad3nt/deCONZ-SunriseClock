@@ -20,7 +20,7 @@ public class BooleanVisibilityLiveData extends androidx.lifecycle.MediatorLiveDa
     public <T> BooleanVisibilityLiveData addVisibilityProvider(LiveData<Boolean> liveData) {
         this.removeSource(this.initialVisibilityLivedata);
         BooleanVisibilityLiveData booleanVisibilityLiveData = this;
-        this.addSource(liveData, new Observer<Boolean>() {
+        this.addSource(liveData, new Observer<>() {
             @Override
             public void onChanged(Boolean value) {
                 if (value) {
@@ -33,17 +33,9 @@ public class BooleanVisibilityLiveData extends androidx.lifecycle.MediatorLiveDa
         return this;
     }
 
-    public Integer getTrueVisibility() {
-        return trueVisibility;
-    }
-
     public BooleanVisibilityLiveData setTrueVisibility(final Integer trueVisibility) {
         this.trueVisibility = trueVisibility;
         return this;
-    }
-
-    public Integer getFalseVisibility() {
-        return falseVisibility;
     }
 
     public BooleanVisibilityLiveData setFalseVisibility(final Integer falseVisibility) {

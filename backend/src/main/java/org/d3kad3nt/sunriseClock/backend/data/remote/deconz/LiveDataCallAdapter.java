@@ -14,8 +14,7 @@ import retrofit2.Response;
  * A Retrofit adapter that converts the Call into a LiveData of ApiResponse.
  *
  * <p>Adapted from the official Google architecture-components github-sample app under
- * https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com
- * /android/example/github/util/LiveDataCallAdapter.kt.
+ * <a href="https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/util/LiveDataCallAdapter.kt">LiveDataCallAdapter.kt</a>
  */
 class LiveDataCallAdapter<T> implements CallAdapter<T, LiveData<ApiResponse<T>>> {
 
@@ -34,14 +33,14 @@ class LiveDataCallAdapter<T> implements CallAdapter<T, LiveData<ApiResponse<T>>>
     @NonNull
     @Override
     public LiveData<ApiResponse<T>> adapt(@NonNull Call<T> call) {
-        return new LiveData<ApiResponse<T>>() {
+        return new LiveData<>() {
             final AtomicBoolean started = new AtomicBoolean(false);
 
             @Override
             protected void onActive() {
                 super.onActive();
                 if (started.compareAndSet(false, true)) {
-                    call.enqueue(new Callback<T>() {
+                    call.enqueue(new Callback<>() {
                         @Override
                         public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
                             postValue(ApiResponse.create(response));

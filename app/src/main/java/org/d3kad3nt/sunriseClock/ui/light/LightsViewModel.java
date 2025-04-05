@@ -26,6 +26,7 @@ public class LightsViewModel extends AndroidViewModel {
 
     private final LightRepository lightRepository =
             LightRepository.getInstance(getApplication().getApplicationContext());
+    /** @noinspection FieldCanBeLocal */
     private final SettingsRepository settingsRepository =
             SettingsRepository.getInstance(getApplication().getApplicationContext());
 
@@ -34,10 +35,10 @@ public class LightsViewModel extends AndroidViewModel {
     private final LiveData<Resource<Map<UIGroup, List<UILight>>>> groupsWithLights;
 
     /** Whether the loading indicator should be shown by the fragment. */
-    public ResourceVisibilityLiveData loadingIndicatorVisibility;
+    public final ResourceVisibilityLiveData loadingIndicatorVisibility;
 
     /** Whether the loading indicator of the swipeRefreshLayout should be shown by the fragment. */
-    public MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
+    public final MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
 
     public LightsViewModel(@NonNull Application application) {
         super(application);

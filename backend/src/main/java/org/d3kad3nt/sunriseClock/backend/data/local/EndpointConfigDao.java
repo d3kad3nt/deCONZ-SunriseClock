@@ -19,12 +19,14 @@ public interface EndpointConfigDao {
     @Query("SELECT * FROM " + EndpointConfig.TABLENAME)
     LiveData<List<EndpointConfig>> loadAll();
 
+    /** @noinspection UnusedReturnValue*/
     @Insert(entity = EndpointConfig.class)
     long save(EndpointConfig obj);
 
     @Update(entity = EndpointConfig.class)
     void updateName(NameUpdate obj);
 
+    /** @noinspection unused*/
     @Delete(entity = EndpointConfig.class)
     void delete(EndpointConfig obj);
 
