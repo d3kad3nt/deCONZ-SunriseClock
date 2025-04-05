@@ -135,7 +135,7 @@ public class EntitiesViewModel extends ViewModel {
                 || Objects.requireNonNull(groupsState.getValue()).getStatus() == Status.ERROR) {
             swipeRefreshing.removeSource(lightsState);
             swipeRefreshing.removeSource(groupsState);
-            LogUtil.v("Stopping swipeRefresh animation on errored refresh.");
+            LogUtil.v("Stopping swipeRefresh animation on failed refresh.");
             swipeRefreshing.setValue(false);
         }
     }
