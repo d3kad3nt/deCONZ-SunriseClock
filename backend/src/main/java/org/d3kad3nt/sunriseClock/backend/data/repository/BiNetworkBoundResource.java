@@ -56,7 +56,9 @@ abstract class BiNetworkBoundResource<ResultType, RemoteType1, RemoteType2, DbTy
 
     private void combineNetworkResults(final LiveData<DbType> dbSource) {
         removeSource(dbSource);
+        //noinspection rawtypes
         Class<? extends ApiResponse> aClass = data1.getClass();
+        //noinspection rawtypes
         Class<? extends ApiResponse> bClass = data2.getClass();
         if (ApiSuccessResponse.class.equals(aClass) && ApiSuccessResponse.class.equals(bClass)) {
             ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
