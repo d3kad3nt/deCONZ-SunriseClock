@@ -102,8 +102,9 @@ public interface DbEndpointEntityDao<T extends DbEndpointEntity> {
      * <p>See the {@link #upsert} method for details on insertion behaviour.
      * @param dbEndpointEntities List of endpoint entities.
      */
+    @Transaction
     default void upsert(List<T> dbEndpointEntities) {
-        dbEndpointEntities.forEach(t ->upsert(t));
+        dbEndpointEntities.forEach(t -> upsert(t));
     }
 
     /**
