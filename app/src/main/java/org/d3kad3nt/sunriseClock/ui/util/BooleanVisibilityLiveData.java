@@ -33,17 +33,9 @@ public class BooleanVisibilityLiveData extends androidx.lifecycle.MediatorLiveDa
         return this;
     }
 
-    public Integer getTrueVisibility() {
-        return trueVisibility;
-    }
-
     public BooleanVisibilityLiveData setTrueVisibility(final Integer trueVisibility) {
         this.trueVisibility = trueVisibility;
         return this;
-    }
-
-    public Integer getFalseVisibility() {
-        return falseVisibility;
     }
 
     public BooleanVisibilityLiveData setFalseVisibility(final Integer falseVisibility) {

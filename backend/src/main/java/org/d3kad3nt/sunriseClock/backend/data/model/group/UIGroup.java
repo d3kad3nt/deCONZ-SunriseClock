@@ -59,6 +59,7 @@ public final class UIGroup extends UIEndpointEntity<UIGroup> {
         return super.equals(uiGroup);
     }
 
+    /** @noinspection unused*/
     public interface UIGroupChangePayload {
 
         class GroupId implements UIGroup.UIGroupChangePayload {

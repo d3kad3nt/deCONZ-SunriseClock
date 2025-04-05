@@ -26,6 +26,7 @@ public interface EndpointConfigDao {
     @Update(entity = EndpointConfig.class)
     void updateName(NameUpdate obj);
 
+    /** @noinspection unused*/
     @Delete(entity = EndpointConfig.class)
     void delete(EndpointConfig obj);
 

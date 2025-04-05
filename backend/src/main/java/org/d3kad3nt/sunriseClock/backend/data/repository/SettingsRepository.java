@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.Optional;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
+/** @noinspection unused*/
 public final class SettingsRepository {
 
     private static volatile SettingsRepository INSTANCE;

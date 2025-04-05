@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
-public class LiveDataUtil {
+public final class LiveDataUtil {
 
-    public static <T> void logChanges(String TAG, @NonNull LiveData<T> liveData) {
+    private LiveDataUtil() {}
+
+    /** @noinspection unused*/
+    public static <T> void logChanges(@NonNull LiveData<T> liveData) {
         liveData.observeForever(t -> {
             LogUtil.d("LiveDataUtil log Change");
             LogUtil.d(t.toString());

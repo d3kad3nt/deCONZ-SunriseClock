@@ -5,7 +5,9 @@ import androidx.annotation.NonNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LogUtil {
+public final class LogUtil {
+
+    private LogUtil(){}
 
     private static final Map<String, String> prefixCache = new HashMap<>();
 
@@ -70,6 +72,7 @@ public class LogUtil {
         }
     }
 
+    /** @noinspection unused*/
     public static void e(String message, Object... parameters) {
         e(String.format(message, parameters));
     }
@@ -91,7 +94,11 @@ public class LogUtil {
         return "No Class Found";
     }
 
-    /** Remove the logging prefix for the current class (if one exists) */
+    /**
+     * Remove the logging prefix for the current class (if one exists)
+     *
+     * @noinspection unused
+     */
     public static void removePrefix() {
         prefixCache.remove(getCallerClassName());
     }

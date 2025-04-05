@@ -513,6 +513,7 @@ public final class LightRepository {
         };
     }
 
+    /** @noinspection unused*/
     public LiveData<Resource<List<UIGroup>>> getGroupsForEndpoint(long endpointId) {
         try {
             endpointRepo.getEndpoint(endpointId);
@@ -532,32 +533,38 @@ public final class LightRepository {
                 }
             }
 
+            /** @noinspection unused*/
             @Override
             protected boolean shouldFetch(List<DbGroup> data) {
                 // TODO
                 return true;
             }
 
+            /** @noinspection unused*/
             @Override
             protected LiveData<BaseEndpoint> loadEndpoint() {
                 return endpointRepo.getRepoEndpoint(endpointId);
             }
 
+            /** @noinspection unused*/
             @Override
             protected LiveData<List<DbGroup>> loadFromDb() {
                 return dbGroupDao.loadAllForEndpoint(endpointId);
             }
 
+            /** @noinspection unused*/
             @Override
             protected LiveData<ApiResponse<List<RemoteGroup>>> loadFromNetwork() {
                 return endpoint.getGroups();
             }
 
+            /** @noinspection unused*/
             @Override
             protected List<UIGroup> convertDbTypeToResultType(List<DbGroup> dbGroups) {
                 return UIGroup.from(dbGroups);
             }
 
+            /** @noinspection unused*/
             @Override
             protected List<DbGroup> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteGroup>> response) {
                 List<DbGroup> groups = new ArrayList<>();

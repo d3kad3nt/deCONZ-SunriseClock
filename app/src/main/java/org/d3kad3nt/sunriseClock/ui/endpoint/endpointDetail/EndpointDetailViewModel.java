@@ -30,8 +30,6 @@ public class EndpointDetailViewModel extends ViewModel {
                 return new EndpointDetailViewModel(endpointRepository, settingsRepository, endpointId);
             });
     private final EndpointRepository endpointRepository;
-    /** @noinspection FieldCanBeLocal*/
-    private final SettingsRepository settingsRepository;
 
     private final long endpointID;
     public final LiveData<IEndpointUI> endpointConfig;
@@ -49,7 +47,6 @@ public class EndpointDetailViewModel extends ViewModel {
             long endpointId) {
         super();
         this.endpointRepository = endpointRepository;
-        this.settingsRepository = settingsRepository;
         this.endpointID = endpointId;
 
         this.endpointConfig = endpointRepository.getEndpoint(endpointID);

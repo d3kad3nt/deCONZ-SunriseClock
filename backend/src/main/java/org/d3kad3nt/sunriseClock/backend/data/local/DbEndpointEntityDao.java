@@ -141,6 +141,7 @@ public interface DbEndpointEntityDao<T extends DbEndpointEntity> {
     @Update()
     int updateUsingPrimaryKey(T dbEndpointEntity);
 
+    /** @noinspection unused*/
     @Delete()
     void delete(T dbEndpointEntity);
 }
