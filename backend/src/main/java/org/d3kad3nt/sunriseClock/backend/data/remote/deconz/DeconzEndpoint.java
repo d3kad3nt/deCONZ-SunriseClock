@@ -93,17 +93,14 @@ public class DeconzEndpoint extends BaseEndpoint {
                 Request request = chain.request();
                 Response response = chain.proceed(request);
                 LogUtil.v(
-                        "HTTP interceptor: Intercepted request to: %s led to HTTP code: %d",
-                        response.request().url(), response.code());
+                        "HTTP interceptor: Intercepted HTTP %s request to %s led to status code %d.",
+                        response.request().method(), response.request().url(), response.code());
 
                 if (response.code() >= 200 && response.code() <= 399 && response.body() != null) {
 
-                    // Workaround: Deconz endpoint does not return the
-                    // id of a light when requesting a single
-                    // light. The Gson deserializer is automatically
-                    // called and cannot access the id inside of
-                    // the original request. A okHttp interceptor is
-                    // used to modify the JSON response from the
+                    // Workaround: Deconz endpoint does not return the id of a light when requesting a single
+                    // light. The Gson deserializer is automatically called and cannot access the id inside of
+                    // the original request. A okHttp interceptor is used to modify the JSON response from the
                     // Deconz endpoint and adds this light id.
                     if (request.header(IServices.endpointLightIdHeader) != null) {
                         LogUtil.v("HTTP interceptor: Try to set light id in JSON response as workaround.");
@@ -170,13 +167,13 @@ public class DeconzEndpoint extends BaseEndpoint {
 
     @Override
     public LiveData<ApiResponse<List<RemoteLight>>> getLights() {
-        LogUtil.d("Requesting all lights");
+        LogUtil.d("Requesting all lights from endpoint.");
         return this.retrofit.getLights();
     }
 
     @Override
     public LiveData<ApiResponse<RemoteLight>> getLight(String id) {
-        LogUtil.d("Requesting single light with id %s", id);
+        LogUtil.d("Requesting single light with id %s.", id);
         // Workaround: Deconz endpoint does not return the id of a light when requesting a single
         // light. The Gson deserializer is automatically called and cannot access the id inside of
         // the original request. A okHttp interceptor is used to modify the JSON response from the
@@ -186,7 +183,7 @@ public class DeconzEndpoint extends BaseEndpoint {
 
     @Override
     public LiveData<ApiResponse<ResponseBody>> setOnState(String endpointLightId, boolean newState) {
-        LogUtil.d("Setting light state for id %s to %s", endpointLightId, newState);
+        LogUtil.d("Setting light state for id %s to %s.", endpointLightId, newState);
         JsonObject requestBody = new JsonObject();
         requestBody.add("on", new JsonPrimitive(newState));
         return this.retrofit.updateLightState(endpointLightId, requestBody);
@@ -195,7 +192,7 @@ public class DeconzEndpoint extends BaseEndpoint {
     @Override
     public LiveData<ApiResponse<ResponseBody>> setBrightness(
             String endpointLightId, @IntRange(from = 0, to = 100) int brightness) {
-        LogUtil.d("Setting light brightness for id %s to %d", endpointLightId, brightness);
+        LogUtil.d("Setting light brightness for id %s to %d.", endpointLightId, brightness);
         JsonObject requestBody = new JsonObject();
         // Deconz takes values from 0 to 255 for the brightness
         long deconzBrightness = Math.round(brightness * 2.55);
@@ -205,7 +202,7 @@ public class DeconzEndpoint extends BaseEndpoint {
 
     @Override
     public LiveData<ApiResponse<ResponseBody>> toggleOnState() {
-        LogUtil.d("Toggling all lights on or off");
+        LogUtil.d("Toggling all lights on or off on endpoint.");
         JsonObject requestBody = new JsonObject();
         requestBody.add("toggle", new JsonPrimitive(true));
         return this.retrofit.updateGroupState(String.valueOf(GROUP_ALL_ID), requestBody);
@@ -213,7 +210,7 @@ public class DeconzEndpoint extends BaseEndpoint {
 
     @Override
     public LiveData<ApiResponse<ResponseBody>> setName(String endpointLightId, String newName) {
-        LogUtil.d("Setting light name for id %s to %s on endpoint: %s", endpointLightId, newName, this.baseUrl);
+        LogUtil.d("Setting light name for id %s to %s on endpoint.", endpointLightId, newName);
         JsonObject requestBody = new JsonObject();
         requestBody.add("name", new JsonPrimitive(newName));
         return this.retrofit.updateLightAttributes(endpointLightId, requestBody);

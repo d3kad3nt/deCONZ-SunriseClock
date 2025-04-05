@@ -5,7 +5,9 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import org.d3kad3nt.sunriseClock.backend.data.model.DbEndpointEntity;
 import org.d3kad3nt.sunriseClock.backend.data.model.endpoint.EndpointConfig;
 import org.jetbrains.annotations.Contract;
@@ -47,6 +49,12 @@ public class DbGroup extends DbEndpointEntity {
     @Contract("_ -> new")
     public static DbGroup from(@NonNull RemoteGroup remoteGroup) {
         return RemoteGroup.toDbGroup(remoteGroup);
+    }
+
+    @NonNull
+    @Contract("_ -> new")
+    public static List<DbGroup> from(@NonNull List<RemoteGroup> remoteGroups) {
+        return remoteGroups.stream().map(remoteGroup -> from(remoteGroup)).collect(Collectors.toList());
     }
 
     // Room requires equals() and hashcode() to be implemented:
