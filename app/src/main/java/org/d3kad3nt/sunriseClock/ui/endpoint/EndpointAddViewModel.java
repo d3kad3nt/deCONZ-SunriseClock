@@ -15,6 +15,9 @@ public class EndpointAddViewModel extends AndroidViewModel {
         super(application);
     }
 
+    /**
+     * TODO: Handle errors when creating a endpoint (see Issue #72)
+     * @noinspection SameReturnValue*/
     public boolean createEndpoint(Map<String, String> settings) {
         endpointRepository.createEndpoint(settings);
         return true;
