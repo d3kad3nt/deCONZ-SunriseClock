@@ -118,11 +118,11 @@ public class EntitiesViewModel extends ViewModel {
         if (!lightsState.isInitialized() || !groupsState.isInitialized()) {
             return;
         }
-
         if (Objects.requireNonNull(lightsState.getValue()).getStatus() == Status.LOADING
                 || Objects.requireNonNull(groupsState.getValue()).getStatus() == Status.LOADING) {
-            // Todo: Is triggered multiple times, probably because the state of the source livedata is set to loading
-            //  multiple times.
+            // This is triggered multiple times, because the state for each livedata is set to
+            //  loading two times: 1. in the Constructor and 2. when the cached DB Data is received,
+            //  but the data from the network is not yet received.
             LogUtil.v("Starting swipeRefresh animation on refresh loading.");
             swipeRefreshing.setValue(true);
         } else if (Objects.requireNonNull(lightsState.getValue()).getStatus() == Status.SUCCESS
