@@ -35,12 +35,11 @@ public class EndpointConfig {
     @TypeConverters(EndpointTypeConverter.class)
     public EndpointType type;
 
-    @SuppressWarnings("NotNullFieldNotInitialized")
     @ColumnInfo(name = "name", defaultValue = "Unnamed Endpoint")
     @NonNull
     private String name;
 
-    public EndpointConfig(EndpointType type, String name, Date addedAt, JsonObject jsonConfig) {
+    public EndpointConfig(EndpointType type, @NonNull String name, Date addedAt, JsonObject jsonConfig) {
         this.type = type;
         this.name = name;
         this.addedAt = addedAt;
@@ -63,11 +62,12 @@ public class EndpointConfig {
         return jsonConfig;
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
