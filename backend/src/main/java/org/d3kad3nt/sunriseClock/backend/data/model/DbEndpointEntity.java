@@ -27,7 +27,7 @@ public abstract class DbEndpointEntity {
     private long id; // Cannot be final because Room must be able to set the groupId after it was
     // auto-generated.
 
-    public DbEndpointEntity(long endpointId, String endpointEntityId, String name) {
+    public DbEndpointEntity(long endpointId, @NonNull String endpointEntityId, @NonNull String name) {
 
         if (endpointId != 0L) {
             this.endpointId = endpointId;
@@ -36,7 +36,7 @@ public abstract class DbEndpointEntity {
             throw new IllegalArgumentException("The given endpointId cannot be 0!");
         }
 
-        if (endpointEntityId != null && !endpointEntityId.isEmpty()) {
+        if (!endpointEntityId.isEmpty()) {
             this.endpointEntityId = endpointEntityId;
         } else {
             LogUtil.e("The given endpointEntityId string cannot be null or empty!");

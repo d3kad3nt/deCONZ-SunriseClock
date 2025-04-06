@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.backend.data.repository;
 
 import android.content.Context;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -24,7 +25,7 @@ import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.d3kad3nt.sunriseClock.util.serviceLocator.ExecutorType;
 import org.d3kad3nt.sunriseClock.util.serviceLocator.ServiceLocator;
 
-public class EndpointRepository {
+public final class EndpointRepository {
 
     private static final Map<Long, LiveData<BaseEndpoint>> endpointLiveDataCache = new HashMap<>();
     private static EndpointConfigDao endpointConfigDao;
@@ -64,7 +65,7 @@ public class EndpointRepository {
     public LiveData<IEndpointUI> getEndpoint(long id) {
         return Transformations.map(endpointConfigDao.load(id), endpointConfig -> {
             if (endpointConfig == null) {
-                return null;
+                throw new IllegalArgumentException("Invalid endpoint id: " + id);
             } else {
                 return UIEndpoint.from(endpointConfig);
             }
@@ -85,26 +86,26 @@ public class EndpointRepository {
         });
     }
 
-    private BaseEndpoint createEndpoint(EndpointConfig config) {
-        if (config == null) {
-            throw new NullPointerException("The given config object was null.");
-        }
+    private BaseEndpoint createEndpoint(@NonNull EndpointConfig config) {
         EndpointBuilder builder = config.type.getBuilder();
         return builder.setConfig(config).build();
     }
 
-    public IEndpointUI createEndpoint(Map<String, String> config) {
-        if (config == null) {
-            throw new NullPointerException("The given config map was null.");
-        }
+    /** @noinspection UnusedReturnValue*/
+    @NonNull
+    public IEndpointUI createEndpoint(@NonNull Map<String, String> config) {
         EndpointType type = EndpointType.valueOf(config.remove("type"));
         String name = config.remove("name");
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("A name has to be provided");
+        }
         Gson gson = new Gson();
         JsonObject jsonConfig = gson.toJsonTree(config).getAsJsonObject();
         EndpointConfig endpointConfig = new EndpointConfig(type, name, new Date(), jsonConfig);
         ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
             endpointConfigDao.save(endpointConfig);
         });
+        //This is done to verify that the endpoint is created correctly
         type.getBuilder().setConfig(endpointConfig).build();
         return UIEndpoint.from(endpointConfig);
     }

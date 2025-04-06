@@ -68,7 +68,7 @@ public abstract class UIEndpointEntity<T extends UIEndpointEntity<T>> implements
         if (this == o) {
             return true;
         }
-        if (!(o instanceof final UIEndpointEntity that)) {
+        if (!(o instanceof final UIEndpointEntity<?> that)) {
             return false;
         }
         return id == that.id && endpointId == that.endpointId && Objects.equals(name, that.name);

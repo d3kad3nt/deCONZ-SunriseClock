@@ -1,31 +1,16 @@
 <resources>
     <string name="app_name" translatable="false">SunriseClock</string>
-    <string name="sunrise_clock" translatable="false">Sunrise Clock</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="action_settings">settings</string>
     <string name="api_key">API Key</string>
-    <string name="id" translatable="false">ID</string>
-    <string name="id_hint">ID of the device</string>
-    <string name="save">Save</string>
-    <string name="ip_port" translatable="false">IP:Port</string>
-    <string name="ip_port_hint">IP and port of server</string>
-    <string name="sync">Sync</string>
     <string name="url">Full URL</string>
-    <string name="connection_test">Test connection</string>
     <string name="onlyWLAN_summary">Schedule only with active WLAN connection</string>
     <string name="onlyWLAN">Only in WiFi</string>
-    <string name="network_category">Network</string>
-    <string name="server_category" translatable="false">Server</string>
-    <string name="automaticDiscovery">Automatically discover Server</string>
-    <string name="automaticDiscovery_summary">Finds Server via UPnP in local Network</string>
     <string name="port" translatable="false">Port</string>
-    <string name="ip" translatable="false">IP</string>
     <string name="allowedWLAN">Allowed WLAN</string>
     <string name="allowedWLAN_summary">Allowed WLAN for scheduling</string>
     <string name="network">Network</string>
     <string name="alarm" translatable="false">Alarm</string>
     <string name="ui_interface">Interface</string>
-    <string name="debug">Debuging</string>
+    <string name="debug">Debugging</string>
     <string name="logs_enable">Enable logging</string>
     <string name="schedule_toast">Message when Schedule set</string>
     <string name="start_on_boot">Start on boot</string>
@@ -33,38 +18,12 @@
     <string name="alarm_early">Earliest alarm</string>
     <string name="alarm_late_summary">Latest possible time for alarm</string>
     <string name="alarm_late">Latest alarm</string>
-    <string name="connection_test_error_noconnection">No network connection or connection could not be established.</string>
-    <string name="connection_test_error_parse">Server response could not be parsed.</string>
-    <string name="connection_test_error_wrongapikey">The supplied API key was rejected by the server.</string>
-    <string name="connection_test_error_title">Connection not possible</string>
-    <string name="connection_test_success_title">Connection successful</string>
-    <string name="connection_test_inprogress">Connection test in progress…</string>
-    <string name="connection_test_success_apiversion">API version</string>
-    <string name="connection_test_success_ipaddress">IP address</string>
-    <string name="connection_test_summary_lastconnected">Last test connection at</string>
-    <string name="connection_test_summary_neverconnected">Never connected.</string>
-    <string name="tab_overview">Overview</string>
-    <string name="tab_lights">Lights</string>
-    <string name="tab_time">Time</string>
-    <string name="connection_test_error_nodeconz">The response could not be identified as deconz response. Is this a deconz instance?</string>
     <string name="alarm_enable">Enable Alarms</string>
-    <string name="alarm_not_set">There is no alarm set.</string>
-    <string name="alarm_time">Light activates at %1$s.</string>
-    <string name="ip_or_domain">IP / Domain</string>
-    <string name="navigation_drawer_header_content_description">SunriseClock Logo</string>
-    <string name="navigation_drawer_header_title">SunriseClock</string>
-    <string name="lights_title">All Lights</string>
     <string name="lightDetail_title">Light info</string>
     <string name="bottomnav_preferences_title">Preferences</string>
-    <string name="conectivity_settings_title">Conectivity</string>
-    <string name="alarm_settings_title">Alarm</string>
+    <string name="connectivity_settings_title">Connectivity</string>
     <string name="debug_settings_title">Debug</string>
-    <string name="interface_settings_title">Interface</string>
-    <string name="loading">Loading</string>
-    <string name="noEndpoint_title">No Endpoint available</string>
-    <string name="noEndpoint_message">You have to add an Connection to your SmartHome Software. (Add Button under this text)</string>
     <string name="noLights_title">No Lights could be found</string>
-    <string name="endpoint">Endpoint</string>
     <string name="endpoint_list">All Endpoints</string>
     <string name="add">add</string>
     <string name="endpoint_add">Add Endpoint</string>
@@ -75,19 +34,17 @@
     <string name="endpoint_selected">Selected</string>
     <string name="lights_toggle_power">power toggle</string>
     <string name="refresh">Refresh</string>
-    <string name="light_name_label">Name</string>
-    <string name="light_identifier_label">Identifier</string>
+    <string name="name_label">Name</string>
+    <string name="identifier_label">Identifier</string>
     <string name="ok_action">OK</string>
     <string name="light_rename">Rename light</string>
     <string name="cancel_action">Cancel</string>
-    <string name="light_rename_explanation">New name</string>
+    <string name="rename_explanation">New name</string>
     <string name="endpoint_rename">Rename endpoint</string>
-    <string name="endpoint_rename_explanation">New name</string>
-    <string name="endpoint_name_label">Name</string>
-    <string name="endpoint_identifier_label">Identifier</string>
     <string name="endpointDetail_title">Endpoint info</string>
     <string name="light_on_action">On</string>
     <string name="light_off_action">Off</string>
+    <string name="create_button">Create</string>
     <string name="bottomnav_home_title">Home</string>
     <string name="bottomnav_endpoints_title">Endpoints</string>
     <string name="bottomnav_entities_title">Devices</string>

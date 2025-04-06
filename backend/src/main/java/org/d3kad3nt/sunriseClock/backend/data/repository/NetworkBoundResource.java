@@ -71,6 +71,7 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType>
         addSource(apiResponse, response -> {
             removeSource(apiResponse);
             removeSource(dbSource);
+            //noinspection rawtypes
             Class<? extends ApiResponse> aClass = response.getClass();
             if (ApiSuccessResponse.class.equals(aClass)) {
                 ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
@@ -103,6 +104,11 @@ public abstract class NetworkBoundResource<ResultType, RemoteType, DbType>
         });
     }
 
+    /**
+     * This Method can ab overridden, but doesn't has to be
+     *
+     * @noinspection EmptyMethod
+     */
     protected void onFetchFailed() {}
 
     /**
