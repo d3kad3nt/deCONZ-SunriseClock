@@ -97,7 +97,7 @@ public class ControlService extends ControlsProviderService {
             @Contract("_, _ -> new")
             private <T extends UIEndpointEntity> AsyncJoin.AsyncObserver<Resource<List<T>>> getObserver(
                     final IEndpointUI endpoint, final LiveData<Resource<List<T>>> lightResources) {
-                return new AsyncJoin.Observer<>(asyncHelper) {
+                return new AsyncJoin.AsyncObserver<>(asyncHelper) {
                     @Override
                     public void onChanged(final Resource<List<T>> listResource) {
                         switch (listResource.getStatus()) {
@@ -139,6 +139,7 @@ public class ControlService extends ControlsProviderService {
     public Flow.Publisher<Control> createPublisherFor(@NonNull final List<String> controlIds) {
         final ExtendedPublisher<Control> flow = getFlow(controlIds);
         for (final String controlId : controlIds) {
+            //TODO: remove match statements
             switch (controlId) {
                 case final String s
                 when s.startsWith("UIGroup") -> {
