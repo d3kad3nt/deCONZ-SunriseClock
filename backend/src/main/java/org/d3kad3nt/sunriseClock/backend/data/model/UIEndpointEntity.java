@@ -51,14 +51,23 @@ public abstract class UIEndpointEntity implements ListItem, Comparable<UIEndpoin
         return name;
     }
 
+    /**
+     * This generates a Name/ID that is unique across all subclasses of {@link UIEndpointEntity}.
+     * It consists of the Simple Name of the subclass (like UILight) and the id of the object in the subclass
+     *
+     * @return A Name/ID that is unique across all subclasses of {@link UIEndpointEntity}.
+     */
     @NonNull
-    public final String getUniqueName() {
-        return getClass().getSimpleName() + "_" + getName();
+    public final String getUniqueID() {
+        return getClass().getSimpleName() + getId();
     }
 
     @Override
-    public int compareTo(final UIEndpointEntity o) {
-        return this.getUniqueName().compareTo(o.getUniqueName());
+    public int compareTo(@NonNull final UIEndpointEntity o) {
+        if (!this.getClass().getSimpleName().equals(this.getClass().getSimpleName())) {
+            return this.getClass().getSimpleName().compareTo(o.getClass().getSimpleName());
+        }
+        return this.getName().compareTo(o.getName());
     }
 
     @Override

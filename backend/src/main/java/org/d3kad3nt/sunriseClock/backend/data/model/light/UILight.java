@@ -102,6 +102,14 @@ public class UILight extends UIEndpointEntity {
         return null;
     }
 
+    /**
+     * @return The prefix that is used by the {@link UIEndpointEntity#getUniqueID()} method.
+     */
+    @NonNull
+    public static String getPrefix() {
+        return UILight.class.getSimpleName();
+    }
+
     public boolean getIsSwitchable() {
         return isSwitchable;
     }
@@ -131,6 +139,7 @@ public class UILight extends UIEndpointEntity {
         return isReachable;
     }
 
+    @Override
     public ListItemType getType() {
         return ListItemType.LIGHT;
     }

@@ -44,6 +44,15 @@ public class UIGroup extends UIEndpointEntity {
         return null;
     }
 
+    /**
+     * @return The prefix that is used by the {@link UIEndpointEntity#getUniqueID()} method.
+     */
+    @NonNull
+    public static String getPrefix() {
+        return UIGroup.class.getSimpleName();
+    }
+
+    @Override
     public ListItemType getType() {
         return ListItemType.GROUP;
     }
