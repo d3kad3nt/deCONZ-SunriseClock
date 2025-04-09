@@ -141,14 +141,12 @@ public class ControlService extends ControlsProviderService {
         for (final String controlId : controlIds) {
             // TODO: remove match statements
             if (controlId.startsWith(UIGroup.getPrefix())) {
-
-                    observeGroupChanges(controlId, flow);
+                observeGroupChanges(controlId, flow);
             } else if (controlId.startsWith(UILight.getPrefix())) {
-                    observeLightChanges(controlId, flow);
+                observeLightChanges(controlId, flow);
             } else {
-                    throw new IllegalStateException("Invalid Type: " + controlId);
-                }
-            
+                throw new IllegalStateException("Invalid Type: " + controlId);
+            }
         }
         return flow;
     }
