@@ -178,7 +178,7 @@ public class DeconzEndpoint extends BaseEndpoint {
         // light. The Gson deserializer is automatically called and cannot access the id inside of
         // the original request. A okHttp interceptor is used to modify the JSON response from the
         // Deconz endpoint and adds this light id.
-        return this.retrofit.getLight(id, id);
+        return this.retrofit.getLight(id);
     }
 
     @Override
@@ -220,5 +220,11 @@ public class DeconzEndpoint extends BaseEndpoint {
     public LiveData<ApiResponse<List<RemoteGroup>>> getGroups() {
         LogUtil.d("Requesting all groups from endpoint.");
         return this.retrofit.getGroups();
+    }
+
+    @Override
+    public LiveData<ApiResponse<RemoteGroup>> getGroup(final String endpointGroupId) {
+        LogUtil.d("Requesting single group with id %s.", endpointGroupId);
+        return this.retrofit.getGroup(endpointGroupId);
     }
 }

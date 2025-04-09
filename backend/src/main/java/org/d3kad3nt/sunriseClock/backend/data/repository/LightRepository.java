@@ -593,4 +593,55 @@ public class LightRepository {
             },
             emptyResource -> EmptyResource.fromResource(emptyResource));
     }
+
+    public LiveData<Resource<UIGroup>> getGroup(final long groupId) {
+        LogUtil.i("Requesting and returning single group with id %d", groupId);
+
+        return new NetworkBoundResource<UIGroup, RemoteGroup, DbGroup>() {
+
+            @Override
+            protected void saveResponseToDb(DbGroup item) {
+                // The primary key groupId is not known to the remote endpoint, but it is known to
+                // us.
+                // Set the groupId to enable direct update/insert via primary key (instead of
+                // endpointId and endpointLightId) through Room.
+                item.setId(groupId);
+                dbGroupDao.upsert(item);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable DbGroup data) {
+                // TODO
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<DbGroup> loadFromDb() {
+                return dbGroupDao.load(groupId);
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<ApiResponse<RemoteGroup>> loadFromNetwork() {
+                return endpoint.getGroup(dbObject.getEndpointEntityId());
+            }
+
+            @Override
+            protected UIGroup convertDbTypeToResultType(DbGroup item) {
+                return UIGroup.from(item);
+            }
+
+            @Override
+            protected DbGroup convertRemoteTypeToDbType(ApiSuccessResponse<RemoteGroup> response) {
+                return DbGroup.from(response.getBody());
+            }
+        };
+    }
 }

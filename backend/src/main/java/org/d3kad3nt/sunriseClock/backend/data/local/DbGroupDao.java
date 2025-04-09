@@ -14,11 +14,13 @@ import org.d3kad3nt.sunriseClock.backend.data.model.light.DbLight;
 @Dao
 public interface DbGroupDao extends DbEndpointEntityDao<DbGroup> {
 
+    @Override
     @Transaction
     default long getIdForEndpointIdAndEndpointEntityId(long endpointId, String endpointEntityId) {
         return getIdForEndpointIdAndEndpointGroupId(endpointId, endpointEntityId);
     }
 
+    @Override
     @Transaction
     default int updateUsingEndpointIdAndEndpointEntityId(@NonNull DbGroup group) {
         return updateUsingEndpointIdAndEndpointGroupId(
@@ -49,9 +51,12 @@ public interface DbGroupDao extends DbEndpointEntityDao<DbGroup> {
     // one is necessary.'
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query(
-            value = "SELECT * FROM `group` "
+            value = "SELECT * FROM '" + DbGroup.TABLENAME + "' "
                     + "INNER JOIN light_grouping ON light_grouping.group_id = `group`.id "
                     + "INNER JOIN light ON light.id = light_grouping.light_id "
                     + "WHERE `group`.endpoint_id = :endpointId")
     LiveData<Map<DbGroup, List<DbLight>>> loadGroupsWithLightsForEndpoint(long endpointId);
+
+    @Query("SELECT * FROM '" + DbGroup.TABLENAME + "' WHERE id = :groupId")
+    LiveData<DbGroup> load(long groupId);
 }
