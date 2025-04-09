@@ -139,20 +139,16 @@ public class ControlService extends ControlsProviderService {
     public Flow.Publisher<Control> createPublisherFor(@NonNull final List<String> controlIds) {
         final ExtendedPublisher<Control> flow = getFlow(controlIds);
         for (final String controlId : controlIds) {
-            //TODO: remove match statements
-            switch (controlId) {
-                case final String s
-                when s.startsWith("UIGroup") -> {
+            // TODO: remove match statements
+            if (controlId.startsWith(UIGroup.getPrefix())) {
+
                     observeGroupChanges(controlId, flow);
-                }
-                case final String s
-                when s.startsWith("UILight") -> {
+            } else if (controlId.startsWith(UILight.getPrefix())) {
                     observeLightChanges(controlId, flow);
-                }
-                default -> {
+            } else {
                     throw new IllegalStateException("Invalid Type: " + controlId);
                 }
-            }
+            
         }
         return flow;
     }
