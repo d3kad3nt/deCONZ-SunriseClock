@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.Objects;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-public abstract class UIEndpointEntity<T extends UIEndpointEntity<T>> implements ListItem, Comparable<T> {
+public abstract class UIEndpointEntity implements ListItem, Comparable<UIEndpointEntity> {
 
     private final long id;
     private final long endpointId;
@@ -51,9 +51,14 @@ public abstract class UIEndpointEntity<T extends UIEndpointEntity<T>> implements
         return name;
     }
 
+    @NonNull
+    public final String getUniqueName() {
+        return getClass().getSimpleName() + "_" + getName();
+    }
+
     @Override
-    public int compareTo(final T o) {
-        return this.getName().compareTo(o.getName());
+    public int compareTo(final UIEndpointEntity o) {
+        return this.getUniqueName().compareTo(o.getUniqueName());
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.d3kad3nt.sunriseClock.backend.data.model.UIEndpointEntity;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
-public class UIGroup extends UIEndpointEntity<UIGroup> {
+public class UIGroup extends UIEndpointEntity {
 
     private UIGroup(long groupId, long endpointId, String name) {
         super(groupId, endpointId, name);
