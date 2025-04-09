@@ -11,8 +11,7 @@ import retrofit2.Retrofit;
 
 /**
  * Adapted from the official Google architecture-components github-sample app under
- * https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com
- * /android/example/github/util/LiveDataCallAdapterFactory.kt.
+ * <a href="https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/util/LiveDataCallAdapterFactory.kt">LiveDataCallAdapterFactory</a>.
  */
 class LiveDataCallAdapterFactory extends CallAdapter.Factory {
 

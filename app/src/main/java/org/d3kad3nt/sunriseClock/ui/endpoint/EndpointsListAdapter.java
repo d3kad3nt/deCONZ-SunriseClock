@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.d3kad3nt.sunriseClock.backend.data.model.endpoint.IEndpointUI;
 import org.d3kad3nt.sunriseClock.databinding.EndpointListElementBinding;
 
-public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsListAdapter.ViewHolder> {
+public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsListAdapter.EndpointListViewHolder> {
 
     private final EndpointsViewModel viewModel;
     private final ClickListeners clickListeners;
@@ -27,13 +27,13 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(
+    public EndpointListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new EndpointListViewHolder(
                 EndpointListElementBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull EndpointListViewHolder holder, int position) {
         IEndpointUI endpoint = getItem(position);
         holder.bind(endpoint);
         holder.itemView.setTag(endpoint);
@@ -66,12 +66,12 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class EndpointListViewHolder extends RecyclerView.ViewHolder {
 
         private final EndpointListElementBinding binding;
         private IEndpointUI endpoint;
 
-        ViewHolder(@NonNull EndpointListElementBinding binding) {
+        EndpointListViewHolder(@NonNull EndpointListElementBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

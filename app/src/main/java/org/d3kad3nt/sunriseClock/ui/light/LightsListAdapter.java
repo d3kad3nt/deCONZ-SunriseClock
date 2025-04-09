@@ -196,12 +196,12 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
         @Override
         public boolean areContentsTheSame(@NonNull ListItem oldItem, @NonNull ListItem newItem) {
             boolean result = oldItem.equals(newItem);
-            if (oldItem instanceof UILight oldLight && newItem instanceof UILight newLight && !result) {
+            if (oldItem instanceof UILight oldLight && newItem instanceof UILight && !result) {
                 LogUtil.d(
                         "Recyclerview determined that light with lightId %d was changed and its LightViewHolder "
                                 + "content must be updated.",
                         oldLight.getId());
-            } else if (oldItem instanceof UIGroup oldGroup && newItem instanceof UIGroup newGroup && !result) {
+            } else if (oldItem instanceof UIGroup oldGroup && newItem instanceof UIGroup && !result) {
                 LogUtil.d(
                         "Recyclerview determined that group with groupId %d was changed and its GroupViewHolder "
                                 + "content must be updated.",

@@ -79,7 +79,7 @@ public class ControlService extends ControlsProviderService {
         final LiveData<List<IEndpointUI>> allEndpoints = getEndpointRepository().getAllEndpoints();
         final AsyncJoin asyncHelper = new AsyncJoin();
 
-        LiveDataUtil.observeOnce(allEndpoints, new AsyncJoin.Observer<>(asyncHelper) {
+        LiveDataUtil.observeOnce(allEndpoints, new AsyncJoin.AsyncObserver<>(asyncHelper) {
             @Override
             public void onChanged(final List<IEndpointUI> endpoints) {
                 for (final IEndpointUI endpoint : endpoints) {
@@ -95,7 +95,7 @@ public class ControlService extends ControlsProviderService {
 
             @NonNull
             @Contract("_, _ -> new")
-            private <T extends UIEndpointEntity> AsyncJoin.Observer<Resource<List<T>>> getObserver(
+            private <T extends UIEndpointEntity> AsyncJoin.AsyncObserver<Resource<List<T>>> getObserver(
                     final IEndpointUI endpoint, final LiveData<Resource<List<T>>> lightResources) {
                 return new AsyncJoin.Observer<>(asyncHelper) {
                     @Override
@@ -200,7 +200,7 @@ public class ControlService extends ControlsProviderService {
     }
 
     private static <T> void removeObserver(
-            final AsyncJoin.Observer<T> observer,
+            final AsyncJoin.AsyncObserver<T> observer,
             @NonNull final LiveData<T> livedata,
             @NonNull final AsyncJoin asyncHelper) {
         asyncHelper.removeAsyncTask(observer);

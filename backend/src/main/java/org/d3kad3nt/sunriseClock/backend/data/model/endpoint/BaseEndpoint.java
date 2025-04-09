@@ -15,10 +15,12 @@ public abstract class BaseEndpoint implements LightEndpoint, GroupEndpoint {
         this.originalEndpointConfig = originalEndpointConfig;
     }
 
+    /** @noinspection unused*/
     public long getId() {
         return this.originalEndpointConfig.getId();
     }
 
+    /** @noinspection unused*/
     public Date getAddedAt() {
         return this.originalEndpointConfig.getAddedAt();
     }
