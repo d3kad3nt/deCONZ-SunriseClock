@@ -1,5 +1,5 @@
 plugins {
-    id("com.diffplug.spotless") version "7.2.0"
+    id("com.diffplug.spotless") version "7.2.1"
 }
 apply plugin: 'com.android.application'
 apply plugin: "androidx.navigation.safeargs"
