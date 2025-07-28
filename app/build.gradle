@@ -73,7 +73,7 @@ dependencies {
 
     // Tests
     androidTestImplementation 'androidx.test:runner:1.6.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
