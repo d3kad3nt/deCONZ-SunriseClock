@@ -72,7 +72,7 @@ dependencies {
     implementation 'androidx.preference:preference:1.2.1'
 
     // Tests
-    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test:runner:1.7.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
