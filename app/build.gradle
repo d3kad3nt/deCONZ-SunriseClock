@@ -16,23 +16,23 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     buildFeatures {
         viewBinding true
-        dataBinding true
+        dataBinding = true
     }
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
+        coreLibraryDesugaringEnabled = true
 
         sourceCompatibility = 21
         targetCompatibility = 21
     }
 
-    namespace 'org.d3kad3nt.sunriseClock'
+    namespace = 'org.d3kad3nt.sunriseClock'
 }
 
 dependencies {
