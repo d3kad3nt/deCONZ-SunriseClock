@@ -16,23 +16,29 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     buildFeatures {
-        viewBinding true
-        dataBinding true
+        viewBinding = true
+        dataBinding = true
     }
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
+        coreLibraryDesugaringEnabled = true
 
         sourceCompatibility = 21
         targetCompatibility = 21
     }
 
-    namespace 'org.d3kad3nt.sunriseClock'
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+
+    namespace = 'org.d3kad3nt.sunriseClock'
 }
 
 dependencies {
@@ -74,6 +80,7 @@ dependencies {
     // Tests
     androidTestImplementation 'androidx.test:runner:1.7.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
