@@ -33,13 +33,8 @@ android {
     }
 
     testOptions {
-        unitTests {
-            // Workaround for build error message:
-            // Execution failed for task ':app:testDebugUnitTest'.
-            // There are test sources present and no filters are applied, but the test task did not discover any tests to execute.
-            // See https://github.com/gradle/gradle/issues/33619#issuecomment-2913519014
-            // See https://issuetracker.google.com/issues/411739086#comment4
-            includeAndroidResources = false
+        unitTests.all {
+            useJUnitPlatform()
         }
     }
 
@@ -85,6 +80,7 @@ dependencies {
     // Tests
     androidTestImplementation 'androidx.test:runner:1.7.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.13.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.13.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
