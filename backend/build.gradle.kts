@@ -47,7 +47,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata:2.8.7")
 
     // Retrofit
-    val retrofitVersion = "2.11.0"
+    val retrofitVersion = "3.0.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
 
