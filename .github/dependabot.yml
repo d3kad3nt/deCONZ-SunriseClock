@@ -6,6 +6,12 @@
 version: 2
 updates:
   - package-ecosystem: "gradle" # See documentation for possible values
-    directory: "/" # Location of package manifests
+    directories:
+      - "/" # Location of root config
+      - "/app"
+      - "/backend"
+      - "/util"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "com.android.tools.build:gradle"
