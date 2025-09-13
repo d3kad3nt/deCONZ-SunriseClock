@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "org.d3kad3nt.sunriseClock.util"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 21
