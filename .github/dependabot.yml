@@ -13,3 +13,5 @@ updates:
       - "/util"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "com.android.tools.build:gradle"
