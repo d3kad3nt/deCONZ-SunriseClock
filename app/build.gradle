@@ -32,6 +32,17 @@ android {
         targetCompatibility = 21
     }
 
+    testOptions {
+        unitTests {
+            // Workaround for build error message:
+            // Execution failed for task ':app:testDebugUnitTest'.
+            // There are test sources present and no filters are applied, but the test task did not discover any tests to execute.
+            // See https://github.com/gradle/gradle/issues/33619#issuecomment-2913519014
+            // See https://issuetracker.google.com/issues/411739086#comment4
+            includeAndroidResources = false
+        }
+    }
+
     namespace = 'org.d3kad3nt.sunriseClock'
 }
 
