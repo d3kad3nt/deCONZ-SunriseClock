@@ -5,7 +5,9 @@ plugins {
 }
 
 android {
+    namespace = "org.d3kad3nt.sunriseClock"
     compileSdk = 36
+
     defaultConfig {
         applicationId = "org.d3kad3nt.sunriseClock"
         minSdk = 21
@@ -14,12 +16,14 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
     buildFeatures {
         viewBinding = true
         dataBinding = true
@@ -37,12 +41,9 @@ android {
             it.useJUnitPlatform {}
         }
     }
-
-    namespace = "org.d3kad3nt.sunriseClock"
 }
 
 dependencies {
-
     // Util module
     implementation(project(":util"))
 
@@ -73,7 +74,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
-    // Preference
+    // Preference (TODO: Remove, see #121)
     implementation("androidx.preference:preference:1.2.1")
 
     // Tests
@@ -83,9 +84,8 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     androidTestImplementation("androidx.navigation:navigation-testing:$navVersion")
 
-    // Allow use of newer Java Features
+    // Allow use of newer Java features
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
-
 }
 
 spotless {
@@ -106,8 +106,5 @@ spotless {
         // apply a specific flavor of palantir-java-format
         leadingSpacesToTabs()
         palantirJavaFormat("2.61.0").formatJavadoc(true)
-
-        // fix formatting of type annotations
-        // formatAnnotations()
     }
 }

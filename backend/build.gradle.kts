@@ -31,6 +31,7 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
 
@@ -59,10 +60,10 @@ dependencies {
     // Preference (TODO: Remove, see #121)
     implementation("androidx.preference:preference:1.2.1")
 
-    // Allow use of newer Java Features
+    // Allow use of newer Java features
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 
-    //Tests
+    // Tests
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
