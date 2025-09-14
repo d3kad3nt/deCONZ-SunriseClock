@@ -105,7 +105,6 @@ public class DeconzEndpoint extends BaseEndpoint {
                     if (request.header(IServices.endpointLightIdHeader) != null) {
                         LogUtil.v("HTTP interceptor: Try to set light id in JSON response as workaround.");
 
-                        assert response.body() != null;
                         String stringJson = response.body().string();
                         JSONObject jsonObject;
 
@@ -115,7 +114,7 @@ public class DeconzEndpoint extends BaseEndpoint {
                                     IServices.endpointLightIdHeader, request.header(IServices.endpointLightIdHeader));
 
                             MediaType contentType = response.body().contentType();
-                            ResponseBody body = ResponseBody.create(contentType, String.valueOf(jsonObject));
+                            ResponseBody body = ResponseBody.create(String.valueOf(jsonObject), contentType);
 
                             return response.newBuilder().body(body).build();
                         } catch (JSONException ignored) {
