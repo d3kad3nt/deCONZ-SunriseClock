@@ -1,0 +1,26 @@
+[versions]
+gradle = "8.13.0"
+lifecycle = "2.9.3"
+navigation = "2.9.3"
+
+[libraries]
+# Classpath
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+navigation-safe-args-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
+
+# ViewModel and LiveData
+lifecycle-extensions = { module = "androidx.lifecycle:lifecycle-extensions", version = "2.2.0" }
+lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "lifecycle" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+
+# Navigation component
+navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "navigation" }
+navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "navigation" }
+navigation-dynamic-features-fragment = { module = "androidx.navigation:navigation-dynamic-features-fragment", version.ref = "navigation" }
+navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation" }
+
+[bundles]
+lifecycle = ["lifecycle-extensions", "lifecycle-common-java8", "lifecycle-viewmodel-ktx"]
+navigation = ["navigation-fragment", "navigation-dynamic-features-fragment", "navigation-ui"]
+
+[plugins]

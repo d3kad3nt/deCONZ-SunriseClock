@@ -50,16 +50,9 @@ dependencies {
     // Backend module
     implementation(project(":backend"))
 
-    // ViewModel and LiveData
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.9.3")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.3")
+    implementation(libs.bundles.lifecycle)
 
-    // Navigation component
-    val navVersion: String by rootProject.extra
-    implementation("androidx.navigation:navigation-fragment:$navVersion")
-    implementation("androidx.navigation:navigation-ui:$navVersion")
-    implementation("androidx.navigation:navigation-dynamic-features-fragment:$navVersion")
+    implementation(libs.bundles.navigation)
 
     // GUI
     implementation("com.google.android.material:material:1.13.0")
@@ -82,7 +75,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.13.4")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
-    androidTestImplementation("androidx.navigation:navigation-testing:$navVersion")
+    androidTestImplementation(libs.navigation.testing)
 
     // Allow use of newer Java features
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
