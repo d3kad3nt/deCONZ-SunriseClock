@@ -45,7 +45,7 @@ dependencies {
     implementation(project(":util"))
 
     // ViewModel
-    implementation("androidx.lifecycle:lifecycle-livedata:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-livedata:2.9.3")
 
     // Retrofit
     val retrofitVersion = "2.11.0"
