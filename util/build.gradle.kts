@@ -27,7 +27,7 @@ android {
 
 dependencies {
 
-    implementation("androidx.lifecycle:lifecycle-livedata:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-livedata:2.9.4")
 
     // Tests
     testImplementation("junit:junit:4.13.2")
