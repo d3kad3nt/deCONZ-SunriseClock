@@ -1,5 +1,6 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.androidx.room)
 }
 
 android {
@@ -11,18 +12,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments.putAll(
-                    mapOf(
-                        "room.schemaLocation" to "$projectDir/schemas",
-                        "room.incremental" to "true",
-                        "room.expandProjection" to "true"
-                    )
-                )
-            }
-        }
     }
 
     buildTypes {
@@ -38,33 +27,28 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
+
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
-    // Util
+    // Util module
     implementation(project(":util"))
 
-    // ViewModel
-    implementation("androidx.lifecycle:lifecycle-livedata:2.8.7")
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-    // Retrofit
-    val retrofitVersion = "2.11.0"
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    implementation(libs.lifecycle.livedata)
 
-    // Room
-    val roomVersion = "2.6.1"
-    implementation("androidx.room:room-runtime:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    implementation(libs.bundles.retrofit)
+
+    implementation(libs.room.runtime)
 
     // Preference (TODO: Remove, see #121)
     implementation("androidx.preference:preference:1.2.1")
 
-    // Allow use of newer Java features
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
-
-    // Tests
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    testImplementation(libs.junit4)
+    androidTestImplementation(libs.androidx.test.junit4)
+    androidTestImplementation(libs.androidx.test.espresso)
 }

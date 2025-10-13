@@ -1,7 +1,7 @@
 plugins {
-    id("com.diffplug.spotless") version "7.2.1"
-    id("com.android.application")
-    id("androidx.navigation.safeargs")
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.androidx.navigation.safeargs)
 }
 
 android {
@@ -50,35 +50,31 @@ dependencies {
     // Backend module
     implementation(project(":backend"))
 
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
     implementation(libs.bundles.lifecycle)
 
     implementation(libs.bundles.navigation)
 
-    // GUI
-    implementation("com.google.android.material:material:1.13.0")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("androidx.drawerlayout:drawerlayout:1.2.0")
-    implementation("androidx.recyclerview:recyclerview:1.4.0")
-    implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.viewpager:viewpager:1.1.0")
+    implementation(libs.ui.material)
+    implementation(libs.ui.swiperefreshlayout)
+    implementation(libs.ui.constraintlayout)
+    implementation(libs.ui.drawerlayout)
+    implementation(libs.ui.recyclerview)
+    implementation(libs.ui.cardview)
+    implementation(libs.ui.viewpager)
 
-    // Appcompat
-    implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation(libs.bundles.appcompat)
 
     // Preference (TODO: Remove, see #121)
     implementation("androidx.preference:preference:1.2.1")
 
     // Tests
-    androidTestImplementation("androidx.test:runner:1.7.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.13.4")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    testImplementation(libs.junit5)
+    testRuntimeOnly(libs.junit5.platformlauncher)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.espresso)
     androidTestImplementation(libs.navigation.testing)
-
-    // Allow use of newer Java features
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 }
 
 spotless {

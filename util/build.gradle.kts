@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.library")
+    alias(libs.plugins.android.library)
 }
 
 android {
@@ -26,11 +26,11 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-    implementation("androidx.lifecycle:lifecycle-livedata:2.8.7")
+    implementation(libs.lifecycle.livedata)
 
-    // Tests
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    testImplementation(libs.junit4)
+    androidTestImplementation(libs.androidx.test.junit4)
+    androidTestImplementation(libs.androidx.test.espresso)
 }
