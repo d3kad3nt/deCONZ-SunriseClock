@@ -26,9 +26,9 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
+    coreLibraryDesugaring(libs.android.tools.desugarjdklibs)
 
-    implementation(libs.lifecycle.livedata)
+    implementation(libs.androidx.lifecycle.livedata)
 
     testImplementation(libs.junit4)
     androidTestImplementation(libs.androidx.test.junit4)

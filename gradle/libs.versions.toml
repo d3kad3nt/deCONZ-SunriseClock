@@ -8,38 +8,38 @@ room = "2.6.1"
 
 [libraries]
 # ViewModel and LiveData
-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata", version.ref = "lifecycle" }
-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycle" }
-lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "lifecycle" }
+androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycle" }
+androidx-lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "lifecycle" }
 
-# Navigation component
-navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "navigation" }
-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "navigation" }
-navigation-dynamic-features-fragment = { module = "androidx.navigation:navigation-dynamic-features-fragment", version.ref = "navigation" }
-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation" }
+# Navigation components
+androidx-navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "navigation" }
+androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "navigation" }
+androidx-navigation-dynamic-features-fragment = { module = "androidx.navigation:navigation-dynamic-features-fragment", version.ref = "navigation" }
+androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation" }
 
 # Room
-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 
 # Retrofit
-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+squareup-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+squareup-retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 
 # Allow use of newer Java features
-desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version = "2.1.5" }
+android-tools-desugarjdklibs = { module = "com.android.tools:desugar_jdk_libs", version = "2.1.5" }
 
 # Appcompat
-appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.1" }
-legacysupport = { module = "androidx.legacy:legacy-support-v4", version = "1.0.0" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.1" }
+androidx-legacysupport = { module = "androidx.legacy:legacy-support-v4", version = "1.0.0" }
 
-# GUI
-ui-material = { module = "com.google.android.material:material", version = "1.13.0" }
-ui-viewpager = { module = "androidx.viewpager:viewpager", version = "1.1.0" }
-ui-recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.4.0" }
-ui-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version = "1.1.0" }
-ui-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.2.1" }
-ui-cardview = { module = "androidx.cardview:cardview", version = "1.0.0" }
-ui-drawerlayout = { module = "androidx.drawerlayout:drawerlayout", version = "1.2.0" }
+# UI
+google-material = { module = "com.google.android.material:material", version = "1.13.0" }
+androidx-viewpager = { module = "androidx.viewpager:viewpager", version = "1.1.0" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.4.0" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version = "1.1.0" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.2.1" }
+androidx-cardview = { module = "androidx.cardview:cardview", version = "1.0.0" }
+androidx-drawerlayout = { module = "androidx.drawerlayout:drawerlayout", version = "1.2.0" }
 
 # Tests
 junit4 = { module = "junit:junit", version = "4.13.2" }
@@ -54,10 +54,10 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 androidx-navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
-spotless = { id = "com.diffplug.spotless", version = "7.2.1" }
+diffplug-spotless = { id = "com.diffplug.spotless", version = "7.2.1" }
 
 [bundles]
-lifecycle = ["lifecycle-livedata", "lifecycle-common-java8", "lifecycle-viewmodel"]
-navigation = ["navigation-fragment", "navigation-dynamic-features-fragment", "navigation-ui"]
-retrofit = ["retrofit", "converter-gson"]
-appcompat = ["appcompat", "legacysupport"]
+lifecycle = ["androidx-lifecycle-livedata", "androidx-lifecycle-common-java8", "androidx-lifecycle-viewmodel"]
+navigation = ["androidx-navigation-fragment", "androidx-navigation-dynamic-features-fragment", "androidx-navigation-ui"]
+retrofit = ["squareup-retrofit", "squareup-retrofit-converter-gson"]
+appcompat = ["androidx-appcompat", "androidx-legacysupport"]

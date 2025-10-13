@@ -37,13 +37,13 @@ dependencies {
     // Util module
     implementation(project(":util"))
 
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
+    coreLibraryDesugaring(libs.android.tools.desugarjdklibs)
 
-    implementation(libs.lifecycle.livedata)
+    implementation(libs.androidx.lifecycle.livedata)
 
     implementation(libs.bundles.retrofit)
 
-    implementation(libs.room.runtime)
+    implementation(libs.androidx.room.runtime)
 
     // Preference (TODO: Remove, see #121)
     implementation("androidx.preference:preference:1.2.1")

@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.spotless)
+    alias(libs.plugins.diffplug.spotless)
     alias(libs.plugins.android.application)
     alias(libs.plugins.androidx.navigation.safeargs)
 }
@@ -50,19 +50,19 @@ dependencies {
     // Backend module
     implementation(project(":backend"))
 
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
+    coreLibraryDesugaring(libs.android.tools.desugarjdklibs)
 
     implementation(libs.bundles.lifecycle)
 
     implementation(libs.bundles.navigation)
 
-    implementation(libs.ui.material)
-    implementation(libs.ui.swiperefreshlayout)
-    implementation(libs.ui.constraintlayout)
-    implementation(libs.ui.drawerlayout)
-    implementation(libs.ui.recyclerview)
-    implementation(libs.ui.cardview)
-    implementation(libs.ui.viewpager)
+    implementation(libs.google.material)
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.drawerlayout)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.cardview)
+    implementation(libs.androidx.viewpager)
 
     implementation(libs.bundles.appcompat)
 
@@ -74,7 +74,7 @@ dependencies {
     testRuntimeOnly(libs.junit5.platformlauncher)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.espresso)
-    androidTestImplementation(libs.navigation.testing)
+    androidTestImplementation(libs.androidx.navigation.testing)
 }
 
 spotless {
