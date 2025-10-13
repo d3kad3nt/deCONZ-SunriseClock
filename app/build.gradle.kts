@@ -52,9 +52,9 @@ dependencies {
 
     coreLibraryDesugaring(libs.android.tools.desugarjdklibs)
 
-    implementation(libs.bundles.lifecycle)
+    implementation(libs.bundles.androidx.lifecycle)
 
-    implementation(libs.bundles.navigation)
+    implementation(libs.bundles.androidx.navigation)
 
     implementation(libs.google.material)
     implementation(libs.androidx.swiperefreshlayout)
@@ -64,7 +64,7 @@ dependencies {
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.viewpager)
 
-    implementation(libs.bundles.appcompat)
+    implementation(libs.bundles.androidx.appcompat)
 
     // Preference (TODO: Remove, see #121)
     implementation("androidx.preference:preference:1.2.1")

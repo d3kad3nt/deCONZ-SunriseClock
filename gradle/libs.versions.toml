@@ -1,29 +1,29 @@
 [versions]
 # Versions used by multiple dependencies or plugins
 agp = "8.13.0"
-lifecycle = "2.9.3"
-navigation = "2.9.3"
-retrofit = "2.11.0"
-room = "2.6.1"
+androidx-lifecycle = "2.9.3"
+androidx-navigation = "2.9.3"
+squareup-retrofit = "2.11.0"
+androidx-room = "2.6.1"
 
 [libraries]
 # ViewModel and LiveData
-androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata", version.ref = "lifecycle" }
-androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycle" }
-androidx-lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "lifecycle" }
+androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "androidx-lifecycle" }
 
 # Navigation components
-androidx-navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "navigation" }
-androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "navigation" }
-androidx-navigation-dynamic-features-fragment = { module = "androidx.navigation:navigation-dynamic-features-fragment", version.ref = "navigation" }
-androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation" }
+androidx-navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "androidx-navigation" }
+androidx-navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "androidx-navigation" }
+androidx-navigation-dynamic-features-fragment = { module = "androidx.navigation:navigation-dynamic-features-fragment", version.ref = "androidx-navigation" }
+androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "androidx-navigation" }
 
 # Room
-androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidx-room" }
 
 # Retrofit
-squareup-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
-squareup-retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+squareup-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "squareup-retrofit" }
+squareup-retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "squareup-retrofit" }
 
 # Allow use of newer Java features
 android-tools-desugarjdklibs = { module = "com.android.tools:desugar_jdk_libs", version = "2.1.5" }
@@ -52,12 +52,12 @@ androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", vers
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-androidx-navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation" }
-androidx-room = { id = "androidx.room", version.ref = "room" }
+androidx-navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "androidx-navigation" }
+androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
 diffplug-spotless = { id = "com.diffplug.spotless", version = "7.2.1" }
 
 [bundles]
-lifecycle = ["androidx-lifecycle-livedata", "androidx-lifecycle-common-java8", "androidx-lifecycle-viewmodel"]
-navigation = ["androidx-navigation-fragment", "androidx-navigation-dynamic-features-fragment", "androidx-navigation-ui"]
-retrofit = ["squareup-retrofit", "squareup-retrofit-converter-gson"]
-appcompat = ["androidx-appcompat", "androidx-legacysupport"]
+androidx-lifecycle = ["androidx-lifecycle-livedata", "androidx-lifecycle-common-java8", "androidx-lifecycle-viewmodel"]
+androidx-navigation = ["androidx-navigation-fragment", "androidx-navigation-dynamic-features-fragment", "androidx-navigation-ui"]
+squareup-retrofit = ["squareup-retrofit", "squareup-retrofit-converter-gson"]
+androidx-appcompat = ["androidx-appcompat", "androidx-legacysupport"]

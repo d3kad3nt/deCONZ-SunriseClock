@@ -41,7 +41,7 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.livedata)
 
-    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.squareup.retrofit)
 
     implementation(libs.androidx.room.runtime)
 
