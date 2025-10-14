@@ -11,6 +11,9 @@ minSdk = "21"
 targetSdk = "36"
 compileSdk = "36"
 
+# Java
+java = "VERSION_21"
+
 [libraries]
 # ViewModel and LiveData
 androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata", version.ref = "androidx-lifecycle" }

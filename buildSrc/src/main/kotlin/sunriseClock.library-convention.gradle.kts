@@ -30,8 +30,8 @@ android {
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
 
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.valueOf(libs.findVersion("java").get().requiredVersion)
+        targetCompatibility = JavaVersion.valueOf(libs.findVersion("java").get().requiredVersion)
     }
 }
 
