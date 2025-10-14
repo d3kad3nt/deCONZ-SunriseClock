@@ -1,2 +1,1 @@
-buildSrc is a special directory in a Gradle build that allows you to organize and share build logic, such as custom
-plugins, tasks, configurations, and utility functions, across all projects in your build.
+`buildSrc` is a special directory in a Gradle build that allows us to organize and share build logic, such as custom plugins, tasks, configurations, and utility functions, across all projects in our build.
