@@ -1,45 +1,20 @@
 plugins {
-    id("sunriseClock.spotless-convention")
-    alias(libs.plugins.android.application)
+    id("sunriseClock.application-convention")
     alias(libs.plugins.androidx.navigation.safeargs)
 }
 
 android {
     namespace = "org.d3kad3nt.sunriseClock"
-    compileSdk = 36
 
     defaultConfig {
         applicationId = "org.d3kad3nt.sunriseClock"
-        minSdk = 21
-        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
     }
 
     buildFeatures {
         viewBinding = true
         dataBinding = true
-    }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    }
-
-    testOptions {
-        unitTests.all {
-            it.useJUnitPlatform {}
-        }
     }
 }
 
@@ -49,8 +24,6 @@ dependencies {
 
     // Backend module
     implementation(project(":backend"))
-
-    coreLibraryDesugaring(libs.android.tools.desugarjdklibs)
 
     implementation(libs.bundles.androidx.lifecycle)
 
@@ -69,10 +42,6 @@ dependencies {
     // Preference (TODO: Remove, see #121)
     implementation("androidx.preference:preference:1.2.1")
 
-    // Tests
-    testImplementation(libs.junit5)
-    testRuntimeOnly(libs.junit5.platformlauncher)
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.androidx.test.espresso)
+    // Additional tests
     androidTestImplementation(libs.androidx.navigation.testing)
 }

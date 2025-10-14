@@ -13,6 +13,8 @@ repositories {
 // Versioned dependencies can be used in convention plugins.
 dependencies {
     implementation(plugin(libs.plugins.diffplug.spotless))
+    implementation(plugin(libs.plugins.android.library))
+    implementation(plugin(libs.plugins.android.application))
 }
 
 // Helper function that transforms a Gradle plugin alias from a
