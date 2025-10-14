@@ -6,6 +6,11 @@ androidx-navigation = "2.9.3"
 squareup-retrofit = "2.11.0"
 androidx-room = "2.6.1"
 
+# Android SDK
+minSdk = "21"
+targetSdk = "36"
+compileSdk = "36"
+
 [libraries]
 # ViewModel and LiveData
 androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata", version.ref = "androidx-lifecycle" }

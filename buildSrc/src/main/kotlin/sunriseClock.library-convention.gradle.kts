@@ -7,11 +7,14 @@ plugins {
     id("com.android.library")
 }
 
+// Access the version catalog.
+val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
+
 android {
-    compileSdk = 36
+    compileSdk = libs.findVersion("compileSdk").get().requiredVersion.toInt()
 
     defaultConfig {
-        minSdk = 21
+        minSdk = libs.findVersion("minSdk").get().requiredVersion.toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -31,9 +34,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
 }
-
-// Access the version catalog.
-val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
 
 dependencies {
     // Allow use of newer Java (11) features
