@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.diffplug.spotless)
+    id("sunriseClock.spotless-convention")
     alias(libs.plugins.android.application)
     alias(libs.plugins.androidx.navigation.safeargs)
 }
@@ -75,25 +75,4 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.espresso)
     androidTestImplementation(libs.androidx.navigation.testing)
-}
-
-spotless {
-    format("misc") {
-        // define the files to apply `misc` to
-        target("*.gradle", ".gitattributes", ".gitignore")
-
-        // define the steps to apply to those files
-        trimTrailingWhitespace()
-        // leadingSpacesToTabs() // or leadingTabsToSpaces. Takes an integer argument if you don"t like 4
-        endWithNewline()
-    }
-    java {
-        target("src/*/java/**/*.java")
-        // Use the default importOrder configuration
-        importOrder()
-        removeUnusedImports()
-        // apply a specific flavor of palantir-java-format
-        leadingSpacesToTabs()
-        palantirJavaFormat("2.61.0").formatJavadoc(true)
-    }
 }

@@ -1,4 +1,5 @@
 plugins {
+    id("sunriseClock.spotless-convention")
     alias(libs.plugins.android.library)
     alias(libs.plugins.androidx.room)
 }
