@@ -7,7 +7,7 @@ import java.util.Map;
 
 public final class LogUtil {
 
-    private LogUtil(){}
+    private LogUtil() {}
 
     private static final Map<String, String> prefixCache = new HashMap<>();
 
@@ -72,7 +72,7 @@ public final class LogUtil {
         }
     }
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     public static void e(String message, Object... parameters) {
         e(String.format(message, parameters));
     }

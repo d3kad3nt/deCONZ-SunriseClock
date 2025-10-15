@@ -65,7 +65,7 @@ public interface DbLightDao extends DbEndpointEntityDao<DbLight> {
     @Query("SELECT * FROM " + DbLight.TABLENAME + " WHERE endpoint_id = :endpointId")
     LiveData<List<DbLight>> loadAllForEndpoint(long endpointId);
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     // Normally we would annotate this method with @RewriteQueriesToDropUnusedColumns as some
     // columns do not need to
     // be returned. This prevents the following error message: 'The query returns some columns

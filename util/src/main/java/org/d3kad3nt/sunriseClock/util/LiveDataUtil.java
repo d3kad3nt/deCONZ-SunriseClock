@@ -8,7 +8,7 @@ public final class LiveDataUtil {
 
     private LiveDataUtil() {}
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     public static <T> void logChanges(@NonNull LiveData<T> liveData) {
         liveData.observeForever(t -> {
             LogUtil.d("LiveDataUtil log Change");

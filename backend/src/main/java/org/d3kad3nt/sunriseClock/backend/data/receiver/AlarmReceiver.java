@@ -38,7 +38,8 @@ public class AlarmReceiver extends BroadcastReceiver {
      * TODO: Retrieve formerly used schedule ids (probably from local storage) to remove obsolete schedulues from
      * deconz. Could use the new WorkManager from jetpack.
      *
-     * @noinspection EmptyMethod */
+     * @noinspection EmptyMethod
+     */
     private void removeObsoleteSchedules() {}
 
     /**

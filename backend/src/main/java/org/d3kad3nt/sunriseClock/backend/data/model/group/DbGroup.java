@@ -51,7 +51,7 @@ public class DbGroup extends DbEndpointEntity {
         return RemoteGroup.toDbGroup(remoteGroup);
     }
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     @NonNull
     @Contract("_ -> new")
     public static List<DbGroup> from(@NonNull List<RemoteGroup> remoteGroups) {

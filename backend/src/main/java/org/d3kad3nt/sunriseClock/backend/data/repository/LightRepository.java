@@ -113,7 +113,9 @@ public final class LightRepository {
 
             @Override
             protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteLight>> response) {
-                return response.getBody().stream().map(remoteLight -> DbLight.from(remoteLight)).toList();
+                return response.getBody().stream()
+                        .map(remoteLight -> DbLight.from(remoteLight))
+                        .toList();
             }
         };
     }
@@ -161,7 +163,9 @@ public final class LightRepository {
 
                     @Override
                     protected List<DbLight> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteLight>> response) {
-                        return response.getBody().stream().map(remoteLight -> DbLight.from(remoteLight)).toList();
+                        return response.getBody().stream()
+                                .map(remoteLight -> DbLight.from(remoteLight))
+                                .toList();
                     }
                 },
                 emptyResource -> EmptyResource.fromResource(emptyResource));
@@ -482,7 +486,9 @@ public final class LightRepository {
             protected Map<DbGroup, List<DbLight>> convertRemoteTypeToDbType(
                     ApiSuccessResponse<List<RemoteGroup>> remoteGroups,
                     ApiSuccessResponse<List<RemoteLight>> response2) {
-                List<DbLight> lights = response2.getBody().stream().map(remoteLight -> DbLight.from(remoteLight)).toList();
+                List<DbLight> lights = response2.getBody().stream()
+                        .map(remoteLight -> DbLight.from(remoteLight))
+                        .toList();
 
                 Map<DbGroup, List<DbLight>> groupsWithLights = new HashMap<>();
 
@@ -498,7 +504,7 @@ public final class LightRepository {
         };
     }
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     @NonNull
     public LiveData<Resource<List<UIGroup>>> getGroupsForEndpoint(long endpointId) {
         LogUtil.i("Requesting and returning all groups for endpoint with id %d", endpointId);
@@ -516,41 +522,43 @@ public final class LightRepository {
                 dbGroupDao.upsert(items);
             }
 
-            /** @noinspection unused*/
+            /** @noinspection unused */
             @Override
             protected boolean shouldFetch(List<DbGroup> data) {
                 // TODO
                 return true;
             }
 
-            /** @noinspection unused*/
+            /** @noinspection unused */
             @Override
             protected LiveData<BaseEndpoint> loadEndpoint() {
                 return endpointRepo.getRepoEndpoint(endpointId);
             }
 
-            /** @noinspection unused*/
+            /** @noinspection unused */
             @Override
             protected LiveData<List<DbGroup>> loadFromDb() {
                 return dbGroupDao.loadAllForEndpoint(endpointId);
             }
 
-            /** @noinspection unused*/
+            /** @noinspection unused */
             @Override
             protected LiveData<ApiResponse<List<RemoteGroup>>> loadFromNetwork() {
                 return endpoint.getGroups();
             }
 
-            /** @noinspection unused*/
+            /** @noinspection unused */
             @Override
             protected List<UIGroup> convertDbTypeToResultType(List<DbGroup> dbGroups) {
                 return UIGroup.from(dbGroups);
             }
 
-            /** @noinspection unused*/
+            /** @noinspection unused */
             @Override
             protected List<DbGroup> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteGroup>> response) {
-                return response.getBody().stream().map(remoteGroup -> DbGroup.from(remoteGroup)).toList();
+                return response.getBody().stream()
+                        .map(remoteGroup -> DbGroup.from(remoteGroup))
+                        .toList();
             }
         };
     }
@@ -559,48 +567,50 @@ public final class LightRepository {
         LogUtil.i("Refreshing all groups for endpoint with id %d", endpointId);
 
         return Transformations.map(
-            new NetworkBoundResource<Empty, List<RemoteGroup>, List<DbGroup>>() {
+                new NetworkBoundResource<Empty, List<RemoteGroup>, List<DbGroup>>() {
 
-                @Override
-                protected void saveResponseToDb(List<DbGroup> items) {
-                    dbGroupDao.upsert(items);
-                }
+                    @Override
+                    protected void saveResponseToDb(List<DbGroup> items) {
+                        dbGroupDao.upsert(items);
+                    }
 
-                @Override
-                protected boolean shouldFetch(@Nullable List<DbGroup> data) {
-                    return true;
-                }
+                    @Override
+                    protected boolean shouldFetch(@Nullable List<DbGroup> data) {
+                        return true;
+                    }
 
-                @NonNull
-                @Override
-                protected LiveData<BaseEndpoint> loadEndpoint() {
-                    return endpointRepo.getRepoEndpoint(endpointId);
-                }
+                    @NonNull
+                    @Override
+                    protected LiveData<BaseEndpoint> loadEndpoint() {
+                        return endpointRepo.getRepoEndpoint(endpointId);
+                    }
 
-                @NotNull
-                @Override
-                protected LiveData<List<DbGroup>> loadFromDb() {
-                    return Transformations.map(dbGroupDao.loadAllForEndpoint(endpointId), input -> {
-                        return new ArrayList<>(input);
-                    });
-                }
+                    @NotNull
+                    @Override
+                    protected LiveData<List<DbGroup>> loadFromDb() {
+                        return Transformations.map(dbGroupDao.loadAllForEndpoint(endpointId), input -> {
+                            return new ArrayList<>(input);
+                        });
+                    }
 
-                @NotNull
-                @Override
-                protected LiveData<ApiResponse<List<RemoteGroup>>> loadFromNetwork() {
-                    return endpoint.getGroups();
-                }
+                    @NotNull
+                    @Override
+                    protected LiveData<ApiResponse<List<RemoteGroup>>> loadFromNetwork() {
+                        return endpoint.getGroups();
+                    }
 
-                @Override
-                protected Empty convertDbTypeToResultType(List<DbGroup> items) {
-                    return new Empty();
-                }
+                    @Override
+                    protected Empty convertDbTypeToResultType(List<DbGroup> items) {
+                        return new Empty();
+                    }
 
-                @Override
-                protected List<DbGroup> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteGroup>> response) {
-                    return response.getBody().stream().map(remoteGroup -> DbGroup.from(remoteGroup)).toList();
-                }
-            },
-            emptyResource -> EmptyResource.fromResource(emptyResource));
+                    @Override
+                    protected List<DbGroup> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteGroup>> response) {
+                        return response.getBody().stream()
+                                .map(remoteGroup -> DbGroup.from(remoteGroup))
+                                .toList();
+                    }
+                },
+                emptyResource -> EmptyResource.fromResource(emptyResource));
     }
 }

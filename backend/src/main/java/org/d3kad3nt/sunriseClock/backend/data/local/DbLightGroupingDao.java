@@ -11,15 +11,15 @@ import java.util.List;
 @Dao
 public interface DbLightGroupingDao {
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     @Query("SELECT * FROM " + DbGroupLightCrossref.TABLENAME)
     LiveData<List<DbGroupLightCrossref>> loadAll();
 
-    /** @noinspection UnusedReturnValue*/
+    /** @noinspection UnusedReturnValue */
     @Insert(entity = DbGroupLightCrossref.class, onConflict = OnConflictStrategy.REPLACE)
     long save(DbGroupLightCrossref obj);
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     @Delete(entity = DbGroupLightCrossref.class)
     void delete(DbGroupLightCrossref obj);
 }
