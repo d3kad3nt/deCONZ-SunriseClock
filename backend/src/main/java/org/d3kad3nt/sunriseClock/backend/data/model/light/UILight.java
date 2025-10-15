@@ -166,7 +166,7 @@ public final class UILight extends UIEndpointEntity<UILight> {
                 && isReachable == uiLight.isReachable;
     }
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     public interface UILightChangePayload {
 
         class LightId implements UILightChangePayload {

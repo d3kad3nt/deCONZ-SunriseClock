@@ -99,7 +99,9 @@ public interface DbEndpointEntityDao<T extends DbEndpointEntity> {
 
     /**
      * Insert multiple endpoint entities (e.g. groups or lights) into the database (create) or update existing entity.
+     *
      * <p>See the {@link #upsert} method for details on insertion behaviour.
+     *
      * @param dbEndpointEntities List of endpoint entities.
      */
     @Transaction
@@ -151,7 +153,7 @@ public interface DbEndpointEntityDao<T extends DbEndpointEntity> {
     @Update()
     int updateUsingPrimaryKey(T dbEndpointEntity);
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     @Delete()
     void delete(T dbEndpointEntity);
 }

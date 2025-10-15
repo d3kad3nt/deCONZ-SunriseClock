@@ -12,8 +12,8 @@ import retrofit2.Response;
 /**
  * Common class used by API responses.
  *
- * <p>Adapted from the official Google architecture-components github-sample app under
- * <a href="https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/api/ApiResponse.kt">ApiResponse.kt</a>
+ * <p>Adapted from the official Google architecture-components github-sample app under <a
+ * href="https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/api/ApiResponse.kt">ApiResponse.kt</a>
  */
 public abstract class ApiResponse<T> {
 
@@ -35,7 +35,7 @@ public abstract class ApiResponse<T> {
             }
         } else {
             String msg = null;
-            try (var errorBody = response.errorBody()){
+            try (var errorBody = response.errorBody()) {
                 if (errorBody != null) {
                     msg = errorBody.string();
                 }

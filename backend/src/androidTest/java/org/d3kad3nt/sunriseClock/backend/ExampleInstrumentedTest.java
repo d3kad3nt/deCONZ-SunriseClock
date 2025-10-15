@@ -1,4 +1,3 @@
-
 package org.d3kad3nt.sunriseClock.backend;
 
 import static org.junit.Assert.assertEquals;
@@ -22,4 +21,4 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("org.d3kad3nt.sunriseClodk.backend.test", appContext.getPackageName());
     }
-  }
+}

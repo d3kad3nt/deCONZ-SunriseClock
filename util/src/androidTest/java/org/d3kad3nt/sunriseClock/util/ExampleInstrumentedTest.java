@@ -21,4 +21,4 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("org.d3kad3nt.sunriseclock.utils.test", appContext.getPackageName());
     }
-  }
+}

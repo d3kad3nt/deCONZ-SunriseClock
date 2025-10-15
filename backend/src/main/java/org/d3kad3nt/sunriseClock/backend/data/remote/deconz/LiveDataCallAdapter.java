@@ -13,8 +13,8 @@ import retrofit2.Response;
 /**
  * A Retrofit adapter that converts the Call into a LiveData of ApiResponse.
  *
- * <p>Adapted from the official Google architecture-components github-sample app under
- * <a href="https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/util/LiveDataCallAdapter.kt">LiveDataCallAdapter.kt</a>
+ * <p>Adapted from the official Google architecture-components github-sample app under <a
+ * href="https://github.com/android/architecture-components-samples/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github/util/LiveDataCallAdapter.kt">LiveDataCallAdapter.kt</a>
  */
 class LiveDataCallAdapter<T> implements CallAdapter<T, LiveData<ApiResponse<T>>> {
 

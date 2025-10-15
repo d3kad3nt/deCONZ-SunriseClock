@@ -2,7 +2,7 @@ package org.d3kad3nt.sunriseClock.backend.data.model.light;
 
 import org.d3kad3nt.sunriseClock.backend.data.model.endpoint.EndpointType;
 
-/** @noinspection UnusedReturnValue*/
+/** @noinspection UnusedReturnValue */
 public class RemoteLightBuilder {
 
     private EndpointType endpointType;
