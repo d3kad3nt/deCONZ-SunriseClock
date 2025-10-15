@@ -52,7 +52,7 @@ public class AsyncJoin {
         void apply();
     }
 
-    public abstract static class AsyncObserver <T> implements Observer<T> {
+    public abstract static class AsyncObserver<T> implements Observer<T> {
 
         public AsyncObserver(@NonNull AsyncJoin joinHelper) {
             joinHelper.addAsyncTask(this);

@@ -50,7 +50,7 @@ public class EndpointConfig {
         return id;
     }
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     public EndpointType getType() {
         return type;
     }
@@ -68,7 +68,7 @@ public class EndpointConfig {
         return name;
     }
 
-    /** @noinspection unused*/
+    /** @noinspection unused */
     public void setName(@NonNull String name) {
         this.name = name;
     }

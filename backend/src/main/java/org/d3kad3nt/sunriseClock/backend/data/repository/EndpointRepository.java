@@ -91,7 +91,7 @@ public final class EndpointRepository {
         return builder.setConfig(config).build();
     }
 
-    /** @noinspection UnusedReturnValue*/
+    /** @noinspection UnusedReturnValue */
     @NonNull
     public IEndpointUI createEndpoint(@NonNull Map<String, String> config) {
         EndpointType type = EndpointType.valueOf(config.remove("type"));
@@ -105,7 +105,7 @@ public final class EndpointRepository {
         ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
             endpointConfigDao.save(endpointConfig);
         });
-        //This is done to verify that the endpoint is created correctly
+        // This is done to verify that the endpoint is created correctly
         type.getBuilder().setConfig(endpointConfig).build();
         return UIEndpoint.from(endpointConfig);
     }
