@@ -4,7 +4,7 @@ agp = "8.13.0"
 androidx-lifecycle = "2.9.4"
 androidx-navigation = "2.9.3"
 squareup-retrofit = "2.11.0"
-androidx-room = "2.6.1"
+androidx-room = "2.8.2"
 
 # Android SDK
 minSdk = "23"
