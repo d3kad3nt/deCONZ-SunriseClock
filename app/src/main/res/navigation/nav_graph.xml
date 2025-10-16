@@ -14,42 +14,6 @@
             app:destination="@id/nav_graph_light_detail" />
     </fragment>
     <fragment
-        android:id="@+id/bottomnav_settings"
-        android:name="org.d3kad3nt.sunriseClock.ui.preference.MainSettingsFragment"
-        android:label="@string/bottomnav_preferences_title">
-        <action
-            android:id="@+id/action_mainSettingsFragment_to_connectivityFragment"
-            app:destination="@id/connectivityFragment" />
-        <action
-            android:id="@+id/action_mainSettingsFragment_to_alarmFragment"
-            app:destination="@id/alarmFragment" />
-        <action
-            android:id="@+id/action_mainSettingsFragment_to_interfaceFragment"
-            app:destination="@id/interfaceFragment" />
-        <action
-            android:id="@+id/action_mainSettingsFragment_to_debugFragment"
-            app:destination="@id/debugFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/connectivityFragment"
-        android:name="org.d3kad3nt.sunriseClock.ui.preference.ConnectivityFragment"
-        android:label="@string/connectivity_settings_title" />
-    <action
-        android:id="@+id/action_global_mainSettingsFragment"
-        app:destination="@id/bottomnav_settings" />
-    <fragment
-        android:id="@+id/alarmFragment"
-        android:name="org.d3kad3nt.sunriseClock.ui.preference.AlarmFragment"
-        android:label="@string/alarm" />
-    <fragment
-        android:id="@+id/debugFragment"
-        android:name="org.d3kad3nt.sunriseClock.ui.preference.DebugFragment"
-        android:label="@string/debug_settings_title" />
-    <fragment
-        android:id="@+id/interfaceFragment"
-        android:name="org.d3kad3nt.sunriseClock.ui.preference.InterfaceFragment"
-        android:label="@string/ui_interface" />
-    <fragment
         android:id="@+id/bottomnav_endpoints"
         android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment"
         android:label="@string/endpoint_list"

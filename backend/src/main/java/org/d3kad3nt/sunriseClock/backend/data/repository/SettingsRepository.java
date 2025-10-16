@@ -4,14 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.util.Supplier;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.preference.PreferenceManager;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 /** @noinspection unused */
@@ -25,7 +24,7 @@ public final class SettingsRepository {
     private final Map<SettingKeys, Listener<String>> listenerStringCache = new HashMap<>();
 
     private SettingsRepository(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        preferences = context.getSharedPreferences(context.getPackageName() + "_preferences", Context.MODE_PRIVATE);
     }
 
     public static SettingsRepository getInstance(Context context) {
