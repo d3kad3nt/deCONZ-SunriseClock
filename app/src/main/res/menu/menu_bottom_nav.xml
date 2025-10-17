@@ -13,8 +13,4 @@
         android:id="@+id/bottomnav_endpoints"
         android:icon="@drawable/router_24dp"
         android:title="@string/bottomnav_endpoints_title" />
-    <item
-        android:id="@+id/bottomnav_settings"
-        android:icon="@drawable/settings_24dp"
-        android:title="@string/bottomnav_preferences_title" />
 </menu>
