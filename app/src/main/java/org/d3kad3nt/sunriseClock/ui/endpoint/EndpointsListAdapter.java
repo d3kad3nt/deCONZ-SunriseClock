@@ -17,7 +17,6 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
 
     private final EndpointsViewModel viewModel;
     private final ClickListeners clickListeners;
-    private CompoundButton selectedRadioButton = null;
 
     public EndpointsListAdapter(final EndpointsViewModel viewModel, final ClickListeners clickListeners) {
         super(new EndpointDiffCallback());
@@ -62,7 +61,7 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
         @SuppressLint("DiffUtilEquals")
         @Override
         public boolean areContentsTheSame(@NonNull IEndpointUI oldItem, @NonNull IEndpointUI newItem) {
-            return oldItem == newItem;
+            return oldItem.equals(newItem);
         }
     }
 
@@ -80,9 +79,9 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
             binding.setCardClickListener(new CardClickListener());
             binding.setEndpoint(item);
             binding.setRadioCheckedChangeListener(new RadioCheckedChangeListener());
-            binding.executePendingBindings();
             this.endpoint = item;
             binding.setEndpointSelected(viewModel.isSelectedEndpoint(item.getId()));
+            binding.executePendingBindings();
         }
 
         public class CardClickListener implements View.OnClickListener {
@@ -98,14 +97,13 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
 
             @Override
             public void onCheckedChanged(final CompoundButton compoundButton, final boolean checkedState) {
-                if (!checkedState) {
-                    return;
+                // We only react to user interactions, not programmatic changes.
+                // isPressed() is true only when the user is actively pressing the button.
+                // This check prevents an infinite loop when the checked state is changed programmatically
+                // during a rebind.
+                if (checkedState && compoundButton.isPressed()) {
+                    viewModel.setSelectedEndpoint(endpoint.getId());
                 }
-                if (selectedRadioButton != null) {
-                    selectedRadioButton.setChecked(false);
-                }
-                selectedRadioButton = compoundButton;
-                viewModel.setSelectedEndpoint(endpoint.getId());
             }
         }
     }
