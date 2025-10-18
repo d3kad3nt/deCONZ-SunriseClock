@@ -30,4 +30,8 @@
     <string name="bottomnav_entities_title">Geräte</string>
     <string name="lights">Lichter</string>
     <string name="groups">Gruppen</string>
+    <string name="delete">Löschen</string>
+    <string name="delete_endpoint">Endpoint löschen</string>
+    <string name="delete_endpoint_confirmation">Soll dieser Endpoint wirklich gelöscht werden? Dies wird auch
+    alle zugehörigen Lichter und Gruppen löschen.</string>
 </resources>

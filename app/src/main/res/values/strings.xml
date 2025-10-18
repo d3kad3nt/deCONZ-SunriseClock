@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">SunriseClock</string>
     <string name="api_key">API Key</string>
@@ -31,4 +32,8 @@
     <string name="bottomnav_entities_title">Devices</string>
     <string name="lights">Lights</string>
     <string name="groups">Groups</string>
+    <string name="delete">Delete</string>
+    <string name="delete_endpoint">Delete Endpoint</string>
+    <string name="delete_endpoint_confirmation">Do you really want to delete this endpoint? This will remove
+        all associated lights and groups.</string>
 </resources>
