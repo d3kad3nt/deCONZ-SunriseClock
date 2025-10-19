@@ -105,6 +105,14 @@ public class EndpointDetailFragment extends BaseFragment<EndpointDetailFragmentB
                             EndpointDetailFragmentDirections
                                     .actionEndpointDetailToEndpointDetailNameEditDialogFragment());
             return true;
+        } else if (menuItem.getItemId() == R.id.menu_endpoint_details_delete) {
+            LogUtil.d(
+                    "User requested to show endpoint delete confirmation dialog by clicking the toolbar menu option.");
+            Navigation.findNavController(binding.getRoot())
+                    .navigate(
+                            EndpointDetailFragmentDirections
+                                    .actionEndpointDetailToEndpointDetailDeleteDialogFragment());
+            return true;
         }
         return false;
     }

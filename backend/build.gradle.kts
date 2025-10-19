@@ -21,7 +21,4 @@ dependencies {
 
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
-
-    // Preference (TODO: Remove, see #121)
-    implementation("androidx.preference:preference:1.2.1")
 }

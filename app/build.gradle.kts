@@ -39,9 +39,6 @@ dependencies {
 
     implementation(libs.bundles.androidx.appcompat)
 
-    // Preference (TODO: Remove, see #121)
-    implementation("androidx.preference:preference:1.2.1")
-
     // Additional tests
     androidTestImplementation(libs.androidx.navigation.testing)
 }

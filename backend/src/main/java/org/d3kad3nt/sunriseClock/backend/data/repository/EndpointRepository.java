@@ -121,4 +121,11 @@ public final class EndpointRepository {
             endpointConfigDao.updateName(update);
         });
     }
+
+    public void deleteEndpoint(long endpointId) {
+        LogUtil.i("Deleting endpoint with id %d", endpointId);
+        ServiceLocator.getExecutor(ExecutorType.IO).execute(() -> {
+            endpointConfigDao.delete(endpointId);
+        });
+    }
 }
