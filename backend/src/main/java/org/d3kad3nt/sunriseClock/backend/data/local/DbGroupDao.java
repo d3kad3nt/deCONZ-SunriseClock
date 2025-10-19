@@ -26,27 +26,21 @@ public interface DbGroupDao extends DbEndpointEntityDao<DbGroup> {
     }
 
     @Query(
-            value = "SELECT id FROM '" + DbGroup.TABLENAME
-                    + "' WHERE endpoint_id = :endpointId AND id_on_endpoint ="
+            value = "SELECT id FROM `" + DbGroup.TABLENAME
+                    + "` WHERE endpoint_id = :endpointId AND id_on_endpoint ="
                     + " :endpointGroupId")
     long getIdForEndpointIdAndEndpointGroupId(long endpointId, String endpointGroupId);
 
-    @Query("UPDATE '" + DbGroup.TABLENAME + "' SET name = :name WHERE endpoint_id = "
+    @Query("UPDATE `" + DbGroup.TABLENAME + "` SET name = :name WHERE endpoint_id = "
             + ":endpointId AND id_on_endpoint = :endpointGroupId")
     int updateUsingEndpointIdAndEndpointGroupId(long endpointId, String endpointGroupId, String name);
 
-    @Query(value = "SELECT * FROM '" + DbGroup.TABLENAME + "' WHERE endpoint_id = :endpointId")
+    @Query("SELECT * FROM `" + DbGroup.TABLENAME + "` WHERE id = :groupId")
+    LiveData<DbGroup> load(long groupId);
+
+    @Query(value = "SELECT * FROM `" + DbGroup.TABLENAME + "` WHERE endpoint_id = :endpointId")
     LiveData<List<DbGroup>> loadAllForEndpoint(long endpointId);
 
-    // Normally we would annotate this method with @RewriteQueriesToDropUnusedColumns as some
-    // columns do not need to
-    // be returned. This prevents the following error message: 'The query returns some columns
-    // [group_id, light_id]
-    // which are not used by any of DbLight, DbGroup.'
-    // However this is not possible as the documentation states: 'Note that Room will not rewrite
-    // the query if it has
-    // multiple columns that have the same name as it does not yet have a way to distinguish which
-    // one is necessary.'
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query(
             value = "SELECT * FROM `group` "

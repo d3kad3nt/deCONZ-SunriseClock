@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.backend.data.model.group;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
@@ -32,12 +33,16 @@ public class DbGroup extends DbEndpointEntity {
     @Ignore
     public static final String TABLENAME = "group";
 
+    @ColumnInfo(name = "all_on", defaultValue = "false")
+    private final boolean allOn;
+
     /**
      * Create a new entity that represents a group in the app's Room database. This constructor has to be public for
      * Room to be able to create an object. This should not be otherwise accessed!
      */
-    public DbGroup(long endpointId, String endpointEntityId, String name) {
+    public DbGroup(long endpointId, String endpointEntityId, String name, boolean allOn) {
         super(endpointId, endpointEntityId, name);
+        this.allOn = allOn;
     }
 
     @Override
@@ -58,6 +63,10 @@ public class DbGroup extends DbEndpointEntity {
         return remoteGroups.stream().map(remoteGroup -> from(remoteGroup)).collect(Collectors.toList());
     }
 
+    public boolean isAllOn() {
+        return allOn;
+    }
+
     // Room requires equals() and hashcode() to be implemented:
     // The key of the provided method's multimap return type must implement equals() and hashCode().
     @Override
@@ -68,13 +77,13 @@ public class DbGroup extends DbEndpointEntity {
         if (!(o instanceof final DbGroup dbGroup)) {
             return false;
         }
-        return super.equals(dbGroup);
+        return super.equals(dbGroup) && allOn == dbGroup.allOn;
     }
 
     // Room requires equals() and hashcode() to be implemented:
     // The key of the provided method's multimap return type must implement equals() and hashCode().
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode());
+        return Objects.hash(super.hashCode(), allOn);
     }
 }

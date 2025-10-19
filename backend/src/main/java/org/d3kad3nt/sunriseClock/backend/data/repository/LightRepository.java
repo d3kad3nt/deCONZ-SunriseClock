@@ -613,4 +613,126 @@ public final class LightRepository {
                 },
                 emptyResource -> EmptyResource.fromResource(emptyResource));
     }
+
+    public LiveData<Resource<UIGroup>> getGroup(long groupId) {
+        LogUtil.i("Requesting and returning single group with id %d", groupId);
+
+        return new NetworkBoundResource<UIGroup, RemoteGroup, DbGroup>() {
+
+            @Override
+            protected void saveResponseToDb(DbGroup item) {
+                item.setId(groupId);
+                dbGroupDao.upsert(item);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable DbGroup data) {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<DbGroup> loadFromDb() {
+                return dbGroupDao.load(groupId);
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<ApiResponse<RemoteGroup>> loadFromNetwork() {
+                return endpoint.getGroup(dbObject.getEndpointEntityId());
+            }
+
+            @Override
+            protected UIGroup convertDbTypeToResultType(DbGroup item) {
+                return UIGroup.from(item);
+            }
+
+            @Override
+            protected DbGroup convertRemoteTypeToDbType(ApiSuccessResponse<RemoteGroup> response) {
+                return DbGroup.from(response.getBody());
+            }
+        };
+    }
+
+    public LiveData<EmptyResource> refreshGroup(long groupId) {
+        LogUtil.i("Refreshing single group with id %d", groupId);
+
+        return Transformations.map(
+                new NetworkBoundResource<Empty, RemoteGroup, DbGroup>() {
+
+                    @Override
+                    protected void saveResponseToDb(DbGroup item) {
+                        item.setId(groupId);
+                        dbGroupDao.upsert(item);
+                    }
+
+                    @Override
+                    protected boolean shouldFetch(@Nullable DbGroup data) {
+                        return true;
+                    }
+
+                    @NonNull
+                    @Override
+                    protected LiveData<BaseEndpoint> loadEndpoint() {
+                        return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
+                    }
+
+                    @NotNull
+                    @Override
+                    protected LiveData<DbGroup> loadFromDb() {
+                        return dbGroupDao.load(groupId);
+                    }
+
+                    @NotNull
+                    @Override
+                    protected LiveData<ApiResponse<RemoteGroup>> loadFromNetwork() {
+                        return endpoint.getGroup(dbObject.getEndpointEntityId());
+                    }
+
+                    @Override
+                    protected Empty convertDbTypeToResultType(DbGroup item) {
+                        return new Empty();
+                    }
+
+                    @Override
+                    protected DbGroup convertRemoteTypeToDbType(ApiSuccessResponse<RemoteGroup> response) {
+                        return DbGroup.from(response.getBody());
+                    }
+                },
+                emptyResource -> EmptyResource.fromResource(emptyResource));
+    }
+
+    public LiveData<EmptyResource> setGroupOnState(long groupId, boolean on) {
+        LogUtil.i("Setting group state for id %d to %s.", groupId, on);
+        return new NetworkUpdateResource<UIGroup, ResponseBody, DbGroup>(true) {
+
+            @Override
+            protected LiveData<DbGroup> loadFromDB() {
+                return dbGroupDao.load(groupId);
+            }
+
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
+                return baseEndpoint.setGroupOnState(dbObject.getEndpointEntityId(), on);
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<Resource<UIGroup>> loadUpdatedVersion() {
+                return getGroup(groupId);
+            }
+        };
+    }
 }

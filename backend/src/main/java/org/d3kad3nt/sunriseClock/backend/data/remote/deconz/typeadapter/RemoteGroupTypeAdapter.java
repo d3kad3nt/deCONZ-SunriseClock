@@ -55,6 +55,14 @@ public class RemoteGroupTypeAdapter implements JsonDeserializer<RemoteGroup> {
             remoteGroupBuilder = remoteGroupBuilder.setEndpointLightIds(lightIds);
         }
 
+        if (rawJson.has("action")) {
+            JsonObject actionObject = rawJson.getAsJsonObject("action");
+            if (actionObject.has("on")) {
+                remoteGroupBuilder =
+                        remoteGroupBuilder.setAllOn(actionObject.get("on").getAsBoolean());
+            }
+        }
+
         return remoteGroupBuilder.build();
     }
 }
