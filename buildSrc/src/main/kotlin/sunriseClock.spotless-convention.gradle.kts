@@ -2,7 +2,6 @@
 // external plugins. We must declare them as dependencies in buildSrc/build.gradle.kts.
 // Apply the plugin manually as a workaround with the external plugin version from the version catalog
 // specified in implementation dependency artifact in build file.
-
 plugins {
     id("com.diffplug.spotless")
 }
