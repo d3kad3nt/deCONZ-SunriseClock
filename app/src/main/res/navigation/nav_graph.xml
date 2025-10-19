@@ -94,6 +94,9 @@
             <action
                 android:id="@+id/action_endpointDetail_to_endpointDetailNameEditDialogFragment"
                 app:destination="@id/endpointDetailNameEditDialogFragment" />
+            <action
+                android:id="@+id/action_endpointDetail_to_endpointDetailDeleteDialogFragment"
+                app:destination="@id/endpointDetailDeleteDialogFragment" />
         </fragment>
         <dialog
             android:id="@+id/endpointDetailInfoDialogFragment"
@@ -103,6 +106,10 @@
             android:id="@+id/endpointDetailNameEditDialogFragment"
             android:name="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailNameEditDialogFragment"
             android:label="EndpointDetailNameEditDialogFragment" />
+        <dialog
+            android:id="@+id/endpointDetailDeleteDialogFragment"
+            android:name="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailDeleteDialogFragment"
+            android:label="EndpointDetailDeleteDialogFragment" />
         <argument
             android:name="endpointID"
             app:argType="long" />

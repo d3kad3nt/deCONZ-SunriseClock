@@ -50,6 +50,15 @@ public class EndpointsFragment extends BaseFragment<EndpointsFragmentBinding, En
                 }
             }
         });
+
+        // When the selected endpoint changes, we need to re-bind all visible items in the recycler
+        // view to update their radio buttons.
+        viewModel.getActiveEndpointId().observe(getViewLifecycleOwner(), new Observer<Long>() {
+            @Override
+            public void onChanged(final Long aLong) {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

@@ -3,7 +3,6 @@ package org.d3kad3nt.sunriseClock.backend.data.local;
 import androidx.lifecycle.LiveData;
 import androidx.room.ColumnInfo;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -26,9 +25,8 @@ public interface EndpointConfigDao {
     @Update(entity = EndpointConfig.class)
     void updateName(NameUpdate obj);
 
-    /** @noinspection unused */
-    @Delete(entity = EndpointConfig.class)
-    void delete(EndpointConfig obj);
+    @Query("DELETE FROM " + EndpointConfig.TABLENAME + " WHERE endpointId = :id")
+    void delete(long id);
 
     class NameUpdate {
 

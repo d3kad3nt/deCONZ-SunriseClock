@@ -72,4 +72,8 @@ public class EndpointDetailViewModel extends ViewModel {
     public void setEndpointName(String newName) {
         endpointRepository.setName(endpointID, newName);
     }
+
+    public void deleteEndpoint() {
+        endpointRepository.deleteEndpoint(endpointID);
+    }
 }
