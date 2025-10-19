@@ -4,9 +4,7 @@
 // specified in implementation dependency artifact in build file.
 
 plugins {
-    if (BuildMode.isActive(BuildMode.Dev)) {
-        id("com.diffplug.spotless")
-    }
+    id("com.diffplug.spotless")
 }
 
 spotless {
