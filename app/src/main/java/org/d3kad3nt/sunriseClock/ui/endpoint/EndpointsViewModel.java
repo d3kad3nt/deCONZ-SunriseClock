@@ -39,10 +39,9 @@ public class EndpointsViewModel extends AndroidViewModel {
 
     /**
      * Checks if the given endpoint ID is the currently active one.
-     * <p>
-     * Note: This method might return {@code false} if the underlying {@link LiveData}
-     * for the active endpoint has not been observed and initialized yet. For a reactive
-     * approach, observe {@link #getActiveEndpointId()} instead.
+     *
+     * <p>Note: This method might return {@code false} if the underlying {@link LiveData} for the active endpoint has
+     * not been observed and initialized yet. For a reactive approach, observe {@link #getActiveEndpointId()} instead.
      *
      * @param id The unique identifier of the endpoint to check.
      * @return {@code true} if the provided ID matches the active endpoint's ID, {@code false} otherwise.
@@ -54,10 +53,9 @@ public class EndpointsViewModel extends AndroidViewModel {
 
     /**
      * Gets the active endpoint ID as a {@link LiveData} object.
-     * <p>
-     * This allows observing changes to the active endpoint ID. The value will be updated
-     * whenever a new endpoint is set as active. If no endpoint is active, the LiveData
-     * will hold the value -1L.
+     *
+     * <p>This allows observing changes to the active endpoint ID. The value will be updated whenever a new endpoint is
+     * set as active. If no endpoint is active, the LiveData will hold the value -1L.
      *
      * @return A {@link LiveData} object containing the ID of the currently active endpoint, or -1L if none is active.
      */
@@ -66,9 +64,8 @@ public class EndpointsViewModel extends AndroidViewModel {
     }
 
     /**
-     * Sets the provided endpoint ID as the currently active one in the settings.
-     * This will be persisted and used by other parts of the application to communicate
-     * with the correct endpoint.
+     * Sets the provided endpoint ID as the currently active one in the settings. This will be persisted and used by
+     * other parts of the application to communicate with the correct endpoint.
      *
      * @param id The unique identifier of the endpoint to set as active.
      */
