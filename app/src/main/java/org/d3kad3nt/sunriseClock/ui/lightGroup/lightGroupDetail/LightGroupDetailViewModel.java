@@ -10,8 +10,10 @@ import java.util.Objects;
 import org.d3kad3nt.sunriseClock.backend.data.model.group.UIGroup;
 import org.d3kad3nt.sunriseClock.backend.data.model.resource.EmptyResource;
 import org.d3kad3nt.sunriseClock.backend.data.model.resource.Resource;
+import org.d3kad3nt.sunriseClock.backend.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.backend.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
+import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
 public class LightGroupDetailViewModel extends ViewModel {
@@ -23,11 +25,13 @@ public class LightGroupDetailViewModel extends ViewModel {
                 LightRepository lightRepository = Objects.requireNonNull(creationExtras.get(LIGHT_REPOSITORY_KEY));
                 return new LightGroupDetailViewModel(lightRepository);
             });
-    public final MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
-    public final ResourceVisibilityLiveData loadingIndicatorVisibility;
+
     private final LightRepository lightRepository;
     private long groupId;
+
     private LiveData<Resource<UIGroup>> group;
+    public final MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
+    public final ResourceVisibilityLiveData loadingIndicatorVisibility;
 
     public LightGroupDetailViewModel(LightRepository lightRepository) {
         this.lightRepository = lightRepository;
@@ -73,9 +77,12 @@ public class LightGroupDetailViewModel extends ViewModel {
 
     public void setGroupOnState(boolean on) {
         LogUtil.i("User requested the group's state to be set to %s.", on);
-        if (groupId != 0) {
+        LiveDataUtil.observeOnce(group, groupResource -> {
+            if (groupResource == null || groupResource.getStatus() == Status.LOADING) {
+                return;
+            }
             LiveData<EmptyResource> state = lightRepository.setGroupOnState(groupId, on);
             loadingIndicatorVisibility.addVisibilityProvider(state);
-        }
+        });
     }
 }
