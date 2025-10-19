@@ -80,7 +80,7 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
             binding.setEndpoint(item);
             binding.setRadioCheckedChangeListener(new RadioCheckedChangeListener());
             this.endpoint = item;
-            binding.setEndpointSelected(viewModel.isSelectedEndpoint(item.getId()));
+            binding.setEndpointSelected(viewModel.isActiveEndpoint(item.getId()));
             binding.executePendingBindings();
         }
 
@@ -102,7 +102,7 @@ public class EndpointsListAdapter extends ListAdapter<IEndpointUI, EndpointsList
                 // This check prevents an infinite loop when the checked state is changed programmatically
                 // during a rebind.
                 if (checkedState && compoundButton.isPressed()) {
-                    viewModel.setSelectedEndpoint(endpoint.getId());
+                    viewModel.setActiveEndpointId(endpoint.getId());
                 }
             }
         }
