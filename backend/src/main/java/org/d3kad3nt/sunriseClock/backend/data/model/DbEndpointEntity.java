@@ -1,6 +1,7 @@
 package org.d3kad3nt.sunriseClock.backend.data.model;
 
 import androidx.annotation.CallSuper;
+import androidx.annotation.Discouraged;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
@@ -82,6 +83,7 @@ public abstract class DbEndpointEntity {
      *
      * @param id The auto-generated identifier of this group, not depending on the (endpoint-specific) endpointGroupId.
      */
+    @Discouraged(message = "This method must not be used outside of Room!")
     public void setId(long id) {
         this.id = id;
     }
