@@ -1,4 +1,4 @@
-package org.d3kad3nt.sunriseClock.ui.lightGroup.lightGroupDetail;
+package org.d3kad3nt.sunriseClock.ui.group.groupDetail;
 
 import android.view.View;
 import androidx.lifecycle.LiveData;
@@ -16,14 +16,14 @@ import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LiveDataUtil;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
-public class LightGroupDetailViewModel extends ViewModel {
+public class GroupDetailViewModel extends ViewModel {
 
     public static final CreationExtras.Key<LightRepository> LIGHT_REPOSITORY_KEY = new CreationExtras.Key<>() {};
 
-    static final ViewModelInitializer<LightGroupDetailViewModel> initializer =
-            new ViewModelInitializer<>(LightGroupDetailViewModel.class, creationExtras -> {
+    static final ViewModelInitializer<GroupDetailViewModel> initializer =
+            new ViewModelInitializer<>(GroupDetailViewModel.class, creationExtras -> {
                 LightRepository lightRepository = Objects.requireNonNull(creationExtras.get(LIGHT_REPOSITORY_KEY));
-                return new LightGroupDetailViewModel(lightRepository);
+                return new GroupDetailViewModel(lightRepository);
             });
 
     private final LightRepository lightRepository;
@@ -33,7 +33,7 @@ public class LightGroupDetailViewModel extends ViewModel {
     public final MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
     public final ResourceVisibilityLiveData loadingIndicatorVisibility;
 
-    public LightGroupDetailViewModel(LightRepository lightRepository) {
+    public GroupDetailViewModel(LightRepository lightRepository) {
         this.lightRepository = lightRepository;
 
         loadingIndicatorVisibility = new ResourceVisibilityLiveData(View.VISIBLE)
