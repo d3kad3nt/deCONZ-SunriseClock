@@ -11,15 +11,18 @@ import org.jetbrains.annotations.Contract;
 
 public final class UIGroup extends UIEndpointEntity<UIGroup> {
 
-    private UIGroup(long groupId, long endpointId, String name) {
+    private final boolean allOn;
+
+    private UIGroup(long groupId, long endpointId, String name, boolean allOn) {
         super(groupId, endpointId, name);
+        this.allOn = allOn;
     }
 
     @NonNull
     @Contract("_ -> new")
     public static UIGroup from(@NonNull DbGroup dbGroup) {
         // Place for conversion logic (if UI needs other data types or value ranges).
-        UIGroup uiGroup = new UIGroup(dbGroup.getId(), dbGroup.getEndpointId(), dbGroup.getName());
+        UIGroup uiGroup = new UIGroup(dbGroup.getId(), dbGroup.getEndpointId(), dbGroup.getName(), dbGroup.isAllOn());
         LogUtil.v(
                 "Converted DbGroup with groupId %d (endpointId %d, endpointGroupId %s) to UIGroup.",
                 dbGroup.getId(), dbGroup.getEndpointId(), dbGroup.getEndpointEntityId());
@@ -40,12 +43,18 @@ public final class UIGroup extends UIEndpointEntity<UIGroup> {
             return new UIGroup.UIGroupChangePayload.EndpointId(newItem.getEndpointId());
         } else if (!Objects.equals(oldItem.getName(), newItem.getName())) {
             return new UIGroup.UIGroupChangePayload.GroupName(newItem.getName());
+        } else if (oldItem.isAllOn() != newItem.isAllOn()) {
+            return new UIGroup.UIGroupChangePayload.AllOn(newItem.isAllOn());
         }
         return null;
     }
 
     public ListItemType getType() {
         return ListItemType.GROUP;
+    }
+
+    public boolean isAllOn() {
+        return allOn;
     }
 
     @Override
@@ -56,7 +65,7 @@ public final class UIGroup extends UIEndpointEntity<UIGroup> {
         if (!(o instanceof final UIGroup uiGroup)) {
             return false;
         }
-        return super.equals(uiGroup);
+        return super.equals(uiGroup) && allOn == uiGroup.allOn;
     }
 
     /** @noinspection unused */
@@ -86,6 +95,15 @@ public final class UIGroup extends UIEndpointEntity<UIGroup> {
 
             GroupName(String groupName) {
                 this.groupName = groupName;
+            }
+        }
+
+        class AllOn implements UIGroup.UIGroupChangePayload {
+
+            public final boolean allOn;
+
+            AllOn(boolean allOn) {
+                this.allOn = allOn;
             }
         }
     }

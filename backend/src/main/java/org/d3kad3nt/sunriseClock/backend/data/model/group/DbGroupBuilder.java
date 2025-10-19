@@ -6,13 +6,14 @@ public class DbGroupBuilder {
     private String endpointGroupId;
 
     private String name = "NoName";
+    private boolean allOn;
 
     /** Builder for constructing DbGroups. */
     public DbGroupBuilder() {}
 
     public DbGroup build() {
         // Validator logic is defined inside the constructor of DbGroup (separation of concern).
-        return new DbGroup(endpointId, endpointGroupId, name);
+        return new DbGroup(endpointId, endpointGroupId, name, allOn);
     }
 
     /**
@@ -38,6 +39,11 @@ public class DbGroupBuilder {
     /** @param name Name that can be used by the user to identify this group. */
     public DbGroupBuilder setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public DbGroupBuilder setAllOn(boolean allOn) {
+        this.allOn = allOn;
         return this;
     }
 }

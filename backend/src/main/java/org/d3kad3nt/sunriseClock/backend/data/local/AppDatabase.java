@@ -19,12 +19,13 @@ import org.d3kad3nt.sunriseClock.backend.data.model.light.DbLight;
 /** The Room database for this app. */
 @Database(
         entities = {DbLight.class, DbGroup.class, DbGroupLightCrossref.class, EndpointConfig.class},
-        version = 6,
+        version = 7,
         autoMigrations = {
             @AutoMigration(from = 2, to = 3),
             @AutoMigration(from = 3, to = 4),
             @AutoMigration(from = 4, to = 5, spec = AppDatabase.Migration4To5.class),
-            @AutoMigration(from = 5, to = 6, spec = AppDatabase.Migration5To6.class)
+            @AutoMigration(from = 5, to = 6, spec = AppDatabase.Migration5To6.class),
+            @AutoMigration(from = 6, to = 7, spec = AppDatabase.Migration6To7.class)
         })
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -84,6 +85,8 @@ public abstract class AppDatabase extends RoomDatabase {
                         toColumnName = "id_on_endpoint")
             })
     static class Migration5To6 implements AutoMigrationSpec {}
+
+    static class Migration6To7 implements AutoMigrationSpec {}
 
     public abstract DbLightDao dbLightDao();
 

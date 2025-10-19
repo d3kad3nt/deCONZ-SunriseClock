@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="org.d3kad3nt.sunriseClock.ui.lightGroup.lightGroupDetail.LightGroupDetailViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/light_group_details_constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include
+            layout="@layout/common_toolbar_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/light_group_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="@{viewModel.loadingIndicatorVisibility}"
+            app:layout_constraintTop_toBottomOf="@id/appbar" />
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/light_group_loading"
+            app:refreshing="@{viewModel.swipeRefreshing}"
+            app:setOnRefreshListener="@{() -> viewModel.refreshGroup()}">
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/light_group_details_constraint_layout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="16dp"
+                    tools:context="org.d3kad3nt.sunriseClock.ui.lightGroup.lightGroupDetail.LightGroupDetailFragment">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageview_light_group"
+                        android:layout_width="96dp"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/light_group_details_constraint_layout1"
+                        app:srcCompat="@drawable/light_group_24dp" />
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/button_toggle_group_light_group_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        app:check="@{viewModel.group.data.allOn ? @id/button_on : @id/button_off}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/imageview_light_group"
+                        app:singleSelection="true">
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_off"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{() -> viewModel.setGroupOnState(false)}"
+                            android:text="@string/light_off_action" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_on"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{() -> viewModel.setGroupOnState(true)}"
+                            android:text="@string/light_on_action" />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

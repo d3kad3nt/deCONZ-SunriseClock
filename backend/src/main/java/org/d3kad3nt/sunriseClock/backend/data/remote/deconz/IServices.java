@@ -37,6 +37,9 @@ public interface IServices {
     @GET("groups/")
     LiveData<ApiResponse<List<RemoteGroup>>> getGroups();
 
+    @GET("groups/{groupId}/")
+    LiveData<ApiResponse<RemoteGroup>> getGroup(@Path("groupId") String groupId);
+
     @Headers("Content-Type: application/json")
     @PUT("groups/{groupId}/action")
     LiveData<ApiResponse<ResponseBody>> updateGroupState(@Path("groupId") String groupId, @Body JsonObject body);

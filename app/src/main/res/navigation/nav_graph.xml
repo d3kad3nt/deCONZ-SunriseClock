@@ -117,6 +117,28 @@
             android:name="endpointName"
             app:argType="string" />
     </navigation>
+    <navigation
+        android:id="@+id/nav_graph_light_group_detail"
+        app:startDestination="@id/lightGroupDetail">
+        <argument
+            android:name="GroupId"
+            app:argType="long" />
+        <argument
+            android:name="GroupName"
+            app:argType="string" />
+        <fragment
+            android:id="@+id/lightGroupDetail"
+            android:name="org.d3kad3nt.sunriseClock.ui.lightGroup.lightGroupDetail.LightGroupDetailFragment"
+            android:label="{GroupName}"
+            tools:layout="@layout/light_group_detail_fragment">
+            <argument
+                android:name="GroupId"
+                app:argType="long" />
+            <argument
+                android:name="GroupName"
+                app:argType="string" />
+        </fragment>
+    </navigation>
     <fragment
         android:id="@+id/bottomnav_entities"
         android:name="org.d3kad3nt.sunriseClock.ui.entity.EntitiesFragment"
@@ -125,5 +147,8 @@
         <action
             android:id="@+id/action_bottomnav_entities_to_nav_graph_light_detail"
             app:destination="@id/nav_graph_light_detail" />
+        <action
+            android:id="@+id/action_bottomnav_entities_to_nav_graph_light_group_detail"
+            app:destination="@id/nav_graph_light_group_detail" />
     </fragment>
 </navigation>
