@@ -3,7 +3,11 @@
 // Apply the plugin manually as a workaround with the external plugin version from the version catalog
 // specified in implementation dependency artifact in build file.
 plugins {
-    id("sunriseClock.spotless-convention")
+    if (!System.getenv().containsKey("BUILD_MODE") || !System.getenv("BUILD_MODE")
+            .equals("release", ignoreCase = true)
+    ) {
+        id("sunriseClock.spotless-convention")
+    }
     id("com.android.application")
 }
 
