@@ -6,6 +6,7 @@ public class DbGroupBuilder {
     private String endpointGroupId;
 
     private String name = "NoName";
+    private boolean isOnAny;
     private boolean isOnAll;
 
     /** Builder for constructing DbGroups. */
@@ -13,7 +14,7 @@ public class DbGroupBuilder {
 
     public DbGroup build() {
         // Validator logic is defined inside the constructor of DbGroup (separation of concern).
-        return new DbGroup(endpointId, endpointGroupId, name, isOnAll);
+        return new DbGroup(endpointId, endpointGroupId, name, isOnAny, isOnAll);
     }
 
     /**
@@ -39,6 +40,12 @@ public class DbGroupBuilder {
     /** @param name Name that can be used by the user to identify this group. */
     public DbGroupBuilder setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /** @param isOnAny Whether any light in this group is currently switched on. */
+    public DbGroupBuilder setOnAny(boolean isOnAny) {
+        this.isOnAny = isOnAny;
         return this;
     }
 

@@ -11,10 +11,12 @@ import org.jetbrains.annotations.Contract;
 
 public final class UIGroup extends UIEndpointEntity<UIGroup> {
 
+    private final boolean isOnAny;
     private final boolean isOnAll;
 
-    private UIGroup(long groupId, long endpointId, String name, boolean isOnAll) {
+    private UIGroup(long groupId, long endpointId, String name, boolean isOnAny, boolean isOnAll) {
         super(groupId, endpointId, name);
+        this.isOnAny = isOnAny;
         this.isOnAll = isOnAll;
     }
 
@@ -23,7 +25,7 @@ public final class UIGroup extends UIEndpointEntity<UIGroup> {
     public static UIGroup from(@NonNull DbGroup dbGroup) {
         // Place for conversion logic (if UI needs other data types or value ranges).
         UIGroup uiGroup =
-                new UIGroup(dbGroup.getId(), dbGroup.getEndpointId(), dbGroup.getName(), dbGroup.getIsOnAll());
+                new UIGroup(dbGroup.getId(), dbGroup.getEndpointId(), dbGroup.getName(), dbGroup.getIsOnAny(), dbGroup.getIsOnAll());
         LogUtil.v(
                 "Converted DbGroup with groupId %d (endpointId %d, endpointGroupId %s) to UIGroup.",
                 dbGroup.getId(), dbGroup.getEndpointId(), dbGroup.getEndpointEntityId());
@@ -44,6 +46,8 @@ public final class UIGroup extends UIEndpointEntity<UIGroup> {
             return new UIGroup.UIGroupChangePayload.EndpointId(newItem.getEndpointId());
         } else if (!Objects.equals(oldItem.getName(), newItem.getName())) {
             return new UIGroup.UIGroupChangePayload.GroupName(newItem.getName());
+        } else if (oldItem.getIsOnAny() != newItem.getIsOnAny()) {
+            return new UIGroupChangePayload.GroupOnAny(newItem.getIsOnAny());
         } else if (oldItem.getIsOnAll() != newItem.getIsOnAll()) {
             return new UIGroupChangePayload.GroupOnAll(newItem.getIsOnAll());
         }
@@ -52,6 +56,10 @@ public final class UIGroup extends UIEndpointEntity<UIGroup> {
 
     public ListItemType getType() {
         return ListItemType.GROUP;
+    }
+
+    public boolean getIsOnAny() {
+        return isOnAny;
     }
 
     public boolean getIsOnAll() {
@@ -66,7 +74,7 @@ public final class UIGroup extends UIEndpointEntity<UIGroup> {
         if (!(o instanceof final UIGroup uiGroup)) {
             return false;
         }
-        return super.equals(o) && isOnAll == uiGroup.isOnAll;
+        return super.equals(o) && isOnAny == uiGroup.isOnAny && isOnAll == uiGroup.isOnAll;
     }
 
     /** @noinspection unused */
@@ -96,6 +104,15 @@ public final class UIGroup extends UIEndpointEntity<UIGroup> {
 
             GroupName(String groupName) {
                 this.groupName = groupName;
+            }
+        }
+
+        class GroupOnAny implements UIGroup.UIGroupChangePayload {
+
+            public final boolean isOnAny;
+
+            GroupOnAny(boolean isOnAny) {
+                this.isOnAny = isOnAny;
             }
         }
 
