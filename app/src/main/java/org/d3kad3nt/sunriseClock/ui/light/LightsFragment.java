@@ -108,8 +108,9 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
 
     @Override
     public void onGroupCardClick(final View view, final long groupId, final String groupName) {
-        // Todo: Implement group detail screen.
-        LogUtil.d("Group card clicked.");
+        LogUtil.d("Navigate to group detail view for group %s (id %d)", groupName, groupId);
+        Navigation.findNavController(view)
+                .navigate(LightsFragmentDirections.actionLightsToGroupDetail(groupId, groupName));
     }
 
     @Nullable

@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_lights_to_lightDetail"
             app:destination="@id/nav_graph_light_detail" />
+        <action
+            android:id="@+id/action_lights_to_groupDetail"
+            app:destination="@id/nav_graph_group_detail" />
     </fragment>
     <fragment
         android:id="@+id/bottomnav_endpoints"
