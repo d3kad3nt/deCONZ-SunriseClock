@@ -1,4 +1,4 @@
-package org.d3kad3nt.sunriseClock.ui.group.groupDetail;
+package org.d3kad3nt.sunriseClock.ui.groupDetail;
 
 import android.view.View;
 import androidx.lifecycle.LiveData;

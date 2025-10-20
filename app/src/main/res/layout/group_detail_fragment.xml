@@ -6,7 +6,7 @@
         <import type="android.view.View" />
         <variable
             name="viewModel"
-            type="org.d3kad3nt.sunriseClock.ui.group.groupDetail.GroupDetailViewModel" />
+            type="org.d3kad3nt.sunriseClock.ui.groupDetail.GroupDetailViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/group_details_constraint_layout"
@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="16dp"
-                    tools:context="org.d3kad3nt.sunriseClock.ui.group.groupDetail.GroupDetailFragment">
+                    tools:context="org.d3kad3nt.sunriseClock.ui.groupDetail.GroupDetailFragment">
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/imageview_group"
                         android:layout_width="96dp"

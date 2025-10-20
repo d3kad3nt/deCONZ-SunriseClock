@@ -6,7 +6,7 @@
     app:startDestination="@id/bottomnav_home">
     <fragment
         android:id="@+id/group_detail"
-        android:name="org.d3kad3nt.sunriseClock.ui.group.groupDetail.GroupDetailFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.groupDetail.GroupDetailFragment"
         android:label="{GroupName}"
         tools:layout="@layout/group_detail_fragment">
         <argument

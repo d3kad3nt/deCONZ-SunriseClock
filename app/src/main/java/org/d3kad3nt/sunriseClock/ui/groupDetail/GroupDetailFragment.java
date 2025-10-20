@@ -1,25 +1,17 @@
-package org.d3kad3nt.sunriseClock.ui.group.groupDetail;
+package org.d3kad3nt.sunriseClock.ui.groupDetail;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.viewmodel.MutableCreationExtras;
-import androidx.navigation.NavBackStackEntry;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.backend.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.databinding.GroupDetailFragmentBinding;
-import org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragmentArgs;
-import org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragmentDirections;
-import org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailViewModel;
 import org.d3kad3nt.sunriseClock.ui.util.BaseFragment;
 import org.d3kad3nt.sunriseClock.ui.util.MenuHandler;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
