@@ -4,6 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import org.d3kad3nt.sunriseClock.util.Empty;
 
+/**
+ * A specialized {@link Resource} class that holds no data.
+ * <p>
+ * This class is useful for representing the state of an operation (e.g. success, error, loading)
+ * where there is no specific data payload to return, only a status and an optional message.
+ */
 public class EmptyResource extends Resource<Empty> {
 
     protected EmptyResource(@NonNull Status status, @Nullable String message) {

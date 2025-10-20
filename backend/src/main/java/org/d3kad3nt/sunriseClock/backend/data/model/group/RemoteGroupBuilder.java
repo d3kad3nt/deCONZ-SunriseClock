@@ -14,7 +14,7 @@ public class RemoteGroupBuilder {
     private String name = "NoName";
 
     private List<String> endpointLightIds = new ArrayList<>();
-    private boolean allOn;
+    private boolean isOnAll;
 
     /** Builder for constructing RemoteGroups. */
     public RemoteGroupBuilder() {}
@@ -22,10 +22,10 @@ public class RemoteGroupBuilder {
     public RemoteGroup build() {
         if (endpointType == null) {
             throw new IllegalStateException(
-                    "RemoteLightBuilder cannot build this light without an endpoint type! Check remote light parsing "
+                    "RemoteGroupBuilder cannot build this group without an endpoint type! Check remote group parsing "
                             + "logic.");
         }
-        return new RemoteGroup(endpointType, endpointId, endpointGroupId, name, endpointLightIds, allOn);
+        return new RemoteGroup(endpointType, endpointId, endpointGroupId, name, endpointLightIds, isOnAll);
     }
 
     public RemoteGroupBuilder setEndpointType(EndpointType endpointType) {
@@ -53,8 +53,8 @@ public class RemoteGroupBuilder {
         return this;
     }
 
-    public RemoteGroupBuilder setAllOn(boolean allOn) {
-        this.allOn = allOn;
+    public RemoteGroupBuilder setIsOnAll(boolean onAll) {
+        this.isOnAll = onAll;
         return this;
     }
 }

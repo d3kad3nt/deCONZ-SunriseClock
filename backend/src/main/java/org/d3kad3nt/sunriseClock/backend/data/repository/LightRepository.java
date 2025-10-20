@@ -178,8 +178,7 @@ public final class LightRepository {
 
             @Override
             protected void saveResponseToDb(DbLight item) {
-                // The primary key lightId is not known to the remote endpoint, but it is known to
-                // us.
+                // The primary key is not known to the remote endpoint, but it is known to us.
                 // Set the lightId to enable direct update/insert via primary key (instead of
                 // endpointId and endpointLightId) through Room.
                 item.setId(lightId);
@@ -230,8 +229,7 @@ public final class LightRepository {
 
                     @Override
                     protected void saveResponseToDb(DbLight item) {
-                        // The primary key lightId is not known to the remote endpoint, but it is
-                        // known to us.
+                        // The primary key is not known to the remote endpoint, but it is known to us.
                         // Set the lightId to enable direct update/insert via primary key (instead
                         // of endpointId and endpointLightId) through Room.
                         item.setId(lightId);
@@ -621,12 +619,16 @@ public final class LightRepository {
 
             @Override
             protected void saveResponseToDb(DbGroup item) {
+                // The primary key is not known to the remote endpoint, but it is known to us.
+                // Set the groupId to enable direct update/insert via primary key (instead of
+                // endpointId and endpointGroupId) through Room.
                 item.setId(groupId);
                 dbGroupDao.upsert(item);
             }
 
             @Override
             protected boolean shouldFetch(@Nullable DbGroup data) {
+                // TODO
                 return true;
             }
 
@@ -668,6 +670,9 @@ public final class LightRepository {
 
                     @Override
                     protected void saveResponseToDb(DbGroup item) {
+                        // The primary key is not known to the remote endpoint, but it is known to us.
+                        // Set the groupId to enable direct update/insert via primary key (instead of
+                        // endpointId and endpointGroupId) through Room.
                         item.setId(groupId);
                         dbGroupDao.upsert(item);
                     }
@@ -708,8 +713,17 @@ public final class LightRepository {
                 emptyResource -> EmptyResource.fromResource(emptyResource));
     }
 
-    public LiveData<EmptyResource> setGroupOnState(long groupId, boolean on) {
-        LogUtil.i("Setting group state for id %d to %s.", groupId, on);
+    /**
+     * Turns all lights in the group on or off.
+     *
+     * @param groupId The group to be turned on or off. The given ID must already exist in the database. Note that
+     *                this ID is independent from the identifier that the backing endpoint uses internally.
+     * @param newState Whether the group should be turned on (true) or off (false).
+     * @return Resource representing the status of the request.
+     */
+    public LiveData<EmptyResource> setGroupOnState(long groupId, boolean newState) {
+        LogUtil.i("Setting group state for id %d to %s.", groupId, newState);
+
         return new NetworkUpdateResource<UIGroup, ResponseBody, DbGroup>(true) {
 
             @Override
@@ -725,12 +739,13 @@ public final class LightRepository {
             @NonNull
             @Override
             protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
-                return baseEndpoint.setGroupOnState(dbObject.getEndpointEntityId(), on);
+                return baseEndpoint.setGroupOnState(dbObject.getEndpointEntityId(), newState);
             }
 
             @NotNull
             @Override
             protected LiveData<Resource<UIGroup>> loadUpdatedVersion() {
+                LogUtil.d("Loading updated group with id %d after successful setOn change", groupId);
                 return getGroup(groupId);
             }
         };

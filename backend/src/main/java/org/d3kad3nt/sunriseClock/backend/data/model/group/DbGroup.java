@@ -33,16 +33,16 @@ public class DbGroup extends DbEndpointEntity {
     @Ignore
     public static final String TABLENAME = "group";
 
-    @ColumnInfo(name = "all_on", defaultValue = "false")
-    private final boolean allOn;
+    @ColumnInfo(name = "is_on_all", defaultValue = "false")
+    private final boolean isOnAll;
 
     /**
      * Create a new entity that represents a group in the app's Room database. This constructor has to be public for
      * Room to be able to create an object. This should not be otherwise accessed!
      */
-    public DbGroup(long endpointId, String endpointEntityId, String name, boolean allOn) {
+    public DbGroup(long endpointId, String endpointEntityId, String name, boolean isOnAll) {
         super(endpointId, endpointEntityId, name);
-        this.allOn = allOn;
+        this.isOnAll = isOnAll;
     }
 
     @Override
@@ -63,8 +63,9 @@ public class DbGroup extends DbEndpointEntity {
         return remoteGroups.stream().map(remoteGroup -> from(remoteGroup)).collect(Collectors.toList());
     }
 
-    public boolean isAllOn() {
-        return allOn;
+    /** @return Whether all lights in this group are currently switched on (true) or off (false). */
+    public boolean getIsOnAll() {
+        return isOnAll;
     }
 
     // Room requires equals() and hashcode() to be implemented:
@@ -77,13 +78,13 @@ public class DbGroup extends DbEndpointEntity {
         if (!(o instanceof final DbGroup dbGroup)) {
             return false;
         }
-        return super.equals(dbGroup) && allOn == dbGroup.allOn;
+        return super.equals(dbGroup) && isOnAll == dbGroup.isOnAll;
     }
 
     // Room requires equals() and hashcode() to be implemented:
     // The key of the provided method's multimap return type must implement equals() and hashCode().
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), allOn);
+        return Objects.hash(super.hashCode(), isOnAll);
     }
 }

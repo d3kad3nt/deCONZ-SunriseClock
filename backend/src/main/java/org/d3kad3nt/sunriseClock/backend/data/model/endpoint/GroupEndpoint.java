@@ -10,7 +10,7 @@ public interface GroupEndpoint {
 
     LiveData<ApiResponse<List<RemoteGroup>>> getGroups();
 
-    LiveData<ApiResponse<RemoteGroup>> getGroup(String groupId);
+    LiveData<ApiResponse<RemoteGroup>> getGroup(String endpointGroupId);
 
-    LiveData<ApiResponse<ResponseBody>> setGroupOnState(String groupId, boolean on);
+    LiveData<ApiResponse<ResponseBody>> setGroupOnState(String endpointGroupId, boolean newState);
 }

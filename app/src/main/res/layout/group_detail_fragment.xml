@@ -56,7 +56,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        app:check="@{viewModel.group.data.isAllOn ? @id/button_on : @id/button_off}"
+                        app:check="@{viewModel.group.data.isOnAll ? @id/button_on : @id/button_off}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/imageview_group"

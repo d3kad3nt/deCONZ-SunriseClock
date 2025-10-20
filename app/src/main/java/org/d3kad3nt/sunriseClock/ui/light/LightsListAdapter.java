@@ -104,7 +104,7 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
         if (!payloads.isEmpty()) {
             LogUtil.d("Triggering partial instead of full rebind of light data for lightId %d.", light.getId());
             if (payloads.get(0) instanceof final UILight.UILightChangePayload.LightOn lightState) {
-                LogUtil.v("Triggering partial rebind of light isOn state for lightId %d.", light.getId());
+                LogUtil.v("Triggering partial rebind of light getIsOnAll state for lightId %d.", light.getId());
                 holder.bindIsOn(lightState.isOn);
             } else if (payloads.get(0) instanceof final UILight.UILightChangePayload.LightBrightness lightState) {
                 LogUtil.v("Triggering partial rebind of light brightness for lightId %d.", light.getId());

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Contract;
 public class RemoteGroup extends RemoteEndpointEntity {
 
     private final List<String> endpointLightIds;
-    private final boolean allOn;
+    private final boolean isOnAll;
 
     RemoteGroup(
             EndpointType endpointType,
@@ -18,11 +18,11 @@ public class RemoteGroup extends RemoteEndpointEntity {
             String endpointGroupId,
             String name,
             List<String> endpointLightIds,
-            boolean allOn) {
+            boolean isOnAll) {
         super(endpointType, endpointId, endpointGroupId, name);
 
         this.endpointLightIds = endpointLightIds;
-        this.allOn = allOn;
+        this.isOnAll = isOnAll;
     }
 
     @NonNull
@@ -38,7 +38,7 @@ public class RemoteGroup extends RemoteEndpointEntity {
                 .setEndpointId(remoteGroup.getEndpointId())
                 .setEndpointGroupId(remoteGroup.getEndpointEntityId())
                 .setName(remoteGroup.getName())
-                .setAllOn(remoteGroup.isAllOn())
+                .setOnAll(remoteGroup.getIsOnAll())
                 .build();
         LogUtil.d(
                 "Converted RemoteGroup with endpointId %d and endpointGroupId %s to DbGroup.",
@@ -50,7 +50,7 @@ public class RemoteGroup extends RemoteEndpointEntity {
         return endpointLightIds;
     }
 
-    public boolean isAllOn() {
-        return allOn;
+    public boolean getIsOnAll() {
+        return isOnAll;
     }
 }

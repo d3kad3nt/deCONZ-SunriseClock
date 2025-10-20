@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "11e0f2bc405b3ccbcf80a4f14f106b19",
+    "identityHash": "e9748f61072ef39fb3b60fab71d7c30f",
     "entities": [
       {
         "tableName": "light",
@@ -131,11 +131,11 @@
       },
       {
         "tableName": "group",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`all_on` INTEGER NOT NULL DEFAULT false, `endpoint_id` INTEGER NOT NULL, `id_on_endpoint` TEXT NOT NULL, `name` TEXT NOT NULL DEFAULT 'No Name', `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`endpoint_id`) REFERENCES `endpoint`(`endpointId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`is_on_all` INTEGER NOT NULL DEFAULT false, `endpoint_id` INTEGER NOT NULL, `id_on_endpoint` TEXT NOT NULL, `name` TEXT NOT NULL DEFAULT 'No Name', `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`endpoint_id`) REFERENCES `endpoint`(`endpointId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "allOn",
-            "columnName": "all_on",
+            "fieldPath": "isOnAll",
+            "columnName": "is_on_all",
             "affinity": "INTEGER",
             "notNull": true,
             "defaultValue": "false"
@@ -310,7 +310,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '11e0f2bc405b3ccbcf80a4f14f106b19')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e9748f61072ef39fb3b60fab71d7c30f')"
     ]
   }
 }
