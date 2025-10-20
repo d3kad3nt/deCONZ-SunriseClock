@@ -64,14 +64,10 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
         }
     }
 
-    // If the payloads list is not empty, the ViewHolder is currently bound to old data and Adapter
-    // may run an
-    // efficient partial update using the payload info. If the payload is empty, Adapter must run a
-    // full bind.
-    // The payloads list is constructed by overwriting getChangePayload() from
-    // DiffUtil.ItemCallback.
-    // By using a partial bind, we can prevent the card from "flickering". This is the default
-    // animation for updates.
+    // If the payloads list is not empty, the ViewHolder is currently bound to old data and Adapter may run an efficient
+    // partial update using the payload info. If the payload is empty, Adapter must run a full bind.
+    // The payloads list is constructed by overwriting getChangePayload() from DiffUtil.ItemCallback.
+    // By using a partial bind, we can prevent the card from "flickering". This is the default animation for updates.
     @Override
     public void onBindViewHolder(
             @NonNull final RecyclerView.ViewHolder holder, final int position, @NonNull final List<Object> payloads) {
@@ -104,7 +100,7 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
         if (!payloads.isEmpty()) {
             LogUtil.d("Triggering partial instead of full rebind of light data for lightId %d.", light.getId());
             if (payloads.get(0) instanceof final UILight.UILightChangePayload.LightOn lightState) {
-                LogUtil.v("Triggering partial rebind of light getIsOnAll state for lightId %d.", light.getId());
+                LogUtil.v("Triggering partial rebind of light getIsOn state for lightId %d.", light.getId());
                 holder.bindIsOn(lightState.isOn);
             } else if (payloads.get(0) instanceof final UILight.UILightChangePayload.LightBrightness lightState) {
                 LogUtil.v("Triggering partial rebind of light brightness for lightId %d.", light.getId());
@@ -125,7 +121,12 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
             @NonNull final GroupViewHolder holder, final UIGroup group, @NonNull List<Object> payloads) {
         if (!payloads.isEmpty()) {
             LogUtil.d("Triggering partial instead of full rebind of group data for groupId %d.", group.getId());
-            // Todo: Implement change payload for groups when adding additional attributes.
+            if (payloads.get(0) instanceof final UIGroup.UIGroupChangePayload.GroupOnAny groupState) {
+                LogUtil.v("Triggering partial rebind of group getIsOnAny state for groupId %d.", group.getId());
+                holder.bindIsOnAny(groupState.isOnAny);
+            } else {
+                LogUtil.w("Requested partial rebind of group data but updating this field is not yet implemented.");
+            }
             holder.binding.executePendingBindings();
             return true;
         } else {
@@ -172,6 +173,14 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
          * @param groupName Name of the group.
          */
         void onGroupCardClick(View view, long groupId, String groupName);
+
+        /**
+         * Turns all lights in the group on or off.
+         *
+         * @param groupId The unique identifier for this group.
+         * @param state Whether the group should be turned on (true) or off (false).
+         */
+        void onGroupSwitchCheckedChange(long groupId, boolean state);
     }
 
     static class DiffCallback extends DiffUtil.ItemCallback<ListItem> {
@@ -326,13 +335,15 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
             super(binding.getRoot());
             this.binding = binding;
 
-            // Avoid creating and setting the onClickListeners everytime the LightViewHolder is
+            // Avoid creating and setting the onClickListeners everytime the GroupViewHolder is
             // bound.
             binding.setCardClickListener(new GroupViewHolder.CardClickListener());
+            binding.setSwitchCheckedChangeListener(new GroupViewHolder.SwitchCheckedChangeListener());
         }
 
         void bind(UIGroup item) {
             bindName(item.getName());
+            bindIsOnAny(item.getIsOnAny());
 
             binding.executePendingBindings();
         }
@@ -341,12 +352,30 @@ public class LightsListAdapter extends ListAdapter<ListItem, RecyclerView.ViewHo
             binding.setGroupName(name);
         }
 
+        void bindIsOnAny(boolean isOnAny) {
+            binding.setGroupIsOnAny(isOnAny);
+        }
+
         public class CardClickListener implements View.OnClickListener {
 
             @Override
             public void onClick(final View view) {
                 UIGroup group = (UIGroup) getItem(getAbsoluteAdapterPosition());
                 clickListeners.onGroupCardClick(view, group.getId(), group.getName());
+            }
+        }
+
+        public class SwitchCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {
+
+            @Override
+            public void onCheckedChanged(final CompoundButton compoundButton, final boolean isChecked) {
+                UIGroup group = (UIGroup) getItem(getAbsoluteAdapterPosition());
+                if (group.getIsOnAny() == isChecked) {
+                    // This happens, when a viewHolder is reused and a new Group is bound to it.
+                    LogUtil.v("Suppressing onCheckedChanged event for group %d.", group.getId());
+                    return;
+                }
+                clickListeners.onGroupSwitchCheckedChange(group.getId(), isChecked);
             }
         }
     }

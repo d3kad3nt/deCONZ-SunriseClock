@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.d3kad3nt.sunriseClock.backend.data.model.ListItemType;
 import org.d3kad3nt.sunriseClock.backend.data.model.UIEndpointEntity;
+import org.d3kad3nt.sunriseClock.backend.data.model.group.UIGroup;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 import org.jetbrains.annotations.Contract;
 
@@ -166,7 +167,12 @@ public final class UILight extends UIEndpointEntity<UILight> {
                 && isReachable == uiLight.isReachable;
     }
 
-    /** @noinspection unused */
+    /**
+     * A sealed interface representing the payload for partial UI updates of a {@link UILight} item.
+     * This is used with RecyclerView {@code DiffUtil} to efficiently update only the specific parts of a UI item
+     * that have changed, rather than re-rendering the entire item. Each implementing class
+     * corresponds to a specific field of the {@link UILight} that can be updated.
+     */
     public interface UILightChangePayload {
 
         class LightId implements UILightChangePayload {

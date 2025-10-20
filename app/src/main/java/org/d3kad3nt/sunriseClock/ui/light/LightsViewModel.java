@@ -119,4 +119,10 @@ public class LightsViewModel extends AndroidViewModel {
         LiveData<EmptyResource> state = lightRepository.setBrightness(lightId, brightness);
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
+
+    public void setGroupOnState(final long groupId, final boolean newState) {
+        LogUtil.d("User toggled setGroupOnState with groupId %s to state %s.", groupId, newState);
+        LiveData<EmptyResource> state = lightRepository.setGroupOnState(groupId, newState);
+        loadingIndicatorVisibility.addVisibilityProvider(state);
+    }
 }

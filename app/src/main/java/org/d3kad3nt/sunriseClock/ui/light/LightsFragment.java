@@ -113,6 +113,11 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
                 .navigate(LightsFragmentDirections.actionLightsToGroupDetail(groupId, groupName));
     }
 
+    @Override
+    public void onGroupSwitchCheckedChange(final long groupId, final boolean state) {
+        viewModel.setGroupOnState(groupId, state);
+    }
+
     @Nullable
     @Override
     protected MenuHandler bindMenu() {
