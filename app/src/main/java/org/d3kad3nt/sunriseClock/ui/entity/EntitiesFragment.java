@@ -101,8 +101,7 @@ public class EntitiesFragment extends BaseFragment<EntitiesFragmentBinding, Enti
     public void onGroupCardClick(final View view, final long groupId, final String groupName) {
         LogUtil.d("Navigate to group detail view for group %s (id %d)", groupName, groupId);
         Navigation.findNavController(view)
-                .navigate(EntitiesFragmentDirections.actionBottomnavEntitiesToNavGraphLightGroupDetail(
-                        groupId, groupName));
+                .navigate(EntitiesFragmentDirections.actionBottomnavEntitiesToGroupDetail(groupId, groupName));
     }
 
     @Nullable

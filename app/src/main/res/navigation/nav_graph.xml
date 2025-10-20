@@ -5,6 +5,18 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/bottomnav_home">
     <fragment
+        android:id="@+id/group_detail"
+        android:name="org.d3kad3nt.sunriseClock.ui.group.groupDetail.GroupDetailFragment"
+        android:label="{GroupName}"
+        tools:layout="@layout/group_detail_fragment">
+        <argument
+            android:name="GroupId"
+            app:argType="long" />
+        <argument
+            android:name="GroupName"
+            app:argType="string" />
+    </fragment>
+    <fragment
         android:id="@+id/bottomnav_home"
         android:name="org.d3kad3nt.sunriseClock.ui.light.LightsFragment"
         android:label="@string/app_name"
@@ -14,7 +26,7 @@
             app:destination="@id/nav_graph_light_detail" />
         <action
             android:id="@+id/action_lights_to_groupDetail"
-            app:destination="@id/nav_graph_group_detail" />
+            app:destination="@id/group_detail" />
     </fragment>
     <fragment
         android:id="@+id/bottomnav_endpoints"
@@ -120,28 +132,6 @@
             android:name="endpointName"
             app:argType="string" />
     </navigation>
-    <navigation
-        android:id="@+id/nav_graph_group_detail"
-        app:startDestination="@id/groupDetail">
-        <argument
-            android:name="GroupId"
-            app:argType="long" />
-        <argument
-            android:name="GroupName"
-            app:argType="string" />
-        <fragment
-            android:id="@+id/groupDetail"
-            android:name="org.d3kad3nt.sunriseClock.ui.group.groupDetail.GroupDetailFragment"
-            android:label="{GroupName}"
-            tools:layout="@layout/group_detail_fragment">
-            <argument
-                android:name="GroupId"
-                app:argType="long" />
-            <argument
-                android:name="GroupName"
-                app:argType="string" />
-        </fragment>
-    </navigation>
     <fragment
         android:id="@+id/bottomnav_entities"
         android:name="org.d3kad3nt.sunriseClock.ui.entity.EntitiesFragment"
@@ -151,7 +141,7 @@
             android:id="@+id/action_bottomnav_entities_to_nav_graph_light_detail"
             app:destination="@id/nav_graph_light_detail" />
         <action
-            android:id="@+id/action_bottomnav_entities_to_nav_graph_light_group_detail"
-            app:destination="@id/nav_graph_group_detail" />
+            android:id="@+id/action_bottomnav_entities_to_group_detail"
+            app:destination="@id/group_detail" />
     </fragment>
 </navigation>

@@ -50,19 +50,7 @@ public class GroupDetailFragment extends BaseFragment<GroupDetailFragmentBinding
 
         LogUtil.setPrefix("GroupId %d: ", groupId);
 
-        // We are using a nested navigation graph. From
-        // https://developer.android.com/guide/navigation/use-graph/programmatic#share_ui-related_data_between_destinations_with_viewmodel:
-        // The Navigation back stack stores a NavBackStackEntry not only for each individual
-        // destination, but also for each parent navigation graph that contains the individual
-        // destination.
-        // This allows you to retrieve a NavBackStackEntry that is scoped to a navigation graph.
-        // A navigation graph-scoped NavBackStackEntry provides a way to create a ViewModel that's
-        // scoped to a navigation graph, enabling you to share UI-related data between the graph's
-        // destinations.
-        NavController navController = NavHostFragment.findNavController(this);
-        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_group_detail);
-
-        // Initialize viewModel with light id and inject the light repository.
+        // Initialize viewModel with group id and inject the light repository.
         // By injecting the repository, the viewModel no longer needs the Application or Context.
         MutableCreationExtras viewModelDependencies = new MutableCreationExtras();
         viewModelDependencies.set(
@@ -70,7 +58,7 @@ public class GroupDetailFragment extends BaseFragment<GroupDetailFragmentBinding
         viewModelDependencies.set(GroupDetailViewModel.GROUP_ID_KEY, groupId);
 
         return new ViewModelProvider(
-                backStackEntry.getViewModelStore(),
+                this.getViewModelStore(),
                 ViewModelProvider.Factory.from(GroupDetailViewModel.initializer),
                 viewModelDependencies);
     }
