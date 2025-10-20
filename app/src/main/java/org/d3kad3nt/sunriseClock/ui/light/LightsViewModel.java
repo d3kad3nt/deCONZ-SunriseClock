@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 import java.util.HashMap;
 import java.util.List;
@@ -124,5 +125,31 @@ public class LightsViewModel extends AndroidViewModel {
         LogUtil.d("User toggled setGroupOnState with groupId %s to state %s.", groupId, newState);
         LiveData<EmptyResource> state = lightRepository.setGroupOnState(groupId, newState);
         loadingIndicatorVisibility.addVisibilityProvider(state);
+
+        // Observe the result of the group toggle operation.
+        state.observeForever(new Observer<>() {
+            @Override
+            public void onChanged(EmptyResource resource) {
+                switch (resource.getStatus()) {
+                    case SUCCESS -> {
+                        if (!endpointId.isInitialized()
+                                || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
+                            LogUtil.w("No active endpoint found.");
+                            return;
+                        }
+
+                        // Todo: Change to refresh only affected lights.
+                        LogUtil.d("Group on/off state changed successfully, refreshing all lights for endpoint.");
+                        LiveData<EmptyResource> refreshState = lightRepository.refreshLightsForEndpoint(
+                                endpointId.getValue().get());
+                        loadingIndicatorVisibility.addVisibilityProvider(refreshState);
+                        state.removeObserver(this);
+                    }
+                    case ERROR -> {
+                        state.removeObserver(this);
+                    }
+                }
+            }
+        });
     }
 }
