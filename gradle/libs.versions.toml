@@ -63,7 +63,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 androidx-navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "androidx-navigation" }
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
-diffplug-spotless = { id = "com.diffplug.spotless", version = "7.2.1" }
+diffplug-spotless = { id = "com.diffplug.spotless", version = "8.0.0" }
 
 [bundles]
 androidx-lifecycle = ["androidx-lifecycle-livedata", "androidx-lifecycle-common-java8", "androidx-lifecycle-viewmodel"]
