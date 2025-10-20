@@ -66,6 +66,15 @@ public interface DbLightDao extends DbEndpointEntityDao<DbLight> {
     LiveData<List<DbLight>> loadAllForEndpoint(long endpointId);
 
     /** @noinspection unused */
+    // Normally we would annotate this method with @RewriteQueriesToDropUnusedColumns as some
+    // columns do not need to
+    // be returned. This prevents the following error message: 'The query returns some columns
+    // [group_id, light_id]
+    // which are not used by any of DbLight, DbGroup.'
+    // However this is not possible as the documentation states: 'Note that Room will not rewrite
+    // the query if it has
+    // multiple columns that have the same name as it does not yet have a way to distinguish which
+    // one is necessary.'
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query(
             value = "SELECT * FROM light "
