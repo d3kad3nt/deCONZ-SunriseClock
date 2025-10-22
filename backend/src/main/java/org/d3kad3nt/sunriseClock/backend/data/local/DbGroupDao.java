@@ -22,7 +22,7 @@ public interface DbGroupDao extends DbEndpointEntityDao<DbGroup> {
     @Transaction
     default int updateUsingEndpointIdAndEndpointEntityId(@NonNull DbGroup group) {
         return updateUsingEndpointIdAndEndpointGroupId(
-                group.getEndpointId(), group.getEndpointEntityId(), group.getName());
+                group.getEndpointId(), group.getEndpointEntityId(), group.getName(), group.getIsOnAny(), group.getIsOnAll());
     }
 
     @Query(
@@ -31,9 +31,10 @@ public interface DbGroupDao extends DbEndpointEntityDao<DbGroup> {
                     + " :endpointGroupId")
     long getIdForEndpointIdAndEndpointGroupId(long endpointId, String endpointGroupId);
 
-    @Query("UPDATE '" + DbGroup.TABLENAME + "' SET name = :name WHERE endpoint_id = "
+    @Query(
+            "UPDATE '" + DbGroup.TABLENAME + "' SET name = :name, is_on_any = :isOnAny, is_on_all = :isOnAll WHERE endpoint_id = "
             + ":endpointId AND id_on_endpoint = :endpointGroupId")
-    int updateUsingEndpointIdAndEndpointGroupId(long endpointId, String endpointGroupId, String name);
+    int updateUsingEndpointIdAndEndpointGroupId(long endpointId, String endpointGroupId, String name, boolean isOnAny, boolean isOnAll);
 
     @Query("SELECT * FROM '" + DbGroup.TABLENAME + "' WHERE id = :groupId")
     LiveData<DbGroup> load(long groupId);
