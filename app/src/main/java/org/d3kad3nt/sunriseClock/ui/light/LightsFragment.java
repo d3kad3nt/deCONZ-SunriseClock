@@ -130,8 +130,8 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
         // Instead, a menu item should be provided to allow refresh of the content wherever this
         // gesture is used.
         if (menuItem.getItemId() == R.id.menu_lights_refresh) {
-            LogUtil.d("User requested refresh of all lights by clicking the toolbar menu option.");
-            viewModel.refreshLights();
+            LogUtil.d("User requested refresh of all groups and lights by clicking the toolbar menu option.");
+            viewModel.refreshGroupsWithLights();
             return true;
         }
         return false;

@@ -61,9 +61,8 @@ public class LightsViewModel extends AndroidViewModel {
         });
     }
 
-    public void refreshLights() {
-        LogUtil.d("User requested refresh of all lights.");
-        // Todo: Where to refresh group membership?
+    public void refreshGroupsWithLights() {
+        LogUtil.d("User requested refresh of all lights and groups.");
 
         if (!endpointId.isInitialized()
                 || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
@@ -71,8 +70,8 @@ public class LightsViewModel extends AndroidViewModel {
             return;
         }
 
-        LiveData<EmptyResource> state =
-                lightRepository.refreshLightsForEndpoint(endpointId.getValue().get());
+        LiveData<EmptyResource> state = lightRepository.refreshGroupsWithLightsForEndpoint(
+                endpointId.getValue().get());
 
         swipeRefreshing.addSource(state, emptyResource -> {
             switch (emptyResource.getStatus()) {
