@@ -160,31 +160,26 @@ public class LightsViewModel extends AndroidViewModel {
         LiveData<EmptyResource> state = lightRepository.setGroupOnState(groupId, newState);
         loadingIndicatorVisibility.addVisibilityProvider(state);
 
-        // After the group's state is set, refresh all lights that belong to this group to update their individual
-        // on/off states in the UI.
+        // After the group's state is set, all lights and groups must be refreshed.
+        // Toggling a group affects the state of its individual lights, which in turn can affect the
+        // (partially) on/off status of other groups that contain those same lights.
+        // A full refresh is the most reliable way to ensure the entire UI is consistent.
         state.observeForever(new Observer<>() {
             @Override
             public void onChanged(EmptyResource resource) {
                 switch (resource.getStatus()) {
                     case SUCCESS -> {
-                        LogUtil.d("Group on/off state changed successfully, refreshing affected lights.");
-                        Resource<Map<UIGroup, List<UILight>>> groupsWithLightsResource = groupsWithLights.getValue();
-                        if (groupsWithLightsResource != null && groupsWithLightsResource.getData() != null) {
-                            groupsWithLightsResource.getData().entrySet().stream()
-                                    // Find the one group that was just toggled.
-                                    .filter(entry -> entry.getKey().getId() == groupId)
-                                    .findFirst()
-                                    // If found, refresh each light within that group.
-                                    .ifPresent(entry -> {
-                                        List<UILight> lightsToRefresh = entry.getValue();
-                                        LogUtil.d("Refreshing %d lights in group %d.", lightsToRefresh.size(), groupId);
-                                        lightsToRefresh.forEach(light -> {
-                                            LiveData<EmptyResource> refreshState =
-                                                    lightRepository.refreshLight(light.getId());
-                                            loadingIndicatorVisibility.addVisibilityProvider(refreshState);
-                                        });
-                                    });
+                        if (!endpointId.isInitialized()
+                                || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
+                            LogUtil.w("No active endpoint found.");
+                            return;
                         }
+
+                        LogUtil.d("Group on/off state changed successfully, refreshing all lights and groups for "
+                                + "endpoint.");
+                        LiveData<EmptyResource> refreshState = lightRepository.refreshGroupsWithLightsForEndpoint(
+                                endpointId.getValue().get());
+                        loadingIndicatorVisibility.addVisibilityProvider(refreshState);
                         state.removeObserver(this);
                     }
                     case ERROR -> {
