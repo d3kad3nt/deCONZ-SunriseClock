@@ -11,12 +11,12 @@
             type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.GroupViewHolder.CardClickListener" />
     </data>
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="5dp"
         android:onClick="@{cardClickListener}"
+        app:cardBackgroundColor="?attr/colorSurfaceVariant"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.LightsFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,6 +29,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:text="@{groupName}"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="20sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
