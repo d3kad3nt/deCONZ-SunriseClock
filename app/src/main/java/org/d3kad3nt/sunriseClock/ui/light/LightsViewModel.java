@@ -108,6 +108,41 @@ public class LightsViewModel extends AndroidViewModel {
         LogUtil.d("User toggled setLightOnState with lightId %s to state %s.", lightId, newState);
         LiveData<EmptyResource> state = lightRepository.setOnState(lightId, newState);
         loadingIndicatorVisibility.addVisibilityProvider(state);
+
+        // After the light's state is set, refresh any group that contains this light to update the group's
+        // on/off state in the UI (e.g., from "on" to "off").
+        state.observeForever(new Observer<>() {
+            @Override
+            public void onChanged(EmptyResource resource) {
+                switch (resource.getStatus()) {
+                    case SUCCESS -> {
+                        LogUtil.d("Light on/off state changed successfully, refreshing affected groups.");
+                        Resource<Map<UIGroup, List<UILight>>> groupsWithLightsResource = groupsWithLights.getValue();
+                        if (groupsWithLightsResource != null && groupsWithLightsResource.getData() != null) {
+                            groupsWithLightsResource.getData().entrySet().stream()
+                                    // Find all groups that contain the light that was just toggled.
+                                    .filter(entry ->
+                                            entry.getValue().stream().anyMatch(light -> light.getId() == lightId))
+                                    // For each of those groups, trigger a refresh.
+                                    .forEach(entry -> {
+                                        UIGroup groupToRefresh = entry.getKey();
+                                        LogUtil.d(
+                                                "Refreshing group %d as it contains the toggled light.",
+                                                groupToRefresh.getId());
+                                        LiveData<EmptyResource> refreshState =
+                                                lightRepository.refreshGroup(groupToRefresh.getId());
+                                        loadingIndicatorVisibility.addVisibilityProvider(refreshState);
+                                    });
+                        }
+                        state.removeObserver(this);
+                    }
+                    case ERROR -> {
+                        LogUtil.e("Failed to set light on/off state for light %d.", lightId);
+                        state.removeObserver(this);
+                    }
+                }
+            }
+        });
     }
 
     public void setLightBrightness(long lightId, int brightness, final boolean onState) {
@@ -125,26 +160,35 @@ public class LightsViewModel extends AndroidViewModel {
         LiveData<EmptyResource> state = lightRepository.setGroupOnState(groupId, newState);
         loadingIndicatorVisibility.addVisibilityProvider(state);
 
-        // Observe the result of the group toggle operation.
+        // After the group's state is set, refresh all lights that belong to this group to update their individual
+        // on/off states in the UI.
         state.observeForever(new Observer<>() {
             @Override
             public void onChanged(EmptyResource resource) {
                 switch (resource.getStatus()) {
                     case SUCCESS -> {
-                        if (!endpointId.isInitialized()
-                                || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
-                            LogUtil.w("No active endpoint found.");
-                            return;
+                        LogUtil.d("Group on/off state changed successfully, refreshing affected lights.");
+                        Resource<Map<UIGroup, List<UILight>>> groupsWithLightsResource = groupsWithLights.getValue();
+                        if (groupsWithLightsResource != null && groupsWithLightsResource.getData() != null) {
+                            groupsWithLightsResource.getData().entrySet().stream()
+                                    // Find the one group that was just toggled.
+                                    .filter(entry -> entry.getKey().getId() == groupId)
+                                    .findFirst()
+                                    // If found, refresh each light within that group.
+                                    .ifPresent(entry -> {
+                                        List<UILight> lightsToRefresh = entry.getValue();
+                                        LogUtil.d("Refreshing %d lights in group %d.", lightsToRefresh.size(), groupId);
+                                        lightsToRefresh.forEach(light -> {
+                                            LiveData<EmptyResource> refreshState =
+                                                    lightRepository.refreshLight(light.getId());
+                                            loadingIndicatorVisibility.addVisibilityProvider(refreshState);
+                                        });
+                                    });
                         }
-
-                        // Todo: Change to refresh only affected lights.
-                        LogUtil.d("Group on/off state changed successfully, refreshing all lights for endpoint.");
-                        LiveData<EmptyResource> refreshState = lightRepository.refreshLightsForEndpoint(
-                                endpointId.getValue().get());
-                        loadingIndicatorVisibility.addVisibilityProvider(refreshState);
                         state.removeObserver(this);
                     }
                     case ERROR -> {
+                        LogUtil.e("Failed to set group on/off state for group %d.", groupId);
                         state.removeObserver(this);
                     }
                 }
