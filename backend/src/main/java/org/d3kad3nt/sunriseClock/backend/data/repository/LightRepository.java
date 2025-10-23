@@ -779,8 +779,8 @@ public final class LightRepository {
     /**
      * Turns all lights in the group on or off.
      *
-     * @param groupId The group to be turned on or off. The given ID must already exist in the database. Note that
-     *                this ID is independent from the identifier that the backing endpoint uses internally.
+     * @param groupId The group to be turned on or off. The given ID must already exist in the database. Note that this
+     *     ID is independent from the identifier that the backing endpoint uses internally.
      * @param newState Whether the group should be turned on (true) or off (false).
      * @return Resource representing the status of the request.
      */

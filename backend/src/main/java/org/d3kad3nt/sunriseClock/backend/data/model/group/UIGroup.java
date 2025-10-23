@@ -82,10 +82,10 @@ public final class UIGroup extends UIEndpointEntity<UIGroup> {
     }
 
     /**
-     * A sealed interface representing the payload for partial UI updates of a {@link UIGroup} item.
-     * This is used with RecyclerView {@code DiffUtil} to efficiently update only the specific parts of a UI item
-     * that have changed, rather than re-rendering the entire item. Each implementing class
-     * corresponds to a specific field of the {@link UIGroup} that can be updated.
+     * A sealed interface representing the payload for partial UI updates of a {@link UIGroup} item. This is used with
+     * RecyclerView {@code DiffUtil} to efficiently update only the specific parts of a UI item that have changed,
+     * rather than re-rendering the entire item. Each implementing class corresponds to a specific field of the
+     * {@link UIGroup} that can be updated.
      */
     public interface UIGroupChangePayload {
 
