@@ -31,7 +31,7 @@
             app:layout_constraintTop_toBottomOf="@+id/entities_loading"
             app:layout_constraintBottom_toBottomOf="parent"
             app:onRefreshListener="@{()-> viewModel.refreshEntities()}"
-            app:refreshing="@{viewModel.swipeRefreshing}" >
+            app:refreshing="@{viewModel.swipeRefreshing}">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                 android:visibility="@{View.VISIBLE}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="7"
-                tools:listitem="@layout/lights_list_element_light" />
+                tools:listitem="@layout/entities_list_element_light" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         <!-- Todo: Implement FAB to create new groups. -->
     </androidx.constraintlayout.widget.ConstraintLayout>

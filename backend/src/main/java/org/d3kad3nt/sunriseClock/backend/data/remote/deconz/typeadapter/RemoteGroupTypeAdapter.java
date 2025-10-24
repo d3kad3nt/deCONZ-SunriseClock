@@ -36,7 +36,10 @@ public class RemoteGroupTypeAdapter implements JsonDeserializer<RemoteGroup> {
         LogUtil.d("Parsing JSON for single group: %s" + json.toString());
 
         JsonObject rawJson = json.getAsJsonObject();
+        JsonObject rawJsonState = rawJson.getAsJsonObject("state");
 
+        // Unlike the /lights path, the /groups path does return group IDs.
+        // No workaround to carry over the ID is needed!
         if (rawJson.has("id")) {
             remoteGroupBuilder =
                     remoteGroupBuilder.setEndpointGroupId(rawJson.get("id").getAsString());
@@ -53,6 +56,16 @@ public class RemoteGroupTypeAdapter implements JsonDeserializer<RemoteGroup> {
                 lightIds.add(light.getAsString());
             }
             remoteGroupBuilder = remoteGroupBuilder.setEndpointLightIds(lightIds);
+        }
+
+        if (rawJsonState.has("any_on")) {
+            remoteGroupBuilder =
+                    remoteGroupBuilder.setIsOnAny(rawJsonState.get("any_on").getAsBoolean());
+        }
+
+        if (rawJsonState.has("all_on")) {
+            remoteGroupBuilder =
+                    remoteGroupBuilder.setIsOnAll(rawJsonState.get("all_on").getAsBoolean());
         }
 
         return remoteGroupBuilder.build();

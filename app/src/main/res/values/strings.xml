@@ -26,6 +26,7 @@
     <string name="endpointDetail_title">Endpoint info</string>
     <string name="light_on_action">On</string>
     <string name="light_off_action">Off</string>
+    <string name="light_partially_on_state">Partially on</string>
     <string name="create_button">Create</string>
     <string name="bottomnav_home_title">Home</string>
     <string name="bottomnav_endpoints_title">Endpoints</string>

@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 import java.util.HashMap;
 import java.util.List;
@@ -60,9 +61,8 @@ public class LightsViewModel extends AndroidViewModel {
         });
     }
 
-    public void refreshLights() {
-        LogUtil.d("User requested refresh of all lights.");
-        // Todo: Where to refresh group membership?
+    public void refreshGroupsWithLights() {
+        LogUtil.d("User requested refresh of all lights and groups.");
 
         if (!endpointId.isInitialized()
                 || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
@@ -70,8 +70,8 @@ public class LightsViewModel extends AndroidViewModel {
             return;
         }
 
-        LiveData<EmptyResource> state =
-                lightRepository.refreshLightsForEndpoint(endpointId.getValue().get());
+        LiveData<EmptyResource> state = lightRepository.refreshGroupsWithLightsForEndpoint(
+                endpointId.getValue().get());
 
         swipeRefreshing.addSource(state, emptyResource -> {
             switch (emptyResource.getStatus()) {
@@ -108,6 +108,41 @@ public class LightsViewModel extends AndroidViewModel {
         LogUtil.d("User toggled setLightOnState with lightId %s to state %s.", lightId, newState);
         LiveData<EmptyResource> state = lightRepository.setOnState(lightId, newState);
         loadingIndicatorVisibility.addVisibilityProvider(state);
+
+        // After the light's state is set, refresh any group that contains this light to update the group's
+        // on/off state in the UI (e.g., from "on" to "off").
+        state.observeForever(new Observer<>() {
+            @Override
+            public void onChanged(EmptyResource resource) {
+                switch (resource.getStatus()) {
+                    case SUCCESS -> {
+                        LogUtil.d("Light on/off state changed successfully, refreshing affected groups.");
+                        Resource<Map<UIGroup, List<UILight>>> groupsWithLightsResource = groupsWithLights.getValue();
+                        if (groupsWithLightsResource != null && groupsWithLightsResource.getData() != null) {
+                            groupsWithLightsResource.getData().entrySet().stream()
+                                    // Find all groups that contain the light that was just toggled.
+                                    .filter(entry ->
+                                            entry.getValue().stream().anyMatch(light -> light.getId() == lightId))
+                                    // For each of those groups, trigger a refresh.
+                                    .forEach(entry -> {
+                                        UIGroup groupToRefresh = entry.getKey();
+                                        LogUtil.d(
+                                                "Refreshing group %d as it contains the toggled light.",
+                                                groupToRefresh.getId());
+                                        LiveData<EmptyResource> refreshState =
+                                                lightRepository.refreshGroup(groupToRefresh.getId());
+                                        loadingIndicatorVisibility.addVisibilityProvider(refreshState);
+                                    });
+                        }
+                        state.removeObserver(this);
+                    }
+                    case ERROR -> {
+                        LogUtil.e("Failed to set light on/off state for light %d.", lightId);
+                        state.removeObserver(this);
+                    }
+                }
+            }
+        });
     }
 
     public void setLightBrightness(long lightId, int brightness, final boolean onState) {
@@ -118,5 +153,41 @@ public class LightsViewModel extends AndroidViewModel {
         }
         LiveData<EmptyResource> state = lightRepository.setBrightness(lightId, brightness);
         loadingIndicatorVisibility.addVisibilityProvider(state);
+    }
+
+    public void setGroupOnState(final long groupId, final boolean newState) {
+        LogUtil.d("User toggled setGroupOnState with groupId %s to state %s.", groupId, newState);
+        LiveData<EmptyResource> state = lightRepository.setGroupOnState(groupId, newState);
+        loadingIndicatorVisibility.addVisibilityProvider(state);
+
+        // After the group's state is set, all lights and groups must be refreshed.
+        // Toggling a group affects the state of its individual lights, which in turn can affect the
+        // (partially) on/off status of other groups that contain those same lights.
+        // A full refresh is the most reliable way to ensure the entire UI is consistent.
+        state.observeForever(new Observer<>() {
+            @Override
+            public void onChanged(EmptyResource resource) {
+                switch (resource.getStatus()) {
+                    case SUCCESS -> {
+                        if (!endpointId.isInitialized()
+                                || Objects.requireNonNull(endpointId.getValue()).isEmpty()) {
+                            LogUtil.w("No active endpoint found.");
+                            return;
+                        }
+
+                        LogUtil.d("Group on/off state changed successfully, refreshing all lights and groups for "
+                                + "endpoint.");
+                        LiveData<EmptyResource> refreshState = lightRepository.refreshGroupsWithLightsForEndpoint(
+                                endpointId.getValue().get());
+                        loadingIndicatorVisibility.addVisibilityProvider(refreshState);
+                        state.removeObserver(this);
+                    }
+                    case ERROR -> {
+                        LogUtil.e("Failed to set group on/off state for group %d.", groupId);
+                        state.removeObserver(this);
+                    }
+                }
+            }
+        });
     }
 }

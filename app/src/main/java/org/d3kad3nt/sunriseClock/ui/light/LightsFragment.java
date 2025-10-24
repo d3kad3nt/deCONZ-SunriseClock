@@ -108,8 +108,14 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
 
     @Override
     public void onGroupCardClick(final View view, final long groupId, final String groupName) {
-        // Todo: Implement group detail screen.
-        LogUtil.d("Group card clicked.");
+        LogUtil.d("Navigate to group detail view for group %s (id %d)", groupName, groupId);
+        Navigation.findNavController(view)
+                .navigate(LightsFragmentDirections.actionLightsToGroupDetail(groupId, groupName));
+    }
+
+    @Override
+    public void onGroupSwitchCheckedChange(final long groupId, final boolean state) {
+        viewModel.setGroupOnState(groupId, state);
     }
 
     @Nullable
@@ -124,8 +130,8 @@ public class LightsFragment extends BaseFragment<LightsFragmentBinding, LightsVi
         // Instead, a menu item should be provided to allow refresh of the content wherever this
         // gesture is used.
         if (menuItem.getItemId() == R.id.menu_lights_refresh) {
-            LogUtil.d("User requested refresh of all lights by clicking the toolbar menu option.");
-            viewModel.refreshLights();
+            LogUtil.d("User requested refresh of all groups and lights by clicking the toolbar menu option.");
+            viewModel.refreshGroupsWithLights();
             return true;
         }
         return false;

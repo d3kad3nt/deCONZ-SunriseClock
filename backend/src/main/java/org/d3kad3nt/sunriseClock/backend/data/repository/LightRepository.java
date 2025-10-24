@@ -178,8 +178,7 @@ public final class LightRepository {
 
             @Override
             protected void saveResponseToDb(DbLight item) {
-                // The primary key lightId is not known to the remote endpoint, but it is known to
-                // us.
+                // The primary key is not known to the remote endpoint, but it is known to us.
                 // Set the lightId to enable direct update/insert via primary key (instead of
                 // endpointId and endpointLightId) through Room.
                 item.setId(lightId);
@@ -230,8 +229,7 @@ public final class LightRepository {
 
                     @Override
                     protected void saveResponseToDb(DbLight item) {
-                        // The primary key lightId is not known to the remote endpoint, but it is
-                        // known to us.
+                        // The primary key is not known to the remote endpoint, but it is known to us.
                         // Set the lightId to enable direct update/insert via primary key (instead
                         // of endpointId and endpointLightId) through Room.
                         item.setId(lightId);
@@ -485,8 +483,8 @@ public final class LightRepository {
             @Override
             protected Map<DbGroup, List<DbLight>> convertRemoteTypeToDbType(
                     ApiSuccessResponse<List<RemoteGroup>> remoteGroups,
-                    ApiSuccessResponse<List<RemoteLight>> response2) {
-                List<DbLight> lights = response2.getBody().stream()
+                    ApiSuccessResponse<List<RemoteLight>> remoteLights) {
+                List<DbLight> lights = remoteLights.getBody().stream()
                         .map(remoteLight -> DbLight.from(remoteLight))
                         .toList();
 
@@ -504,7 +502,76 @@ public final class LightRepository {
         };
     }
 
-    /** @noinspection unused */
+    public LiveData<EmptyResource> refreshGroupsWithLightsForEndpoint(long endpointId) {
+        LogUtil.i("Refreshing all groups and lights for endpoint with id %d", endpointId);
+
+        return Transformations.map(
+                new BiNetworkBoundResource<Empty, List<RemoteGroup>, List<RemoteLight>, Map<DbGroup, List<DbLight>>>() {
+                    @Override
+                    protected void saveResponseToDb(final Map<DbGroup, List<DbLight>> items) {
+                        items.forEach((dbGroup, dbLights) -> {
+                            long dbGroupPk = dbGroupDao.upsert(dbGroup);
+                            dbLights.forEach(dbLight -> {
+                                long dbLightPk = dbLightDao.upsert(dbLight);
+                                dbLightGroupingDao.save(new DbGroupLightCrossref(dbGroupPk, dbLightPk));
+                            });
+                        });
+                    }
+
+                    @Override
+                    protected boolean shouldFetch(final Map<DbGroup, List<DbLight>> data) {
+                        return true;
+                    }
+
+                    @Override
+                    protected LiveData<BaseEndpoint> loadEndpoint() {
+                        return endpointRepo.getRepoEndpoint(endpointId);
+                    }
+
+                    @Override
+                    protected LiveData<Map<DbGroup, List<DbLight>>> loadFromDb() {
+                        return dbGroupDao.loadGroupsWithLightsForEndpoint(endpointId);
+                    }
+
+                    @Override
+                    protected LiveData<ApiResponse<List<RemoteGroup>>> loadFromNetwork() {
+                        return endpoint.getGroups();
+                    }
+
+                    @Override
+                    protected LiveData<ApiResponse<List<RemoteLight>>> loadFromNetwork2() {
+                        return endpoint.getLights();
+                    }
+
+                    @Override
+                    protected Empty convertDbTypeToResultType(final Map<DbGroup, List<DbLight>> groupsWithLights) {
+                        return new Empty();
+                    }
+
+                    @Override
+                    protected Map<DbGroup, List<DbLight>> convertRemoteTypeToDbType(
+                            ApiSuccessResponse<List<RemoteGroup>> remoteGroups,
+                            ApiSuccessResponse<List<RemoteLight>> remoteLights) {
+                        List<DbLight> lights = remoteLights.getBody().stream()
+                                .map(remoteLight -> DbLight.from(remoteLight))
+                                .toList();
+
+                        Map<DbGroup, List<DbLight>> groupsWithLights = new HashMap<>();
+
+                        for (RemoteGroup group : remoteGroups.getBody()) {
+                            DbGroup dbGroup = DbGroup.from(group);
+                            List<DbLight> groupLights = lights.stream()
+                                    .filter(dbLight ->
+                                            group.getEndpointLightIds().contains(dbLight.getEndpointEntityId()))
+                                    .toList();
+                            groupsWithLights.put(dbGroup, groupLights);
+                        }
+                        return groupsWithLights;
+                    }
+                },
+                emptyResource -> EmptyResource.fromResource(emptyResource));
+    }
+
     @NonNull
     public LiveData<Resource<List<UIGroup>>> getGroupsForEndpoint(long endpointId) {
         LogUtil.i("Requesting and returning all groups for endpoint with id %d", endpointId);
@@ -522,38 +589,32 @@ public final class LightRepository {
                 dbGroupDao.upsert(items);
             }
 
-            /** @noinspection unused */
             @Override
             protected boolean shouldFetch(List<DbGroup> data) {
                 // TODO
                 return true;
             }
 
-            /** @noinspection unused */
             @Override
             protected LiveData<BaseEndpoint> loadEndpoint() {
                 return endpointRepo.getRepoEndpoint(endpointId);
             }
 
-            /** @noinspection unused */
             @Override
             protected LiveData<List<DbGroup>> loadFromDb() {
                 return dbGroupDao.loadAllForEndpoint(endpointId);
             }
 
-            /** @noinspection unused */
             @Override
             protected LiveData<ApiResponse<List<RemoteGroup>>> loadFromNetwork() {
                 return endpoint.getGroups();
             }
 
-            /** @noinspection unused */
             @Override
             protected List<UIGroup> convertDbTypeToResultType(List<DbGroup> dbGroups) {
                 return UIGroup.from(dbGroups);
             }
 
-            /** @noinspection unused */
             @Override
             protected List<DbGroup> convertRemoteTypeToDbType(ApiSuccessResponse<List<RemoteGroup>> response) {
                 return response.getBody().stream()
@@ -612,5 +673,144 @@ public final class LightRepository {
                     }
                 },
                 emptyResource -> EmptyResource.fromResource(emptyResource));
+    }
+
+    public LiveData<Resource<UIGroup>> getGroup(long groupId) {
+        LogUtil.i("Requesting and returning single group with id %d", groupId);
+
+        return new NetworkBoundResource<UIGroup, RemoteGroup, DbGroup>() {
+
+            @Override
+            protected void saveResponseToDb(DbGroup item) {
+                // The primary key is not known to the remote endpoint, but it is known to us.
+                // Set the groupId to enable direct update/insert via primary key (instead of
+                // endpointId and endpointGroupId) through Room.
+                item.setId(groupId);
+                dbGroupDao.upsert(item);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable DbGroup data) {
+                // TODO
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<DbGroup> loadFromDb() {
+                return dbGroupDao.load(groupId);
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<ApiResponse<RemoteGroup>> loadFromNetwork() {
+                return endpoint.getGroup(dbObject.getEndpointEntityId());
+            }
+
+            @Override
+            protected UIGroup convertDbTypeToResultType(DbGroup item) {
+                return UIGroup.from(item);
+            }
+
+            @Override
+            protected DbGroup convertRemoteTypeToDbType(ApiSuccessResponse<RemoteGroup> response) {
+                return DbGroup.from(response.getBody());
+            }
+        };
+    }
+
+    public LiveData<EmptyResource> refreshGroup(long groupId) {
+        LogUtil.i("Refreshing single group with id %d", groupId);
+
+        return Transformations.map(
+                new NetworkBoundResource<Empty, RemoteGroup, DbGroup>() {
+
+                    @Override
+                    protected void saveResponseToDb(DbGroup item) {
+                        // The primary key is not known to the remote endpoint, but it is known to us.
+                        // Set the groupId to enable direct update/insert via primary key (instead of
+                        // endpointId and endpointGroupId) through Room.
+                        item.setId(groupId);
+                        dbGroupDao.upsert(item);
+                    }
+
+                    @Override
+                    protected boolean shouldFetch(@Nullable DbGroup data) {
+                        return true;
+                    }
+
+                    @NonNull
+                    @Override
+                    protected LiveData<BaseEndpoint> loadEndpoint() {
+                        return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
+                    }
+
+                    @NotNull
+                    @Override
+                    protected LiveData<DbGroup> loadFromDb() {
+                        return dbGroupDao.load(groupId);
+                    }
+
+                    @NotNull
+                    @Override
+                    protected LiveData<ApiResponse<RemoteGroup>> loadFromNetwork() {
+                        return endpoint.getGroup(dbObject.getEndpointEntityId());
+                    }
+
+                    @Override
+                    protected Empty convertDbTypeToResultType(DbGroup item) {
+                        return new Empty();
+                    }
+
+                    @Override
+                    protected DbGroup convertRemoteTypeToDbType(ApiSuccessResponse<RemoteGroup> response) {
+                        return DbGroup.from(response.getBody());
+                    }
+                },
+                emptyResource -> EmptyResource.fromResource(emptyResource));
+    }
+
+    /**
+     * Turns all lights in the group on or off.
+     *
+     * @param groupId The group to be turned on or off. The given ID must already exist in the database. Note that this
+     *     ID is independent from the identifier that the backing endpoint uses internally.
+     * @param newState Whether the group should be turned on (true) or off (false).
+     * @return Resource representing the status of the request.
+     */
+    public LiveData<EmptyResource> setGroupOnState(long groupId, boolean newState) {
+        LogUtil.i("Setting group state for id %d to %s.", groupId, newState);
+
+        return new NetworkUpdateResource<UIGroup, ResponseBody, DbGroup>(true) {
+
+            @Override
+            protected LiveData<DbGroup> loadFromDB() {
+                return dbGroupDao.load(groupId);
+            }
+
+            @Override
+            protected LiveData<BaseEndpoint> loadEndpoint() {
+                return endpointRepo.getRepoEndpoint(dbObject.getEndpointId());
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<ResponseBody>> sendNetworkRequest(BaseEndpoint baseEndpoint) {
+                return baseEndpoint.setGroupOnState(dbObject.getEndpointEntityId(), newState);
+            }
+
+            @NotNull
+            @Override
+            protected LiveData<Resource<UIGroup>> loadUpdatedVersion() {
+                LogUtil.d("Loading updated group with id %d after successful setOn change", groupId);
+                return getGroup(groupId);
+            }
+        };
     }
 }

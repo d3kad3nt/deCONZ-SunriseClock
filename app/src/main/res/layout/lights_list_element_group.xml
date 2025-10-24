@@ -7,8 +7,14 @@
             name="groupName"
             type="String" />
         <variable
+            name="groupIsOnAny"
+            type="boolean" />
+        <variable
             name="cardClickListener"
             type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.GroupViewHolder.CardClickListener" />
+        <variable
+            name="switchCheckedChangeListener"
+            type="org.d3kad3nt.sunriseClock.ui.light.LightsListAdapter.GroupViewHolder.SwitchCheckedChangeListener" />
     </data>
     <com.google.android.material.card.MaterialCardView
         style="?attr/materialCardViewFilledStyle"
@@ -24,15 +30,27 @@
             android:padding="10dp">
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/textview_light_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
                 android:text="@{groupName}"
                 android:textSize="20sp"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/switch_group_state"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@sample/sample.json/groups/name" />
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switch_group_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@{groupIsOnAny}"
+                android:onCheckedChanged="@{switchCheckedChangeListener}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textview_light_name"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>
