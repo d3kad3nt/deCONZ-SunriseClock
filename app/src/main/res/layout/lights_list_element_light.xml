@@ -36,8 +36,9 @@
         style="?attr/materialCardViewOutlinedStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="5dp"
+        android:layout_marginVertical="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
         android:onClick="@{cardClickListener}"
         tools:context="org.d3kad3nt.sunriseClock.ui.light.LightsFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
