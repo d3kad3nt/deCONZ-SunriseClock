@@ -1,5 +1,7 @@
 package org.d3kad3nt.sunriseClock.backend.data.model.resource;
 
+import androidx.annotation.NonNull;
+
 /**
  * A generic class that holds a value with its loading status. Copied from the official Google architecture-components
  * github-sample under <a
@@ -41,5 +43,11 @@ public class Resource<T> {
 
     public String getMessage() {
         return message;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Resource{" + "status=" + status + ", data=" + data + ", message='" + message + '\'' + '}';
     }
 }
