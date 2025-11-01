@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="groupName"
+            type="String" />
+        <variable
+            name="groupIsOnAny"
+            type="boolean" />
+        <variable
+            name="cardClickListener"
+            type="org.d3kad3nt.sunriseClock.ui.home.HomeListAdapter.GroupViewHolder.CardClickListener" />
+        <variable
+            name="switchCheckedChangeListener"
+            type="org.d3kad3nt.sunriseClock.ui.home.HomeListAdapter.GroupViewHolder.SwitchCheckedChangeListener" />
+    </data>
+    <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewFilledStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        android:onClick="@{cardClickListener}"
+        tools:context="org.d3kad3nt.sunriseClock.ui.home.HomeFragment">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textview_light_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@{groupName}"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/switch_group_state"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@sample/sample.json/groups/name" />
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switch_group_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@{groupIsOnAny}"
+                android:onCheckedChanged="@{switchCheckedChangeListener}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textview_light_name"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

@@ -11,10 +11,10 @@
             type="java.lang.Boolean" />
         <variable
             name="cardClickListener"
-            type="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsListAdapter.EndpointListViewHolder.CardClickListener" />
+            type="org.d3kad3nt.sunriseClock.ui.endpointsOverview.EndpointsOverviewListAdapter.EndpointListViewHolder.CardClickListener" />
         <variable
             name="radioCheckedChangeListener"
-            type="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsListAdapter.EndpointListViewHolder.RadioCheckedChangeListener" />
+            type="org.d3kad3nt.sunriseClock.ui.endpointsOverview.EndpointsOverviewListAdapter.EndpointListViewHolder.RadioCheckedChangeListener" />
     </data>
     <com.google.android.material.card.MaterialCardView
         style="?attr/materialCardViewFilledStyle"
@@ -23,7 +23,7 @@
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="5dp"
         android:onClick="@{cardClickListener}"
-        tools:context="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment">
+        tools:context="org.d3kad3nt.sunriseClock.ui.endpointsOverview.EndpointsOverviewFragment">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
