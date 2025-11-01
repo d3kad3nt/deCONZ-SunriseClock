@@ -6,9 +6,9 @@
     app:startDestination="@id/lightDetail">
     <fragment
         android:id="@+id/lightDetail"
-        android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment"
+        android:name="org.d3kad3nt.sunriseClock.ui.lightControl.LightControlFragment"
         android:label="{LightName}"
-        tools:layout="@layout/light_detail_fragment">
+        tools:layout="@layout/light_control_fragment">
         <argument
             android:name="Light"
             app:argType="long" />

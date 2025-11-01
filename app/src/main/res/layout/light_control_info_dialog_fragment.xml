@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="org.d3kad3nt.sunriseClock.ui.lightControl.LightControlViewModel" />
+        <variable
+            name="okClickListener"
+            type="org.d3kad3nt.sunriseClock.ui.util.DialogOkClickListener" />
+    </data>
+    <!-- strokeWidth=0: Disable default border. -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="32dp"
+        app:strokeWidth="0dp"
+        tools:context="org.d3kad3nt.sunriseClock.ui.lightControl.LightControlInfoDialogFragment">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/info_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/info_24dp" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/light_name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/name_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/info_icon" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/light_name_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(viewModel.light.data.name)}"
+                app:layout_constraintStart_toEndOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/info_icon"
+                tools:text="@sample/sample.json/lights/name" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_between_name_and_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="light_name_label, light_name_value" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/light_id_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/identifier_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barrier_between_name_and_id" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/light_id_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(viewModel.light.data.id)}"
+                app:layout_constraintStart_toEndOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/barrier_between_name_and_id"
+                tools:text="@sample/sample.json/lights/lightId" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_between_id_and_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="light_id_label, light_id_value" />
+            <include
+                layout="@layout/common_dialog_ok_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/barrier_between_id_and_ok"
+                app:okClickListener="@{okClickListener}" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
