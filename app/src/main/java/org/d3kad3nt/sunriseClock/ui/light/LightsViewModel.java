@@ -41,6 +41,8 @@ public class LightsViewModel extends AndroidViewModel {
     /** Whether the loading indicator of the swipeRefreshLayout should be shown by the fragment. */
     public final MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
 
+    public final ResourceVisibilityLiveData errorIndicatorVisibility;
+
     public LightsViewModel(@NonNull Application application) {
         super(application);
 
@@ -49,6 +51,8 @@ public class LightsViewModel extends AndroidViewModel {
                 .setLoadingVisibility(View.VISIBLE)
                 .setSuccessVisibility(View.INVISIBLE)
                 .setErrorVisibility(View.INVISIBLE);
+
+
 
         endpointId = settingsRepository.getActiveEndpointIdAsLivedata();
 
@@ -59,6 +63,12 @@ public class LightsViewModel extends AndroidViewModel {
                 return lightRepository.getGroupsWithLightsForEndpoint(id.get());
             }
         });
+
+        errorIndicatorVisibility = new ResourceVisibilityLiveData(View.INVISIBLE)
+                .setErrorVisibility(View.VISIBLE)
+                .setLoadingVisibility(View.INVISIBLE)
+                .setSuccessVisibility(View.INVISIBLE)
+                .addVisibilityProvider(groupsWithLights);
     }
 
     public void refreshGroupsWithLights() {
