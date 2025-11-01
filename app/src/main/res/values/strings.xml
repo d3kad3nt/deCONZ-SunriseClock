@@ -37,4 +37,6 @@
     <string name="delete_endpoint">Delete Endpoint</string>
     <string name="delete_endpoint_confirmation">Do you really want to delete this endpoint? This will remove
         all associated lights and groups.</string>
+    <string name="no_groups_found">No Groups found</string>
+    <string name="no_lights_found">No Lights found</string>
 </resources>

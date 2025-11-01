@@ -35,34 +35,39 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:onRefreshListener="@{()-> viewModel.refreshGroupsWithLights()}"
             app:refreshing="@{viewModel.swipeRefreshing}">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="true"
-                android:visibility="@{lightsState.error ? View.GONE : View.VISIBLE}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="7"
-                tools:listitem="@layout/lights_list_element_light" />
+                android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="true"
+                    android:visibility="@{viewModel.errorIndicatorVisibility}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="7"
+                    tools:listitem="@layout/lights_list_element_light" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/errorTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@{lightsState.errorTitle}"
+                    android:visibility="@{viewModel.errorIndicatorVisibility}"
+                    app:layout_constraintTop_toBottomOf="@id/light_loading" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/errorText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="48dp"
+                    android:text="@{lightsState.errorMessage}"
+                    android:visibility="@{lightsState.error ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintTop_toBottomOf="@+id/errorTitle" />
+            </LinearLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/errorTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@{lightsState.errorTitle}"
-            android:visibility="@{lightsState.error ? View.VISIBLE : View.GONE}"
-            app:layout_constraintTop_toBottomOf="@id/light_loading" />
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/errorText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="48dp"
-            android:text="@{lightsState.errorMessage}"
-            android:visibility="@{lightsState.error ? View.VISIBLE : View.GONE}"
-            app:layout_constraintTop_toBottomOf="@+id/errorTitle" />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
