@@ -35,4 +35,6 @@
     <string name="delete_endpoint">Endpoint löschen</string>
     <string name="delete_endpoint_confirmation">Soll dieser Endpoint wirklich gelöscht werden? Dies wird auch
     alle zugehörigen Lichter und Gruppen löschen.</string>
+    <string name="no_groups_found">Keine Gruppen gefunden</string>
+    <string name="no_lights_found">Keine Lichter gefunden</string>
 </resources>

@@ -21,6 +21,7 @@ import org.d3kad3nt.sunriseClock.backend.data.model.resource.Resource;
 import org.d3kad3nt.sunriseClock.backend.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.backend.data.repository.LightRepository;
 import org.d3kad3nt.sunriseClock.backend.data.repository.SettingsRepository;
+import org.d3kad3nt.sunriseClock.ui.util.BooleanVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.ui.util.ResourceVisibilityLiveData;
 import org.d3kad3nt.sunriseClock.util.LogUtil;
 
@@ -48,6 +49,10 @@ public class EntitiesViewModel extends ViewModel {
     /** Whether the loading indicator of the swipeRefreshLayout should be shown by the fragment. */
     public final MediatorLiveData<Boolean> swipeRefreshing = new MediatorLiveData<>(false);
 
+    public final BooleanVisibilityLiveData noGroupsVisibility;
+
+    public final BooleanVisibilityLiveData noLightsVisibility;
+
     public EntitiesViewModel(@NonNull LightRepository lightRepository, @NonNull SettingsRepository settingsRepository) {
         super();
         this.lightRepository = lightRepository;
@@ -73,6 +78,13 @@ public class EntitiesViewModel extends ViewModel {
             }
         });
 
+        noLightsVisibility = new BooleanVisibilityLiveData(View.GONE)
+                .setTrueVisibility(View.VISIBLE)
+                .setFalseVisibility(View.GONE);
+        noLightsVisibility.addVisibilityProvider(Transformations.map(lights, listResource -> {
+            return listResource.getData() == null || listResource.getData().isEmpty();
+        }));
+
         groups = Transformations.switchMap(endpointId, id -> {
             if (id.isEmpty()) {
                 return new MutableLiveData<>(Resource.success(new ArrayList<>()));
@@ -85,6 +97,13 @@ public class EntitiesViewModel extends ViewModel {
                 });
             }
         });
+
+        noGroupsVisibility = new BooleanVisibilityLiveData(View.GONE)
+                .setTrueVisibility(View.VISIBLE)
+                .setFalseVisibility(View.GONE);
+        noGroupsVisibility.addVisibilityProvider(Transformations.map(groups, listResource -> {
+            return listResource.getData() == null || listResource.getData().isEmpty();
+        }));
     }
 
     public void refreshEntities() {

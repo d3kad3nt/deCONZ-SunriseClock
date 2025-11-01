@@ -11,7 +11,6 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.viewmodel.MutableCreationExtras;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.ConcatAdapter;
 import org.d3kad3nt.sunriseClock.R;
 import org.d3kad3nt.sunriseClock.backend.data.model.resource.Status;
 import org.d3kad3nt.sunriseClock.backend.data.repository.LightRepository;
@@ -41,15 +40,11 @@ public class EntitiesFragment extends BaseFragment<EntitiesFragmentBinding, Enti
     protected void bindVars(final EntitiesFragmentBinding binding) {
         binding.setViewModel(viewModel);
 
-        EntitiesListAdapterHeader lightsHeaderAdapter = new EntitiesListAdapterHeader(getString(R.string.lights));
         EntitiesListAdapterLight lightsAdapter = new EntitiesListAdapterLight(this);
-        EntitiesListAdapterHeader groupsHeaderAdapter = new EntitiesListAdapterHeader(getString(R.string.groups));
-        EntitiesListAdapterGroup groupsAdapter = new EntitiesListAdapterGroup(this);
+        binding.lightsRecyclerView.setAdapter(lightsAdapter);
 
-        // Display the contents of multiple adapters sequentially.
-        ConcatAdapter concatAdapter =
-                new ConcatAdapter(lightsHeaderAdapter, lightsAdapter, groupsHeaderAdapter, groupsAdapter);
-        binding.recyclerView.setAdapter(concatAdapter);
+        EntitiesListAdapterGroup groupsAdapter = new EntitiesListAdapterGroup(this);
+        binding.groupsRecyclerView.setAdapter(groupsAdapter);
 
         viewModel.getLights().observe(getLifecycleOwner(), listResource -> {
             if (listResource.getStatus().equals(Status.SUCCESS) && listResource.getData() != null) {
