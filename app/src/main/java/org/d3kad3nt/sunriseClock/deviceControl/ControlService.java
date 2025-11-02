@@ -197,8 +197,8 @@ public class ControlService extends ControlsProviderService {
         Intent intent = new Intent(context, ControlActivity.class);
         // I don't know what this flag does, but it removes one warning
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("LightName", light.getName());
-        intent.putExtra("Light", light.getId());
+        intent.putExtra("lightName", light.getName());
+        intent.putExtra("lightId", light.getId());
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context, (int) light.getId(), intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="lightsState"
+            type="org.d3kad3nt.sunriseClock.ui.home.LightsState" />
+        <variable
+            name="viewModel"
+            type="org.d3kad3nt.sunriseClock.ui.home.HomeViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lights_constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="org.d3kad3nt.sunriseClock.ui.home.HomeFragment">
+        <include
+            layout="@layout/common_toolbar_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/light_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="@{viewModel.loadingIndicatorVisibility}"
+            app:layout_constraintTop_toBottomOf="@id/appbar" />
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/light_loading"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:onRefreshListener="@{()-> viewModel.refreshGroupsWithLights()}"
+            app:refreshing="@{viewModel.swipeRefreshing}">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="true"
+                android:visibility="@{lightsState.error ? View.GONE : View.VISIBLE}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="7"
+                tools:listitem="@layout/home_list_element_light" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/errorTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@{lightsState.errorTitle}"
+            android:visibility="@{lightsState.error ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@id/light_loading" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/errorText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="48dp"
+            android:text="@{lightsState.errorMessage}"
+            android:visibility="@{lightsState.error ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@+id/errorTitle" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/lights_toggle_power"
+            android:src="@drawable/powerbutton_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:onClickListener="@{()-> viewModel.toggleLightsOnState()}" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -3,46 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/bottomnav_home">
+    app:startDestination="@id/nav_home">
     <fragment
-        android:id="@+id/group_detail"
-        android:name="org.d3kad3nt.sunriseClock.ui.groupDetail.GroupDetailFragment"
-        android:label="{GroupName}"
-        tools:layout="@layout/group_detail_fragment">
+        android:id="@+id/nav_group_control"
+        android:name="org.d3kad3nt.sunriseClock.ui.groupControl.GroupControlFragment"
+        android:label="{groupName}"
+        tools:layout="@layout/group_control_fragment">
         <argument
-            android:name="GroupId"
+            android:name="groupId"
             app:argType="long" />
         <argument
-            android:name="GroupName"
+            android:name="groupName"
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/bottomnav_home"
-        android:name="org.d3kad3nt.sunriseClock.ui.light.LightsFragment"
+        android:id="@+id/nav_home"
+        android:name="org.d3kad3nt.sunriseClock.ui.home.HomeFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/lights_fragment">
+        tools:layout="@layout/home_fragment">
         <action
             android:id="@+id/action_lights_to_lightDetail"
-            app:destination="@id/nav_graph_light_detail" />
+            app:destination="@id/nav_nested_light_control" />
         <action
             android:id="@+id/action_lights_to_groupDetail"
-            app:destination="@id/group_detail" />
+            app:destination="@id/nav_group_control" />
     </fragment>
     <fragment
-        android:id="@+id/bottomnav_endpoints"
-        android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointsFragment"
+        android:id="@+id/nav_endpoints_overview"
+        android:name="org.d3kad3nt.sunriseClock.ui.endpointsOverview.EndpointsOverviewFragment"
         android:label="@string/endpoint_list"
-        tools:layout="@layout/endpoints_fragment">
+        tools:layout="@layout/endpoints_overview_fragment">
         <action
             android:id="@+id/action_endpoints_to_endpointDetail"
-            app:destination="@id/nav_graph_endpoint_detail" />
+            app:destination="@id/nav_nested_endpoint_management" />
         <action
             android:id="@+id/action_endpoints_to_endpointAddFragment"
-            app:destination="@id/endpointAddFragment" />
+            app:destination="@id/nav_endpoint_add" />
     </fragment>
     <fragment
-        android:id="@+id/endpointAddFragment"
-        android:name="org.d3kad3nt.sunriseClock.ui.endpoint.EndpointAddFragment"
+        android:id="@+id/nav_endpoint_add"
+        android:name="org.d3kad3nt.sunriseClock.ui.endpointsOverview.EndpointAddFragment"
         android:label="Add Endpoint"
         tools:layout="@layout/endpoint_add_fragment" />
     <!--
@@ -50,39 +50,39 @@
     These fragments are tightly coupled.
     -->
     <navigation
-        android:id="@+id/nav_graph_light_detail"
-        app:startDestination="@id/lightDetail">
+        android:id="@+id/nav_nested_light_control"
+        app:startDestination="@id/nav_light_control">
         <argument
-            android:name="Light"
+            android:name="lightId"
             app:argType="long" />
         <argument
-            android:name="LightName"
+            android:name="lightName"
             app:argType="string" />
         <fragment
-            android:id="@+id/lightDetail"
-            android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailFragment"
-            android:label="{LightName}"
-            tools:layout="@layout/light_detail_fragment">
+            android:id="@+id/nav_light_control"
+            android:name="org.d3kad3nt.sunriseClock.ui.lightControl.LightControlFragment"
+            android:label="{lightName}"
+            tools:layout="@layout/light_control_fragment">
             <argument
-                android:name="Light"
+                android:name="lightId"
                 app:argType="long" />
             <argument
-                android:name="LightName"
+                android:name="lightName"
                 app:argType="string" />
             <action
                 android:id="@+id/action_lightDetail_to_lightDetailInfoDialogFragment"
-                app:destination="@id/lightDetailInfoDialogFragment" />
+                app:destination="@id/nav_light_control_info_dialog" />
             <action
                 android:id="@+id/action_lightDetail_to_lightDetailNameEditDialogFragment"
-                app:destination="@id/lightDetailNameEditDialogFragment" />
+                app:destination="@id/nav_light_control_name_edit_dialog" />
         </fragment>
         <dialog
-            android:id="@+id/lightDetailInfoDialogFragment"
-            android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailInfoDialogFragment"
+            android:id="@+id/nav_light_control_info_dialog"
+            android:name="org.d3kad3nt.sunriseClock.ui.lightControl.LightControlInfoDialogFragment"
             android:label="LightDetailInfoDialogFragment" />
         <dialog
-            android:id="@+id/lightDetailNameEditDialogFragment"
-            android:name="org.d3kad3nt.sunriseClock.ui.light.lightDetail.LightDetailNameEditDialogFragment"
+            android:id="@+id/nav_light_control_name_edit_dialog"
+            android:name="org.d3kad3nt.sunriseClock.ui.lightControl.LightControlNameEditDialogFragment"
             android:label="LightDetailNameEditDialogFragment" />
     </navigation>
     <!--
@@ -90,13 +90,13 @@
     These fragments are tightly coupled.
     -->
     <navigation
-        android:id="@+id/nav_graph_endpoint_detail"
-        app:startDestination="@id/endpointDetail">
+        android:id="@+id/nav_nested_endpoint_management"
+        app:startDestination="@id/nav_endpoint_management">
         <fragment
-            android:id="@+id/endpointDetail"
-            android:name="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailFragment"
+            android:id="@+id/nav_endpoint_management"
+            android:name="org.d3kad3nt.sunriseClock.ui.endpointManagement.EndpointManagementFragment"
             android:label="{endpointName}"
-            tools:layout="@layout/endpoint_detail_fragment">
+            tools:layout="@layout/endpoint_management_fragment">
             <argument
                 android:name="endpointID"
                 app:argType="long" />
@@ -105,43 +105,43 @@
                 app:argType="string" />
             <action
                 android:id="@+id/action_endpointDetail_to_endpointDetailInfoDialogFragment"
-                app:destination="@id/endpointDetailInfoDialogFragment" />
+                app:destination="@id/nav_endpoint_management_info_dialog" />
             <action
                 android:id="@+id/action_endpointDetail_to_endpointDetailNameEditDialogFragment"
-                app:destination="@id/endpointDetailNameEditDialogFragment" />
+                app:destination="@id/nav_endpoint_management_name_edit_dialog" />
             <action
                 android:id="@+id/action_endpointDetail_to_endpointDetailDeleteDialogFragment"
-                app:destination="@id/endpointDetailDeleteDialogFragment" />
+                app:destination="@id/nav_endpoint_detail_delete_dialog" />
         </fragment>
         <dialog
-            android:id="@+id/endpointDetailInfoDialogFragment"
-            android:name="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailInfoDialogFragment"
+            android:id="@+id/nav_endpoint_management_info_dialog"
+            android:name="org.d3kad3nt.sunriseClock.ui.endpointManagement.EndpointManagementInfoDialogFragment"
             android:label="EndpointDetailInfoDialogFragment" />
         <dialog
-            android:id="@+id/endpointDetailNameEditDialogFragment"
-            android:name="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailNameEditDialogFragment"
+            android:id="@+id/nav_endpoint_management_name_edit_dialog"
+            android:name="org.d3kad3nt.sunriseClock.ui.endpointManagement.EndpointManagementNameEditDialogFragment"
             android:label="EndpointDetailNameEditDialogFragment" />
         <dialog
-            android:id="@+id/endpointDetailDeleteDialogFragment"
-            android:name="org.d3kad3nt.sunriseClock.ui.endpoint.endpointDetail.EndpointDetailDeleteDialogFragment"
+            android:id="@+id/nav_endpoint_detail_delete_dialog"
+            android:name="org.d3kad3nt.sunriseClock.ui.endpointManagement.EndpointManagementDeleteDialogFragment"
             android:label="EndpointDetailDeleteDialogFragment" />
         <argument
-            android:name="endpointID"
+            android:name="endpointId"
             app:argType="long" />
         <argument
             android:name="endpointName"
             app:argType="string" />
     </navigation>
     <fragment
-        android:id="@+id/bottomnav_entities"
-        android:name="org.d3kad3nt.sunriseClock.ui.entity.EntitiesFragment"
+        android:id="@+id/nav_entities_overview"
+        android:name="org.d3kad3nt.sunriseClock.ui.entitiesOverview.EntitiesOverviewFragment"
         android:label="@string/bottomnav_entities_title"
-        tools:layout="@layout/entities_fragment">
+        tools:layout="@layout/entities_overview_fragment">
         <action
             android:id="@+id/action_bottomnav_entities_to_nav_graph_light_detail"
-            app:destination="@id/nav_graph_light_detail" />
+            app:destination="@id/nav_nested_light_control" />
         <action
             android:id="@+id/action_bottomnav_entities_to_group_detail"
-            app:destination="@id/group_detail" />
+            app:destination="@id/nav_group_control" />
     </fragment>
 </navigation>
