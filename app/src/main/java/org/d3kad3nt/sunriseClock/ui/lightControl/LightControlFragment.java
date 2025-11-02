@@ -50,9 +50,9 @@ public class LightControlFragment extends BaseFragment<LightControlFragmentBindi
 
     @Override
     protected ViewModelProvider getViewModelProvider() {
-        long lightID = LightControlFragmentArgs.fromBundle(requireArguments()).getLight(); // id from navigation
+        long lightId = LightControlFragmentArgs.fromBundle(requireArguments()).getLightId(); // id from navigation
 
-        LogUtil.setPrefix("LightID %d: ", lightID);
+        LogUtil.setPrefix("LightId %d: ", lightId);
 
         // We are using a nested navigation graph. From
         // https://developer.android.com/guide/navigation/use-graph/programmatic#share_ui-related_data_between_destinations_with_viewmodel:
@@ -64,14 +64,14 @@ public class LightControlFragment extends BaseFragment<LightControlFragmentBindi
         // scoped to a navigation graph, enabling you to share UI-related data between the graph's
         // destinations.
         NavController navController = NavHostFragment.findNavController(this);
-        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_light_detail);
+        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_nested_light_control);
 
         // Initialize viewModel with light id and inject the light repository.
         // By injecting the repository, the viewModel no longer needs the Application or Context.
         MutableCreationExtras viewModelDependencies = new MutableCreationExtras();
         viewModelDependencies.set(
                 LightControlViewModel.LIGHT_REPOSITORY_KEY, LightRepository.getInstance(requireContext()));
-        viewModelDependencies.set(LightControlViewModel.LIGHT_ID_KEY, lightID);
+        viewModelDependencies.set(LightControlViewModel.LIGHT_ID_KEY, lightId);
 
         // Use custom factory to initialize the viewModel (instead of using new
         // ViewModelProvider(this).get(LightControlViewModel.class)).

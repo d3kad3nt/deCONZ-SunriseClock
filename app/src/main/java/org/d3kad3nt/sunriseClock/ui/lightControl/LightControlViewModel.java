@@ -36,7 +36,7 @@ public class LightControlViewModel extends ViewModel {
                 return new LightControlViewModel(lightRepository, lightId);
             });
     private final LightRepository lightRepository;
-    private final long lightID;
+    private final long lightId;
     public final LiveData<Resource<UILight>> light;
 
     /** Whether the loading indicator should be shown by the fragment. */
@@ -56,9 +56,9 @@ public class LightControlViewModel extends ViewModel {
 
     public LightControlViewModel(@NonNull LightRepository lightRepository, long lightId) {
         super();
-        LogUtil.setPrefix("LightID %d: ", lightId);
+        LogUtil.setPrefix("LightId %d: ", lightId);
         this.lightRepository = lightRepository;
-        this.lightID = lightId;
+        this.lightId = lightId;
 
         this.light = getLight(lightId);
 
@@ -86,7 +86,7 @@ public class LightControlViewModel extends ViewModel {
     public void refreshLight() {
         LogUtil.i("User requested refresh of light.");
 
-        LiveData<EmptyResource> state = lightRepository.refreshLight(lightID);
+        LiveData<EmptyResource> state = lightRepository.refreshLight(lightId);
 
         swipeRefreshing.addSource(state, emptyResource -> {
             switch (emptyResource.getStatus()) {
@@ -110,7 +110,7 @@ public class LightControlViewModel extends ViewModel {
             if (lightResource == null || lightResource.getStatus() == Status.LOADING) {
                 return;
             }
-            LiveData<EmptyResource> state = lightRepository.setOnState(lightID, newState);
+            LiveData<EmptyResource> state = lightRepository.setOnState(lightId, newState);
             loadingIndicatorVisibility.addVisibilityProvider(state);
         });
     }
@@ -129,7 +129,7 @@ public class LightControlViewModel extends ViewModel {
                 LogUtil.d("The brightness was changed while the light was off. Turning on light...");
                 setLightOnState(true);
             }
-            LiveData<EmptyResource> state = lightRepository.setBrightness(lightID, brightness);
+            LiveData<EmptyResource> state = lightRepository.setBrightness(lightId, brightness);
             loadingIndicatorVisibility.addVisibilityProvider(state);
         });
     }
@@ -141,7 +141,7 @@ public class LightControlViewModel extends ViewModel {
     public void setLightName(String newName) {
         LogUtil.i("User requested the light's name to be set to %s.", newName);
 
-        LiveData<EmptyResource> state = lightRepository.setName(lightID, newName);
+        LiveData<EmptyResource> state = lightRepository.setName(lightId, newName);
         loadingIndicatorVisibility.addVisibilityProvider(state);
     }
 

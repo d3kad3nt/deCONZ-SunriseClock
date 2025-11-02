@@ -2,18 +2,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph_devicecontrol"
-    app:startDestination="@id/lightDetail">
+    android:id="@+id/nav_graph_device_control"
+    app:startDestination="@id/nav_light_control">
     <fragment
-        android:id="@+id/lightDetail"
+        android:id="@+id/nav_light_control"
         android:name="org.d3kad3nt.sunriseClock.ui.lightControl.LightControlFragment"
-        android:label="{LightName}"
+        android:label="{lightName}"
         tools:layout="@layout/light_control_fragment">
         <argument
-            android:name="Light"
+            android:name="lightId"
             app:argType="long" />
         <argument
-            android:name="LightName"
+            android:name="lightName"
             app:argType="string" />
     </fragment>
 </navigation>

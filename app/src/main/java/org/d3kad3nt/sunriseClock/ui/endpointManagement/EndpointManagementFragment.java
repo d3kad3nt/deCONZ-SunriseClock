@@ -64,7 +64,7 @@ public class EndpointManagementFragment
         // scoped to a navigation graph, enabling you to share UI-related data between the graph's
         // destinations.
         NavController navController = NavHostFragment.findNavController(this);
-        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_endpoint_detail);
+        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_nested_endpoint_management);
 
         // Initialize viewModel with endpoint id and inject the endpoint and settings repository.
         // By injecting the repository, the viewModel no longer needs the Application or Context.

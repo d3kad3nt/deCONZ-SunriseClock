@@ -40,7 +40,7 @@ public class LightControlInfoDialogFragment
         // NavBackStackEntry and viewModel scoped to our nested nav graph (containing all light
         // detail screens).
         NavController navController = NavHostFragment.findNavController(this);
-        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_light_detail);
+        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_nested_light_control);
         return new ViewModelProvider(backStackEntry);
     }
 

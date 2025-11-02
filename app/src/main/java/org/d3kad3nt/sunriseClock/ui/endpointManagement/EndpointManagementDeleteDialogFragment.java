@@ -41,7 +41,7 @@ public class EndpointManagementDeleteDialogFragment
         // NavBackStackEntry and viewModel scoped to our nested nav graph (containing all endpoint
         // detail screens).
         NavController navController = NavHostFragment.findNavController(this);
-        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_graph_endpoint_detail);
+        NavBackStackEntry backStackEntry = navController.getBackStackEntry(R.id.nav_nested_endpoint_management);
         return new ViewModelProvider(backStackEntry);
     }
 
@@ -55,6 +55,6 @@ public class EndpointManagementDeleteDialogFragment
         viewModel.deleteEndpoint();
         dismiss();
         // After deleting the endpoint, we should navigate back to the list of endpoints.
-        NavHostFragment.findNavController(this).popBackStack(R.id.bottomnav_endpoints, false);
+        NavHostFragment.findNavController(this).popBackStack(R.id.nav_endpoints_overview, false);
     }
 }
