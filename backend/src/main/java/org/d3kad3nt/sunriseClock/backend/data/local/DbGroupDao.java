@@ -56,7 +56,7 @@ public interface DbGroupDao extends DbEndpointEntityDao<DbGroup> {
     // the query if it has
     // multiple columns that have the same name as it does not yet have a way to distinguish which
     // one is necessary.'
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    @SuppressWarnings(RoomWarnings.QUERY_MISMATCH)
     @Query(
             value = "SELECT * FROM `group` "
                     + "INNER JOIN light_grouping ON light_grouping.group_id = `group`.id "

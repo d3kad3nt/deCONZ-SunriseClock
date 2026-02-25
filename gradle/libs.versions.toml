@@ -1,10 +1,10 @@
 [versions]
 # Versions used by multiple dependencies or plugins
 agp = "8.13.0"
-androidx-lifecycle = "2.9.4"
-androidx-navigation = "2.9.5"
+androidx-lifecycle = "2.10.0"
+androidx-navigation = "2.9.7"
 squareup-retrofit = "2.11.0"
-androidx-room = "2.8.3"
+androidx-room = "2.8.4"
 
 # Android SDK
 minSdk = "23"
@@ -45,7 +45,7 @@ androidx-legacysupport = { module = "androidx.legacy:legacy-support-v4", version
 google-material = { module = "com.google.android.material:material", version = "1.13.0" }
 androidx-viewpager = { module = "androidx.viewpager:viewpager", version = "1.1.0" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.4.0" }
-androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version = "1.1.0" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version = "1.2.0" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.2.1" }
 androidx-cardview = { module = "androidx.cardview:cardview", version = "1.0.0" }
 androidx-drawerlayout = { module = "androidx.drawerlayout:drawerlayout", version = "1.2.0" }
@@ -63,7 +63,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 androidx-navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "androidx-navigation" }
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
-diffplug-spotless = { id = "com.diffplug.spotless", version = "8.0.0" }
+diffplug-spotless = { id = "com.diffplug.spotless", version = "8.2.1" }
 
 [bundles]
 androidx-lifecycle = ["androidx-lifecycle-livedata", "androidx-lifecycle-common-java8", "androidx-lifecycle-viewmodel"]
