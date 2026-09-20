@@ -6,6 +6,8 @@ plugins {
 android {
     namespace = "org.d3kad3nt.sunriseClock.backend"
 
+    enableKotlin = false
+
     room {
         schemaDirectory("$projectDir/schemas")
     }

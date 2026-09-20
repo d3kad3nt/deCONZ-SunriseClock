@@ -6,6 +6,8 @@ plugins {
 android {
     namespace = "org.d3kad3nt.sunriseClock"
 
+    enableKotlin = false
+
     defaultConfig {
         applicationId = "org.d3kad3nt.sunriseClock"
         versionCode = 1

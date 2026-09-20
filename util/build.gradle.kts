@@ -4,6 +4,8 @@ plugins {
 
 android {
     namespace = "org.d3kad3nt.sunriseClock.util"
+
+    enableKotlin = false
 }
 
 dependencies {
