@@ -45,7 +45,7 @@ androidx-legacysupport = { module = "androidx.legacy:legacy-support-v4", version
 google-material = { module = "com.google.android.material:material", version = "1.14.0" }
 androidx-viewpager = { module = "androidx.viewpager:viewpager", version = "1.1.0" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version = "1.4.0" }
-androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version = "1.1.0" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version = "1.2.0" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.2.2" }
 androidx-cardview = { module = "androidx.cardview:cardview", version = "1.0.0" }
 androidx-drawerlayout = { module = "androidx.drawerlayout:drawerlayout", version = "1.2.0" }
