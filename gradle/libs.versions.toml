@@ -38,7 +38,7 @@ squareup-retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-
 android-tools-desugarjdklibs = { module = "com.android.tools:desugar_jdk_libs", version = "2.1.5" }
 
 # Appcompat
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.1" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.8.0" }
 androidx-legacysupport = { module = "androidx.legacy:legacy-support-v4", version = "1.0.0" }
 
 # UI
